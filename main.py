@@ -1,17 +1,10 @@
 from taipy import Gui
 import taipy.gui.builder as tgb
+#from taipy.gui import Gui, get_user_content_url, Markdown
 import os
 
 with tgb.Page() as root_page:
-    with tgb.part(style={
-        "background-image": "/img/OIP.jpg",
-        "background-size": "cover",
-        "height": "100vh",
-        "display": "flex",
-        "align-items": "center",
-        "justify-content": "center",
-        "flex-direction": "column"
-    }):
+    with tgb.part(class_name="background-image"):
         tgb.text("#### 💫 TRANSCEND YOUR LIFE WITH HYPNOTHERAPY", mode="md", style="color: white; font-size: 3em; text-align: center;")
         def open_calendly(state):
             import webbrowser
@@ -26,6 +19,55 @@ with tgb.Page() as root_page:
         tgb.text("---", mode="md")
 
         tgb.navbar(class_name="primary")
+
+        
+        
+initial_state = {
+    "Name": "",
+    "Email": "",
+    "Message": "",
+    "success_message": "",
+    "error_message": "",
+    "image_enlarged": False  # New state variable for image enlargement
+}
+
+#small emo to big 
+def toggle_image(state):
+    state.image_enlarged = not state.image_enlarged  # Toggle the boolean value
+# Update the image rendering based on the state
+image_width = "100px" if not initial_state["image_enlarged"] else "100%"  # Determine the width based on the state
+
+# Contact function
+messages = []
+
+def send_message(state):
+    if hasattr(state, 'Name') and hasattr(state, 'Email') and hasattr(state, 'Message'):
+        name = state.Name
+        email = state.Email
+        message = state.Message
+
+        if name and email and message:
+            messages.append({
+                "name": name,
+                "email": email,
+                "message": message
+            })
+                
+            # Clear the form fields after successful submission
+            state.Name = ""
+            state.Email = ""
+            state.Message = ""
+                
+            # Show a success message
+            state.success_message = "Message sent successfully!"
+            state.error_message = ""
+        else:
+            # Show an error message if any field is empty
+            state.error_message = "Please fill in all fields."
+            state.success_message = ""
+    else:
+        state.error_message = "Form fields are not properly initialized."
+        state.success_message = ""
 
 
 with tgb.Page() as page1:
@@ -95,7 +137,10 @@ with tgb.Page() as page1:
                 "By embracing the 'Path of Least Resistance', we can reprogram these ingrained neural patterns and unlock our true potential."
             )
 
-        tgb.image("./img/emo.jpg", width="100px", label="Embrace Your Emotions")
+        # Image component
+        tgb.image("./img/emo.jpg", width=image_width, label="Embrace Your Emotions", on_action=toggle_image)
+
+        #tgb.image("./img/emo.jpg", width="100px", label="Embrace Your Emotions")
     tgb.text("---", mode="md")
     tgb.image("./img/BehaviourMap.png", label="Understanding Behavior Patterns", width="50%")
     tgb.text("---", mode="md")
@@ -156,58 +201,27 @@ with tgb.Page() as page2:
 
     tgb.text("---", mode="md")
 
-    # Contact function
-    messages = []
+    # Contact Section
+    with tgb.layout("1 1"):  # Creates a two-column layout
 
-    def send_message(state):
-        if hasattr(state, 'Name') and hasattr(state, 'Email') and hasattr(state, 'Message'):
-            name = state.Name
-            email = state.Email
-            message = state.Message
+        # Left Column: Google Map Directions
+        with tgb.part():
+            tgb.text("#### Find Us Here", mode="md", style="text-align: center;")
+            # Embed Google Maps (Replace the URL with your actual Google Maps link)
+            tgb.text("You can find us at: [46/9 Soi Sukhumvit 49, Klong Ton Nua, Wattana District](https://www.google.com/maps/search/?api=1&query=46/9+Soi+Sukhumvit+49,+Klong+Ton+Nua,+Wattana+District)", mode='md')
 
-            if name and email and message:
-                messages.append({
-                    "name": name,
-                    "email": email,
-                    "message": message
-                })
-                
-                # Clear the form fields after successful submission
-                state.Name = ""
-                state.Email = ""
-                state.Message = ""
-                
-                # Show a success message
-                state.success_message = "Message sent successfully!"
-                state.error_message = ""
-            else:
-                # Show an error message if any field is empty
-                state.error_message = "Please fill in all fields."
-                state.success_message = ""
-        else:
-            state.error_message = "Form fields are not properly initialized."
-            state.success_message = ""
+        # Right Column: Get in Touch Form
+        with tgb.part():
+            tgb.text("#### Get in Touch", mode="md", style="text-align: center; margin-top: 50px;")
+            tgb.input("Name", state="Name")
+            tgb.input("Email", state="Email")
+            tgb.input("Message", multiline=True, state="Message")
+            tgb.button("Send Message", on_action=send_message)
+            
+            # Add success and error message displays
+            tgb.text("{success_message}", style="color: green;")
+            tgb.text("{error_message}", style="color: red;")
 
-    # Initialize state variables
-    initial_state = {
-        "Name": "",
-        "Email": "",
-        "Message": "",
-        "success_message": "",
-        "error_message": ""
-    }
-
-    # Contact Form
-    tgb.text("#### Get in Touch", mode="md", style="text-align: center; margin-top: 50px;")
-    tgb.input("Name", state="Name")
-    tgb.input("Email", state="Email")
-    tgb.input("Message", multiline=True, state="Message")
-    tgb.button("Send Message", on_action=send_message)
-    
-    # Add success and error message displays
-    tgb.text("{success_message}", style="color: green;")
-    tgb.text("{error_message}", style="color: red;")
-    
     tgb.text("---", mode="md")
 
     # Display submitted messages (for demonstration purposes)
@@ -250,6 +264,15 @@ if __name__ == "__main__":
             ".primary": {"background-color": "#3498DB", "color": "white"},
             "button": {"transition": "background-color 0.3s", "cursor": "pointer"},
             "button:hover": {"background-color": "#2980B9"},
+            ".background-image": {
+                "background-image": "url('/img/OIP.jpg')",  # Correctly formatted URL
+                "background-size": "cover",
+                "height": "100vh",
+                "display": "flex",
+                "align-items": "center",
+                "justify-content": "center",
+                "flex-direction": "column"
+            }
         },
         state=initial_state
     )
