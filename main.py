@@ -2,27 +2,27 @@ from taipy import Gui
 import taipy.gui.builder as tgb
 #from taipy.gui import Gui, get_user_content_url, Markdown
 import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 with tgb.Page() as root_page:
     with tgb.part(class_name="background-image"):
         tgb.text("#### 💫 TRANSCEND YOUR LIFE WITH HYPNOTHERAPY", mode="md", style="color: white; font-size: 3em; text-align: center;")
-        
-        # def open_calendly(state):
-        #     state.client.display.browser("https://calendly.com/titre/free-session")
         def open_calendly(state):
-            try:
-                state.client.display.browser("https://calendly.com/titre/free-session")
-                print("Calendly URL opened successfully")
-            except Exception as e:
-                print(f"Error opening Calendly URL: {str(e)}")
+            import webbrowser
+            webbrowser.open("https://calendly.com/titre/free-session") 
         tgb.text("   ")
         tgb.text("   ")
-        tgb.button(" IS IT FOR ME? FREE ASSESSMENT ", on_action=open_calendly, style="display: flex; align-items: center; justify-content: center;")
-        tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")
+        #with tgb.layout("1 2"):
+        tgb.button(" IS IT FOR ME? FREE ASSESSMENT ", on_action=open_calendly)
+        tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")# Unlock your full potential and achieve enduring results through a unique blend of therapeutic techniques.", style="color: white; text-align: center;")
         tgb.text("   ")
         tgb.text("   ")
         tgb.text("---", mode="md")
+
         tgb.navbar(class_name="primary")
+
         
 initial_state = {
     "Name": "",
@@ -30,7 +30,7 @@ initial_state = {
     "Message": "",
     "success_message": "",
     "error_message": "",
-    "image_enlarged": False  # New state variable for image enlargement
+    "image_enlarged": False  
 }
 
 #small emo to big 
@@ -42,33 +42,42 @@ image_width = "100px" if not initial_state["image_enlarged"] else "100%"  # Dete
 # Contact function
 messages = []
 
+# Contact function to send email
 def send_message(state):
-    if hasattr(state, 'Name') and hasattr(state, 'Email') and hasattr(state, 'Message'):
-        name = state.Name
-        email = state.Email
-        message = state.Message
-
-        if name and email and message:
-            messages.append({
-                "name": name,
-                "email": email,
-                "message": message
-            })
-                
-            # Clear the form fields after successful submission
+    if state.Name and state.Email and state.Message:
+        try:
+            # Email content
+            sender_email = "oktis444@gmail.com"  # Replace with your email
+            sender_password = "Replace with your email password"
+            recipient_email = "titreasure@gmail.com"  # Replace with recipient email
+            
+            msg = MIMEMultipart()
+            msg['From'] = sender_email
+            msg['To'] = recipient_email
+            msg['Subject'] = f"Message from {state.Name}"
+            
+            body = f"Name: {state.Name}\nEmail: {state.Email}\n\nMessage:\n{state.Message}"
+            msg.attach(MIMEText(body, 'plain'))
+            
+            # Connecting to the SMTP server and sending the email
+            server = smtplib.SMTP('smtp.gmail.com', 587)  # Replace with your SMTP server details
+            server.starttls()
+            server.login(sender_email, sender_password)
+            text = msg.as_string()
+            server.sendmail(sender_email, recipient_email, text)
+            server.quit()
+            
+            # Clear form and display success message
             state.Name = ""
             state.Email = ""
             state.Message = ""
-                
-            # Show a success message
-            state.success_message = "Message sent successfully!"
+            state.success_message = "Email sent successfully!"
             state.error_message = ""
-        else:
-            # Show an error message if any field is empty
-            state.error_message = "Please fill in all fields."
+        except Exception as e:
+            state.error_message = f"Failed to send email: {str(e)}"
             state.success_message = ""
     else:
-        state.error_message = "Form fields are not properly initialized."
+        state.error_message = "Please fill in all fields."
         state.success_message = ""
 
 
@@ -157,7 +166,7 @@ with tgb.Page() as page1:
     
     tgb.text("---", mode="md")
     tgb.navbar(class_name="primary")
-    tgb.text("---", mode="md")
+
 
 # Page 2 content
 with tgb.Page() as page2:
@@ -175,14 +184,12 @@ with tgb.Page() as page2:
             tgb.text(
                 "My credentials include:"
             )
+            tgb.text("- Certification from the [London College of Clinical Hypnotherapy in 2017](https://lcchinternational.co.uk/alumni/)", mode='md')
             tgb.text(
-                "- Certification from the London College of Clinical Hypnotherapy (2017)"
+                "- Years of practical experience helping clients overcome various challenges", mode ='md'
             )
             tgb.text(
-                "- Years of practical experience helping clients overcome various challenges"
-            )
-            tgb.text(
-                "- Continuous professional development to stay at the forefront of hypnotherapy techniques"
+                "- Continuous professional development to stay at the forefront of hypnotherapy techniques [LinkedIn](https://www.linkedin.com/in/laetitia-sheppard)", mode ='md'
             )
 
     tgb.text(
@@ -209,14 +216,7 @@ with tgb.Page() as page2:
     # Contact Section
     with tgb.layout("1 1"):  # Creates a two-column layout
 
-        # Left Column: Google Map Directions
-        with tgb.part():
-            tgb.text("#### Find Us Here", mode="md", style="text-align: center;")
-            # Embed Google Maps (Replace the URL with your actual Google Maps link)
-            tgb.text("You can find us at: [46/9 Soi Sukhumvit 49, Klong Ton Nua, Wattana District](https://www.google.com/maps/place/the+Hive+Thonglor/@13.7320825,100.571723,17z/data=!3m1!4b1!4m6!3m5!1s0x30e29e55a95f6f93:0xf9a8634f35bf33a6!8m2!3d13.7320825!4d100.5765939!16s%2Fg%2F1q6b9rc2_?entry=ttu&g_ep=EgoyMDI0MDgyMS4wIKXMDSoASAFQAw%3D%3D)", mode='md')
-            tgb.image("./img/Map.png", width="100%")
-
-        # Right Column: Get in Touch Form
+        # Left Column: Get in Touch Form
         with tgb.part():
             tgb.text("#### Get in Touch", mode="md", style="text-align: center; margin-top: 50px;")
             tgb.input("Name", state="Name")
@@ -227,6 +227,18 @@ with tgb.Page() as page2:
             # Add success and error message displays
             tgb.text("{success_message}", style="color: green;")
             tgb.text("{error_message}", style="color: red;")
+            
+            # Example of rendering additional content dynamically
+            with tgb.part(render='{input_rendered}'):
+                tgb.input("Another Field")
+
+        # Right Column: Google Map Directions
+        with tgb.part():
+            tgb.text("#### Find Us Here", mode="md", style="text-align: center;")
+            # Embed Google Maps (Replace the URL with your actual Google Maps link)
+            tgb.text("You can find us at: [46/9 Soi Sukhumvit 49, Klong Ton Nua, Wattana District](https://www.google.com/maps/place/the+Hive+Thonglor/@13.7320825,100.571723,17z/data=!3m1!4b1!4m6!3m5!1s0x30e29e55a95f6f93:0xf9a8634f35bf33a6!8m2!3d13.7320825!4d100.5765939!16s%2Fg%2F1q6b9rc2_?entry=ttu&g_ep=EgoyMDI0MDgyMS4wIKXMDSoASAFQAw%3D%3D)", mode='md')
+            tgb.image("./img/Map.png", width="100%")
+
 
     tgb.text("---", mode="md")
 
@@ -245,8 +257,8 @@ with tgb.Page() as page2:
     
     tgb.text("---", mode="md")
     tgb.navbar(class_name="primary")
-    tgb.text("---", mode="md")
-    
+
+
 pages = {
     "/": root_page,
     "Approach": page1,
@@ -282,5 +294,6 @@ if __name__ == "__main__":
                 "flex-direction": "column"
             }
         },
-        state=initial_state
+        state=initial_state,
+        on_action = open_calendly 
     )
