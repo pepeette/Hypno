@@ -2,26 +2,27 @@ from taipy import Gui
 import taipy.gui.builder as tgb
 #from taipy.gui import Gui, get_user_content_url, Markdown
 import os
-import webbrowser
 
 with tgb.Page() as root_page:
     with tgb.part(class_name="background-image"):
         tgb.text("#### 💫 TRANSCEND YOUR LIFE WITH HYPNOTHERAPY", mode="md", style="color: white; font-size: 3em; text-align: center;")
-        def open_calendly():
-            # webbrowser.open("https://calendly.com/titre/free-session")  
-            window.open('https://calendly.com/titre/free-session')
+        
+        # def open_calendly(state):
+        #     state.client.display.browser("https://calendly.com/titre/free-session")
+        def open_calendly(state):
+            try:
+                state.client.display.browser("https://calendly.com/titre/free-session")
+                print("Calendly URL opened successfully")
+            except Exception as e:
+                print(f"Error opening Calendly URL: {str(e)}")
         tgb.text("   ")
         tgb.text("   ")
-        #with tgb.layout("1 2"):
         tgb.button(" IS IT FOR ME? FREE ASSESSMENT ", on_action=open_calendly, style="display: flex; align-items: center; justify-content: center;")
-        tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")# Unlock your full potential and achieve enduring results through a unique blend of therapeutic techniques.", style="color: white; text-align: center;")
+        tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")
         tgb.text("   ")
         tgb.text("   ")
         tgb.text("---", mode="md")
-
         tgb.navbar(class_name="primary")
-
-        
         
 initial_state = {
     "Name": "",
