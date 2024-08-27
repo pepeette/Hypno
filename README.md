@@ -1,5 +1,4 @@
-# Hypno
-<br>
+### Hypno
 <br>
 
 On cree des outils digitaux qui souhaitent maximiser le profit sur le maximum de gens, <br>
@@ -10,4 +9,9 @@ Donc on va avoir besoin de plus de en plus de ces skills de DBT que j applique m
 <br>
 <br>
 https://usbeketrica.com/fr/article/comment-la-big-tech-pave-la-voie-aux-dictatures 
+<br>
+<br>
+#### Inspirations <br>
+<br>
+https://en.wikipedia.org/wiki/Weapons_of_Math_Destruction
 <br>
