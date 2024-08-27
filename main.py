@@ -10,9 +10,9 @@ with tgb.Page() as root_page:
     with tgb.part(class_name="background-image"):
         tgb.text("#### 💫 TRANSCEND YOUR LIFE WITH HYPNOTHERAPY", mode="md", style="color: white; font-size: 3em; text-align: center;")
         def open_calendly(state):
-            # import webbrowser
-            # webbrowser.open("https://calendly.com/titre/free-session") 
-            state.open_link("https://calendly.com/titre/free-session")
+            import webbrowser
+            webbrowser.open("https://calendly.com/titre/free-session") 
+            #state.open_link("https://calendly.com/titre/free-session")
         tgb.text("   ")
         tgb.text("   ")
         #with tgb.layout("1 2"):
