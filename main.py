@@ -20,7 +20,7 @@ with tgb.Page() as root_page:
                 print(f"Error opening Calendly URL: {str(e)}")
         tgb.text("   ")
         tgb.text("   ")
-        with tgb.layout("1 2"):
+        with tgb.layout("1 3"):
             tgb.button(" IS IT FOR ME❔", on_action=open_calendly)
             tgb.text("[FREE ASSESSMENT](https://calendly.com/titre/free-session)", mode='md')
         tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")# Unlock your full potential and achieve enduring results through a unique blend of therapeutic techniques.", style="color: white; text-align: center;")
@@ -235,9 +235,9 @@ with tgb.Page() as page2:
 
         # Right Column: Google Map Directions
         with tgb.part():
-            tgb.text("#### Find Us Here", mode="md", style="text-align: center;")
+            tgb.text("#### We will meet Here", mode="md", style="text-align: center;")
             # Embed Google Maps (Replace the URL with your actual Google Maps link)
-            tgb.text("You can find us at: [46/9 Soi Sukhumvit 49, Klong Ton Nua, Wattana District](https://www.google.com/maps/place/the+Hive+Thonglor/@13.7320825,100.571723,17z/data=!3m1!4b1!4m6!3m5!1s0x30e29e55a95f6f93:0xf9a8634f35bf33a6!8m2!3d13.7320825!4d100.5765939!16s%2Fg%2F1q6b9rc2_?entry=ttu&g_ep=EgoyMDI0MDgyMS4wIKXMDSoASAFQAw%3D%3D)", mode='md')
+            tgb.text("[46/9 Soi Sukhumvit 49, Klong Ton Nua, Wattana District](https://www.google.com/maps/place/the+Hive+Thonglor/@13.7320825,100.571723,17z/data=!3m1!4b1!4m6!3m5!1s0x30e29e55a95f6f93:0xf9a8634f35bf33a6!8m2!3d13.7320825!4d100.5765939!16s%2Fg%2F1q6b9rc2_?entry=ttu&g_ep=EgoyMDI0MDgyMS4wIKXMDSoASAFQAw%3D%3D)", mode='md')
             tgb.image("./img/Map.png", width="100%")
     
     tgb.text("---", mode="md")
