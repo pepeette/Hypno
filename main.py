@@ -21,7 +21,7 @@ with tgb.Page() as root_page:
         tgb.text("   ")
         tgb.text("   ")
         #with tgb.layout("1 2"):
-        tgb.button(" IS IT FOR ME❔ FREE ASSESSMENT ", on_action=open_calendly)
+        tgb.button(" IS IT FOR ME❔ [FREE ASSESSMENT](https://calendly.com/titre/free-session) ", on_action=open_calendly)
         tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")# Unlock your full potential and achieve enduring results through a unique blend of therapeutic techniques.", style="color: white; text-align: center;")
         tgb.text("   ")
         tgb.text("   ")
@@ -36,15 +36,8 @@ initial_state = {
     "Message": "",
     "success_message": "",
     "error_message": "",
-    "calendly_url": None,
-    "image_enlarged": False  
+    "calendly_url": None
 }
-
-#small emo to big 
-def toggle_image(state):
-    state.image_enlarged = not state.image_enlarged  # Toggle the boolean value
-# Update the image rendering based on the state
-image_width = "100px" if not initial_state["image_enlarged"] else "100%"  # Determine the width based on the state
 
 # Contact function
 messages = []
@@ -156,7 +149,7 @@ with tgb.Page() as page1:
             )
 
         # Image component
-        tgb.image("./img/emo.jpg", width=image_width, label="Embrace Your Emotions", on_action=toggle_image)
+        tgb.image("./img/emo.jpg", width=image_width, label="Embrace Your Emotions")
 
         #tgb.image("./img/emo.jpg", width="100px", label="Embrace Your Emotions")
     tgb.text("---", mode="md")
@@ -245,22 +238,6 @@ with tgb.Page() as page2:
             # Embed Google Maps (Replace the URL with your actual Google Maps link)
             tgb.text("You can find us at: [46/9 Soi Sukhumvit 49, Klong Ton Nua, Wattana District](https://www.google.com/maps/place/the+Hive+Thonglor/@13.7320825,100.571723,17z/data=!3m1!4b1!4m6!3m5!1s0x30e29e55a95f6f93:0xf9a8634f35bf33a6!8m2!3d13.7320825!4d100.5765939!16s%2Fg%2F1q6b9rc2_?entry=ttu&g_ep=EgoyMDI0MDgyMS4wIKXMDSoASAFQAw%3D%3D)", mode='md')
             tgb.image("./img/Map.png", width="100%")
-
-
-    tgb.text("---", mode="md")
-
-    # Display submitted messages (for demonstration purposes)
-    tgb.text("#### Submitted Messages", mode="md", style="text-align: center; margin-top: 50px;")
-    for msg in messages:
-        with tgb.part(class_name="card"):
-            tgb.text(f"**From:** {msg['name']} ({msg['email']})", mode="md")
-            tgb.text(f"**Message:** {msg['message']}", mode="md")
-
-    tgb.text("#### Get in Touch", mode="md", style="text-align: center; margin-top: 50px;")
-    tgb.input("Name")
-    tgb.input("Email")
-    tgb.input("Message", multiline=True)
-    tgb.button("Send Message")
     
     tgb.text("---", mode="md")
     tgb.navbar(class_name="primary")
