@@ -309,14 +309,13 @@ gui_multi_pages = Gui(pages=pages)
 
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5000))
     logging.info(f"Starting application on port {port}")
     gui_multi_pages.run(
         host="0.0.0.0", 
         use_reloader=False,
         title="Transcend Your Life💫",
-        port=5000,#port=port,
+        port=port,
         dark_mode=False,
         favicon='./img/emojishootingstar.png',
         styles={
