@@ -6,7 +6,7 @@ import os
 with tgb.Page() as root_page:
     with tgb.part(class_name="background-image"):
         tgb.text("#### 💫 TRANSCEND YOUR LIFE WITH HYPNOTHERAPY", mode="md", style="color: white; font-size: 3em; text-align: center;")
-        def open_calendly(state):
+        def open_calendly():
             import webbrowser
             webbrowser.open("https://calendly.com/titre/free-session")  # Replace with your actual Calendly link
         tgb.text("   ")
