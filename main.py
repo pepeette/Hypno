@@ -6,62 +6,28 @@ import os
 # from email.mime.text import MIMEText
 # from email.mime.multipart import MIMEMultipart
 
-import logging
-
-logging.basicConfig(level=logging.INFO)
-
-def open_calendly(state):
-    logging.info("open_calendly function called")
-    try:
-        state.open_link("https://calendly.com/titre/free-session")
-        logging.info("state.open_link called successfully")
-    except Exception as e:
-        logging.error(f"Error in open_calendly: {str(e)}")
-        # Fallback method
-        state.calendly_url = "https://calendly.com/titre/free-session"
-
 with tgb.Page() as root_page:
     with tgb.part(class_name="background-image"):
         tgb.text("#### 💫 TRANSCEND YOUR LIFE WITH HYPNOTHERAPY", mode="md", style="color: white; font-size: 3em; text-align: center;")
+        # def open_calendly(state):
+            # import webbrowser
+            # webbrowser.open("https://calendly.com/titre/free-session") 
+        def open_calendly(state):
+            try:
+                state.client.display.browser("https://calendly.com/titre/free-session")
+                print("Calendly URL opened successfully")
+            except Exception as e:
+                print(f"Error opening Calendly URL: {str(e)}")
         tgb.text("   ")
         tgb.text("   ")
+        #with tgb.layout("1 2"):
         tgb.button(" IS IT FOR ME❔ FREE ASSESSMENT ", on_action=open_calendly)
-        tgb.html("""<script>
-        function openCalendly(url) {
-            window.open(url, '_blank');
-        }
-        </script>""")
-        tgb.html("""<taipy:script>
-        if (state.calendly_url) {
-            openCalendly(state.calendly_url);
-            state.calendly_url = null;
-        }
-        </taipy:script>""")
         tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")# Unlock your full potential and achieve enduring results through a unique blend of therapeutic techniques.", style="color: white; text-align: center;")
         tgb.text("   ")
         tgb.text("   ")
         tgb.text("---", mode="md")
 
         tgb.navbar(class_name="primary")
-
-# ... rest of your page definitions
-# with tgb.Page() as root_page:
-#     with tgb.part(class_name="background-image"):
-#         tgb.text("#### 💫 TRANSCEND YOUR LIFE WITH HYPNOTHERAPY", mode="md", style="color: white; font-size: 3em; text-align: center;")
-#         def open_calendly(state):
-#             import webbrowser
-#             webbrowser.open("https://calendly.com/titre/free-session") 
-#             #state.open_link("https://calendly.com/titre/free-session")
-#         tgb.text("   ")
-#         tgb.text("   ")
-#         #with tgb.layout("1 2"):
-#         tgb.button(" IS IT FOR ME❔ FREE ASSESSMENT ", on_action=open_calendly)
-#         tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")# Unlock your full potential and achieve enduring results through a unique blend of therapeutic techniques.", style="color: white; text-align: center;")
-#         tgb.text("   ")
-#         tgb.text("   ")
-#         tgb.text("---", mode="md")
-
-#         tgb.navbar(class_name="primary")
 
         
 initial_state = {
@@ -309,13 +275,12 @@ gui_multi_pages = Gui(pages=pages)
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    logging.info(f"Starting application on port {port}")
+    #port = int(os.environ.get("PORT", 5000))
     gui_multi_pages.run(
         host="0.0.0.0", 
         use_reloader=False,
         title="Transcend Your Life💫",
-        port=port,
+        port=5000,#port=port,
         dark_mode=False,
         favicon='./img/emojishootingstar.png',
         styles={
@@ -338,4 +303,3 @@ if __name__ == "__main__":
         },
         state=initial_state
     )
-    
