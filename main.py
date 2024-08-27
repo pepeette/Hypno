@@ -192,11 +192,11 @@ with tgb.Page() as page2:
             with tgb.part("card"):
                 tgb.image("./img/client1.jpg", width="100px", style="border-radius: 50%;")
                 tgb.text("\"The hypnotherapy sessions have been life-changing. I've never felt more in control of my habits.\"", style="font-style: italic;")
-                tgb.text("- Sarah M., Weight Management Client")
+                tgb.text("- Lora H., 🇺🇸 , Weight Management")
             with tgb.part("card"):
                 tgb.image("./img/client2.jpg", width="100px", style="border-radius: 50%;")
                 tgb.text("\"I was skeptical at first, but the results speak for themselves. My stress levels have decreased significantly.\"", style="font-style: italic;")
-                tgb.text("- John D., Stress Relief Client")
+                tgb.text("- Juliette P., 🇫🇷 , Stress Relief")
 
 
     tgb.text("---", mode="md")
