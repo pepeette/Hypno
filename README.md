@@ -11,7 +11,8 @@ Donc on va avoir besoin de plus de en plus de ces skills de DBT que j applique m
 https://usbeketrica.com/fr/article/comment-la-big-tech-pave-la-voie-aux-dictatures 
 <br>
 <br>
-#### Inspirations <br>
+#### Inspirations 
 <br>
+
 https://en.wikipedia.org/wiki/Weapons_of_Math_Destruction
 <br>
