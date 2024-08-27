@@ -149,7 +149,7 @@ with tgb.Page() as page1:
             )
 
         # Image component
-        tgb.image("./img/emo.jpg", width=image_width, label="Embrace Your Emotions")
+        tgb.image("./img/emo.jpg", width="100px", label="Embrace Your Emotions")
 
         #tgb.image("./img/emo.jpg", width="100px", label="Embrace Your Emotions")
     tgb.text("---", mode="md")
