@@ -20,8 +20,9 @@ with tgb.Page() as root_page:
                 print(f"Error opening Calendly URL: {str(e)}")
         tgb.text("   ")
         tgb.text("   ")
-        #with tgb.layout("1 2"):
-        tgb.button(" IS IT FOR ME❔ [FREE ASSESSMENT](https://calendly.com/titre/free-session) ", on_action=open_calendly)
+        with tgb.layout("1 2"):
+            tgb.button(" IS IT FOR ME❔", on_action=open_calendly)
+            tgb.text("[FREE ASSESSMENT](https://calendly.com/titre/free-session)", mode='md')
         tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")# Unlock your full potential and achieve enduring results through a unique blend of therapeutic techniques.", style="color: white; text-align: center;")
         tgb.text("   ")
         tgb.text("   ")
