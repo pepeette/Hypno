@@ -1,4 +1,4 @@
-### Hypno
+### Hypno website - carte de visite
 <br>
 
 On cree des outils digitaux qui souhaitent maximiser le profit sur le maximum de gens, <br>
