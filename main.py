@@ -2,9 +2,9 @@ from taipy import Gui
 import taipy.gui.builder as tgb
 #from taipy.gui import Gui, get_user_content_url, Markdown
 import os
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+# import smtplib
+# from email.mime.text import MIMEText
+# from email.mime.multipart import MIMEMultipart
 
 with tgb.Page() as root_page:
     with tgb.part(class_name="background-image"):
@@ -16,7 +16,7 @@ with tgb.Page() as root_page:
         tgb.text("   ")
         tgb.text("   ")
         #with tgb.layout("1 2"):
-        tgb.button(" IS IT FOR ME? FREE ASSESSMENT ", on_action=open_calendly)
+        tgb.button("[ IS IT FOR ME❔ FREE ASSESSMENT ](https://calendly.com/titre/free-session)", mode ='md', on_action=open_calendly)
         tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")# Unlock your full potential and achieve enduring results through a unique blend of therapeutic techniques.", style="color: white; text-align: center;")
         tgb.text("   ")
         tgb.text("   ")
@@ -44,42 +44,42 @@ image_width = "100px" if not initial_state["image_enlarged"] else "100%"  # Dete
 messages = []
 
 # Contact function to send email
-def send_message(state):
-    if state.Name and state.Email and state.Message:
-        try:
-            # Email content
-            sender_email = "oktis444@gmail.com"  # Replace with your email
-            sender_password = "Replace with your email password"
-            recipient_email = "titreasure@gmail.com"  # Replace with recipient email
+# def send_message(state):
+#     if state.Name and state.Email and state.Message:
+#         try:
+#             # Email content
+#             sender_email = "oktis444@gmail.com"  # Replace with your email
+#             sender_password = "Replace with your email password"
+#             recipient_email = "titreasure@gmail.com"  # Replace with recipient email
             
-            msg = MIMEMultipart()
-            msg['From'] = sender_email
-            msg['To'] = recipient_email
-            msg['Subject'] = f"Message from {state.Name}"
+#             msg = MIMEMultipart()
+#             msg['From'] = sender_email
+#             msg['To'] = recipient_email
+#             msg['Subject'] = f"Message from {state.Name}"
             
-            body = f"Name: {state.Name}\nEmail: {state.Email}\n\nMessage:\n{state.Message}"
-            msg.attach(MIMEText(body, 'plain'))
+#             body = f"Name: {state.Name}\nEmail: {state.Email}\n\nMessage:\n{state.Message}"
+#             msg.attach(MIMEText(body, 'plain'))
             
-            # Connecting to the SMTP server and sending the email
-            server = smtplib.SMTP('smtp.gmail.com', 587)  # Replace with your SMTP server details
-            server.starttls()
-            server.login(sender_email, sender_password)
-            text = msg.as_string()
-            server.sendmail(sender_email, recipient_email, text)
-            server.quit()
+#             # Connecting to the SMTP server and sending the email
+#             server = smtplib.SMTP('smtp.gmail.com', 587)  # Replace with your SMTP server details
+#             server.starttls()
+#             server.login(sender_email, sender_password)
+#             text = msg.as_string()
+#             server.sendmail(sender_email, recipient_email, text)
+#             server.quit()
             
-            # Clear form and display success message
-            state.Name = ""
-            state.Email = ""
-            state.Message = ""
-            state.success_message = "Email sent successfully!"
-            state.error_message = ""
-        except Exception as e:
-            state.error_message = f"Failed to send email: {str(e)}"
-            state.success_message = ""
-    else:
-        state.error_message = "Please fill in all fields."
-        state.success_message = ""
+#             # Clear form and display success message
+#             state.Name = ""
+#             state.Email = ""
+#             state.Message = ""
+#             state.success_message = "Email sent successfully!"
+#             state.error_message = ""
+#         except Exception as e:
+#             state.error_message = f"Failed to send email: {str(e)}"
+#             state.success_message = ""
+#     else:
+#         state.error_message = "Please fill in all fields."
+#         state.success_message = ""
 
 
 with tgb.Page() as page1:
