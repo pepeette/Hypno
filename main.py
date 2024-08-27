@@ -12,7 +12,7 @@ with tgb.Page() as root_page:
         tgb.text("   ")
         tgb.text("   ")
         #with tgb.layout("1 2"):
-        tgb.button("IS IT FOR ME? FREE ASSESSMENT", on_action=open_calendly, style="display: flex; align-items: center; justify-content: center;")
+        tgb.button(" IS IT FOR ME? FREE ASSESSMENT ", on_action=open_calendly, style="display: flex; align-items: center; justify-content: center;")
         tgb.text("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")# Unlock your full potential and achieve enduring results through a unique blend of therapeutic techniques.", style="color: white; text-align: center;")
         tgb.text("   ")
         tgb.text("   ")
@@ -152,7 +152,10 @@ with tgb.Page() as page1:
         tgb.text("Yes, hypnotherapy is a safe and non-invasive form of therapy when conducted by a certified professional. The purpose is to rewire a self sabotaging behaviour onto a healthier and happier one.")
         tgb.text("##### How many sessions will I need?", mode="md")
         tgb.text("The number of sessions varies depending on individual needs and goals. Usually we proceed in 2 sessions : Therapy and Hypnotherapy. We'll discuss this during your initial consultation.")
-
+    
+    tgb.text("---", mode="md")
+    tgb.navbar(class_name="primary")
+    tgb.text("---", mode="md")
 
 # Page 2 content
 with tgb.Page() as page2:
@@ -239,7 +242,9 @@ with tgb.Page() as page2:
     # tgb.button("Send Message")
     
     tgb.text("---", mode="md")
-
+    tgb.navbar(class_name="primary")
+    tgb.text("---", mode="md")
+    
 pages = {
     "/": root_page,
     "Approach": page1,
