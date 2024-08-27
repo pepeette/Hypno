@@ -223,7 +223,7 @@ with tgb.Page() as page2:
             tgb.input("Name", state="Name")
             tgb.input("Email", state="Email")
             tgb.input("Message", multiline=True, state="Message")
-            tgb.button("Send Message", on_action=send_message)
+            tgb.button("Send Message")#, on_action=send_message)
             
             # Add success and error message displays
             tgb.text("{success_message}", style="color: green;")
@@ -250,11 +250,11 @@ with tgb.Page() as page2:
             tgb.text(f"**From:** {msg['name']} ({msg['email']})", mode="md")
             tgb.text(f"**Message:** {msg['message']}", mode="md")
 
-    # tgb.text("#### Get in Touch", mode="md", style="text-align: center; margin-top: 50px;")
-    # tgb.input("Name")
-    # tgb.input("Email")
-    # tgb.input("Message", multiline=True)
-    # tgb.button("Send Message")
+    tgb.text("#### Get in Touch", mode="md", style="text-align: center; margin-top: 50px;")
+    tgb.input("Name")
+    tgb.input("Email")
+    tgb.input("Message", multiline=True)
+    tgb.button("Send Message")
     
     tgb.text("---", mode="md")
     tgb.navbar(class_name="primary")
