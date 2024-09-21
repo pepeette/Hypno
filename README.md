@@ -4,6 +4,8 @@ Nous créons des outils digitaux visant à maximiser le profit pour le plus gran
 
 Il est donc crucial de développer des compétences en Data Behavioral Therapy (DBT), que j'applique moi-même dans ma vie pour être heureuse.
 
+Resultat >> [website created with Taipy](https://seashell-app-wlnbb.ondigitalocean.app/)
+
 ## Liens Utiles
 
 - [Comment la Big Tech pave la voie aux dictatures](https://usbeketrica.com/fr/article/comment-la-big-tech-pave-la-voie-aux-dictatures)
