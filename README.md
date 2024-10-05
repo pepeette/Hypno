@@ -6,6 +6,10 @@ Il est donc crucial de développer des compétences en Data Behavioral Therapy (
 
 Resultat >> [website created with Taipy](https://seashell-app-wlnbb.ondigitalocean.app/)
 
+Modifiee de Digital Ocean a Streamlit >> change requirements de taipy et flask a streamlit
+et deployment depuis app.y
+
+
 ## Liens Utiles
 
 - [Comment la Big Tech pave la voie aux dictatures](https://usbeketrica.com/fr/article/comment-la-big-tech-pave-la-voie-aux-dictatures)
