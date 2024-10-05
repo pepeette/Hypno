@@ -1,2 +1,2 @@
-taipy
-flask
+streamlit
+pillow
