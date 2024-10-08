@@ -42,10 +42,9 @@ st.markdown("## 💫 TRANSCEND YOUR LIFE WITH HYPNOTHERAPY")
 
 col1, col2, col3 = st.columns([1, 3, 1])
 with col1:
-    # if st.button("IS IT FOR ME❔"):
-    #     open_calendly()
     if st.button("IS IT FOR ME❔"):
-        st.markdown('<a href="https://calendly.com/titre/free-session" target="_blank">Click here to open Calendly</a>', unsafe_allow_html=True)
+        st.link_button("IS IT FOR ME❔", "https://calendly.com/titre/free-session")
+        #open_calendly()
 
 with col2:
     st.markdown("[FREE ASSESSMENT](https://calendly.com/titre/free-session)")
