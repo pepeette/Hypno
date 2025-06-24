@@ -32,7 +32,7 @@ st.markdown("""
     line-height: 1.6;
 }
 
-.hero-section {
+.main-header {
     background: var(--primary-color);
     color: white;
     padding: 3rem 2rem;
@@ -42,16 +42,21 @@ st.markdown("""
     margin-bottom: 2rem;
 }
 
-.hero-title {
+.main-title {
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
 }
 
-.hero-subtitle {
+.main-subtitle {
     font-size: 1.2rem;
     color: #d1d1d6;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+}
+
+.credentials {
+    font-size: 0.95rem;
+    color: var(--text-muted);
 }
 
 .section-title {
@@ -109,10 +114,10 @@ st.markdown("""
 }
 
 @media (max-width: 768px) {
-    .hero-title {
+    .main-title {
         font-size: 1.75rem;
     }
-    .hero-subtitle {
+    .main-subtitle {
         font-size: 1rem;
     }
     .section-title {
@@ -128,30 +133,25 @@ if 'page' not in st.session_state:
 
 # --- HEADER ---
 def show_header():
-        st.markdown("""
-        <div class="main-header">
-            <div class="main-title">Rewire What’s Holding You Back — In 2 Sessions</div>
-            <div class="main-subtitle">
-                For ambitious professionals ready to break through anxiety, perfectionism, or authority blocks — fast.
-            </div>
-            <div class="credentials">
-                Laetitia Sheppard • 13+ Years Trading Floors • Certified Behavioral Performance Specialist
-            </div>
-            <br>
-            <div style="margin-top: 1rem;">
-                <a href="https://calendly.com/titre/free-session" target="_blank">
-                    <button style="background-color: var(--accent-color); color: var(--primary-color); padding: 0.75rem 1.5rem; border: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem;">
-                        📅 Book a Free 15-min Fit Call
-                    </button>
-                </a>
-            </div>
+    st.markdown("""
+    <div class="main-header">
+        <div class="main-title">Rewire What’s Holding You Back — In 2 Sessions</div>
+        <div class="main-subtitle">
+            For ambitious professionals ready to break through anxiety, perfectionism, or authority blocks — fast.
         </div>
-        """, unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("📅 Apply for Performance Audit", key="cta_header"):
-            webbrowser.open("https://calendly.com/titre/free-session")
+        <div class="credentials">
+            Laetitia Sheppard • 13+ Years Trading Floors • Certified Behavioral Performance Specialist
+        </div>
+        <br>
+        <div style="margin-top: 1rem;">
+            <a href="https://calendly.com/titre/free-session" target="_blank">
+                <button style="background-color: var(--accent-color); color: var(--primary-color); padding: 0.75rem 1.5rem; border: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem;">
+                    🗕️ Book a Free 15-min Fit Call
+                </button>
+            </a>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # --- NAVIGATION ---
 def show_navigation():
@@ -203,30 +203,30 @@ def show_services():
         """, unsafe_allow_html=True)
 
     with col2:
-      st.markdown("""
-<div class="problem-card">
-    <div class="problem-title">Performance Anxiety & Imposter Syndrome</div>
-    <div class="problem-description">
-        You know your stuff, but anxiety strikes before meetings, keynotes, or career moves. Confidence feels manufactured.
-    </div>
-    <div class="problem-result">
-        → Rewire unconscious fear loops and install calm, grounded confidence
-    </div>
-</div>
-<div class="problem-card">
-    <div class="problem-title">Losing Emotional Control in Conflict</div>
-    <div class="problem-description">
-        Heated discussions, negotiations, or internal politics trigger reactions that cost you leadership capital.
-    </div>
-    <div class="problem-result">
-        → Rewire emotional reactivity and lead with composure under pressure
-    </div>
-</div>
-""", unsafe_allow_html=True)
-        
+        st.markdown("""
+        <div class="problem-card">
+            <div class="problem-title">Performance Anxiety & Imposter Syndrome</div>
+            <div class="problem-description">
+                You know your stuff, but anxiety strikes before meetings, keynotes, or career moves. Confidence feels manufactured.
+            </div>
+            <div class="problem-result">
+                → Rewire unconscious fear loops and install calm, grounded confidence
+            </div>
+        </div>
+        <div class="problem-card">
+            <div class="problem-title">Losing Emotional Control in Conflict</div>
+            <div class="problem-description">
+                Heated discussions, negotiations, or internal politics trigger reactions that cost you leadership capital.
+            </div>
+            <div class="problem-result">
+                → Rewire emotional reactivity and lead with composure under pressure
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("📅 Apply Now", key="cta_services"):
+        if st.button("🗕️ Apply Now", key="cta_services"):
             webbrowser.open("https://calendly.com/titre/free-session")
 
 # --- METHOD ---
@@ -279,8 +279,8 @@ def show_about():
         - Managed $50M book, coached 48-person teams in 12 countries
 
         **Credentials:**
-        - Certified Behavioral Performance Specialist (UK, 2017)
-        - Certified Neuroscience Coach (2023)
+        - Certified Behavioral Performance Specialist & Hypnotherapy (UK, 2017)
+        - Certified Neuroscience Coach (Dialectical Behavioral Therapy, 2024)
         - Fluent: English, French, Spanish, Italian
         """)
 
@@ -306,17 +306,17 @@ def show_about():
     with col1:
         st.markdown("""
         **Performance Clinic (Bangkok HQ)**
-        46/9 Soi Sukhumvit 49 — Wireless Road Area
+        46/9 Soi Sukhumvit 49 — Thong Lor Area
 
         **Clients:** Portfolio Managers · Hedge Fund Leaders · C-Suite Expats
 
         Languages spoken: English, French, Spanish, Italian
         """)
-        if st.button("📅 Apply Now (5 Clients/Month)", key="cta_about"):
+        if st.button("🗕️ Apply Now (5 Clients/Month)", key="cta_about"):
             webbrowser.open("https://calendly.com/titre/free-session")
     with col2:
         try:
-            st.image("./img/Map.png", caption="Bangkok Financial District")
+            st.image("./img/Map.png", caption="Bangkok Khlong Toei District")
         except:
             st.info("Map placeholder")
 
