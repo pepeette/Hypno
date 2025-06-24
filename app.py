@@ -3,156 +3,411 @@ import webbrowser
 from PIL import Image
 
 # Set page config
-st.set_page_config(page_title=" Transcend Your Life💫", page_icon="./img/emojishootingstar.png", layout="wide")
+st.set_page_config(
+    page_title="Executive Performance Hypnotherapy | Laetitia Hoquetis", 
+    page_icon="🎯", 
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
-# Custom CSS
+# Custom CSS - Professional Executive Theme
 st.markdown("""
     <style>
     .stApp {
-        font-family: Georgia, serif;
+        font-family: 'Helvetica', Arial, sans-serif;
         line-height: 1.6;
+        color: #2c3e50;
     }
-    h1, h2, h3, h4, h5 {
-        font-family: 'Arial', sans-serif;
-    }
-    .card {
-        background-color: #F7F9F9;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
-    }
-    .stButton>button {
-        background-color: #3498DB;
+    
+    .main-header {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
         color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .main-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.02em;
+    }
+    
+    .main-subtitle {
+        font-size: 1.2rem;
+        font-weight: 300;
+        margin-bottom: 1rem;
+        opacity: 0.9;
+    }
+    
+    .credentials {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    
+    .problem-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border-left: 4px solid #2a5298;
+        margin-bottom: 1rem;
+        height: 100%;
+    }
+    
+    .problem-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #1e3c72;
+        margin-bottom: 0.5rem;
+    }
+    
+    .problem-description {
+        color: #666;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .problem-result {
+        font-weight: 600;
+        color: #27ae60;
+        font-size: 0.9rem;
+    }
+    
+    .method-step {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 1rem;
+        border: 2px solid #e9ecef;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        background: #2a5298;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 auto 1rem;
+    }
+    
+    .testimonial-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        font-style: italic;
+        margin-bottom: 1rem;
+    }
+    
+    .testimonial-author {
+        font-weight: 600;
+        color: #1e3c72;
+        margin-top: 1rem;
+        font-style: normal;
+    }
+    
+    .cta-section {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        margin: 2rem 0;
+    }
+    
+    .stButton>button {
+        background: #27ae60;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 5px;
         transition: background-color 0.3s;
     }
+    
     .stButton>button:hover {
-        background-color: #2980B9;
+        background: #219a52;
+    }
+    
+    .nav-button {
+        background: #2a5298;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        margin: 0 0.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e3c72;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    
+    .credentials-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .credentials-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .credentials-list li:before {
+        content: "✓";
+        color: #27ae60;
+        font-weight: bold;
+        margin-right: 1rem;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Function to open Calendly
-def open_calendly():
-    webbrowser.open("https://calendly.com/titre/free-session")
-
-# Header
-st.markdown("## 💫 TRANSCEND YOUR LIFE WITH HYPNOTHERAPY")
-
-col1, col2, col3 = st.columns([1, 3, 1])
-with col1:
-    st.link_button("IS IT FOR ME❔", "https://calendly.com/titre/free-session")
-    #if st.button("IS IT FOR ME❔"):
-        #open_calendly()
-
-with col2:
-    st.markdown("[FREE ASSESSMENT](https://calendly.com/titre/free-session)")
-
-st.markdown("Transform your life with my hypnotherapy sessions, designed to create lasting behavior change by integrating the powerful tools of DBT (Dialectical Behavior Therapy).")
-
-# Sidebar for navigation
-page = st.sidebar.radio("Choose a page", ["Home", "Approach", "About"])
-
-# Function to display Approach content
-def show_approach():
-    st.markdown("### Discover How Hypnotherapy Can Transform Your Life")
-    
-    col1, col2, col3, col4 = st.columns(4)
+# Navigation
+def show_navigation():
+    col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
     with col1:
-        st.markdown("#### 😌 Stress Relief")
-        st.markdown("Overcome anxiety and find inner peace")
+        st.markdown("### **Executive Performance Hypnotherapy**")
     with col2:
-        st.markdown("#### 🤝 Improve Relationships")
-        st.markdown("Enhance social skills and emotional intelligence")
+        if st.button("Services", key="nav_services"):
+            st.session_state.page = "services"
     with col3:
-        st.markdown("#### 🥗 Healthy Eating Habits")
-        st.markdown("Achieve sustainable weight management")
+        if st.button("Method", key="nav_method"):
+            st.session_state.page = "method"
     with col4:
-        st.markdown("#### 🚭 Break Free from Addiction")
-        st.markdown("Quit smoking and other dependencies for good")
+        if st.button("About", key="nav_about"):
+            st.session_state.page = "about"
+
+# Initialize session state
+if 'page' not in st.session_state:
+    st.session_state.page = 'services'
+
+# Header Section
+def show_header():
+    st.markdown("""
+    <div class="main-header">
+        <div class="main-title">Executive Performance Hypnotherapy</div>
+        <div class="main-subtitle">Rewire Limiting Behaviors. Unlock Peak Performance.</div>
+        <div class="credentials">Laetitia Hoquetis | 13+ Years Financial Markets | Certified Hypnotherapist & DBT Specialist</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# Services Page
+def show_services():
+    st.markdown('<div class="section-title">High-Stakes Behavioral Problems I Solve</div>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class="problem-card">
+            <div class="problem-title">Performance Anxiety & Imposter Syndrome</div>
+            <div class="problem-description">You freeze in presentations or doubt yourself despite proven success, undermining your leadership presence.</div>
+            <div class="problem-result">→ Install unshakeable confidence and eliminate self-doubt</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="problem-card">
+            <div class="problem-title">Perfectionism & Control Issues</div>
+            <div class="problem-description">You burn out trying to control everything, micromanaging and losing efficiency.</div>
+            <div class="problem-result">→ Install strategic delegation and "good enough" frameworks</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="problem-card">
+            <div class="problem-title">Sleep Anxiety & Executive Burnout</div>
+            <div class="problem-description">Racing thoughts keep you awake, affecting decision-making and performance the next day.</div>
+            <div class="problem-result">→ Reprogram deep sleep patterns and mental shutdown protocols</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="problem-card">
+            <div class="problem-title">Emotional Regulation in Conflict</div>
+            <div class="problem-description">You lose control in difficult conversations or negotiations, damaging professional relationships.</div>
+            <div class="problem-result">→ Master strategic emotional responses and conflict navigation</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="problem-card">
+            <div class="problem-title">Smoking & High-Pressure Habits</div>
+            <div class="problem-description">Stress-triggered habits (smoking, drinking) that you use to cope with executive pressure.</div>
+            <div class="problem-result">→ Eliminate triggers and install healthier stress responses</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # CTA Section
+    st.markdown("""
+    <div class="cta-section">
+        <h3>Ready to Rewire Your Peak Performance?</h3>
+        <p>Stop letting behavioral patterns limit your potential. Book a consultation to discuss your specific challenges.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("📅 Schedule Executive Consultation", key="main_cta"):
+            webbrowser.open("https://calendly.com/titre/free-session")
+
+# Method Page
+def show_method():
+    st.markdown('<div class="section-title">My 2-Session Behavioral Rewiring Method</div>', unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("""
+        <div class="method-step">
+            <div style="display: flex; justify-content: center;">
+                <div style="width: 50px; height: 50px; background: #2a5298; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">1</div>
+            </div>
+            <h4>Pattern Analysis Session</h4>
+            <p>Deep dive into your specific behavioral triggers, decision patterns, and unconscious responses. We map exactly where and how your performance gets hijacked.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="method-step">
+            <div style="display: flex; justify-content: center;">
+                <div style="width: 50px; height: 50px; background: #2a5298; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">2</div>
+            </div>
+            <h4>Behavioral Reprogramming</h4>
+            <p>Using advanced hypnotherapy + DBT techniques, we reprogram new neural pathways for peak performance responses. Install new automatic behaviors.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div class="method-step">
+            <div style="display: flex; justify-content: center;">
+                <div style="width: 50px; height: 50px; background: #27ae60; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">3</div>
+            </div>
+            <h4>Reinforcement (If Needed)</h4>
+            <p>Occasional tune-up sessions to strengthen new patterns. Most clients need only the initial 2 sessions for lasting change.</p>
+        </div>
+        """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.markdown("### The Journey to Happiness: Change, Purpose, and Method")
     
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.write("Discovering true happiness is simpler than you might think.")
-        st.write("However, we often complicate this journey with self-imposed limitations and destructive patterns.")
-        st.write("These patterns, built up over time, obscure the clear path to contentment and self-fulfillment.")
-        st.write("By embracing the 'Path of Least Resistance', we can reprogram these ingrained neural patterns and unlock our true potential.")
-    with col2:
-        st.image("./img/emo.jpg", width=100, caption="Embrace Your Emotions")
-
-    st.image("./img/BehaviourMap.png", caption="Understanding Behavior Patterns", width=400)
-
+    # FAQ Section
     st.markdown("### Frequently Asked Questions")
-    with st.expander("Is hypnotherapy safe?"):
-        st.write("Yes, hypnotherapy is a safe and non-invasive form of therapy when conducted by a certified professional. The purpose is to rewire a self sabotaging behaviour onto a healthier and happier one.")
-    with st.expander("How many sessions will I need?"):
-        st.write("The number of sessions varies depending on individual needs and goals. Usually we proceed in 2 sessions : Therapy and Hypnotherapy. We'll discuss this during your initial consultation.")
+    
+    with st.expander("How is this different from executive coaching?"):
+        st.write("Executive coaching works at the conscious level - discussing strategies and goals. Hypnotherapy rewires the unconscious behavioral patterns that sabotage your conscious intentions. It's faster and addresses the root cause, not just symptoms.")
+    
+    with st.expander("Why only 2 sessions?"):
+        st.write("Unlike traditional therapy that can take months, behavioral reprogramming through hypnotherapy targets specific neural pathways directly. Most executive behavioral patterns can be mapped and rewired in 2 focused sessions. Additional sessions are only needed for complex multi-layered issues.")
+    
+    with st.expander("Is this safe for high-pressure executives?"):
+        st.write("Absolutely. Hypnotherapy is a scientifically validated approach used by elite athletes and Fortune 500 executives. You remain in full control - it's simply a focused state similar to deep concentration you already experience in high-stakes situations.")
 
-# Function to display About content
+# About Page  
 def show_about():
-    st.markdown("### About Me: Your Guide to Transformation")
+    st.markdown('<div class="section-title">Why I Understand High-Performance Pressure</div>', unsafe_allow_html=True)
     
-    col1, col2 = st.columns([1, 3])
+    col1, col2 = st.columns([1, 2])
+    
     with col1:
-        st.image("./img/ID.jpg", width=200, caption="Laetitia Sheppard")
+        try:
+            st.image("./img/ID.jpg", width=250, caption="Laetitia Hoquetis")
+        except:
+            st.info("Professional photo placeholder")
+    
     with col2:
-        st.write("As a certified practitioner in Ericksonian Hypnotherapy and Cognitive Behaviour, I bring a wealth of experience and expertise to help you on your journey of self-improvement.")
-        st.write("My credentials include:")
-        st.markdown("- Certification from the [London College of Clinical Hypnotherapy in 2017](https://lcchinternational.co.uk/alumni/)")
-        st.markdown("- Years of practical experience helping clients overcome various challenges")
-        st.markdown("- Continuous professional development to stay at the forefront of hypnotherapy techniques [LinkedIn](https://www.linkedin.com/in/laetitia-sheppard)")
+        st.markdown("""
+        **I've been where you are.** 13+ years on trading floors, managing $50M portfolios, leading 48-person international teams across multiple jurisdictions.
 
-    st.write("My approach is tailored to each individual, ensuring that you receive personalized care and attention throughout your transformative journey.")
+        I understand the crushing pressure of high-stakes decisions, the isolation of leadership, and the behavioral patterns that can make or break careers.
 
-    st.markdown("### Testimonials : Their Takeaways")
+        Now I combine that real-world experience with advanced therapeutic training to solve the behavioral challenges that traditional coaching can't touch.
+        """)
+        
+        st.markdown("""
+        **My Unique Background:**
+        - ✓ Certified Hypnotherapist (London College, 2017)
+        - ✓ Dialectical Behavior Therapy (DBT Certified, 2024)
+        - ✓ 13+ years Financial Markets (Bloomberg, HSBC, Credit Agricole)
+        - ✓ Led digital transformation for 2,500+ employees
+        - ✓ Managed international teams across 12+ countries
+        - ✓ Fluent English, French, Spanish, Italian
+        """)
+
+    st.markdown("---")
+    
+    # Testimonials
+    st.markdown('<div class="section-title">Client Results</div>', unsafe_allow_html=True)
+    
     col1, col2 = st.columns(2)
+    
     with col1:
-        st.image("./img/client1.jpg", width=100)
-        st.write("\"The hypnotherapy sessions have been life-changing. I've never felt more in control of my habits.\"")
-        st.write("- Lora H., 🇺🇸 , Weight Management")
+        st.markdown("""
+        <div class="testimonial-card">
+            "I went from freezing in board presentations to commanding the room. The change happened faster than I thought possible. Laetitia understands the pressure we face at executive level."
+            <div class="testimonial-author">— Sarah M., Managing Director, Investment Banking</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
     with col2:
-        st.image("./img/client3.jpg", width=100)
-        st.write("\"I was skeptical at first, but the results speak for themselves. My stress levels have decreased significantly.\"")
-        st.write("- Juliette P., 🇫🇷 , Stress Relief")
+        st.markdown("""
+        <div class="testimonial-card">
+            "My perfectionism was burning me out. After 2 sessions, I delegate effectively and trust my team. My stress levels dropped 70% while performance improved."
+            <div class="testimonial-author">— Marcus L., Private Equity Partner</div>
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown("### Get in Touch")
-    contact_form = st.form("contact_form")
-    name = contact_form.text_input("Name")
-    email = contact_form.text_input("Email")
-    message = contact_form.text_area("Message")
-    submit_button = contact_form.form_submit_button("Send Message")
-
-    if submit_button:
-        st.success("Message sent successfully!")
-
-    st.markdown("### We will meet Here")
-    st.markdown("[46/9 Soi Sukhumvit 49, Klong Ton Nua, Wattana District](https://www.google.com/maps/place/the+Hive+Thonglor/@13.7320825,100.571723,17z/data=!3m1!4b1!4m6!3m5!1s0x30e29e55a95f6f93:0xf9a8634f35bf33a6!8m2!3d13.7320825!4d100.5765939!16s%2Fg%2F1q6b9rc2_?entry=ttu&g_ep=EgoyMDI0MDgyMS4wIKXMDSoASAFQAw%3D%3D)")
-    st.image("./img/Map.png")
-
-if page == "Home":
-    # Subtabs for Approach and About
-    tab1, tab2 = st.tabs(["Approach", "About"])
+    st.markdown("---")
     
-    with tab1:
-        show_approach()
+    # Contact Section
+    st.markdown("### Schedule Your Executive Consultation")
     
-    with tab2:
-        show_about()
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown("""
+        **Bangkok Location:**  
+        46/9 Soi Sukhumvit 49, Klong Ton Nua, Wattana District
+        
+        **Languages:** English, French, Spanish, Italian  
+        **Specialized Focus:** Executive behavioral patterns, high-performance anxiety, leadership presence
+        """)
+        
+        if st.button("📅 Book Consultation", key="about_cta"):
+            webbrowser.open("https://calendly.com/titre/free-session")
+    
+    with col2:
+        try:
+            st.image("./img/Map.png", caption="Our Bangkok Location")
+        except:
+            st.info("Location map placeholder")
 
-elif page == "Approach":
-    st.markdown("##  ")
-    show_approach()
-    st.markdown("##  ")
+# Main App Logic
+show_header()
+show_navigation()
 
-elif page == "About":
-    st.markdown("##  ")
+if st.session_state.page == 'services':
+    show_services()
+elif st.session_state.page == 'method':
+    show_method()
+elif st.session_state.page == 'about':
     show_about()
-    st.markdown("##  ")
 
-# Run the app
-if __name__ == "__main__":
-    st.sidebar.success("Select a page above.")
+# Footer
+st.markdown("---")
+st.markdown("*Executive Performance Hypnotherapy | Laetitia Sheppard | Bangkok, Thailand*")
