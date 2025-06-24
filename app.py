@@ -141,7 +141,7 @@ if "page" not in st.session_state:
 # --- HEADER ---
 st.markdown("""
 <div class="main-header">
-    <div class="main-title">Rewire What’s Holding You Back — In 2 Sessions</div>
+    <div class="main-title">Rewire what’s holding you back - in 2 sessions</div>
     <div class="main-subtitle">
         For ambitious professionals ready to break through anxiety, perfectionism, or authority blocks — fast.
     </div>
@@ -168,7 +168,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # --- CONTENT AREAS ---
 def show_services():
-    st.markdown('<div class="sub-section-title">What We Fix — Fast</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-section-title">What is being solved - fast</div>', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     problems = [
         ("Freezing in Presentations or High-Stakes Moments", "Smart, capable professionals lose their voice or presence right when it matters — in boardrooms, on stage, or with clients.", "→ Rewire confidence and command the room in 2 neuroscience-based sessions"),
@@ -198,7 +198,7 @@ def show_services():
 
 
 def show_method():
-    st.markdown('<div class="sub-section-title">The 2-Session Neuroscience Method</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-section-title">The 2-session Neuroscience Method</div>', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("""
