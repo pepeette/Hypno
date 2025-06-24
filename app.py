@@ -1,6 +1,6 @@
 import streamlit as st
 import webbrowser
-from PIL import Image
+import streamlit.components.v1 as components
 
 # --- PAGE CONFIG ---
 st.set_page_config(
@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CUSTOM CSS FOR EXECUTIVE CLARITY & MOBILE RESPONSIVENESS ---
+# --- CUSTOM CSS ---
 st.markdown("""
 <style>
 :root {
@@ -59,26 +59,6 @@ st.markdown("""
     color: var(--text-muted);
 }
 
-.section-title {
-    font-size: 2rem;
-    text-align: center;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid var(--accent-color);
-    padding-bottom: 0.5rem;
-    font-weight: 600;
-}
-
-.sub-section-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    border-left: 4px solid var(--accent-color);
-    padding-left: 0.75rem;
-}
-
 .problem-card {
     background: var(--card-bg);
     padding: 1.5rem;
@@ -104,6 +84,16 @@ st.markdown("""
     color: var(--secondary-color);
 }
 
+.sub-section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--accent-color);
+    padding-left: 0.75rem;
+}
+
 .stButton > button {
     background-color: var(--accent-color);
     color: var(--primary-color);
@@ -120,28 +110,33 @@ st.markdown("""
     transform: translateY(-2px);
 }
 
-@media (max-width: 768px) {
-    .main-title {
-        font-size: 1.75rem;
-    }
-    .main-subtitle {
-        font-size: 1rem;
-    }
-    .section-title {
-        font-size: 1.5rem;
-    }
-    .sub-section-title {
-        font-size: 1.25rem;
-    }
+.nav-tabs {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+.nav-tab {
+    padding: 0.5rem 1.5rem;
+    margin: 0 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    color: var(--text-muted);
+}
+.nav-tab-active {
+    border-color: var(--accent-color);
+    color: var(--primary-color);
 }
 </style>
 """, unsafe_allow_html=True)
 
-# SESSION STATE
+# --- SESSION STATE ---
 if 'page' not in st.session_state:
     st.session_state.page = 'services'
 
-# HEADER
+# --- HEADER ---
 st.markdown("""
 <div class="main-header">
     <div class="main-title">Rewire What’s Holding You Back — In 2 Sessions</div>
@@ -160,23 +155,39 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# NAVIGATION
-col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
-with col1:
-    st.markdown("### **Neuroscience Performance Solutions**")
-with col2:
-    if st.button("🪢 Solutions", key="nav_services"):
-        st.session_state.page = "services"
-with col3:
-    if st.button("🧬 Method", key="nav_method"):
-        st.session_state.page = "method"
-with col4:
-    if st.button("👤 About", key="nav_about"):
-        st.session_state.page = "about"
+# --- NAVIGATION ---
+nav_options = {
+    "🪢 Solutions": "services",
+    "🧬 Method": "method",
+    "👤 About": "about"
+}
 
-# SERVICES PAGE
+nav_html = '<div class="nav-tabs">'
+for label, key in nav_options.items():
+    active = "nav-tab-active" if st.session_state.page == key else ""
+    nav_html += f'<div class="nav-tab {active}" onclick="window.location.href=\'#{key}\'">{label}</div>'
+nav_html += '</div>'
+st.markdown(nav_html, unsafe_allow_html=True)
+
+# JS for interactivity
+components.html(f"""
+<script>
+const tabs = document.querySelectorAll('.nav-tab');
+tabs.forEach(tab => {{
+    tab.addEventListener('click', () => {{
+        const hash = tab.textContent.trim().split(" ")[1].toLowerCase();
+        window.parent.postMessage({{type: 'streamlit:setComponentValue', value: hash}}, '*');
+    }});
+}});
+</script>
+""", height=0)
+
+query_params = st.experimental_get_query_params()
+if "page" in query_params:
+    st.session_state.page = query_params["page"][0]
+
+# --- PAGES ---
 def show_services():
-    st.markdown('<div class="section-title">What We Fix — Fast</div>', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     problems = [
         ("Freezing in Presentations or High-Stakes Moments", "Smart, capable professionals lose their voice or presence right when it matters — in boardrooms, on stage, or with clients.", "→ Rewire confidence and command the room in 2 neuroscience-based sessions"),
@@ -197,18 +208,16 @@ def show_services():
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.markdown("""
-        <div style='text-align: center;'>
+        <div style='text-align: center; margin-top: 1rem;'>
             <a href="https://calendly.com/titre/free-session" target="_blank">
                 <button>📅 Apply Now</button>
             </a>
         </div>
         """, unsafe_allow_html=True)
 
-# METHOD PAGE
-def show_method():
-    st.markdown('<div class="section-title">How It Works</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-section-title">The 2-Session Neuroscience Method</div>', unsafe_allow_html=True)
 
+def show_method():
+    st.markdown('<div class="sub-section-title">The 2-Session Neuroscience Method</div>', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("""
@@ -240,9 +249,8 @@ def show_method():
     with st.expander("Is it confidential?"):
         st.write("100%. Trusted by leaders across Asia. No client data is stored beyond legal minimums.")
 
-# ABOUT US
+
 def show_about():
-    st.markdown('<div class="section-title">Why Finance Leaders Trust This Method</div>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2])
     with col1:
         try:
@@ -261,25 +269,25 @@ def show_about():
         - Fluent: English, French, Spanish, Italian
         """)
 
-    st.markdown('<div class="section-title">Testimonials</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-section-title">Testimonials</div>', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
-        <div class="testimonial-card">
-        \"From hesitating in meetings to leading decisively. My deal closures speak for themselves.\"
+        <div class="problem-card">
+        "From hesitating in meetings to leading decisively. My deal closures speak for themselves."
         <br><strong>— Sarah M., Managing Director, Bangkok</strong>
         </div>
         """, unsafe_allow_html=True)
     with col2:
         st.markdown("""
-        <div class="testimonial-card">
-        \"2 sessions in, my sleep quality jumped and I started winning more board approvals.\"
+        <div class="problem-card">
+        "2 sessions in, my sleep quality jumped and I started winning more board approvals."
         <br><strong>— Marcus L., PE Partner, Singapore</strong>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("### Bangkok Clinic & Contact")
-    col1, col2 = st.columns([2,1])
+    col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown("""
         **Performance Clinic (Bangkok HQ)**
@@ -297,8 +305,7 @@ def show_about():
         except:
             st.info("Map placeholder")
 
-
-# ROUTING
+# --- MAIN RENDERING ---
 if st.session_state.page == "services":
     show_services()
 elif st.session_state.page == "method":
@@ -306,7 +313,6 @@ elif st.session_state.page == "method":
 elif st.session_state.page == "about":
     show_about()
 
-
-# FOOTER
+# --- FOOTER ---
 st.markdown("---")
 st.markdown("*Neuroscience Performance Solutions | Elite Behavioral Reset | Cognitive Pattern Rewiring*")
