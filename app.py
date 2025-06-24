@@ -4,7 +4,7 @@ from PIL import Image
 
 # Set page config
 st.set_page_config(
-    page_title="Executive Performance Hypnotherapy | Laetitia Hoquetis", 
+    page_title="Executive Performance Hypnotherapy | Laetitia Sheppard", 
     page_icon="🎯", 
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -200,7 +200,7 @@ def show_header():
     <div class="main-header">
         <div class="main-title">Executive Performance Hypnotherapy</div>
         <div class="main-subtitle">Rewire Limiting Behaviors. Unlock Peak Performance.</div>
-        <div class="credentials">Laetitia Hoquetis | 13+ Years Financial Markets | Certified Hypnotherapist & DBT Specialist</div>
+        <div class="credentials">Laetitia Sheppard | 13+ Years Financial Markets | Certified Hypnotherapist & DBT Specialist</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -326,7 +326,7 @@ def show_about():
     
     with col1:
         try:
-            st.image("./img/ID.jpg", width=250, caption="Laetitia Hoquetis")
+            st.image("./img/ID.jpg", width=250, caption="Laetitia Sheppard")
         except:
             st.info("Professional photo placeholder")
     
