@@ -10,17 +10,42 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS - Professional Executive Theme
+# Custom CSS - Professional Executive Theme with Dark Mode Support
 st.markdown("""
     <style>
+    :root {
+        --primary-color: #2563eb;
+        --primary-dark: #1d4ed8;
+        --secondary-color: #10b981;
+        --secondary-dark: #0d9f6e;
+        --text-color: #1f2937;
+        --text-light: #6b7280;
+        --bg-color: #ffffff;
+        --card-bg: #f9fafb;
+        --border-color: #e5e7eb;
+    }
+    
+    [data-theme="dark"] {
+        --primary-color: #3b82f6;
+        --primary-dark: #2563eb;
+        --secondary-color: #10b981;
+        --secondary-dark: #0d9f6e;
+        --text-color: #f3f4f6;
+        --text-light: #9ca3af;
+        --bg-color: #111827;
+        --card-bg: #1f2937;
+        --border-color: #374151;
+    }
+    
     .stApp {
-        font-family: 'Helvetica', Arial, sans-serif;
+        font-family: 'Inter', 'Helvetica', Arial, sans-serif;
         line-height: 1.6;
-        color: #2c3e50;
+        color: var(--text-color);
+        background-color: var(--bg-color);
     }
     
     .main-header {
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
         color: white;
         padding: 2rem;
         border-radius: 10px;
@@ -48,47 +73,54 @@ st.markdown("""
     }
     
     .problem-card {
-        background: white;
+        background: var(--card-bg);
         padding: 1.5rem;
         border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        border-left: 4px solid #2a5298;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        border-left: 4px solid var(--primary-color);
         margin-bottom: 1rem;
         height: 100%;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .problem-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
     }
     
     .problem-title {
         font-size: 1.3rem;
         font-weight: 600;
-        color: #1e3c72;
+        color: var(--primary-color);
         margin-bottom: 0.5rem;
     }
     
     .problem-description {
-        color: #666;
+        color: var(--text-light);
         margin-bottom: 0.5rem;
         font-size: 0.95rem;
     }
     
     .problem-result {
         font-weight: 600;
-        color: #27ae60;
+        color: var(--secondary-color);
         font-size: 0.9rem;
     }
     
     .method-step {
-        background: #f8f9fa;
+        background: var(--card-bg);
         padding: 1.5rem;
         border-radius: 10px;
         text-align: center;
         margin-bottom: 1rem;
-        border: 2px solid #e9ecef;
+        border: 1px solid var(--border-color);
+        height: 100%;
     }
     
     .step-number {
         width: 50px;
         height: 50px;
-        background: #2a5298;
+        background: var(--primary-color);
         color: white;
         border-radius: 50%;
         display: flex;
@@ -100,23 +132,24 @@ st.markdown("""
     }
     
     .testimonial-card {
-        background: white;
+        background: var(--card-bg);
         padding: 1.5rem;
         border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         font-style: italic;
         margin-bottom: 1rem;
+        border: 1px solid var(--border-color);
     }
     
     .testimonial-author {
         font-weight: 600;
-        color: #1e3c72;
+        color: var(--primary-color);
         margin-top: 1rem;
         font-style: normal;
     }
     
     .cta-section {
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
         color: white;
         padding: 2rem;
         border-radius: 10px;
@@ -125,33 +158,40 @@ st.markdown("""
     }
     
     .stButton>button {
-        background: #27ae60;
+        background: var(--secondary-color);
         color: white;
         border: none;
         padding: 0.75rem 1.5rem;
         font-size: 1.1rem;
         font-weight: 600;
         border-radius: 5px;
-        transition: background-color 0.3s;
+        transition: all 0.3s;
     }
     
     .stButton>button:hover {
-        background: #219a52;
+        background: var(--secondary-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     
     .nav-button {
-        background: #2a5298;
+        background: var(--primary-color);
         color: white;
         border: none;
         padding: 0.5rem 1rem;
         border-radius: 5px;
         margin: 0 0.5rem;
+        transition: background-color 0.3s;
+    }
+    
+    .nav-button:hover {
+        background: var(--primary-dark);
     }
     
     .section-title {
         font-size: 2rem;
         font-weight: 700;
-        color: #1e3c72;
+        color: var(--primary-color);
         margin-bottom: 1.5rem;
         text-align: center;
     }
@@ -163,14 +203,31 @@ st.markdown("""
     
     .credentials-list li {
         padding: 0.5rem 0;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--border-color);
     }
     
     .credentials-list li:before {
         content: "✓";
-        color: #27ae60;
+        color: var(--secondary-color);
         font-weight: bold;
         margin-right: 1rem;
+    }
+    
+    hr {
+        border: none;
+        height: 1px;
+        background-color: var(--border-color);
+        margin: 2rem 0;
+    }
+    
+    @media (max-width: 768px) {
+        .main-title {
+            font-size: 2rem;
+        }
+        
+        .main-subtitle {
+            font-size: 1rem;
+        }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -274,9 +331,7 @@ def show_method():
     with col1:
         st.markdown("""
         <div class="method-step">
-            <div style="display: flex; justify-content: center;">
-                <div style="width: 50px; height: 50px; background: #2a5298; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">1</div>
-            </div>
+            <div class="step-number">1</div>
             <h4>Pattern Analysis Session</h4>
             <p>Deep dive into your specific behavioral triggers, decision patterns, and unconscious responses. We map exactly where and how your performance gets hijacked.</p>
         </div>
@@ -285,9 +340,7 @@ def show_method():
     with col2:
         st.markdown("""
         <div class="method-step">
-            <div style="display: flex; justify-content: center;">
-                <div style="width: 50px; height: 50px; background: #2a5298; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">2</div>
-            </div>
+            <div class="step-number">2</div>
             <h4>Behavioral Reprogramming</h4>
             <p>Using advanced hypnotherapy + DBT techniques, we reprogram new neural pathways for peak performance responses. Install new automatic behaviors.</p>
         </div>
@@ -296,9 +349,7 @@ def show_method():
     with col3:
         st.markdown("""
         <div class="method-step">
-            <div style="display: flex; justify-content: center;">
-                <div style="width: 50px; height: 50px; background: #27ae60; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">3</div>
-            </div>
+            <div class="step-number" style="background-color: var(--secondary-color);">3</div>
             <h4>Reinforcement (If Needed)</h4>
             <p>Occasional tune-up sessions to strengthen new patterns. Most clients need only the initial 2 sessions for lasting change.</p>
         </div>
