@@ -12,239 +12,124 @@ st.set_page_config(
 
 # Custom CSS - Professional Executive Theme with Dark Mode Support
 st.markdown("""
-    <style>
-    :root {
-        --primary-color: #1a365d;
-        --primary-dark: #153e75;
-        --secondary-color: #047857;
-        --secondary-dark: #065f46;
-        --text-color: #1f2937;
-        --text-light: #6b7280;
-        --bg-color: #ffffff;
-        --card-bg: #f9fafb;
-        --border-color: #e5e7eb;
-    }
-    
-    [data-theme="dark"] {
-        --primary-color: #2c5282;
-        --primary-dark: #2b6cb0;
-        --secondary-color: #047857;
-        --secondary-dark: #065f46;
-        --text-color: #f3f4f6;
-        --text-light: #9ca3af;
-        --bg-color: #111827;
-        --card-bg: #1f2937;
-        --border-color: #374151;
-    }
-    
-    .stApp {
-        font-family: 'Inter', 'Helvetica', Arial, sans-serif;
-        line-height: 1.6;
-        color: var(--text-color);
-        background-color: var(--bg-color);
-    }
-    
-    .main-header {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-        color: white;
-        padding: 2rem;
-        border-radius: 10px;
-        text-align: center;
-        margin-bottom: 2rem;
-        border-bottom: 4px solid var(--secondary-color);
-    }
-    
-    .main-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.02em;
-    }
-    
-    .main-subtitle {
-        font-size: 1.2rem;
-        font-weight: 300;
-        margin-bottom: 1rem;
-        opacity: 0.9;
-    }
-    
-    .credentials {
-        font-size: 0.9rem;
-        opacity: 0.8;
-    }
-    
-    .problem-card {
-        background: var(--card-bg);
-        padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        border-left: 4px solid var(--secondary-color);
-        margin-bottom: 1rem;
-        height: 100%;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .problem-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-    }
-    
-    .problem-title {
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 0.5rem;
-    }
-    
-    .problem-description {
-        color: var(--text-light);
-        margin-bottom: 0.5rem;
-        font-size: 0.95rem;
-    }
-    
-    .problem-result {
-        font-weight: 600;
-        color: var(--secondary-color);
-        font-size: 0.9rem;
-    }
-    
-    .method-step {
-        background: var(--card-bg);
-        padding: 1.5rem;
-        border-radius: 10px;
-        text-align: center;
-        margin-bottom: 1rem;
-        border: 1px solid var(--border-color);
-        height: 100%;
-    }
-    
-    .step-number {
-        width: 50px;
-        height: 50px;
-        background: var(--primary-color);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 0 auto 1rem;
-    }
-    
-    .testimonial-card {
-        background: var(--card-bg);
-        padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        margin-bottom: 1rem;
-        border: 1px solid var(--border-color);
-    }
-    
-    .testimonial-author {
-        font-weight: 600;
-        color: var(--primary-color);
-        margin-top: 1rem;
-        font-style: normal;
-    }
-    
-    .cta-section {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-        color: white;
-        padding: 2rem;
-        border-radius: 10px;
-        text-align: center;
-        margin: 2rem 0;
-        border-top: 4px solid var(--secondary-color);
-    }
-    
-    .stButton>button {
-        background: var(--secondary-color);
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        border-radius: 5px;
-        transition: all 0.3s;
-    }
-    
-    .stButton>button:hover {
-        background: var(--secondary-dark);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    
-    .nav-button {
-        background: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 5px;
-        margin: 0 0.5rem;
-        transition: background-color 0.3s;
-    }
-    
-    .nav-button:hover {
-        background: var(--primary-dark);
-    }
-    
-    .section-title {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-bottom: 1.5rem;
-        text-align: center;
-        border-bottom: 2px solid var(--secondary-color);
-        padding-bottom: 0.5rem;
-    }
-    
-    .credentials-list {
-        list-style: none;
-        padding: 0;
-    }
-    
-    .credentials-list li {
-        padding: 0.5rem 0;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .credentials-list li:before {
-        content: "✓";
-        color: var(--secondary-color);
-        font-weight: bold;
-        margin-right: 1rem;
-    }
-    
-    hr {
-        border: none;
-        height: 1px;
-        background-color: var(--border-color);
-        margin: 2rem 0;
-    }
-    
-    .badge {
-        display: inline-block;
-        background-color: var(--secondary-color);
-        color: white;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin-right: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    @media (max-width: 768px) {
-        .main-title {
-            font-size: 2rem;
-        }
-        
-        .main-subtitle {
-            font-size: 1rem;
-        }
-    }
-    </style>
+<style>
+:root {
+    --primary-color: #1C1C1E;
+    --accent-color: #D4AF37;
+    --secondary-color: #3A3A3C;
+    --bg-color: #F4F4F6;
+    --card-bg: #FFFFFF;
+    --text-color: #1C1C1E;
+    --text-muted: #6E6E73;
+    --border-color: #E2E2E6;
+}
+
+[data-theme="dark"] {
+    --primary-color: #1C1C1E;
+    --accent-color: #F9C74F;
+    --secondary-color: #4D4D50;
+    --bg-color: #121212;
+    --card-bg: #1E1E1E;
+    --text-color: #FAFAFA;
+    --text-muted: #9A9AA1;
+    --border-color: #333333;
+}
+
+.stApp {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+}
+
+.main-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 4px solid var(--accent-color);
+}
+
+.problem-card, .method-step, .testimonial-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.problem-card:hover, .method-step:hover, .testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.problem-title, .section-title, .testimonial-author {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.problem-result {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.section-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.cta-section {
+    background: var(--primary-color);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    border-top: 4px solid var(--accent-color);
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.stButton>button {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 0.75rem 1.25rem;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.stButton>button:hover {
+    background-color: #C99F2E;
+    transform: translateY(-2px);
+}
+
+.badge {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin: 0.25rem;
+}
+
+.credentials, .problem-description, .problem-result {
+    color: var(--text-muted);
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 2rem 0;
+}
+</style>
+
 """, unsafe_allow_html=True)
 
 # Navigation
