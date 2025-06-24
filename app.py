@@ -146,7 +146,7 @@ def show_header():
         <div style="margin-top: 1rem;">
             <a href="https://calendly.com/titre/free-session" target="_blank">
                 <button style="background-color: var(--accent-color); color: var(--primary-color); padding: 0.75rem 1.5rem; border: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem;">
-                    🗕️ Book a Free 15-min Fit Call
+                    >> Book a Free 15-min Fit Call
                 </button>
             </a>
         </div>
@@ -159,13 +159,13 @@ def show_navigation():
     with col1:
         st.markdown("### **Neuroscience Performance Solutions**")
     with col2:
-        if st.button("Fixes", key="nav_services"):
+        if st.button("Solutions", key="nav_services"):
             st.session_state.page = "services"
     with col3:
         if st.button("Method", key="nav_method"):
             st.session_state.page = "method"
     with col4:
-        if st.button("About", key="nav_about"):
+        if st.button("About us", key="nav_about"):
             st.session_state.page = "about"
 
 # --- SERVICES ---
@@ -226,7 +226,7 @@ def show_services():
 
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("🗕️ Apply Now", key="cta_services"):
+        if st.button(">> Apply Now", key="cta_services"):
             webbrowser.open("https://calendly.com/titre/free-session")
 
 # --- METHOD ---
@@ -308,11 +308,11 @@ def show_about():
         **Performance Clinic (Bangkok HQ)**
         46/9 Soi Sukhumvit 49 — Thong Lor Area
 
-        **Clients:** Portfolio Managers · Hedge Fund Leaders · C-Suite Expats
+        **Clients:** Product Managers · Team Leaders · C-Suite 
 
         Languages spoken: English, French, Spanish, Italian
         """)
-        if st.button("🗕️ Apply Now (5 Clients/Month)", key="cta_about"):
+        if st.button(">> Apply Now (5 Clients/Month)", key="cta_about"):
             webbrowser.open("https://calendly.com/titre/free-session")
     with col2:
         try:
@@ -332,4 +332,4 @@ elif st.session_state.page == "about":
 
 # --- FOOTER ---
 st.markdown("---")
-st.markdown("*Neuroscience Performance Solutions | Elite Behavioral Reset for Asia’s Finance Sector*")
+st.markdown("*Neuroscience Performance Solutions | Elite Behavioral Reset | Cognitive Pattern Rewiring*")
