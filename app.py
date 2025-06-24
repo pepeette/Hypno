@@ -1,6 +1,5 @@
 import streamlit as st
 import webbrowser
-import streamlit.components.v1 as components
 
 # --- PAGE CONFIG ---
 st.set_page_config(
@@ -59,6 +58,29 @@ st.markdown("""
     color: var(--text-muted);
 }
 
+.nav-bar {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 2rem 0;
+    gap: 2rem;
+}
+
+.nav-button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    padding: 0.5rem 0;
+    cursor: pointer;
+}
+
+.nav-button-active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--accent-color);
+}
+
 .problem-card {
     background: var(--card-bg);
     padding: 1.5rem;
@@ -109,32 +131,12 @@ st.markdown("""
     background-color: #c7a133;
     transform: translateY(-2px);
 }
-
-.nav-tabs {
-    display: flex;
-    justify-content: center;
-    margin: 2rem 0 1rem;
-    border-bottom: 2px solid var(--border-color);
-}
-.nav-tab {
-    padding: 0.5rem 1.5rem;
-    margin: 0 1rem;
-    cursor: pointer;
-    font-weight: 600;
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s ease;
-    color: var(--text-muted);
-}
-.nav-tab-active {
-    border-color: var(--accent-color);
-    color: var(--primary-color);
-}
 </style>
 """, unsafe_allow_html=True)
 
 # --- SESSION STATE ---
-if 'page' not in st.session_state:
-    st.session_state.page = 'services'
+if "page" not in st.session_state:
+    st.session_state.page = "services"
 
 # --- HEADER ---
 st.markdown("""
@@ -155,39 +157,21 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- NAVIGATION ---
-nav_options = {
-    "🪢 Solutions": "services",
-    "🧬 Method": "method",
-    "👤 About": "about"
-}
+# --- NAVIGATION BAR ---
+st.markdown('<div class="nav-bar">', unsafe_allow_html=True)
+cols = st.columns(3)
+tabs = [("🪢 Solutions", "services"), ("🧬 Method", "method"), ("👤 About", "about")]
+for i, (label, page_name) in enumerate(tabs):
+    css_class = "nav-button-active" if st.session_state.page == page_name else "nav-button"
+    with cols[i]:
+        if st.button(f"{label}", key=page_name):
+            st.session_state.page = page_name
+        st.markdown(f'<div class="{css_class}">{label}</div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
-nav_html = '<div class="nav-tabs">'
-for label, key in nav_options.items():
-    active = "nav-tab-active" if st.session_state.page == key else ""
-    nav_html += f'<div class="nav-tab {active}" onclick="window.location.href=\'#{key}\'">{label}</div>'
-nav_html += '</div>'
-st.markdown(nav_html, unsafe_allow_html=True)
-
-# JS for interactivity
-components.html(f"""
-<script>
-const tabs = document.querySelectorAll('.nav-tab');
-tabs.forEach(tab => {{
-    tab.addEventListener('click', () => {{
-        const hash = tab.textContent.trim().split(" ")[1].toLowerCase();
-        window.parent.postMessage({{type: 'streamlit:setComponentValue', value: hash}}, '*');
-    }});
-}});
-</script>
-""", height=0)
-
-query_params = st.experimental_get_query_params()
-if "page" in query_params:
-    st.session_state.page = query_params["page"][0]
-
-# --- PAGES ---
+# --- CONTENT AREAS ---
 def show_services():
+    st.markdown('<div class="sub-section-title">What We Fix — Fast</div>', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     problems = [
         ("Freezing in Presentations or High-Stakes Moments", "Smart, capable professionals lose their voice or presence right when it matters — in boardrooms, on stage, or with clients.", "→ Rewire confidence and command the room in 2 neuroscience-based sessions"),
@@ -305,7 +289,7 @@ def show_about():
         except:
             st.info("Map placeholder")
 
-# --- MAIN RENDERING ---
+# --- MAIN CONTENT ---
 if st.session_state.page == "services":
     show_services()
 elif st.session_state.page == "method":
