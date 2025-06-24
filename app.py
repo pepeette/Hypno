@@ -69,7 +69,7 @@ st.markdown("""
     background-color: transparent;
     border: none;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-muted);
     border-bottom: 2px solid transparent;
     padding: 0.5rem 0;
