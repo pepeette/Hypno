@@ -165,7 +165,7 @@ col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
 with col1:
     st.markdown("### **Neuroscience Performance Solutions**")
 with col2:
-    if st.button("🔧 Solutions", key="nav_services"):
+    if st.button("🪢 Solutions", key="nav_services"):
         st.session_state.page = "services"
 with col3:
     if st.button("🧬 Method", key="nav_method"):
@@ -240,12 +240,72 @@ def show_method():
     with st.expander("Is it confidential?"):
         st.write("100%. Trusted by leaders across Asia. No client data is stored beyond legal minimums.")
 
+# ABOUT US
+def show_about():
+    st.markdown('<div class="section-title">Why Finance Leaders Trust This Method</div>', unsafe_allow_html=True)
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        try:
+            st.image("./img/ID.jpg", width=250, caption="Laetitia Sheppard")
+        except:
+            st.info("Image not found")
+    with col2:
+        st.markdown("""
+        **Experience Across Asia’s Financial Hubs**
+        - 13+ years on trading floors: Bloomberg, HSBC, CA Indosuez
+        - Managed $50M book, coached 48-person teams in 12 countries
+
+        **Credentials:**
+        - Certified Behavioral Performance Specialist & Hypnotherapy (UK, 2017)
+        - Certified Neuroscience Coach (Dialectical Behavioral Therapy, 2024)
+        - Fluent: English, French, Spanish, Italian
+        """)
+
+    st.markdown('<div class="section-title">Testimonials</div>', unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("""
+        <div class="testimonial-card">
+        \"From hesitating in meetings to leading decisively. My deal closures speak for themselves.\"
+        <br><strong>— Sarah M., Managing Director, Bangkok</strong>
+        </div>
+        """, unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+        <div class="testimonial-card">
+        \"2 sessions in, my sleep quality jumped and I started winning more board approvals.\"
+        <br><strong>— Marcus L., PE Partner, Singapore</strong>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("### Bangkok Clinic & Contact")
+    col1, col2 = st.columns([2,1])
+    with col1:
+        st.markdown("""
+        **Performance Clinic (Bangkok HQ)**
+        46/9 Soi Sukhumvit 49 — Thong Lor Area
+
+        **Clients:** Product Managers · Team Leaders · C-Suite 
+
+        Languages spoken: English, French, Spanish, Italian
+        """)
+        if st.button(">> Apply Now (5 Clients/Month)", key="cta_about"):
+            webbrowser.open("https://calendly.com/titre/free-session")
+    with col2:
+        try:
+            st.image("./img/Map.png", caption="Bangkok Khlong Toei District")
+        except:
+            st.info("Map placeholder")
+
+
 # ROUTING
 if st.session_state.page == "services":
     show_services()
 elif st.session_state.page == "method":
     show_method()
-# ... you can extend the "about" page as needed here
+elif st.session_state.page == "about":
+    show_about()
+
 
 # FOOTER
 st.markdown("---")
