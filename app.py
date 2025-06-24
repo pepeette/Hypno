@@ -12,124 +12,123 @@ st.set_page_config(
 
 # Custom CSS - Professional Executive Theme with Dark Mode Support
 st.markdown("""
-<style>
-:root {
-    --primary-color: #1C1C1E;
-    --accent-color: #D4AF37;
-    --secondary-color: #3A3A3C;
-    --bg-color: #F4F4F6;
-    --card-bg: #FFFFFF;
-    --text-color: #1C1C1E;
-    --text-muted: #6E6E73;
-    --border-color: #E2E2E6;
-}
-
-[data-theme="dark"] {
-    --primary-color: #1C1C1E;
-    --accent-color: #F9C74F;
-    --secondary-color: #4D4D50;
-    --bg-color: #121212;
-    --card-bg: #1E1E1E;
-    --text-color: #FAFAFA;
-    --text-muted: #9A9AA1;
-    --border-color: #333333;
-}
-
-.stApp {
-    font-family: 'Inter', sans-serif;
-    color: var(--text-color);
-    background-color: var(--bg-color);
-    line-height: 1.6;
-}
-
-.main-header {
-    background: var(--primary-color);
-    color: white;
-    padding: 2rem;
-    border-radius: 12px;
-    text-align: center;
-    margin-bottom: 2rem;
-    border-bottom: 4px solid var(--accent-color);
-}
-
-.problem-card, .method-step, .testimonial-card {
-    background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.problem-card:hover, .method-step:hover, .testimonial-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
-
-.problem-title, .section-title, .testimonial-author {
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
-.problem-result {
-    color: var(--accent-color);
-    font-weight: 600;
-}
-
-.section-title {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid var(--accent-color);
-    padding-bottom: 0.5rem;
-}
-
-.cta-section {
-    background: var(--primary-color);
-    color: white;
-    padding: 2rem;
-    border-radius: 12px;
-    border-top: 4px solid var(--accent-color);
-    text-align: center;
-    margin-top: 3rem;
-}
-
-.stButton>button {
-    background-color: var(--accent-color);
-    color: var(--primary-color);
-    border: none;
-    padding: 0.75rem 1.25rem;
-    font-weight: bold;
-    border-radius: 6px;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.stButton>button:hover {
-    background-color: #C99F2E;
-    transform: translateY(-2px);
-}
-
-.badge {
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 0.3rem 0.7rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    margin: 0.25rem;
-}
-
-.credentials, .problem-description, .problem-result {
-    color: var(--text-muted);
-}
-
-hr {
-    border: none;
-    height: 1px;
-    background-color: var(--border-color);
-    margin: 2rem 0;
-}
-</style>
-
+    <style>
+    :root {
+        --primary-color: #1C1C1E;
+        --accent-color: #D4AF37;
+        --secondary-color: #3A3A3C;
+        --bg-color: #F4F4F6;
+        --card-bg: #FFFFFF;
+        --text-color: #1C1C1E;
+        --text-muted: #6E6E73;
+        --border-color: #E2E2E6;
+    }
+    
+    [data-theme="dark"] {
+        --primary-color: #1C1C1E;
+        --accent-color: #F9C74F;
+        --secondary-color: #4D4D50;
+        --bg-color: #121212;
+        --card-bg: #1E1E1E;
+        --text-color: #FAFAFA;
+        --text-muted: #9A9AA1;
+        --border-color: #333333;
+    }
+    
+    .stApp {
+        font-family: 'Inter', sans-serif;
+        color: var(--text-color);
+        background-color: var(--bg-color);
+        line-height: 1.6;
+    }
+    
+    .main-header {
+        background: var(--primary-color);
+        color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 2rem;
+        border-bottom: 4px solid var(--accent-color);
+    }
+    
+    .problem-card, .method-step, .testimonial-card {
+        background: var(--card-bg);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .problem-card:hover, .method-step:hover, .testimonial-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    
+    .problem-title, .section-title, .testimonial-author {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .problem-result {
+        color: var(--accent-color);
+        font-weight: 600;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 0.5rem;
+    }
+    
+    .cta-section {
+        background: var(--primary-color);
+        color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        border-top: 4px solid var(--accent-color);
+        text-align: center;
+        margin-top: 3rem;
+    }
+    
+    .stButton>button {
+        background-color: var(--accent-color);
+        color: var(--primary-color);
+        border: none;
+        padding: 0.75rem 1.25rem;
+        font-weight: bold;
+        border-radius: 6px;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+    
+    .stButton>button:hover {
+        background-color: #C99F2E;
+        transform: translateY(-2px);
+    }
+    
+    .badge {
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 0.3rem 0.7rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        margin: 0.25rem;
+    }
+    
+    .credentials, .problem-description, .problem-result {
+        color: var(--text-muted);
+    }
+    
+    hr {
+        border: none;
+        height: 1px;
+        background-color: var(--border-color);
+        margin: 2rem 0;
+    }
+    </style>
 """, unsafe_allow_html=True)
 
 # Navigation
