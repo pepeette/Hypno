@@ -232,6 +232,7 @@ def show_method():
 
 
 def show_about():
+    st.markdown('<div class="sub-section-title">Your certified therapist</div>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2])
     with col1:
         try:
@@ -242,7 +243,7 @@ def show_about():
         st.markdown("""
         **Experience Across Asia’s Financial Hubs**
         - 13+ years on trading floors: Bloomberg, HSBC, CA Indosuez
-        - Managed $50M book, coached 48-person teams in 12 countries
+        - Managed $50M book, coached 48-person teams in 12 countries, cross led 2500 employee performance
 
         **Credentials:**
         - Certified Behavioral Performance Specialist & Hypnotherapy (UK, 2017)
@@ -266,8 +267,8 @@ def show_about():
         <br><strong>— Marcus L., PE Partner, Singapore</strong>
         </div>
         """, unsafe_allow_html=True)
-
-    st.markdown("### Bangkok Clinic & Contact")
+        
+    st.markdown('<div class="sub-section-title">Bangkok Clinic & Contact</div>', unsafe_allow_html=True)
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown("""
@@ -296,4 +297,4 @@ elif st.session_state.page == "about":
 
 # --- FOOTER ---
 st.markdown("---")
-st.markdown("*Neuroscience Performance Solutions | Elite Behavioral Reset | Cognitive Pattern Rewiring*")
+st.markdown("*Laetitia Sheppard | Neuroscience Performance Solutions | Elite Behavioral Reset | Cognitive Pattern Rewiring*")
