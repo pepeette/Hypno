@@ -128,12 +128,26 @@ if 'page' not in st.session_state:
 
 # --- HEADER ---
 def show_header():
-    st.markdown("""
-    <div class="hero-section">
-        <div class="hero-title">Override Mental Blocks in 2 Neuroscience Sessions</div>
-        <div class="hero-subtitle">Trusted by hedge fund managers, investment bankers, and C-suite expats in Asia.</div>
-    </div>
-    """, unsafe_allow_html=True)
+        st.markdown("""
+        <div class="main-header">
+            <div class="main-title">Rewire What’s Holding You Back — In 2 Sessions</div>
+            <div class="main-subtitle">
+                For ambitious professionals ready to break through anxiety, perfectionism, or authority blocks — fast.
+            </div>
+            <div class="credentials">
+                Laetitia Sheppard • 13+ Years Trading Floors • Certified Behavioral Performance Specialist
+            </div>
+            <br>
+            <div style="margin-top: 1rem;">
+                <a href="https://calendly.com/titre/free-session" target="_blank">
+                    <button style="background-color: var(--accent-color); color: var(--primary-color); padding: 0.75rem 1.5rem; border: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem;">
+                        📅 Book a Free 15-min Fit Call
+                    </button>
+                </a>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         if st.button("📅 Apply for Performance Audit", key="cta_header"):
@@ -156,7 +170,7 @@ def show_navigation():
 
 # --- SERVICES ---
 def show_services():
-    st.markdown('<div class="section-title">High-Stakes Performance Fixes</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">What We Fix — Fast</div>', unsafe_allow_html=True)
     st.markdown("""
     <div style="text-align: center; margin-bottom: 2rem;">
         <span class="badge">Bangkok</span>
@@ -169,42 +183,47 @@ def show_services():
     with col1:
         st.markdown("""
         <div class="problem-card">
-            <h4>Boardroom Freeze Elimination</h4>
-            <p>Override hesitation and speak with gravitas—even under C-suite pressure.</p>
-            <strong style="color: var(--accent-color);">→ Command authority in high-stakes meetings</strong>
+            <div class="problem-title">Freezing in Presentations or High-Stakes Moments</div>
+            <div class="problem-description">
+                Smart, capable professionals lose their voice or presence right when it matters — in boardrooms, on stage, or with clients.
+            </div>
+            <div class="problem-result">
+                → Rewire confidence and command the room in 2 neuroscience-based sessions
+            </div>
         </div>
         <div class="problem-card">
-            <h4>Strategic Delegation</h4>
-            <p>When performance drops due to micromanagement instincts.</p>
-            <strong style="color: var(--accent-color);">→ Reduce micromanagement by 60–80%</strong>
-        </div>
-        <div class="problem-card">
-            <h4>Jet Lag & Sleep Reboot</h4>
-            <p>Travel fatigue and racing thoughts disrupting sleep cycles?</p>
-            <strong style="color: var(--accent-color);">→ 90% faster sleep onset</strong>
+            <div class="problem-title">Perfectionism That Leads to Burnout</div>
+            <div class="problem-description">
+                You overwork, overcontrol, and can’t switch off. Your team feels it. So does your nervous system.
+            </div>
+            <div class="problem-result">
+                → Rewire for strategic focus — make high-impact decisions without the mental overload
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
-        st.markdown("""
-        <div class="problem-card">
-            <h4>Negotiation Pressure Control</h4>
-            <p>Manage emotional responses during critical conflict and deal situations.</p>
-            <strong style="color: var(--accent-color);">→ Stay strategically composed</strong>
-        </div>
-        <div class="problem-card">
-            <h4>Stress Resilience Protocol</h4>
-            <p>Break the stress-to-habit cycle under volatility or pressure.</p>
-            <strong style="color: var(--accent-color);">→ Replace destructive habits with high-performance states</strong>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="cta-section">
-        <h3>Only 5 Performance Audits Offered Per Month</h3>
-        <p>Apply today to reserve your confidential evaluation slot.</p>
+      st.markdown("""
+<div class="problem-card">
+    <div class="problem-title">Performance Anxiety & Imposter Syndrome</div>
+    <div class="problem-description">
+        You know your stuff, but anxiety strikes before meetings, keynotes, or career moves. Confidence feels manufactured.
     </div>
-    """, unsafe_allow_html=True)
+    <div class="problem-result">
+        → Rewire unconscious fear loops and install calm, grounded confidence
+    </div>
+</div>
+<div class="problem-card">
+    <div class="problem-title">Losing Emotional Control in Conflict</div>
+    <div class="problem-description">
+        Heated discussions, negotiations, or internal politics trigger reactions that cost you leadership capital.
+    </div>
+    <div class="problem-result">
+        → Rewire emotional reactivity and lead with composure under pressure
+    </div>
+</div>
+""", unsafe_allow_html=True)
+        
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         if st.button("📅 Apply Now", key="cta_services"):
