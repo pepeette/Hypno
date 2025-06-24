@@ -145,9 +145,6 @@ st.markdown("""
     <div class="main-subtitle">
         For ambitious professionals ready to break through anxiety, perfectionism, or authority blocks — fast.
     </div>
-    <div class="credentials">
-        Laetitia Sheppard • 13+ Years Trading Floors • Certified Behavioral Performance Specialist
-    </div>
     <br>
     <div style="margin-top: 1rem;">
         <a href="https://calendly.com/titre/free-session" target="_blank">
@@ -166,7 +163,7 @@ for i, (label, page_name) in enumerate(tabs):
     with cols[i]:
         if st.button(f"{label}", key=page_name):
             st.session_state.page = page_name
-        st.markdown(f'<div class="{css_class}">{label}</div>', unsafe_allow_html=True)
+        #st.markdown(f'<div class="{css_class}">{label}</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # --- CONTENT AREAS ---
