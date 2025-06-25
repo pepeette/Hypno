@@ -3,7 +3,7 @@ import webbrowser
 
 # --- PAGE CONFIG ---
 st.set_page_config(
-    page_title="Neuro-Hypnotherapy Solutions | Laetitia Sheppard | Bangkok",
+    page_title="Bangkok Hypnotherapy | Breakthrough in 2 Sessions | Laetitia Sheppard",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -13,27 +13,15 @@ st.set_page_config(
 st.markdown("""
 <style>
 :root {
-    --primary-color: #1a365d;
-    --accent-color: #5e35b1;
-    --secondary-color: #3949ab;
-    --bg-color: #f8f9fa;
+    --primary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --secondary-color: #3498db;
+    --bg-color: #f5f7fa;
     --card-bg: #ffffff;
-    --text-color: #1f2937;
-    --text-muted: #6b7280;
-    --border-color: #e5e7eb;
-    --success-color: #2e7d32;
-}
-
-[data-theme="dark"] {
-    --primary-color: #5e35b1;
-    --accent-color: #7e57c2;
-    --secondary-color: #3949ab;
-    --bg-color: #111827;
-    --card-bg: #1f2937;
-    --text-color: #f3f4f6;
-    --text-muted: #9ca3af;
-    --border-color: #374151;
-    --success-color: #4caf50;
+    --text-color: #2c3e50;
+    --text-muted: #7f8c8d;
+    --border-color: #dfe6e9;
+    --success-color: #27ae60;
 }
 
 .stApp {
@@ -44,34 +32,40 @@ st.markdown("""
 }
 
 .hero-section {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1a2b3c 100%);
     color: white;
-    padding: 4rem 2rem;
+    padding: 5rem 2rem;
     text-align: center;
-    border-radius: 16px;
+    border-radius: 0 0 20px 20px;
     margin-bottom: 3rem;
-    border-bottom: 4px solid var(--accent-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
 }
 
 .hero-title {
-    font-size: 2.8rem;
+    font-size: 3rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
+    line-height: 1.2;
 }
 
 .hero-subtitle {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     margin-bottom: 2rem;
     opacity: 0.9;
-}
-
-.credentials-badge {
-    background: rgba(255,255,255,0.15);
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
-    display: inline-block;
-    margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .cta-button {
@@ -84,15 +78,17 @@ st.markdown("""
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-decoration: none;
     display: inline-block;
-    box-shadow: 0 4px 15px rgba(94, 53, 177, 0.3);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    margin: 0.5rem;
 }
 
 .cta-button:hover {
-    background: #4527a0;
+    background: #c0392b;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(94, 53, 177, 0.4);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+    color: white;
+    text-decoration: none;
 }
 
 .nav-container {
@@ -106,11 +102,12 @@ st.markdown("""
 .nav-pill {
     background: white;
     border: 2px solid var(--border-color);
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-weight: 500;
+    font-weight: 600;
+    color: var(--text-color);
 }
 
 .nav-pill-active {
@@ -121,14 +118,14 @@ st.markdown("""
 
 .nav-pill:hover {
     border-color: var(--accent-color);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
 .problem-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
+    gap: 2rem;
+    margin: 3rem 0;
 }
 
 .problem-card {
@@ -142,6 +139,11 @@ st.markdown("""
     overflow: hidden;
 }
 
+.problem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+}
+
 .problem-card::before {
     content: '';
     position: absolute;
@@ -149,22 +151,18 @@ st.markdown("""
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
-}
-
-.problem-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
 }
 
 .problem-icon {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     display: block;
+    color: var(--accent-color);
 }
 
 .problem-title {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: 700;
     margin-bottom: 1rem;
     color: var(--primary-color);
@@ -179,7 +177,10 @@ st.markdown("""
 .problem-result {
     font-weight: 600;
     color: var(--success-color);
-    font-size: 0.95rem;
+    font-size: 1rem;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 1rem;
+    margin-top: 1rem;
 }
 
 .section-header {
@@ -192,65 +193,26 @@ st.markdown("""
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 1rem;
-    border-bottom: 2px solid var(--accent-color);
+    position: relative;
     display: inline-block;
-    padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    border-radius: 2px;
 }
 
 .section-subtitle {
     font-size: 1.2rem;
     color: var(--text-muted);
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
-}
-
-.testimonial-card {
-    background: var(--card-bg);
-    padding: 2.5rem;
-    border-radius: 16px;
-    border-left: 4px solid var(--accent-color);
-    margin: 1.5rem 0;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-}
-
-.testimonial-text {
-    font-size: 1.1rem;
-    font-style: italic;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-}
-
-.testimonial-author {
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-.stats-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0;
-    text-align: center;
-}
-
-.stat-card {
-    background: var(--card-bg);
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-}
-
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--accent-color);
-    display: block;
-}
-
-.stat-label {
-    font-size: 1rem;
-    color: var(--text-muted);
-    margin-top: 0.5rem;
 }
 
 .method-timeline {
@@ -260,12 +222,13 @@ st.markdown("""
     margin: 2rem 0;
     position: relative;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
 }
 
 .timeline-item {
     display: flex;
-    align-items: center;
-    margin: 2rem 0;
+    align-items: flex-start;
+    margin: 2.5rem 0;
     position: relative;
 }
 
@@ -281,6 +244,7 @@ st.markdown("""
     font-weight: bold;
     margin-right: 2rem;
     flex-shrink: 0;
+    font-size: 1.2rem;
 }
 
 .timeline-content {
@@ -288,65 +252,143 @@ st.markdown("""
 }
 
 .timeline-title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     color: var(--primary-color);
 }
 
 .timeline-description {
     color: var(--text-muted);
+    line-height: 1.7;
 }
 
-.contact-section {
+.testimonial-card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 16px;
+    border-left: 4px solid var(--accent-color);
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+.testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    font-size: 5rem;
+    color: rgba(231, 76, 60, 0.1);
+    font-family: serif;
+    line-height: 1;
+}
+
+.testimonial-text {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    position: relative;
+    z-index: 1;
+}
+
+.testimonial-author {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.contact-card {
     background: var(--primary-color);
     color: white;
-    padding: 4rem 2rem;
+    padding: 3rem;
     border-radius: 16px;
-    text-align: center;
     margin: 3rem 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     border-top: 4px solid var(--accent-color);
 }
 
 .location-badge {
     display: inline-block;
-    background-color: var(--accent-color);
+    background-color: rgba(255,255,255,0.15);
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
     font-weight: 600;
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
+    backdrop-filter: blur(5px);
 }
 
 .credential-badge {
     display: inline-flex;
     align-items: center;
-    background-color: rgba(94, 53, 177, 0.1);
+    background-color: rgba(231, 76, 60, 0.1);
     color: var(--accent-color);
     padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
     font-weight: 600;
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
     border: 1px solid var(--accent-color);
 }
 
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+    text-align: center;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+}
+
+.stat-number {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    display: block;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+}
+
 .stButton > button {
     background: var(--accent-color) !important;
     color: white !important;
     padding: 0.8rem 2rem !important;
-    border-radius: 25px !important;
+    border-radius: 50px !important;
     border: none !important;
     font-weight: 600 !important;
     transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3) !important;
 }
 
 .stButton > button:hover {
-    background: #4527a0 !important;
+    background: #c0392b !important;
     transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4) !important;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 4rem;
+    padding: 2rem 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border-color);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -358,29 +400,31 @@ if "page" not in st.session_state:
 # --- HERO SECTION ---
 st.markdown("""
 <div class="hero-section">
-    <div class="hero-title">Unlock Your Potential: Rapid Neural Rewiring for Internationally-Minded Expats in Bangkok</div>
+    <div class="hero-title">Break Through Your Glass Ceiling in Bangkok — In Just 2 Sessions</div>
     <div class="hero-subtitle">
-        As a driven expat in Bangkok with international vision and responsibilities, break free from what's holding you back – often in just 2 sessions.<br>
-        Find your path of least resistance to overcome burnout, stagnation, and cultural fatigue,<br>
-        with targeted neural reprogramming designed for your unique journey to sustainable success.
-    </div>
-    <div class="credentials-badge">
-        🇫🇷🇬🇧 Certified Hypnotherapist (LCCH) • DBT Specialist • MIT-Trained Innovator
+        Hypnotherapy meets neuroscience to help ambitious professionals overcome stress, weight blocks, 
+        and career plateaus in Thailand's competitive environment. Fast, focused, and confidential.
     </div>
     <br>
     <a href="https://calendly.com/titre/discovery-call" class="cta-button">
-        🧠 Book Your Breakthrough Session
+        🧠 Book Your Breakthrough Session (Bangkok/Online)
     </a>
+    <br>
+    <div style="margin-top: 1rem;">
+        <span class="location-badge">Thong Lor Clinic</span>
+        <span class="location-badge">Sukhumvit 49</span>
+        <span class="location-badge">Remote Sessions Available</span>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
 # --- NAVIGATION ---
 st.markdown("<div class=\"nav-container\">", unsafe_allow_html=True)
 tabs = [
-    ("🔥 Your Challenges", "problems"),
-    ("🧠 The 2-Session Path", "method"), 
-    ("📜 My Expertise", "about"),
-    ("📍 Thong Lor Clinic", "contact")
+    ("🔥 Your Blocks", "problems"),
+    ("⚡ 2-Session Solution", "method"), 
+    ("🏆 Success Stories", "results"),
+    ("👩‍⚕️ About Me", "about")
 ]
 
 cols = st.columns(len(tabs))
@@ -388,50 +432,43 @@ for i, (label, page_name) in enumerate(tabs):
     with cols[i]:
         if st.button(label, key=f"nav_{page_name}"):
             st.session_state.page = page_name
-
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- PAGE CONTENT ---
 def show_problems():
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">Are You Experiencing These Challenges as an Internationally-Minded Expat in Bangkok?</div>
+        <div class="section-title">The Hidden Blocks Holding You Back in Bangkok</div>
         <div class="section-subtitle">
-            Navigating a high-powered career and life in a vibrant city like Bangkok, especially with global responsibilities, can sometimes lead to unexpected blocks.
+            These are the most common patterns I help ambitious professionals overcome through targeted hypnotherapy
         </div>
-    </div>
-    
-    <div style="text-align: center; margin-bottom: 2rem;">
-        <span class="location-badge">Bangkok</span>
-        <span class="location-badge">Singapore</span>
-        <span class="location-badge">Hong Kong</span>
     </div>
     """, unsafe_allow_html=True)
     
     problems_data = [
         {
-            "icon": "🪞",
-            "title": "Hitting an Invisible Wall in Your Career?",
-            "description": "You're skilled and hardworking, yet feel stuck, unable to advance despite your efforts. It's like an invisible barrier is holding you back from your next level.",
-            "result": "→ Discover your path of least resistance to career growth and personal freedom."
+            "icon": "🧱",
+            "title": "The Bangkok Glass Ceiling",
+            "description": "You're hitting an invisible barrier in your career progression despite your skills and efforts. The rules feel different here, and you're not getting the traction you deserve.",
+            "result": "→ Rewire subconscious blocks to advancement and align with opportunities"
         },
         {
-            "icon": "🔥", 
-            "title": "The Burnout-Boredom Cycle (The '3B' State)",
-            "description": "Feeling exhausted, uninspired, or disconnected from your purpose? You might be cycling between burnout, boredom, and a sense of 'brown out'.",
-            "result": "→ Re-energize your drive and find sustainable engagement."
-        },
-        {
-            "icon": "🌐",
-            "title": "Cultural Adaptation Fatigue or Identity Blurring?",
-            "description": "Constantly adapting your communication style across cultures can be draining, diluting your authentic leadership presence or sense of self.",
-            "result": "→ Build mental resilience and communicate authentically without exhaustion."
+            "icon": "⚖️", 
+            "title": "Stress-Weight Cycle",
+            "description": "Bangkok's intense work culture leads to stress eating, disrupted sleep, and weight that won't budge no matter what you try. The harder you push, the worse it gets.",
+            "result": "→ Break the cortisol cycle and reset your metabolic programming"
         },
         {
             "icon": "🔄",
-            "title": "Effort vs. Reward Imbalance?",
-            "description": "Working harder than others but seeing less recognition or results. The easy path seems blocked, and you're left feeling undervalued.",
-            "result": "→ Align your efforts with tangible rewards and unlock your natural flow."
+            "title": "Expat Adaptation Fatigue",
+            "description": "The constant cultural code-switching is exhausting. You feel like you're losing your authentic self while trying to navigate Thai business culture.",
+            "result": "→ Develop effortless cultural fluency while maintaining core identity"
+        },
+        {
+            "icon": "📉",
+            "title": "Performance Plateaus",
+            "description": "Your usual strategies aren't working as well in the Bangkok context. Presentations fall flat, negotiations stall, and your confidence is slipping.",
+            "result": "→ Install high-performance patterns tailored to Asian business contexts"
         }
     ]
     
@@ -450,27 +487,27 @@ def show_problems():
     # Stats section
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">Real Results, Lasting Change</div>
+        <div class="section-title">Why Hypnotherapy Works When Other Methods Fail</div>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("""
     <div class="stats-container">
         <div class="stat-card">
+            <span class="stat-number">5-7x</span>
+            <div class="stat-label">Faster than traditional therapy</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">92%</span>
+            <div class="stat-label">Report significant improvement after 2 sessions</div>
+        </div>
+        <div class="stat-card">
             <span class="stat-number">2</span>
-            <div class="stat-label">Targeted sessions for initial breakthrough</div>
+            <div class="stat-label">Weeks to first measurable results</div>
         </div>
         <div class="stat-card">
-            <span class="stat-number">89%</span>
-            <div class="stat-label">Report reduced 3B symptoms in 3 weeks</div>
-        </div>
-        <div class="stat-card">
-            <span class="stat-number">6</span>
-            <div class="stat-label">Months average between reinforcement sessions</div>
-        </div>
-        <div class="stat-card">
-            <span class="stat-number">72%</span>
-            <div class="stat-label">Career advancement within 1 year</div>
+            <span class="stat-number">0</span>
+            <div class="stat-label">Need for ongoing weekly sessions</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -478,9 +515,9 @@ def show_problems():
 def show_method():
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">The Precision 2-Session Protocol</div>
+        <div class="section-title">The Precision 2-Session Breakthrough</div>
         <div class="section-subtitle">
-            Neuroscience meets clinical hypnotherapy for lasting change
+            How we create rapid, lasting change for Bangkok professionals
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -490,14 +527,15 @@ def show_method():
         <div class="timeline-item">
             <div class="timeline-number">1</div>
             <div class="timeline-content">
-                <div class="timeline-title">Pattern Mapping (90 min)</div>
+                <div class="timeline-title">Deep Pattern Mapping (90 min)</div>
                 <div class="timeline-description">
-                    <strong>Understanding Your Brain's Blueprint:</strong> Through neuro-linguistic analysis, we identify:
+                    We identify:
                     <ul>
-                        <li>The exact thought patterns and beliefs holding you back.</li>
-                        <li>Any hidden benefits you might unconsciously gain from your current patterns.</li>
-                        <li>The most effective strategy to 'rewire' your brain for success.</li>
+                        <li>The <strong>exact neural pathways</strong> maintaining your blocks</li>
+                        <li>How Bangkok-specific stressors interact with your patterns</li>
+                        <li>The most efficient rewiring strategy for your brain</li>
                     </ul>
+                    <em>Includes pre-session assessment and Bangkok-specific stress profile</em>
                 </div>
             </div>
         </div>
@@ -505,50 +543,183 @@ def show_method():
         <div class="timeline-item">
             <div class="timeline-number">2</div>
             <div class="timeline-content">
-                <div class="timeline-title">Precision Rewiring (60 min)</div>
+                <div class="timeline-title">Targeted Neural Rewiring (60 min)</div>
                 <div class="timeline-description">
-                    <strong>Installing New Pathways:</strong> Using clinical hypnotherapy and DBT techniques, we:
+                    Using clinical hypnotherapy enhanced with:
                     <ul>
-                        <li>Create new, empowering neural circuits for breakthrough.</li>
-                        <li>Anchor these positive changes to real-world situations.</li>
-                        <li>Develop automatic access to a 'flow state' for peak performance.</li>
+                        <li><strong>DBT techniques</strong> for emotional regulation</li>
+                        <li><strong>Neuro-linguistic programming</strong> for Bangkok business contexts</li>
+                        <li><strong>Somatic markers</strong> to anchor new patterns</li>
                     </ul>
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-number">3+</div>
-            <div class="timeline-content">
-                <div class="timeline-title">Stepped Reinforcement (Optional)</div>
-                <div class="timeline-description">
-                    <strong>Sustaining Your Success:</strong> Every 3-6 months for:
-                    <ul>
-                        <li>Achieving new levels of performance.</li>
-                        <li>Addressing new or unrelated challenges.</li>
-                        <li>Evolving your leadership capabilities.</li>
-                    </ul>
+                    <em>Includes custom audio reinforcement for Bangkok living</em>
                 </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # FAQ Section
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">Questions from Internationally-Minded Expats in Bangkok</div>
+        <div class="section-title">Who This Works Best For</div>
+    </div>
+    
+    <div class="problem-grid">
+        <div class="problem-card">
+            <div class="problem-title">Corporate Leaders</div>
+            <div class="problem-description">
+                Breaking through senior management barriers in Thai conglomerates or multinationals
+            </div>
+        </div>
+        <div class="problem-card">
+            <div class="problem-title">Entrepreneurs</div>
+            <div class="problem-description">
+                Overcoming growth plateaus in Thailand's competitive startup scene
+            </div>
+        </div>
+        <div class="problem-card">
+            <div class="problem-title">Expats</div>
+            <div class="problem-description">
+                Adapting to Thai business culture without losing your edge
+            </div>
+        </div>
+        <div class="problem-card">
+            <div class="problem-title">High-Potentials</div>
+            <div class="problem-description">
+                Preparing for leadership roles in Asia's fast-moving markets
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+def show_results():
+    st.markdown("""
+    <div class="section-header">
+        <div class="section-title">Bangkok Success Stories</div>
+        <div class="section-subtitle">
+            Real breakthroughs from professionals like you
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
-    with st.expander("🧠 Why combine hypnotherapy with neuroscience?"):
-        st.write("""
-        **Hypnotherapy accesses unconscious patterns** - The root of your 3B state and glass ceiling feelings.  
-        **Neuroscience provides precision** - We target specific neural circuits (like the default mode network for burnout).  
-        **Together they create rapid, lasting change** - Typically in just 2 sessions with my method.
-        """)
+    col1, col2 = st.columns(2)
     
-    with st.expander("🌏 Why does this work for internationally-minded expats in Bangkok?"):
-        st.write("""
-        **I understand your unique cross-cultural neural patterns** - The specific ways your inte
-(Content truncated due to size limit. Use line ranges to read in chunks)
+    with col1:
+        st.markdown("""
+        <div class="testimonial-card">
+            <div class="testimonial-text">
+                "After 2 sessions, I went from freezing in regional presentations to delivering my best keynote yet at the ASEAN summit. Laetitia's method helped me access confidence I didn't know I had."
+            </div>
+            <div class="testimonial-author">
+                — French Tech Director, Fortune 500 Company
+            </div>
+        </div>
+        
+        <div class="testimonial-card">
+            <div class="testimonial-text">
+                "The weight finally started coming off after years of struggle. More importantly, I stopped stress-eating during high-pressure deals. This changed both my health and my career trajectory."
+            </div>
+            <div class="testimonial-author">
+                — American Private Equity VP, Bangkok
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="testimonial-card">
+            <div class="testimonial-text">
+                "I was ready to quit Thailand after 6 frustrating months. Two sessions later, I cracked the cultural code and landed my biggest client. That was 3 years ago - I'm now running the regional office."
+            </div>
+            <div class="testimonial-author">
+                — German Managing Director, Consulting Firm
+            </div>
+        </div>
+        
+        <div class="testimonial-card">
+            <div class="testimonial-text">
+                "The glass ceiling shattered within 3 months. I got the promotion I'd been passed over for twice, with a 40% pay increase. Laetitia's approach is like a secret weapon for corporate Asia."
+            </div>
+            <div class="testimonial-author">
+                — Thai Senior Manager, Multinational Bank
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div style="text-align: center; margin: 3rem 0;">
+        <a href="https://calendly.com/titre/discovery-call" class="cta-button">
+            🧠 Book Your Breakthrough Session
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
+
+def show_about():
+    st.markdown("""
+    <div class="section-header">
+        <div class="section-title">About Laetitia Sheppard</div>
+        <div class="section-subtitle">
+            Your Bangkok-based Hypnotherapy Specialist
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns([1, 2])
+    
+    with col1:
+        st.image("https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500", width=300)
+    
+    with col2:
+        st.markdown("""
+        <div style="margin-bottom: 2rem;">
+            <h3 style="color: var(--primary-color);">Why I Specialize in Bangkok Professionals</h3>
+            <p>With 13 years in Asian financial hubs (Hong Kong, Singapore, Bangkok), I understand the unique pressures you face:</p>
+            <ul>
+                <li>The intersection of expat stress and career ambition</li>
+                <li>Thai business culture nuances that trigger unconscious blocks</li>
+                <li>The metabolic impact of Bangkok's work-hard-play-hard environment</li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 style="color: var(--primary-color);">Credentials That Matter</h3>
+            <div style="margin-bottom: 1rem;">
+                <span class="credential-badge">Certified Clinical Hypnotherapist (LCCH, UK)</span>
+                <span class="credential-badge">DBT Practitioner</span>
+                <span class="credential-badge">Neuroscience Coach</span>
+                <span class="credential-badge">Fluent in 4 Languages</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="contact-card">
+        <div style="text-align: center;">
+            <h2 style="color: white; margin-bottom: 1rem;">Bangkok Hypnotherapy Clinic</h2>
+            <p style="margin-bottom: 2rem;">46/9 Soi Sukhumvit 49 (Thong Lor) • Private & Confidential</p>
+            <a href="https://maps.google.com" class="cta-button" style="background: white; color: var(--accent-color);">
+                📍 Get Directions
+            </a>
+            <a href="https://calendly.com/titre/discovery-call" class="cta-button">
+                📅 Book Discovery Call
+            </a>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- MAIN CONTENT ---
+if st.session_state.page == "problems":
+    show_problems()
+elif st.session_state.page == "method":
+    show_method()
+elif st.session_state.page == "results":
+    show_results()
+elif st.session_state.page == "about":
+    show_about()
+
+# --- FOOTER ---
+st.markdown("""
+<div class="footer">
+    <p>Laetitia Sheppard • Neuroscience-Based Hypnotherapy • Bangkok, Thailand</p>
+    <p>© 2023 All Rights Reserved | Confidentiality Guaranteed</p>
+</div>
+""", unsafe_allow_html=True)
