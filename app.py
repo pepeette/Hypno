@@ -358,11 +358,11 @@ if "page" not in st.session_state:
 # --- HERO SECTION ---
 st.markdown("""
 <div class="hero-section">
-    <div class="hero-title">Unlock Your Potential: Rapid Neural Rewiring</div>
+    <div class="hero-title">Unlock Your Potential: Rapid Neural Rewiring for Internationally-Minded Expats in Bangkok</div>
     <div class="hero-subtitle">
-        Break free from what's holding you back – often in just 2 sessions.<br>
+        As a driven expat in Bangkok with international vision and responsibilities, break free from what's holding you back – often in just 2 sessions.<br>
         Find your path of least resistance to overcome burnout, stagnation, and cultural fatigue,<br>
-        with targeted neural reprogramming for ambitious global professionals.
+        with targeted neural reprogramming designed for your unique journey to sustainable success.
     </div>
     <div class="credentials-badge">
         🇫🇷🇬🇧 Certified Hypnotherapist (LCCH) • DBT Specialist • MIT-Trained Innovator
@@ -375,7 +375,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- NAVIGATION ---
-st.markdown('<div class="nav-container">', unsafe_allow_html=True)
+st.markdown("<div class=\"nav-container\">", unsafe_allow_html=True)
 tabs = [
     ("🔥 Your Challenges", "problems"),
     ("🧠 The 2-Session Path", "method"), 
@@ -389,15 +389,15 @@ for i, (label, page_name) in enumerate(tabs):
         if st.button(label, key=f"nav_{page_name}"):
             st.session_state.page = page_name
 
-st.markdown('</div>', unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
 
 # --- PAGE CONTENT ---
 def show_problems():
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">Are You Experiencing These Challenges?</div>
+        <div class="section-title">Are You Experiencing These Challenges as an Internationally-Minded Expat in Bangkok?</div>
         <div class="section-subtitle">
-            For global professionals, your unique journey can sometimes lead to unexpected blocks.
+            Navigating a high-powered career and life in a vibrant city like Bangkok, especially with global responsibilities, can sometimes lead to unexpected blocks.
         </div>
     </div>
     
@@ -411,8 +411,8 @@ def show_problems():
     problems_data = [
         {
             "icon": "🪞",
-            "title": "Hitting an Invisible Wall?",
-            "description": "You're skilled and hardworking, yet feel stuck, unable to advance despite your efforts. It's like an invisible barrier is holding you back.",
+            "title": "Hitting an Invisible Wall in Your Career?",
+            "description": "You're skilled and hardworking, yet feel stuck, unable to advance despite your efforts. It's like an invisible barrier is holding you back from your next level.",
             "result": "→ Discover your path of least resistance to career growth and personal freedom."
         },
         {
@@ -423,8 +423,8 @@ def show_problems():
         },
         {
             "icon": "🌐",
-            "title": "Cultural Fatigue?",
-            "description": "Constantly adapting your communication style across cultures can be draining, diluting your authentic leadership presence.",
+            "title": "Cultural Adaptation Fatigue or Identity Blurring?",
+            "description": "Constantly adapting your communication style across cultures can be draining, diluting your authentic leadership presence or sense of self.",
             "result": "→ Build mental resilience and communicate authentically without exhaustion."
         },
         {
@@ -435,7 +435,7 @@ def show_problems():
         }
     ]
     
-    st.markdown('<div class="problem-grid">', unsafe_allow_html=True)
+    st.markdown("<div class=\"problem-grid\">", unsafe_allow_html=True)
     for problem in problems_data:
         st.markdown(f"""
         <div class="problem-card">
@@ -445,7 +445,7 @@ def show_problems():
             <div class="problem-result">{problem['result']}</div>
         </div>
         """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Stats section
     st.markdown("""
@@ -537,7 +537,7 @@ def show_method():
     # FAQ Section
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">Questions from Global Professionals</div>
+        <div class="section-title">Questions from Internationally-Minded Expats in Bangkok</div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -548,180 +548,7 @@ def show_method():
         **Together they create rapid, lasting change** - Typically in just 2 sessions with my method.
         """)
     
-    with st.expander("🌏 Why does this work for third culture professionals?"):
+    with st.expander("🌏 Why does this work for internationally-minded expats in Bangkok?"):
         st.write("""
-        **I specialize in cross-cultural neural patterns** - The unique ways global mindsets can create:
-        - Hidden self-sabotage programs  
-        - Cultural value conflicts  
-        - Mismatched reward systems  
-        
-        **My clients include:**
-        - Corporate leaders feeling "stuck" abroad  
-        - Entrepreneurs with global teams  
-        - Professionals navigating hybrid cultures  
-        """)
-    
-    with st.expander("⏳ What's the maintenance schedule?"):
-        st.write("""
-        **Initial 2-session protocol** - Addresses your primary challenge  
-        **Optional reinforcement every 3-6 months** - For:
-        - New career levels  
-        - Different challenge areas  
-        - Leadership evolution  
-        
-        **72% of clients return** for unrelated issues after initial success.
-        """)
-
-def show_about():
-    st.markdown("""
-    <div class="section-header">
-        <div class="section-title">My Expertise for Global Professionals</div>
-        <div class="section-subtitle">
-            Blending clinical expertise with corporate experience
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    col1, col2 = st.columns([1, 2])
-    
-    with col1:
-        try:
-            st.image("./img/ID.jpg", width=300, caption="Laetitia Sheppard | Bangkok")
-        except:
-            st.info("📸 Professional headshot placeholder")
-    
-    with col2:
-        st.markdown("""
-        ### Clinical Credentials
-        
-        <div style="margin-bottom: 1rem;">
-            <span class="credential-badge">🎓 Cognitive Behavioral Hypnotherapy (LCCH, 2017)</span>
-            <span class="credential-badge">🧠 DBT Certified (2024)</span>
-            <span class="credential-badge">💡 MIT Innovation & Design Thinking (2016)</span>
-        </div>
-        
-        **13 years in financial markets** gave me firsthand experience with:
-        - Cross-cultural leadership challenges  
-        - High-performance burnout cycles  
-        - The glass ceiling phenomenon  
-        
-        **Languages:** English (native), French (native), Spanish, Italian  
-        """)
-    
-    # Testimonials
-    st.markdown("""
-    <div class="section-header">
-        <div class="section-title">What Clients Say</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    testimonials = [
-        {
-            "text": "After years of feeling stuck despite stellar performance, two sessions rewired my self-presentation. I received a promotion I'd been passed over for three times.",
-            "author": "— Regional Director, Tech Firm (French/American in Bangkok)"
-        },
-        {
-            "text": "The cultural code-switching fatigue vanished. I now lead with authentic presence whether in Tokyo, London, or Singapore.",  
-            "author": "— Investment Banker (Japanese/British)"
-        },
-        {
-            "text": "From chronic burnout to sustainable high performance. My productivity increased while working 20% fewer hours.",
-            "author": "— Startup Founder (Indian/Australian)"
-        }
-    ]
-    
-    for testimonial in testimonials:
-        st.markdown(f"""
-        <div class="testimonial-card">
-            <div class="testimonial-text">"{testimonial['text']}"</div>
-            <div class="testimonial-author">{testimonial['author']}</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-def show_contact():
-    st.markdown("""
-    <div class="section-header">
-        <div class="section-title">Thong Lor Neuro-Clinic</div>
-        <div class="section-subtitle">
-            Designed for discretion and focus
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        st.markdown("""
-        ### 📍 **Wireless Road Executive Suite**
-        46/9 Soi Sukhumvit 49  
-        Bangkok 10110  
-        
-        **For Global Professionals:**  
-        - Soundproofed session rooms  
-        - Discreet entrance/exit  
-        - International charging stations  
-        - Multilingual support staff  
-        
-        ### 🕒 **Session Times**  
-        **Early/Late for Busy Schedules:**  
-        - 7-9 AM before work  
-        - 6-8 PM after hours  
-        - Weekend intensive slots  
-        
-        ### 🌐 **Cultural Specialization**  
-        - Third culture professionals  
-        - Expat leaders  
-        - Global hybrid teams  
-        """)
-        
-        st.markdown("""
-        <div class="contact-section">
-            <h3>Ready for Your Breakthrough?</h3>
-            <p>Currently accepting 8 new clients monthly</p>
-            <br>
-            <a href="https://calendly.com/titre/discovery-call" class="cta-button">
-                🧠 Book Your Neural Audit
-            </a>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        try:
-            st.image("./img/Map.png", caption="Thong Lor Global Business District")
-        except:
-            st.info("🗺️ Map placeholder - Wireless Road area")
-        
-        st.markdown("""
-        ### 🎯 **Ideal Clients**  
-        
-        **Experiencing:**  
-        - The 3B cycle (burned, bored, brown out)  
-        - Glass ceiling frustration  
-        - Cultural value conflicts at work  
-        
-        **Typically:**  
-        - 35-55 year old professionals  
-        - Earning $150K+ annually  
-        - Managing global teams/projects  
-        - Multilingual and multicultural  
-        """)
-
-# --- RENDER CURRENT PAGE ---
-if st.session_state.page == "problems":
-    show_problems()
-elif st.session_state.page == "method":
-    show_method()
-elif st.session_state.page == "about":
-    show_about()
-elif st.session_state.page == "contact":
-    show_contact()
-
-# --- FOOTER ---
-st.markdown("---")
-st.markdown("""
-<div style='text-align: center; color: var(--text-muted); padding: 2rem;'>
-    <strong>Neuro-Hypnotherapy Solutions</strong> | Laetitia Sheppard | Bangkok<br>
-    For third culture professionals breaking through glass ceilings
-</div>
-""", unsafe_allow_html=True)
-
+        **I understand your unique cross-cultural neural patterns** - The specific ways your inte
+(Content truncated due to size limit. Use line ranges to read in chunks)
