@@ -3,7 +3,7 @@ import webbrowser
 
 # --- PAGE CONFIG ---
 st.set_page_config(
-    page_title="Bangkok Hypnotherapy | Breakthrough in 2 Sessions | Laetitia Sheppard",
+    page_title="Neuroscience Hypnotherapy | Laetitia Sheppard",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -53,7 +53,7 @@ st.markdown("""
 }
 
 .hero-title {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
     line-height: 1.2;
@@ -189,7 +189,7 @@ st.markdown("""
 }
 
 .section-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 1rem;
@@ -400,10 +400,11 @@ if "page" not in st.session_state:
 # --- HERO SECTION ---
 st.markdown("""
 <div class="hero-section">
-    <div class="hero-title">Break Through Your Glass Ceiling in Bangkok — In Just 2 Sessions</div>
+    <div class="hero-title">Rewire what’s holding you back : in just 2 sessions</div>
     <div class="hero-subtitle">
         Hypnotherapy meets neuroscience to help ambitious professionals overcome stress, weight blocks, 
-        and career plateaus in Thailand's competitive environment. Fast, focused, and confidential.
+        or career plateaus. <br>
+        Fast, focused, and confidential.
     </div>
     <br>
     <a href="https://calendly.com/titre/discovery-call" class="cta-button">
@@ -438,9 +439,9 @@ st.markdown("</div>", unsafe_allow_html=True)
 def show_problems():
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">The Hidden Blocks Holding You Back in Bangkok</div>
+        <div class="section-title">The Hidden Blocks Holding You Back</div>
         <div class="section-subtitle">
-            These are the most common patterns I help ambitious professionals overcome through targeted hypnotherapy
+            These are the most common patterns I help professionals overcome through targeted hypnotherapy
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -517,7 +518,7 @@ def show_method():
     <div class="section-header">
         <div class="section-title">The Precision 2-Session Breakthrough</div>
         <div class="section-subtitle">
-            How we create rapid, lasting change for Bangkok professionals
+            How we create rapid, lasting change
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -551,7 +552,7 @@ def show_method():
                         <li><strong>Neuro-linguistic programming</strong> for Bangkok business contexts</li>
                         <li><strong>Somatic markers</strong> to anchor new patterns</li>
                     </ul>
-                    <em>Includes custom audio reinforcement for Bangkok living</em>
+                    <em>Includes custom audio reinforcement</em>
                 </div>
             </div>
         </div>
@@ -568,12 +569,6 @@ def show_method():
             <div class="problem-title">Corporate Leaders</div>
             <div class="problem-description">
                 Breaking through senior management barriers in Thai conglomerates or multinationals
-            </div>
-        </div>
-        <div class="problem-card">
-            <div class="problem-title">Entrepreneurs</div>
-            <div class="problem-description">
-                Overcoming growth plateaus in Thailand's competitive startup scene
             </div>
         </div>
         <div class="problem-card">
