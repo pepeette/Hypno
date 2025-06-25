@@ -13,15 +13,15 @@ st.set_page_config(
 st.markdown("""
 <style>
 :root {
-    --primary-color: #2c3e50;
-    --accent-color: #e74c3c;
-    --secondary-color: #3498db;
-    --bg-color: #f5f7fa;
-    --card-bg: #ffffff;
-    --text-color: #2c3e50;
-    --text-muted: #7f8c8d;
-    --border-color: #dfe6e9;
-    --success-color: #27ae60;
+    --primary-color: #1C1C1E;
+    --accent-color: #D4AF37;
+    --secondary-color: #3A3A3C;
+    --bg-color: #F4F4F6;
+    --card-bg: #FFFFFF;
+    --text-color: #1C1C1E;
+    --text-muted: #6E6E73;
+    --border-color: #E2E2E6;
+    --success-color: #27AE60;
 }
 
 .stApp {
@@ -32,7 +32,7 @@ st.markdown("""
 }
 
 .hero-section {
-    background: linear-gradient(135deg, var(--primary-color) 0%, #1a2b3c 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, #121212 100%);
     color: white;
     padding: 5rem 2rem;
     text-align: center;
@@ -49,7 +49,7 @@ st.markdown("""
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    background: linear-gradient(90deg, var(--accent-color), #B38E2D);
 }
 
 .hero-title {
@@ -70,7 +70,7 @@ st.markdown("""
 
 .cta-button {
     background: var(--accent-color);
-    color: white;
+    color: var(--primary-color);
     padding: 1rem 2.5rem;
     border: none;
     border-radius: 50px;
@@ -79,15 +79,15 @@ st.markdown("""
     cursor: pointer;
     transition: all 0.3s ease;
     display: inline-block;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
     margin: 0.5rem;
 }
 
 .cta-button:hover {
-    background: #c0392b;
+    background: #B38E2D;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
-    color: white;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+    color: var(--primary-color);
     text-decoration: none;
 }
 
@@ -131,9 +131,9 @@ st.markdown("""
 .problem-card {
     background: var(--card-bg);
     padding: 2rem;
-    border-radius: 16px;
+    border-radius: 12px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -141,7 +141,7 @@ st.markdown("""
 
 .problem-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 .problem-card::before {
@@ -151,7 +151,7 @@ st.markdown("""
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    background: linear-gradient(90deg, var(--accent-color), #B38E2D);
 }
 
 .problem-icon {
@@ -162,7 +162,7 @@ st.markdown("""
 }
 
 .problem-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 700;
     margin-bottom: 1rem;
     color: var(--primary-color);
@@ -172,6 +172,7 @@ st.markdown("""
     font-size: 1rem;
     margin-bottom: 1.5rem;
     color: var(--text-muted);
+    line-height: 1.6;
 }
 
 .problem-result {
@@ -203,8 +204,8 @@ st.markdown("""
     bottom: -10px;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), #B38E2D);
     border-radius: 2px;
 }
 
@@ -218,10 +219,10 @@ st.markdown("""
 .method-timeline {
     background: var(--card-bg);
     padding: 3rem;
-    border-radius: 16px;
+    border-radius: 12px;
     margin: 2rem 0;
     position: relative;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     border: 1px solid var(--border-color);
 }
 
@@ -234,7 +235,7 @@ st.markdown("""
 
 .timeline-number {
     background: var(--accent-color);
-    color: white;
+    color: var(--primary-color);
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -252,7 +253,7 @@ st.markdown("""
 }
 
 .timeline-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 1rem;
     color: var(--primary-color);
@@ -265,11 +266,11 @@ st.markdown("""
 
 .testimonial-card {
     background: var(--card-bg);
-    padding: 2.5rem;
-    border-radius: 16px;
+    padding: 2rem;
+    border-radius: 12px;
     border-left: 4px solid var(--accent-color);
     margin: 1.5rem 0;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     position: relative;
 }
 
@@ -279,7 +280,7 @@ st.markdown("""
     top: 10px;
     left: 20px;
     font-size: 5rem;
-    color: rgba(231, 76, 60, 0.1);
+    color: rgba(212, 175, 55, 0.1);
     font-family: serif;
     line-height: 1;
 }
@@ -302,9 +303,9 @@ st.markdown("""
     background: var(--primary-color);
     color: white;
     padding: 3rem;
-    border-radius: 16px;
+    border-radius: 12px;
     margin: 3rem 0;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     border-top: 4px solid var(--accent-color);
 }
 
@@ -324,7 +325,7 @@ st.markdown("""
 .credential-badge {
     display: inline-flex;
     align-items: center;
-    background-color: rgba(231, 76, 60, 0.1);
+    background-color: rgba(212, 175, 55, 0.1);
     color: var(--accent-color);
     padding: 0.5rem 1rem;
     border-radius: 50px;
@@ -346,13 +347,13 @@ st.markdown("""
 .stat-card {
     background: var(--card-bg);
     padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     border: 1px solid var(--border-color);
 }
 
 .stat-number {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     font-weight: 800;
     color: var(--accent-color);
     display: block;
@@ -367,19 +368,19 @@ st.markdown("""
 
 .stButton > button {
     background: var(--accent-color) !important;
-    color: white !important;
+    color: var(--primary-color) !important;
     padding: 0.8rem 2rem !important;
     border-radius: 50px !important;
     border: none !important;
     font-weight: 600 !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3) !important;
 }
 
 .stButton > button:hover {
-    background: #c0392b !important;
+    background: #B38E2D !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4) !important;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4) !important;
 }
 
 .footer {
@@ -400,7 +401,7 @@ if "page" not in st.session_state:
 # --- HERO SECTION ---
 st.markdown("""
 <div class="hero-section">
-    <div class="hero-title">Rewire what’s holding you back : in just 2 sessions</div>
+    <div class="hero-title">Rewire what's holding you back : in just 2 sessions</div>
     <div class="hero-subtitle">
         Hypnotherapy meets neuroscience to help ambitious professionals overcome stress, weight blocks, 
         or career plateaus. <br>
@@ -661,7 +662,7 @@ def show_about():
     col1, col2 = st.columns([1, 2])
     
     with col1:
-        st.image("https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500", width=300)
+        st.image("./img/ID.jpg", width=250, caption="Laetitia Sheppard")
     
     with col2:
         st.markdown("""
@@ -691,7 +692,7 @@ def show_about():
         <div style="text-align: center;">
             <h2 style="color: white; margin-bottom: 1rem;">Bangkok Hypnotherapy Clinic</h2>
             <p style="margin-bottom: 2rem;">46/9 Soi Sukhumvit 49 (Thong Lor) • Private & Confidential</p>
-            <a href="https://maps.google.com" class="cta-button" style="background: white; color: var(--accent-color);">
+            <a href="https://maps.google.com" class="cta-button" style="background: white; color: var(--primary-color);">
                 📍 Get Directions
             </a>
             <a href="https://calendly.com/titre/discovery-call" class="cta-button">
