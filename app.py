@@ -171,7 +171,7 @@ def show_services():
     st.markdown('<div class="sub-section-title">What is being solved - fast</div>', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     problems = [
-        ("Freezing in Presentations or High-Stakes Moments", "Smart, capable professionals lose their voice or presence right when it matters — in boardrooms, on stage, or with clients.", "→ Rewire confidence and command the room in 2 neuroscience-based sessions"),
+        ("Freezing in Presentations or High-Stakes Moments", "Smart, capable professionals lose their voice or presence right when it matters — in boardrooms, on stage, or with clients.", "→ Rewire confidence and command the room in 2 neuroscience-based sessions, specific and spot on programming"),
         ("Perfectionism That Leads to Burnout", "You overwork, overcontrol, and can’t switch off. Your team feels it. So does your nervous system.", "→ Rewire for strategic focus — make high-impact decisions without the mental overload"),
         ("Performance Anxiety & Imposter Syndrome", "You know your stuff, but anxiety strikes before meetings, keynotes, or career moves. Confidence feels manufactured.", "→ Rewire unconscious fear loops and install calm, grounded confidence"),
         ("Losing Emotional Control in Conflict", "Heated discussions, negotiations, or internal politics trigger reactions that cost you leadership capital.", "→ Rewire emotional reactivity and lead with composure under pressure")
