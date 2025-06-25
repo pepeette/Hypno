@@ -358,8 +358,9 @@ if "page" not in st.session_state:
 # --- HERO SECTION ---
 st.markdown("""
 <div class="hero-section">
-    <div class="hero-title">Neuro-Hypnotherapy for Third Culture Leaders</div>
+    <div class="hero-title">Neuroscience-Based Hypnotherapy</div>
     <div class="hero-subtitle">
+        Rewire what’s holding you back - in 2 sessions<br>
         Break through glass ceilings and chronic "3B" states (burned out, bored out, brown out)<br>
         with targeted neural rewiring for global professionals
     </div>
