@@ -358,18 +358,18 @@ if "page" not in st.session_state:
 # --- HERO SECTION ---
 st.markdown("""
 <div class="hero-section">
-    <div class="hero-title">Neuroscience-Based Hypnotherapy</div>
+    <div class="hero-title">Unlock Your Potential: Rapid Neural Rewiring</div>
     <div class="hero-subtitle">
-        Rewire what’s holding you back - in 2 sessions<br>
-        Break through glass ceilings and chronic "3B" states (burned out, bored out, brown out)<br>
-        with targeted neural rewiring for global professionals
+        Break free from what's holding you back – often in just 2 sessions.<br>
+        Find your path of least resistance to overcome burnout, stagnation, and cultural fatigue,<br>
+        with targeted neural reprogramming for ambitious global professionals.
     </div>
     <div class="credentials-badge">
         🇫🇷🇬🇧 Certified Hypnotherapist (LCCH) • DBT Specialist • MIT-Trained Innovator
     </div>
     <br>
     <a href="https://calendly.com/titre/discovery-call" class="cta-button">
-        🧠 Book Neural Audit (2-session protocol)
+        🧠 Book Your Breakthrough Session
     </a>
 </div>
 """, unsafe_allow_html=True)
@@ -377,9 +377,9 @@ st.markdown("""
 # --- NAVIGATION ---
 st.markdown('<div class="nav-container">', unsafe_allow_html=True)
 tabs = [
-    ("🔥 3B Solutions", "problems"),
-    ("🧠 2-Session Method", "method"), 
-    ("📜 Credentials", "about"),
+    ("🔥 Your Challenges", "problems"),
+    ("🧠 The 2-Session Path", "method"), 
+    ("📜 My Expertise", "about"),
     ("📍 Thong Lor Clinic", "contact")
 ]
 
@@ -395,9 +395,9 @@ st.markdown('</div>', unsafe_allow_html=True)
 def show_problems():
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">The Third Culture Professional's Dilemma</div>
+        <div class="section-title">Are You Experiencing These Challenges?</div>
         <div class="section-subtitle">
-            When your global mindset becomes your biggest professional block
+            For global professionals, your unique journey can sometimes lead to unexpected blocks.
         </div>
     </div>
     
@@ -411,27 +411,27 @@ def show_problems():
     problems_data = [
         {
             "icon": "🪞",
-            "title": "The Glass Ceiling Mirage",
-            "description": "You have the skills but keep hitting invisible barriers to advancement, despite outperforming peers. The rules seem different for you.",
-            "result": "→ Rewire unconscious self-sabotage patterns holding you back"
+            "title": "Hitting an Invisible Wall?",
+            "description": "You're skilled and hardworking, yet feel stuck, unable to advance despite your efforts. It's like an invisible barrier is holding you back.",
+            "result": "→ Discover your path of least resistance to career growth and personal freedom."
         },
         {
             "icon": "🔥", 
-            "title": "Chronic 3B State",
-            "description": "Burned out (exhausted), bored out (unchallenged), and brown out (disconnected from purpose) - cycling between all three.",
-            "result": "→ Install sustainable engagement circuits"
+            "title": "The Burnout-Boredom Cycle (The '3B' State)",
+            "description": "Feeling exhausted, uninspired, or disconnected from your purpose? You might be cycling between burnout, boredom, and a sense of 'brown out'.",
+            "result": "→ Re-energize your drive and find sustainable engagement."
         },
         {
             "icon": "🌐",
-            "title": "Cultural Code Switching Fatigue",
-            "description": "Constantly adapting your communication style drains mental energy and dilutes your authentic leadership presence.",
-            "result": "→ Develop neural flexibility without exhaustion"
+            "title": "Cultural Fatigue?",
+            "description": "Constantly adapting your communication style across cultures can be draining, diluting your authentic leadership presence.",
+            "result": "→ Build mental resilience and communicate authentically without exhaustion."
         },
         {
             "icon": "🔄",
-            "title": "Effort-Reward Mismatch",
-            "description": "Working harder than colleagues but seeing less recognition or results. The path of least resistance seems blocked.",
-            "result": "→ Reprogram productivity-reward neural pathways"
+            "title": "Effort vs. Reward Imbalance?",
+            "description": "Working harder than others but seeing less recognition or results. The easy path seems blocked, and you're left feeling undervalued.",
+            "result": "→ Align your efforts with tangible rewards and unlock your natural flow."
         }
     ]
     
@@ -450,7 +450,7 @@ def show_problems():
     # Stats section
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">Neuro-Hypnotherapy Results</div>
+        <div class="section-title">Real Results, Lasting Change</div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -492,11 +492,11 @@ def show_method():
             <div class="timeline-content">
                 <div class="timeline-title">Pattern Mapping (90 min)</div>
                 <div class="timeline-description">
-                    <strong>Neuro-linguistic analysis</strong> to identify:
+                    <strong>Understanding Your Brain's Blueprint:</strong> Through neuro-linguistic analysis, we identify:
                     <ul>
-                        <li>Exact neural pathways maintaining your blocks</li>
-                        <li>Hidden secondary gains from current patterns</li>
-                        <li>Optimal rewiring strategy for your brain type</li>
+                        <li>The exact thought patterns and beliefs holding you back.</li>
+                        <li>Any hidden benefits you might unconsciously gain from your current patterns.</li>
+                        <li>The most effective strategy to 'rewire' your brain for success.</li>
                     </ul>
                 </div>
             </div>
@@ -507,11 +507,11 @@ def show_method():
             <div class="timeline-content">
                 <div class="timeline-title">Precision Rewiring (60 min)</div>
                 <div class="timeline-description">
-                    <strong>Clinical hypnotherapy + DBT techniques</strong> to:
+                    <strong>Installing New Pathways:</strong> Using clinical hypnotherapy and DBT techniques, we:
                     <ul>
-                        <li>Install new neural circuits for breakthrough</li>
-                        <li>Anchor changes to real-world triggers</li>
-                        <li>Create automatic "flow state" access</li>
+                        <li>Create new, empowering neural circuits for breakthrough.</li>
+                        <li>Anchor these positive changes to real-world situations.</li>
+                        <li>Develop automatic access to a 'flow state' for peak performance.</li>
                     </ul>
                 </div>
             </div>
@@ -522,11 +522,11 @@ def show_method():
             <div class="timeline-content">
                 <div class="timeline-title">Stepped Reinforcement (Optional)</div>
                 <div class="timeline-description">
-                    <strong>Every 3-6 months</strong> for:
+                    <strong>Sustaining Your Success:</strong> Every 3-6 months for:
                     <ul>
-                        <li>New performance levels</li>
-                        <li>Unrelated challenge areas</li>
-                        <li>Leadership evolution</li>
+                        <li>Achieving new levels of performance.</li>
+                        <li>Addressing new or unrelated challenges.</li>
+                        <li>Evolving your leadership capabilities.</li>
                     </ul>
                 </div>
             </div>
@@ -575,7 +575,7 @@ def show_method():
 def show_about():
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">Credentialed for Global Professionals</div>
+        <div class="section-title">My Expertise for Global Professionals</div>
         <div class="section-subtitle">
             Blending clinical expertise with corporate experience
         </div>
@@ -611,7 +611,7 @@ def show_about():
     # Testimonials
     st.markdown("""
     <div class="section-header">
-        <div class="section-title">Global Professional Results</div>
+        <div class="section-title">What Clients Say</div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -676,11 +676,11 @@ def show_contact():
         
         st.markdown("""
         <div class="contact-section">
-            <h3>2-Session Protocol Availability</h3>
+            <h3>Ready for Your Breakthrough?</h3>
             <p>Currently accepting 8 new clients monthly</p>
             <br>
             <a href="https://calendly.com/titre/discovery-call" class="cta-button">
-                🧠 Book Neural Audit
+                🧠 Book Your Neural Audit
             </a>
         </div>
         """, unsafe_allow_html=True)
@@ -724,3 +724,4 @@ st.markdown("""
     For third culture professionals breaking through glass ceilings
 </div>
 """, unsafe_allow_html=True)
+
