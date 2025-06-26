@@ -24,17 +24,7 @@ def inject_css():
         --shadow-accent: rgba(212, 175, 55, 0.2);
     }}
 
-    /* Dark mode variables */
-    @media (prefers-color-scheme: dark) {{
-        :root {{
-            --primary: #FFFFFF;
-            --light: #1C1C1E;
-            --white: #2C2C2E;
-            --medium: #3A3A3C;
-            --shadow: rgba(255,255,255,0.05);
-            --shadow-hover: rgba(255,255,255,0.1);
-        }}
-    }}
+    /* Force light mode - no dark mode support */
 
     /* Base Styles */
     .stApp {{
@@ -84,7 +74,7 @@ def inject_css():
         border: none !important;
         color: var(--muted) !important;
         font-weight: 600 !important;
-        font-size: 0.9rem !important;
+        font-size: 1rem !important;
         padding: 0.5rem 1rem !important;
         border-radius: 8px !important;
         cursor: pointer !important;
@@ -106,29 +96,29 @@ def inject_css():
         box-shadow: 0 2px 8px var(--shadow-accent) !important;
     }}
 
-    /* Typography - Simplified hierarchy */
+    /* Typography - Consistent sizing with 1.5rem max */
     .hero-title {{ 
-        font-size: 2rem; 
+        font-size: 1.5rem; 
         font-weight: 700; 
         line-height: 1.2; 
         margin: 0;
     }}
     
     .hero-subtitle {{ 
-        font-size: 1.2rem; 
+        font-size: 1rem; 
         font-weight: 400; 
         margin: 1rem 0;
     }}
     
     .section-title {{ 
-        font-size: 1.5rem; 
+        font-size: 1.2rem; 
         font-weight: 600; 
         margin: 2rem 0 1rem; 
         color: var(--primary);
     }}
     
     .card-title {{ 
-        font-size: 1.2rem; 
+        font-size: 1rem; 
         font-weight: 600; 
         margin: 0 0 0.75rem;
         color: var(--primary);
@@ -143,7 +133,7 @@ def inject_css():
     
     .muted-text {{ 
         color: var(--muted); 
-        font-size: 0.9rem;
+        font-size: 1rem;
     }}
 
     /* Hero Section - Reduced padding */
@@ -192,7 +182,7 @@ def inject_css():
         padding: 0.8rem 1.5rem;
         border-radius: 8px;
         font-weight: 600;
-        font-size: 0.95rem;
+        font-size: 1rem;
         display: inline-block;
         transition: all 0.3s ease;
         border: none;
@@ -225,14 +215,14 @@ def inject_css():
     }}
     
     .stat-number {{
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: var(--accent);
         margin-bottom: 0.5rem;
     }}
     
     .stat-label {{
-        font-size: 0.9rem;
+        font-size: 1rem;
         color: var(--muted);
     }}
 
@@ -282,15 +272,15 @@ def inject_css():
         }}
         
         .hero-title {{
-            font-size: 1.6rem;
+            font-size: 1.2rem;
         }}
         
         .hero-subtitle {{
-            font-size: 1.1rem;
+            font-size: 1rem;
         }}
         
         .section-title {{
-            font-size: 1.3rem;
+            font-size: 1.1rem;
         }}
         
         .card {{
@@ -303,7 +293,7 @@ def inject_css():
         }}
         
         .nav-btn {{
-            font-size: 0.85rem !important;
+            font-size: 1rem !important;
             padding: 0.4rem 0.8rem !important;
         }}
         
@@ -317,7 +307,7 @@ def inject_css():
         }}
         
         .stat-number {{
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }}
         
         .process-step {{
@@ -333,11 +323,11 @@ def inject_css():
 
     @media (max-width: 480px) {{
         .hero-title {{
-            font-size: 1.4rem;
+            font-size: 1.1rem;
         }}
         
         .nav-btn {{
-            font-size: 0.8rem !important;
+            font-size: 1rem !important;
             padding: 0.3rem 0.6rem !important;
         }}
         
@@ -354,21 +344,23 @@ inject_css()
 if "page" not in st.session_state:
     st.session_state.page = "problems"
 
-# --- NAVIGATION HEADER ---
-st.markdown('<div class="nav-header">', unsafe_allow_html=True)
-st.markdown('<div class="nav-container">', unsafe_allow_html=True)
+# --- NAVIGATION HEADER (FIXED AT TOP) ---
+# Create a proper menu at the very top
+nav_container = st.container()
+with nav_container:
+    st.markdown('<div class="nav-header">', unsafe_allow_html=True)
+    st.markdown('<div class="nav-container">', unsafe_allow_html=True)
 
-tabs = [("🔥 Your Blocks", "problems"), ("🧠 The Method", "method"), ("🏆 Results", "results"), ("👤 About", "about")]
+    tabs = [("🔥 Your Blocks", "problems"), ("🧠 The Method", "method"), ("🏆 Results", "results"), ("👤 About", "about")]
 
-cols = st.columns(len(tabs))
-for i, (label, page_name) in enumerate(tabs):
-    with cols[i]:
-        active_class = "active" if st.session_state.page == page_name else ""
-        if st.button(label, key=f"nav_{page_name}", help=f"Go to {label}"):
-            st.session_state.page = page_name
-            st.rerun()
+    cols = st.columns(len(tabs))
+    for i, (label, page_name) in enumerate(tabs):
+        with cols[i]:
+            if st.button(label, key=f"nav_{page_name}", help=f"Go to {label}"):
+                st.session_state.page = page_name
+                st.rerun()
 
-st.markdown('</div></div>', unsafe_allow_html=True)
+    st.markdown('</div></div>', unsafe_allow_html=True)
 
 # --- HERO SECTION ---
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
