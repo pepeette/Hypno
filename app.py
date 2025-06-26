@@ -1,5 +1,386 @@
 import streamlit as st
 
+# --- PAGE CONFIG ---
+st.set_page_config(
+    page_title="Neuroscience Hypnotherapy | Laetitia Sheppard",
+    page_icon="🧠",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
+# --- CSS INJECTION ---
+def inject_css():
+    st.markdown(f"""
+    <style>
+    :root {{
+        --primary: #1C1C1E;
+        --accent: #D4AF37;
+        --light: #F4F4F6;
+        --medium: #E2E2E6;
+        --muted: #6E6E73;
+        --white: #FFFFFF;
+        --shadow: rgba(0,0,0,0.05);
+        --shadow-hover: rgba(0,0,0,0.1);
+        --shadow-accent: rgba(212, 175, 55, 0.2);
+    }}
+
+    /* Navigation Buttons */
+    .nav-buttons {{
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 1.5rem auto 0 auto;
+        max-width: 1200px;
+    }}
+
+    .nav-btn {{
+        background: var(--primary) !important;
+        color: var(--white) !important;
+        border: none !important;
+        font-weight: 600 !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+    }}
+
+    .nav-btn:hover {{
+        background: rgba(255,255,255,0.1) !important;
+    }}
+
+    .nav-btn.active {{
+        background: var(--accent) !important;
+        color: var(--primary) !important;
+        box-shadow: 0 2px 8px var(--shadow-accent) !important;
+    }}
+
+    /* Rest of your original CSS remains completely unchanged */
+    .stApp {{
+        background: var(--light) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        line-height: 1.6;
+        color: var(--primary) !important;
+    }}
+
+    h1, h2, h3, h4, h5, h6 {{
+        color: var(--primary) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }}
+    
+    h1 {{
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        margin: 1rem 0 !important;
+    }}
+    
+    h2 {{
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+        margin: 2rem 0 1rem !important;
+        color: var(--primary) !important;
+    }}
+    
+    h3 {{
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+        margin: 1rem 0 0.5rem !important;
+        color: var(--primary) !important;
+    }}
+    
+    p, li, span, div {{
+        color: var(--primary) !important;
+    }}
+
+    #MainMenu {{visibility: hidden;}}
+    footer {{visibility: hidden;}}
+    header {{visibility: hidden;}}
+    .stDeployButton {{display: none;}}
+
+    .main-container {{
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }}
+
+    .hero-title {{ 
+        font-size: 1.5rem; 
+        font-weight: 700; 
+        line-height: 1.2; 
+        margin: 0;
+        color: var(--white) !important;
+    }}
+    
+    .hero-subtitle {{ 
+        font-size: 1rem; 
+        font-weight: 400; 
+        margin: 1rem 0;
+        color: #d1d1d6 !important;
+    }}
+    
+    .section-title {{ 
+        font-size: 1.2rem; 
+        font-weight: 600; 
+        margin: 2rem 0 1rem; 
+        color: var(--primary);
+    }}
+    
+    .card-title {{ 
+        font-size: 1rem; 
+        font-weight: 600; 
+        margin: 0 0 0.75rem;
+        color: var(--primary);
+    }}
+    
+    .body-text {{ 
+        font-size: 1rem; 
+        color: var(--primary); 
+        line-height: 1.6;
+        margin: 0.5rem 0;
+    }}
+    
+    .muted-text {{ 
+        color: var(--muted); 
+        font-size: 1rem;
+    }}
+
+    .hero {{
+        background: var(--primary);
+        color: white;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        border-radius: 12px;
+        margin: 0.5rem 0 2rem 0;
+        border-left: 6px solid var(--accent);
+    }}
+    
+    .hero * {{
+        color: var(--white) !important;
+    }}
+    
+    .hero .hero-subtitle {{ 
+        color: #d1d1d6 !important; 
+    }}
+    
+    .hero .muted-text {{ 
+        color: #a1a1a6 !important; 
+    }}
+
+    .card {{
+        background: var(--white);
+        border: 1px solid var(--medium);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px var(--shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }}
+    
+    .card:hover {{
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px var(--shadow-hover);
+    }}
+    
+    .card-accent {{
+        border-left: 4px solid var(--accent);
+    }}
+
+    .btn {{
+        background: var(--accent);
+        color: var(--primary);
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        display: inline-block;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 8px var(--shadow-accent);
+        margin: 0.5rem 0.5rem 0.5rem 0;
+        text-decoration: none;
+    }}
+    
+    .btn:hover {{
+        background: #C7A133;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+    }}
+
+    .stats {{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+    }}
+    
+    .stat {{
+        background: var(--white);
+        border: 1px solid var(--medium);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+    }}
+    
+    .stat-number {{
+        color: var(--accent) !important;
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+    }}
+    
+    .stat-label {{
+        font-size: 1rem;
+        color: var(--muted);
+    }}
+
+    .contact {{
+        background: var(--primary);
+        color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        margin: 2rem 0;
+        border-top: 4px solid var(--accent);
+        text-align: center;
+    }}
+    
+    .contact * {{
+        color: var(--white) !important;
+    }}
+
+    .process-step {{
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }}
+    
+    .step-number {{
+        background: var(--accent);
+        color: var(--primary);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+    }}
+
+    .text-center {{ text-align: center; }}
+    .mt-1 {{ margin-top: 1rem; }}
+    .mt-2 {{ margin-top: 2rem; }}
+    .mb-1 {{ margin-bottom: 1rem; }}
+
+    @media (max-width: 768px) {{
+        .hero {{
+            padding: 1.5rem 1rem;
+            margin: 0.5rem 0 1.5rem;
+        }}
+        
+        .hero-title {{
+            font-size: 1.2rem;
+        }}
+        
+        .hero-subtitle {{
+            font-size: 1rem;
+        }}
+        
+        .section-title {{
+            font-size: 1.1rem;
+        }}
+        
+        h1 {{
+            font-size: 1.2rem !important;
+        }}
+        
+        h2 {{
+            font-size: 1.1rem !important;
+        }}
+        
+        h3 {{
+            font-size: 1rem !important;
+        }}
+        
+        .card {{
+            padding: 1rem;
+        }}
+        
+        .nav-buttons {{
+            flex-wrap: wrap;
+        }}
+        
+        .nav-btn {{
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }}
+        
+        .stats {{
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }}
+        
+        .stat {{
+            padding: 1rem;
+        }}
+        
+        .process-step {{
+            flex-direction: column;
+            text-align: center;
+        }}
+        
+        .btn {{
+            width: 100%;
+            margin: 0.5rem 0;
+        }}
+    }}
+
+    @media (max-width: 480px) {{
+        .hero-title {{
+            font-size: 1.1rem;
+        }}
+        
+        h1 {{
+            font-size: 1.1rem !important;
+        }}
+        
+        h2 {{
+            font-size: 1rem !important;
+        }}
+        
+        .stats {{
+            grid-template-columns: 1fr;
+        }}
+    }}
+    </style>
+    """, unsafe_allow_html=True)
+
+inject_css()
+
+# --- SESSION STATE ---
+if "page" not in st.session_state:
+    st.session_state.page = "problems"
+
+# --- HERO SECTION ---
+st.markdown('<div class="main-container">', unsafe_allow_html=True)
+st.markdown("""
+<div class="hero">
+    <h1 class="hero-title">Rewire what's holding you back - in 2 sessions</h1>
+    <p class="hero-subtitle">Life keeps moving fast, but you are feeling blocked.<br>
+    It is not definite, it is a neuro-programming session you need to activate.</p>
+    <button class="btn">📅 Book a FREE 15-min Call to see if you're fit for it</button>
+    <p class="muted-text mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
+</div>
+
+<div class="nav-buttons">
+    <button class="nav-btn {'active' if st.session_state.page == 'problems' else ''}" onclick="window.streamlitSessionState.set('page', 'problems')">🔥 Your Blocks</button>
+    <button class="nav-btn {'active' if st.session_state.page == 'method' else ''}" onclick="window.streamlitSessionState.set('page', 'method')">🧠 The Method</button>
+    <button class="nav-btn {'active' if st.session_state.page == 'results' else ''}" onclick="window.streamlitSessionState.set('page', 'results')">🏆 Results</button>
+    <button class="nav-btn {'active' if st.session_state.page == 'about' else ''}" onclick="window.streamlitSessionState.set('page', 'about')">👤 About</button>
+</div>
+""", unsafe_allow_html=True)
+
 # --- PAGE CONTENT FUNCTIONS ---
 def show_problems():
     st.markdown('<h2 class="section-title">The Hidden Blocks We Solve</h2>', unsafe_allow_html=True)
@@ -16,8 +397,8 @@ def show_problems():
             "result": "→ Reset your metabolic programming without another fad diet"
         },
         {
-            "title": "Performance Anxiety & Imposter Syndrome", 
-            "desc": "You know your stuff, but anxiety strikes before meetings, keynotes, or career moves. Confidence feels manufactured.",
+            "title": "Performance Anxiety", 
+            "desc": "You nailed presentations in London/NYC - but here, your mind blanks mid-sentence. The harder you try to impress, the more you underwhelm.",
             "result": "→ Install bulletproof confidence tailored to Asian boardrooms"
         }
     ]
@@ -134,7 +515,7 @@ def show_about():
         """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="card contact">
+    <div class="contact">
         <h3 style="color: white; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">Bangkok Hypnotherapy Clinic</h3>
         <p style="color: white; margin-bottom: 1.5rem;">46/9 Soi Sukhumvit 49 (Thong Lor) • Private & Confidential</p>
         <button class="btn">📍 Get Directions</button>
@@ -142,165 +523,7 @@ def show_about():
     </div>
     """, unsafe_allow_html=True)
 
-# --- PAGE CONFIG ---
-st.set_page_config(
-    page_title="Neuroscience Hypnotherapy | Laetitia Sheppard",
-    page_icon="🧠",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
-
-# --- CSS INJECTION ---
-def inject_css():
-    st.markdown(f"""
-    <style>
-    :root {{
-        --primary: #1C1C1E;
-        --accent: #D4AF37;
-        --light: #F4F4F6;
-        --medium: #E2E2E6;
-        --muted: #6E6E73;
-        --white: #FFFFFF;
-        --shadow: rgba(0,0,0,0.05);
-        --shadow-hover: rgba(0,0,0,0.1);
-        --shadow-accent: rgba(212, 175, 55, 0.2);
-    }}
-
-    /* Hero Section with Menu Buttons */
-    .hero-container {{
-        background: var(--primary);
-        color: white;
-        padding: 2rem 1.5rem 3.5rem 1.5rem; /* Extra bottom padding for buttons */
-        text-align: center;
-        border-radius: 12px;
-        margin: 0.5rem 0 2rem 0;
-        border-left: 6px solid var(--accent);
-        position: relative;
-    }}
-
-    /* Menu Buttons Container */
-    .menu-buttons {{
-        position: absolute;
-        bottom: -25px;
-        left: 0;
-        right: 0;
-        display: flex;
-        justify-content: center;
-    }}
-
-    .menu-buttons-inner {{
-        display: flex;
-        background: var(--light);
-        border-radius: 12px;
-        padding: 0.5rem;
-        box-shadow: 0 4px 12px var(--shadow);
-    }}
-
-    /* Menu Button Style */
-    .menu-btn {{
-        background: transparent !important;
-        border: none !important;
-        color: var(--primary) !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
-        padding: 0.5rem 1rem !important;
-        border-radius: 8px !important;
-        cursor: pointer !important;
-        transition: all 0.3s ease !important;
-        white-space: nowrap !important;
-        margin: 0 0.25rem !important;
-    }}
-
-    .menu-btn:hover {{
-        background: rgba(0,0,0,0.05) !important;
-    }}
-
-    .menu-btn.active {{
-        background: var(--accent) !important;
-        color: var(--primary) !important;
-        box-shadow: 0 2px 8px var(--shadow-accent) !important;
-    }}
-
-    /* Rest of your card styles */
-    .card {{
-        background: var(--white);
-        border: 1px solid var(--medium);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 12px var(--shadow);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }}
-    
-    .card:hover {{
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px var(--shadow-hover);
-    }}
-    
-    .card-accent {{
-        border-left: 4px solid var(--accent);
-    }}
-
-    .contact {{
-        background: var(--primary);
-        color: white;
-        border-top: 4px solid var(--accent);
-    }}
-
-    /* Process Steps */
-    .process-step {{
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }}
-    
-    .step-number {{
-        background: var(--accent);
-        color: var(--primary);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        flex-shrink: 0;
-    }}
-
-    /* Rest of your existing CSS... */
-    </style>
-    """, unsafe_allow_html=True)
-
-inject_css()
-
-# --- SESSION STATE ---
-if "page" not in st.session_state:
-    st.session_state.page = "problems"
-
-# --- HERO SECTION WITH MENU BUTTONS ---
-st.markdown("""
-<div class="hero-container">
-    <h1 class="hero-title">Rewire what's holding you back - in 2 sessions</h1>
-    <p class="hero-subtitle">Life keeps moving fast, but you are feeling blocked.<br>
-    It is not definite, it is a neuro-programming session you need to activate.</p>
-    <div style="margin-top: 1rem;">
-        <button class="btn">📅 Book a FREE 15-min Call to see if you're fit for it</button>
-    </div>
-    <p class="muted-text mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
-    
-    <div class="menu-buttons">
-        <div class="menu-buttons-inner">
-            <button class="menu-btn {'active' if st.session_state.page == 'problems' else ''}" onclick="window.streamlitSessionState.set('page', 'problems')">🔥 Your Blocks</button>
-            <button class="menu-btn {'active' if st.session_state.page == 'method' else ''}" onclick="window.streamlitSessionState.set('page', 'method')">🧠 The Method</button>
-            <button class="menu-btn {'active' if st.session_state.page == 'results' else ''}" onclick="window.streamlitSessionState.set('page', 'results')">🏆 Results</button>
-            <button class="menu-btn {'active' if st.session_state.page == 'about' else ''}" onclick="window.streamlitSessionState.set('page', 'about')">👤 About</button>
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# --- PAGE CONTENT ---
+# --- MAIN CONTENT ---
 if st.session_state.page == "problems":
     show_problems()
 elif st.session_state.page == "method":
@@ -315,5 +538,6 @@ st.markdown("""
 <div class="text-center muted-text mt-2" style="border-top: 1px solid var(--medium); padding-top: 2rem; margin-top: 3rem;">
     <p>Laetitia Sheppard • Neuroscience Hypnotherapy • Bangkok, Thailand</p>
     <p>© 2023 All Rights Reserved | Confidentiality Guaranteed</p>
+</div>
 </div>
 """, unsafe_allow_html=True)
