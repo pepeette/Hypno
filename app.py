@@ -21,6 +21,24 @@ def inject_css():
         --white: #FFFFFF;
     }}
 
+    /* Dark Mode Compatibility */
+    @media (prefers-color-scheme: dark) {{
+        :root {{
+            --primary: #F4F4F6;
+            --light: #1C1C1E;
+            --medium: #3A3A3C;
+            --muted: #8E8E93;
+            --white: #2C2C2E;
+        }}
+        .stApp {{
+            background: var(--light) !important;
+        }}
+        .card {{
+            background: var(--white);
+            border-color: var(--medium);
+        }}
+    }}
+
     /* Base Styles */
     .stApp {{
         background: var(--light) !important;
@@ -29,18 +47,51 @@ def inject_css():
     }}
 
     /* Typography */
-    .h1 {{ font-size: 2rem; font-weight: 700; line-height: 1.2; }}
-    .h2 {{ font-size: 1.75rem; font-weight: 600; margin: 2rem 0 1rem; }}
-    .h3 {{ font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }}
-    .body {{ font-size: 1.05rem; color: var(--primary); }}
-    .muted {{ color: var(--muted); }}
+    h1 {{ font-size: 2rem; font-weight: 700; line-height: 1.2; }}
+    h2 {{ font-size: 1.75rem; font-weight: 600; margin: 1.5rem 0 1rem; }}
+    h3 {{ font-size: 1.5rem; font-weight: 600; margin: 1.25rem 0 0.75rem; }}
+    p, li {{ font-size: 1.05rem; color: var(--primary); }}
+    .muted {{ color: var(--muted); font-size: 1rem; }}
+
+    /* Layout */
+    .container {{
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }}
+
+    /* Navigation */
+    .nav-container {{
+        display: flex;
+        gap: 1.5rem;
+        margin: 1rem 0 2rem;
+        flex-wrap: wrap;
+    }}
+    .nav-btn {{
+        background: none;
+        border: none;
+        font-weight: 600;
+        color: var(--muted);
+        padding: 0.5rem 0;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }}
+    .nav-btn:hover {{
+        color: var(--primary);
+    }}
+    .nav-btn.active {{
+        color: var(--primary);
+        border-color: var(--accent);
+    }}
 
     /* Cards */
     .card {{
         background: var(--white);
         border: 1px solid var(--medium);
         border-radius: 12px;
-        padding: 2rem;
+        padding: 1.5rem;
         margin-bottom: 1.5rem;
         box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -67,6 +118,7 @@ def inject_css():
         box-shadow: 0 4px 8px rgba(212, 175, 55, 0.2);
         margin: 0.5rem 0;
         text-decoration: none;
+        font-size: 1rem;
     }}
     .btn:hover {{
         background: #C7A133;
@@ -78,43 +130,19 @@ def inject_css():
     .hero {{
         background: var(--primary);
         color: white;
-        padding: 4rem 2rem;
+        padding: 2rem 1rem;
         text-align: center;
         border-radius: 12px;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
         border-left: 6px solid var(--accent);
     }}
+    .hero h1 {{ color: white; margin-bottom: 0.5rem; }}
     .hero .muted {{ color: #d1d1d6; }}
-
-    /* Navigation */
-    .nav-container {{
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        margin: 2rem 0;
-    }}
-    .nav-btn {{
-        background: none;
-        border: none;
-        font-weight: 600;
-        color: var(--muted);
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid transparent;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }}
-    .nav-btn:hover {{
-        color: var(--primary);
-    }}
-    .nav-btn.active {{
-        color: var(--primary);
-        border-color: var(--accent);
-    }}
 
     /* Stats Grid */
     .stats {{
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 1rem;
         margin: 2rem 0;
     }}
@@ -122,11 +150,11 @@ def inject_css():
         background: var(--white);
         border: 1px solid var(--medium);
         border-radius: 12px;
-        padding: 1.5rem;
+        padding: 1.25rem;
         text-align: center;
     }}
     .stat-number {{
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: var(--accent);
     }}
@@ -139,17 +167,36 @@ def inject_css():
     .contact {{
         background: var(--primary);
         color: white;
-        padding: 3rem;
+        padding: 2rem;
         border-radius: 12px;
-        margin: 3rem 0;
+        margin: 2rem 0;
         border-top: 4px solid var(--accent);
     }}
+    .contact h3 {{ color: white; }}
 
     /* Utility Classes */
     .text-center {{ text-align: center; }}
     .mt-1 {{ margin-top: 1rem; }}
     .mt-2 {{ margin-top: 2rem; }}
     .mb-1 {{ margin-bottom: 1rem; }}
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {{
+        .nav-container {{
+            gap: 1rem;
+            margin: 0.5rem 0 1.5rem;
+        }}
+        .hero {{
+            padding: 1.5rem 1rem;
+            margin-bottom: 1.5rem;
+        }}
+        .card {{
+            padding: 1.25rem;
+        }}
+        .contact {{
+            padding: 1.5rem;
+        }}
+    }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -161,12 +208,13 @@ if "page" not in st.session_state:
 
 # --- HERO SECTION ---
 st.markdown("""
-<div class="hero">
-    <h1 class="h1">The Expat's Dilemma</h1>
-    <p class="h2 muted">You sacrificed everything for this Bangkok career - so why does success feel like wearing someone else's skin?</p>
-    <button class="btn">🧠 Yes, I Want My Breakthrough Session →</button>
-    <p class="muted mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
-</div>
+<div class="container">
+    <div class="hero">
+        <h1>The Expat's Dilemma</h1>
+        <p class="muted">You sacrificed everything for this Bangkok career - so why does success feel like wearing someone else's skin?</p>
+        <button class="btn">🧠 Yes, I Want My Breakthrough Session →</button>
+        <p class="muted mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
+    </div>
 """, unsafe_allow_html=True)
 
 # --- NAVIGATION ---
@@ -174,35 +222,38 @@ tabs = [("🔥 Your Blocks", "problems"), ("🧠 The Method", "method"), ("🏆 
 
 st.markdown('<div class="nav-container">', unsafe_allow_html=True)
 for label, page_name in tabs:
-    active = "active" if st.session_state.page == page_name else ""
     if st.button(label, key=f"nav_{page_name}"):
         st.session_state.page = page_name
-    st.markdown(f"""
-    <style>
-    div[data-testid="stButton"] > button[kind="secondary"] {{
-        background: none !important;
-        border: none !important;
-        color: var(--muted) !important;
-        font-weight: 600 !important;
-        padding: 0 0 0.5rem 0 !important;
-        border-bottom: 2px solid transparent !important;
-        border-radius: 0 !important;
-    }}
-    div[data-testid="stButton"] > button[kind="secondary"]:hover {{
-        color: var(--primary) !important;
-        border-bottom: 2px solid var(--accent) !important;
-    }}
-    div[data-testid="stButton"] > button[kind="secondary"][aria-pressed="true"] {{
-        color: var(--primary) !important;
-        border-bottom: 2px solid var(--accent) !important;
-    }}
-    </style>
-    """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
+
+# Add CSS for active tab styling
+st.markdown(f"""
+<style>
+div[data-testid="stButton"] > button[kind="secondary"] {{
+    background: none !important;
+    border: none !important;
+    color: var(--muted) !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 0 !important;
+    border-bottom: 2px solid transparent !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+}}
+div[data-testid="stButton"] > button[kind="secondary"]:hover {{
+    color: var(--primary) !important;
+    border-bottom: 2px solid var(--accent) !important;
+}}
+div[data-testid="stButton"] > button[kind="secondary"]:focus:not(:active) {{
+    color: var(--primary) !important;
+    border-bottom: 2px solid var(--accent) !important;
+}}
+</style>
+""", unsafe_allow_html=True)
 
 # --- PAGE CONTENT ---
 def show_problems():
-    st.markdown('<h2 class="h2">The Hidden Blocks We Solve</h2>', unsafe_allow_html=True)
+    st.markdown('<h2>The Hidden Blocks We Solve</h2>', unsafe_allow_html=True)
     
     problems = [
         {
@@ -225,15 +276,15 @@ def show_problems():
     for p in problems:
         st.markdown(f"""
         <div class="card card-accent">
-            <h3 class="h3">{p['title']}</h3>
-            <p class="body">{p['desc']}</p>
-            <p class="body" style="color: var(--accent); border-top: 1px dashed var(--medium); padding-top: 1rem;">
+            <h3>{p['title']}</h3>
+            <p>{p['desc']}</p>
+            <p style="color: var(--accent); border-top: 1px dashed var(--medium); padding-top: 1rem;">
                 {p['result']}
             </p>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown('<h2 class="h2 mt-2">Why It Works</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="mt-2">Why It Works</h2>', unsafe_allow_html=True)
     st.markdown("""
     <div class="stats">
         <div class="stat">
@@ -260,12 +311,12 @@ def show_problems():
     """, unsafe_allow_html=True)
 
 def show_method():
-    st.markdown('<h2 class="h2">Why 2 Sessions Work When Nothing Else Did</h2>', unsafe_allow_html=True)
+    st.markdown('<h2>Why 2 Sessions Work When Nothing Else Did</h2>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="card">
-        <h3 class="h3">Traditional Therapy Failed You Because:</h3>
-        <ul class="body">
+        <h3>Traditional Therapy Failed You Because:</h3>
+        <ul>
             <li>It talks <em>about</em> problems instead of rewriting them</li>
             <li>Progress gets derailed by Bangkok's 60-hour work weeks</li>
             <li>Western methods don't address Asian business culture nuances</li>
@@ -276,8 +327,8 @@ def show_method():
         <div style="display: flex; align-items: start; gap: 1.5rem;">
             <div style="background: var(--accent); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-weight: bold;">1</div>
             <div>
-                <h3 class="h3">Session 1: Pattern Mapping</h3>
-                <p class="body">We identify the <em>exact</em> neural circuits causing your blocks using fMRI-inspired techniques</p>
+                <h3>Session 1: Pattern Mapping</h3>
+                <p>We identify the <em>exact</em> neural circuits causing your blocks using fMRI-inspired techniques</p>
             </div>
         </div>
     </div>
@@ -286,25 +337,25 @@ def show_method():
         <div style="display: flex; align-items: start; gap: 1.5rem;">
             <div style="background: var(--accent); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-weight: bold;">2</div>
             <div>
-                <h3 class="h3">Session 2: Neural Rewiring</h3>
-                <p class="body">Precision hypnotherapy to install new patterns that withstand Bangkok's pressures</p>
+                <h3>Session 2: Neural Rewiring</h3>
+                <p>Precision hypnotherapy to install new patterns that withstand Bangkok's pressures</p>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 def show_results():
-    st.markdown('<h2 class="h2">Client Transformations</h2>', unsafe_allow_html=True)
+    st.markdown('<h2>Client Transformations</h2>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="card card-accent">
-        <p class="body"><em>"After 2 sessions, I went from freezing in regional presentations to delivering my best keynote at the ASEAN summit. Laetitia's method helped me access confidence I didn't know I had."</em></p>
-        <p class="body" style="font-weight: 600;">— French Tech Director, Fortune 500</p>
+        <p><em>"After 2 sessions, I went from freezing in regional presentations to delivering my best keynote at the ASEAN summit. Laetitia's method helped me access confidence I didn't know I had."</em></p>
+        <p style="font-weight: 600;">— French Tech Director, Fortune 500</p>
     </div>
     
     <div class="card card-accent mt-1">
-        <p class="body"><em>"The weight finally started coming off after years of struggle. More importantly, I stopped stress-eating during high-pressure deals. This changed both my health and career trajectory."</em></p>
-        <p class="body" style="font-weight: 600;">— American PE VP, Bangkok</p>
+        <p><em>"The weight finally started coming off after years of struggle. More importantly, I stopped stress-eating during high-pressure deals. This changed both my health and career trajectory."</em></p>
+        <p style="font-weight: 600;">— American PE VP, Bangkok</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -313,9 +364,9 @@ def show_about():
     with col1:
         st.image("./img/ID.jpg", width=250, caption="Laetitia Sheppard")
     with col2:
-        st.markdown('<h2 class="h2">About Laetitia</h2>', unsafe_allow_html=True)
+        st.markdown('<h2>About Laetitia</h2>', unsafe_allow_html=True)
         st.markdown("""
-        <div class="body">
+        <div>
             <p><strong>Bangkok-based specialist</strong> with 13 years in Asian financial hubs (Hong Kong, Singapore, Bangkok)</p>
             <p>Understands the unique pressures of:</p>
             <ul>
@@ -330,8 +381,8 @@ def show_about():
     st.markdown("""
     <div class="contact">
         <div class="text-center">
-            <h3 class="h3" style="color: white;">Bangkok Hypnotherapy Clinic</h3>
-            <p class="body" style="color: white; margin-bottom: 1.5rem;">46/9 Soi Sukhumvit 49 (Thong Lor) • Private & Confidential</p>
+            <h3>Bangkok Hypnotherapy Clinic</h3>
+            <p style="color: white; margin-bottom: 1.5rem;">46/9 Soi Sukhumvit 49 (Thong Lor) • Private & Confidential</p>
             <button class="btn">📍 Get Directions</button>
             <button class="btn">📅 Book Discovery Call</button>
         </div>
@@ -350,8 +401,9 @@ elif st.session_state.page == "about":
 
 # --- FOOTER ---
 st.markdown("""
-<div class="text-center muted mt-2">
-    <p>Laetitia Sheppard • Neuroscience Hypnotherapy • Bangkok, Thailand</p>
-    <p>© 2023 All Rights Reserved | Confidentiality Guaranteed</p>
-</div>
+    <div class="text-center muted mt-2">
+        <p>Laetitia Sheppard • Neuroscience Hypnotherapy • Bangkok, Thailand</p>
+        <p>© 2023 All Rights Reserved | Confidentiality Guaranteed</p>
+    </div>
+</div> <!-- Close container -->
 """, unsafe_allow_html=True)
