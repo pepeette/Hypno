@@ -93,16 +93,16 @@ def inject_css():
     #     margin-bottom: 0;
     # }}
 
-    .nav-container {{
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 0.5rem;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1rem;
-        flex-wrap: wrap;
-    }}
+    # .nav-container {{
+    #     display: flex;
+    #     justify-content: flex-start;
+    #     align-items: center;
+    #     gap: 0.5rem;
+    #     max-width: 1200px;
+    #     margin: 0 auto;
+    #     padding: 0 1rem;
+    #     flex-wrap: wrap;
+    # }}
 
     .nav-btn {{
         background: none !important;
@@ -119,11 +119,11 @@ def inject_css():
         height: auto !important;
     }}
 
-    .nav-btn:hover {{
-        color: var(--white) !important;
-        background: rgba(255, 255, 255, 0.1) !important;
-        transform: none !important;
-    }}
+    # .nav-btn:hover {{
+    #     color: var(--white) !important;
+    #     background: rgba(255, 255, 255, 0.1) !important;
+    #     transform: none !important;
+    # }}
 
     .nav-btn.active {{
         color: var(--primary) !important;
