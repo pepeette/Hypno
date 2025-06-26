@@ -31,6 +31,41 @@ def inject_css():
         background: var(--light) !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         line-height: 1.6;
+        color: var(--primary) !important;
+    }}
+
+    /* Override all Streamlit default headings */
+    h1, h2, h3, h4, h5, h6 {{
+        color: var(--primary) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }}
+    
+    h1 {{
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        margin: 1rem 0 !important;
+    }}
+    
+    h2 {{
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+        margin: 2rem 0 1rem !important;
+        color: var(--primary) !important;
+    }}
+    
+    h3 {{
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+        margin: 1rem 0 0.5rem !important;
+        color: var(--primary) !important;
+    }}
+    
+    /* Force all text elements to use light theme colors */
+    p, li, span, div {{
+        color: var(--primary) !important;
     }}
 
     /* Hide Streamlit default elements */
@@ -283,6 +318,19 @@ def inject_css():
             font-size: 1.1rem;
         }}
         
+        /* Mobile heading overrides */
+        h1 {{
+            font-size: 1.2rem !important;
+        }}
+        
+        h2 {{
+            font-size: 1.1rem !important;
+        }}
+        
+        h3 {{
+            font-size: 1rem !important;
+        }}
+        
         .card {{
             padding: 1rem;
         }}
@@ -324,6 +372,15 @@ def inject_css():
     @media (max-width: 480px) {{
         .hero-title {{
             font-size: 1.1rem;
+        }}
+        
+        /* Smaller mobile heading overrides */
+        h1 {{
+            font-size: 1.1rem !important;
+        }}
+        
+        h2 {{
+            font-size: 1rem !important;
         }}
         
         .nav-btn {{
