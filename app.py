@@ -42,7 +42,7 @@ def inject_css():
         font-size: 1.5rem !important;
         font-weight: 700 !important;
         line-height: 1.2 !important;
-        margin: 2rem 0 1rem 0 !important;
+        margin: 1rem 0 0.5rem 0 !important;
         color: var(--primary) !important;
     }}
     
@@ -50,7 +50,7 @@ def inject_css():
         font-size: 1.2rem !important;
         font-weight: 600 !important;
         line-height: 1.3 !important;
-        margin: 1.5rem 0 1rem 0 !important;
+        margin: 1rem 0 1rem 0 !important;
         color: var(--primary) !important;
     }}
     
@@ -59,7 +59,7 @@ def inject_css():
         font-weight: 400 !important;
         line-height: 1.6 !important;
         color: var(--primary) !important;
-        margin: 0.5rem 0 !important;
+        margin: 0.25rem 0 !important;
     }}
     
     strong, b {{
@@ -102,10 +102,10 @@ def inject_css():
     .hero {{
         background: var(--primary);
         color: white;
-        padding: 1.5rem 1.5rem;
+        padding: 1rem 1rem;
         text-align: center;
         border-radius: 12px;
-        margin: 0.5rem 0 2rem 0;
+        margin: 0.5rem 0 1rem 0;
         border-left: 6px solid var(--accent);
     }}
     
@@ -125,8 +125,8 @@ def inject_css():
         background: var(--white);
         border: 1px solid var(--medium);
         border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
         box-shadow: 0 4px 12px var(--shadow);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }}
@@ -170,15 +170,15 @@ def inject_css():
     .stats {{
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin: 2rem 0;
+        gap: 0.75rem;
+        margin: 1rem 0;
     }}
     
     .stat {{
         background: var(--white);
         border: 1px solid var(--medium);
         border-radius: 12px;
-        padding: 1.5rem;
+        padding: 1rem;
         text-align: center;
     }}
     
@@ -196,9 +196,9 @@ def inject_css():
     .contact {{
         background: var(--primary);
         color: white;
-        padding: 2rem;
+        padding: 1rem;
         border-radius: 12px;
-        margin: 2rem 0;
+        margin: 1rem 0;
         border-top: 4px solid var(--accent);
         text-align: center;
     }}
@@ -218,8 +218,8 @@ def inject_css():
     .process-step {{
         display: flex;
         align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
     }}
     
     .step-number {{
@@ -242,7 +242,7 @@ def inject_css():
 
     @media (max-width: 768px) {{
         .hero {{
-            padding: 1.5rem 1rem;
+            padding: 1rem 1rem;
             margin: 0.5rem 0 1.5rem;
         }}
         
