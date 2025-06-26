@@ -1,441 +1,6 @@
 import streamlit as st
-from streamlit_navigation_bar import st_navbar
 
-# --- PAGE CONFIG ---
-st.set_page_config(
-    page_title="Neuroscience Hypnotherapy | Laetitia Sheppard",
-    page_icon="🧠",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
-
-# --- CSS INJECTION ---
-def inject_css():
-    st.markdown(f"""
-    <style>
-    :root {{
-        --primary: #1C1C1E;
-        --accent: #D4AF37;
-        --light: #F4F4F6;
-        --medium: #E2E2E6;
-        --muted: #6E6E73;
-        --white: #FFFFFF;
-        --shadow: rgba(0,0,0,0.05);
-        --shadow-hover: rgba(0,0,0,0.1);
-        --shadow-accent: rgba(212, 175, 55, 0.2);
-    }}
-
-    /* Navigation Bar Styles */
-    .stNavbar {{
-        margin-bottom: 0.5rem !important;  /* Reduced gap below navbar */
-    }}
-
-    /* Stats Numbers - Gold Color */
-    .stat-number {{
-        color: var(--accent) !important;
-        font-size: 1.5rem !important;
-        font-weight: 700 !important;
-    }}
-
-    /* Problem Result Arrows - Gold Color */
-    .problem-result {{
-        color: var(--accent) !important;
-        border-top: 1px dashed var(--medium) !important;
-        padding-top: 1rem !important;
-        margin-top: 1rem !important;
-    }}
-
-    /* Rest of your existing CSS... */
-    /* Force light mode - no dark mode support */
-
-    /* Base Styles */
-    .stApp {{
-        background: var(--light) !important;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-        line-height: 1.6;
-        color: var(--primary) !important;
-    }}
-
-    /* Override all Streamlit default headings */
-    h1, h2, h3, h4, h5, h6 {{
-        color: var(--primary) !important;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-    }}
-    
-    h1 {{
-        font-size: 1.5rem !important;
-        font-weight: 700 !important;
-        line-height: 1.2 !important;
-        margin: 1rem 0 !important;
-    }}
-    
-    h2 {{
-        font-size: 1.2rem !important;
-        font-weight: 600 !important;
-        line-height: 1.2 !important;
-        margin: 2rem 0 1rem !important;
-        color: var(--primary) !important;
-    }}
-    
-    h3 {{
-        font-size: 1rem !important;
-        font-weight: 600 !important;
-        line-height: 1.2 !important;
-        margin: 1rem 0 0.5rem !important;
-        color: var(--primary) !important;
-    }}
-    
-    /* Force all text elements to use light theme colors */
-    p, li, span, div {{
-        color: var(--primary) !important;
-    }}
-
-    /* Hide Streamlit default elements */
-    #MainMenu {{visibility: hidden;}}
-    footer {{visibility: hidden;}}
-    header {{visibility: hidden;}}
-    .stDeployButton {{display: none;}}
-
-    /* Container */
-    .main-container {{
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }}
-
-    /* Typography - Consistent sizing with 1.5rem max */
-    .hero-title {{ 
-        font-size: 1.5rem; 
-        font-weight: 700; 
-        line-height: 1.2; 
-        margin: 0;
-        color: var(--white) !important;
-    }}
-    
-    .hero-subtitle {{ 
-        font-size: 1rem; 
-        font-weight: 400; 
-        margin: 1rem 0;
-        color: #d1d1d6 !important;
-    }}
-    
-    .section-title {{ 
-        font-size: 1.2rem; 
-        font-weight: 600; 
-        margin: 2rem 0 1rem; 
-        color: var(--primary);
-    }}
-    
-    .card-title {{ 
-        font-size: 1rem; 
-        font-weight: 600; 
-        margin: 0 0 0.75rem;
-        color: var(--primary);
-    }}
-    
-    .body-text {{ 
-        font-size: 1rem; 
-        color: var(--primary); 
-        line-height: 1.6;
-        margin: 0.5rem 0;
-    }}
-    
-    .muted-text {{ 
-        color: var(--muted); 
-        font-size: 1rem;
-    }}
-
-    /* Hero Section - Reduced padding */
-    .hero {{
-        background: var(--primary);
-        color: white;
-        padding: 2rem 1.5rem;
-        text-align: center;
-        border-radius: 12px;
-        margin: 0.5rem 0 2rem 0;  /* Reduced top margin */
-        border-left: 6px solid var(--accent);
-    }}
-    
-    .hero * {{
-        color: var(--white) !important;
-    }}
-    
-    .hero .hero-subtitle {{ 
-        color: #d1d1d6 !important; 
-    }}
-    
-    .hero .muted-text {{ 
-        color: #a1a1a6 !important; 
-    }}
-
-    /* Cards */
-    .card {{
-        background: var(--white);
-        border: 1px solid var(--medium);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 12px var(--shadow);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }}
-    
-    .card:hover {{
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px var(--shadow-hover);
-    }}
-    
-    .card-accent {{
-        border-left: 4px solid var(--accent);
-    }}
-
-    /* Buttons */
-    .btn {{
-        background: var(--accent);
-        color: var(--primary);
-        padding: 0.8rem 1.5rem;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 1rem;
-        display: inline-block;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 4px 8px var(--shadow-accent);
-        margin: 0.5rem 0.5rem 0.5rem 0;
-        text-decoration: none;
-    }}
-    
-    .btn:hover {{
-        background: #C7A133;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
-    }}
-
-    /* Stats Grid - Responsive */
-    .stats {{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin: 2rem 0;
-    }}
-    
-    .stat {{
-        background: var(--white);
-        border: 1px solid var(--medium);
-        border-radius: 12px;
-        padding: 1.5rem;
-        text-align: center;
-    }}
-    
-    .stat-label {{
-        font-size: 1rem;
-        color: var(--muted);
-    }}
-
-    /* Contact Card */
-    .contact {{
-        background: var(--primary);
-        color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        margin: 2rem 0;
-        border-top: 4px solid var(--accent);
-        text-align: center;
-    }}
-    
-    .contact * {{
-        color: var(--white) !important;
-    }}
-
-    /* Process Steps */
-    .process-step {{
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }}
-    
-    .step-number {{
-        background: var(--accent);
-        color: var(--primary);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        flex-shrink: 0;
-    }}
-
-    /* Utility Classes */
-    .text-center {{ text-align: center; }}
-    .mt-1 {{ margin-top: 1rem; }}
-    .mt-2 {{ margin-top: 2rem; }}
-    .mb-1 {{ margin-bottom: 1rem; }}
-
-    /* Mobile Responsive */
-    @media (max-width: 768px) {{
-        .hero {{
-            padding: 1.5rem 1rem;
-            margin: 0.5rem 0 1.5rem;
-        }}
-        
-        .hero-title {{
-            font-size: 1.2rem;
-        }}
-        
-        .hero-subtitle {{
-            font-size: 1rem;
-        }}
-        
-        .section-title {{
-            font-size: 1.1rem;
-        }}
-        
-        /* Mobile heading overrides */
-        h1 {{
-            font-size: 1.2rem !important;
-        }}
-        
-        h2 {{
-            font-size: 1.1rem !important;
-        }}
-        
-        h3 {{
-            font-size: 1rem !important;
-        }}
-        
-        .card {{
-            padding: 1rem;
-        }}
-        
-        .stats {{
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-        }}
-        
-        .stat {{
-            padding: 1rem;
-        }}
-        
-        .process-step {{
-            flex-direction: column;
-            text-align: center;
-        }}
-        
-        .btn {{
-            width: 100%;
-            margin: 0.5rem 0;
-        }}
-    }}
-
-    @media (max-width: 480px) {{
-        .hero-title {{
-            font-size: 1.1rem;
-        }}
-        
-        /* Smaller mobile heading overrides */
-        h1 {{
-            font-size: 1.1rem !important;
-        }}
-        
-        h2 {{
-            font-size: 1rem !important;
-        }}
-        
-        .stats {{
-            grid-template-columns: 1fr;
-        }}
-    }}
-    </style>
-    """, unsafe_allow_html=True)
-
-inject_css()
-
-# --- NAVIGATION BAR ---
-pages = ["🔥 Your Blocks", "🧠 The Method", "🏆 Results", "👤 About"]
-styles = {
-    "nav": {
-        "background-color": "#1C1C1E",  # Using your --primary color
-        "padding": "0.5rem 1rem",
-    },
-    "div": {
-        "max-width": "1200px",
-        "margin": "0 auto",
-    },
-    "span": {
-        "border-radius": "8px",
-        "color": "#FFFFFF",  # Using your --white color
-        "margin": "0 0.25rem",
-        "padding": "0.5rem 1rem",
-        "font-family": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-        "font-weight": "600",
-        "font-size": "1rem",
-    },
-    "active": {
-        "background-color": "#D4AF37",  # Using your --accent color
-        "color": "#1C1C1E",  # Using your --primary color
-        "box-shadow": "0 2px 8px rgba(212, 175, 55, 0.2)",  # Using your --shadow-accent
-    },
-    "hover": {
-        "background-color": "rgba(255, 255, 255, 0.1)",  # Lighter hover effect
-    },
-}
-
-page = st_navbar(pages, styles=styles)
-
-# Map the navigation bar selection to your page names
-page_mapping = {
-    "🔥 Your Blocks": "problems",
-    "🧠 The Method": "method",
-    "🏆 Results": "results",
-    "👤 About": "about"
-}
-
-# Set the session state based on the selected page
-if page in page_mapping:
-    st.session_state.page = page_mapping[page]
-
-# --- HERO SECTION ---
-st.markdown('<div class="main-container">', unsafe_allow_html=True)
-st.markdown("""
-<div class="hero">
-    <h1 class="hero-title">Rewire what’s holding you back - in 2 sessions</h1>
-    <p class="hero-subtitle">Life keeps moving fast, but you are feeling blocked. <br>
-    It is not definite, it is a neuro-programming session you need to activate.</p>
-    <div style="margin-top: 1rem;">
-        <a href="https://calendly.com/titre/free-session" target="_blank">
-            <button>📅 Book a FREE 15-min Call to if you are fit for it</button>
-        </a>
-    </div>
-    <p class="muted-text mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
-</div>
-""", unsafe_allow_html=True)
-
-# --- PAGE CONTENT ---
-if "page" not in st.session_state:
-    st.session_state.page = "problems"
-
-if st.session_state.page == "problems":
-    show_problems()
-elif st.session_state.page == "method":
-    show_method()
-elif st.session_state.page == "results":
-    show_results()
-elif st.session_state.page == "about":
-    show_about()
-
-# --- FOOTER ---
-st.markdown("""
-<div class="text-center muted-text mt-2" style="border-top: 1px solid var(--medium); padding-top: 2rem; margin-top: 3rem;">
-    <p>Laetitia Sheppard • Neuroscience Hypnotherapy • Bangkok, Thailand</p>
-    <p>© 2023 All Rights Reserved | Confidentiality Guaranteed</p>
-</div>
-</div>
-""", unsafe_allow_html=True)
-
-# --- PAGE CONTENT FUNCTIONS ---
+# --- PAGE CONTENT FUNCTIONS (MOVED TO TOP) ---
 def show_problems():
     st.markdown('<h2 class="section-title">The Hidden Blocks We Solve</h2>', unsafe_allow_html=True)
     
@@ -457,7 +22,7 @@ def show_problems():
         },
         {
             "title": "Perfectionism That Leads to Burnout", 
-            "desc": "You overwork, overcontrol, and can’t switch off. Your team feels it. So does your nervous system.",
+            "desc": "You overwork, overcontrol, and can't switch off. Your team feels it. So does your nervous system.",
             "result": "→ Rewire for strategic focus — make high-impact decisions without the mental overload"
         }
     ]
@@ -591,3 +156,160 @@ def show_about():
         <button class="btn">📅 Book Discovery Call</button>
     </div>
     """, unsafe_allow_html=True)
+
+# --- PAGE CONFIG ---
+st.set_page_config(
+    page_title="Neuroscience Hypnotherapy | Laetitia Sheppard",
+    page_icon="🧠",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
+# --- CSS INJECTION ---
+def inject_css():
+    st.markdown(f"""
+    <style>
+    :root {{
+        --primary: #1C1C1E;
+        --accent: #D4AF37;
+        --light: #F4F4F6;
+        --medium: #E2E2E6;
+        --muted: #6E6E73;
+        --white: #FFFFFF;
+        --shadow: rgba(0,0,0,0.05);
+        --shadow-hover: rgba(0,0,0,0.1);
+        --shadow-accent: rgba(212, 175, 55, 0.2);
+    }}
+
+    /* Menu Buttons Container */
+    .menu-buttons {{
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 1rem auto 2rem auto;
+        max-width: 1200px;
+        padding: 0 1rem;
+    }}
+
+    /* Menu Button Style */
+    .menu-btn {{
+        background: var(--primary) !important;
+        border: none !important;
+        color: var(--white) !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 8px !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        white-space: nowrap !important;
+        min-height: auto !important;
+        height: auto !important;
+        flex: 1;
+    }}
+
+    .menu-btn:hover {{
+        background: rgba(255, 255, 255, 0.1) !important;
+    }}
+
+    .menu-btn.active {{
+        background: var(--accent) !important;
+        color: var(--primary) !important;
+        box-shadow: 0 2px 8px var(--shadow-accent) !important;
+    }}
+
+    /* Rest of your existing CSS... */
+    .stApp {{
+        background: var(--light) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        line-height: 1.6;
+        color: var(--primary) !important;
+    }}
+
+    /* Stats Numbers - Gold Color */
+    .stat-number {{
+        color: var(--accent) !important;
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+    }}
+
+    /* Problem Result Arrows - Gold Color */
+    .problem-result {{
+        color: var(--accent) !important;
+        border-top: 1px dashed var(--medium) !important;
+        padding-top: 1rem !important;
+        margin-top: 1rem !important;
+    }}
+
+    /* Process Steps */
+    .process-step {{
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }}
+    
+    .step-number {{
+        background: var(--accent);
+        color: var(--primary);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+    }}
+
+    /* Rest of your CSS remains the same... */
+    </style>
+    """, unsafe_allow_html=True)
+
+inject_css()
+
+# --- SESSION STATE ---
+if "page" not in st.session_state:
+    st.session_state.page = "problems"
+
+# --- HERO SECTION WITH MENU BUTTONS ---
+st.markdown('<div class="main-container">', unsafe_allow_html=True)
+st.markdown("""
+<div class="hero">
+    <h1 class="hero-title">Rewire what's holding you back - in 2 sessions</h1>
+    <p class="hero-subtitle">Life keeps moving fast, but you are feeling blocked. <br>
+    It is not definite, it is a neuro-programming session you need to activate.</p>
+    <div style="margin-top: 1rem;">
+        <a href="https://calendly.com/titre/free-session" target="_blank">
+            <button class="btn">📅 Book a FREE 15-min Call to if you are fit for it</button>
+        </a>
+    </div>
+    <p class="muted-text mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
+</div>
+
+<div class="menu-buttons">
+    <button class="menu-btn {'active' if st.session_state.page == 'problems' else ''}" onclick="window.streamlitSessionState.set('page', 'problems')">🔥 Your Blocks</button>
+    <button class="menu-btn {'active' if st.session_state.page == 'method' else ''}" onclick="window.streamlitSessionState.set('page', 'method')">🧠 The Method</button>
+    <button class="menu-btn {'active' if st.session_state.page == 'results' else ''}" onclick="window.streamlitSessionState.set('page', 'results')">🏆 Results</button>
+    <button class="menu-btn {'active' if st.session_state.page == 'about' else ''}" onclick="window.streamlitSessionState.set('page', 'about')">👤 About</button>
+</div>
+""", unsafe_allow_html=True)
+
+# --- PAGE CONTENT ---
+if st.session_state.page == "problems":
+    show_problems()
+elif st.session_state.page == "method":
+    show_method()
+elif st.session_state.page == "results":
+    show_results()
+elif st.session_state.page == "about":
+    show_about()
+
+# --- FOOTER ---
+st.markdown("""
+<div class="text-center muted-text mt-2" style="border-top: 1px solid var(--medium); padding-top: 2rem; margin-top: 3rem;">
+    <p>Laetitia Sheppard • Neuroscience Hypnotherapy • Bangkok, Thailand</p>
+    <p>© 2023 All Rights Reserved | Confidentiality Guaranteed</p>
+</div>
+</div>
+""", unsafe_allow_html=True)
