@@ -35,11 +35,12 @@ st.markdown("""
 .main-header {
     background: var(--primary-color);
     color: white;
-    padding: 3rem 2rem;
+    padding: 3rem 2rem 4rem 2rem; /* Extra padding at bottom for buttons */
     text-align: center;
     border-radius: 0 0 12px 12px;
     border-left: 6px solid var(--accent-color);
     margin-bottom: 0;
+    position: relative;
 }
 
 .main-title {
@@ -54,35 +55,70 @@ st.markdown("""
     margin-bottom: 1rem;
 }
 
-.nav-bar {
+/* Menu Buttons Inside Hero */
+.menu-container {
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: center;
-    margin: 1rem 0 2rem 0;
-    gap: 2rem;
-    padding: 0 1rem;
 }
 
-.nav-button {
-    background-color: transparent;
+.menu-buttons {
+    display: flex;
+    background: var(--bg-color);
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.menu-button {
+    background: transparent;
     border: none;
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
     color: var(--text-muted);
-    border-bottom: 2px solid transparent;
-    padding: 0.5rem 0;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
-.nav-button:hover {
+.menu-button:hover {
     color: var(--primary-color);
 }
 
-.nav-button-active {
+.menu-button-active {
     color: var(--primary-color) !important;
-    border-bottom: 2px solid var(--accent-color) !important;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+/* Process Steps */
+.process-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.step-number {
+    background: var(--accent-color);
+    color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+}
+
+/* Rest of your CSS... */
 .problem-card {
     background: var(--card-bg);
     padding: 1.5rem;
@@ -165,9 +201,13 @@ st.markdown("""
     .main-subtitle {
         font-size: 1rem;
     }
-    .nav-bar {
-        flex-direction: column;
-        gap: 0.5rem;
+    .menu-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .menu-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
     }
 }
 </style>
@@ -177,7 +217,7 @@ st.markdown("""
 if "page" not in st.session_state:
     st.session_state.page = "problems"
 
-# --- HEADER ---
+# --- HEADER WITH MENU BUTTONS ---
 st.markdown("""
 <div class="main-header">
     <div class="main-title">The Expat's Dilemma</div>
@@ -188,17 +228,17 @@ st.markdown("""
         <button>🧠 Yes, I Want My Breakthrough Session →</button>
     </div>
     <p style="color: #a1a1a6; margin-top: 1rem;">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
+    
+    <div class="menu-container">
+        <div class="menu-buttons">
+            <button class="menu-button" onclick="window.streamlitSessionState.set('page', 'problems')">🔥 Your Blocks</button>
+            <button class="menu-button" onclick="window.streamlitSessionState.set('page', 'method')">🧠 The Method</button>
+            <button class="menu-button" onclick="window.streamlitSessionState.set('page', 'results')">🏆 Results</button>
+            <button class="menu-button" onclick="window.streamlitSessionState.set('page', 'about')">👤 About</button>
+        </div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
-
-# --- NAVIGATION BAR ---
-st.markdown('<div class="main-container"><div class="nav-bar">', unsafe_allow_html=True)
-tabs = [("🔥 Your Blocks", "problems"), ("🧠 The Method", "method"), ("🏆 Results", "results"), ("👤 About", "about")]
-for label, page_name in tabs:
-    css_class = "nav-button-active" if st.session_state.page == page_name else "nav-button"
-    if st.button(label, key=page_name):
-        st.session_state.page = page_name
-st.markdown('</div></div>', unsafe_allow_html=True)
 
 # --- CONTENT AREAS ---
 def show_problems():
@@ -272,21 +312,29 @@ def show_method():
     </div>
     """, unsafe_allow_html=True)
     
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("""
-        <div class='problem-card'>
-            <strong>1. Pattern Mapping</strong><br>
-            We identify the <em>exact</em> neural circuits causing your blocks using fMRI-inspired techniques
+    st.markdown("""
+    <div class='problem-card'>
+        <div class="process-step">
+            <div class="step-number">1</div>
+            <div>
+                <h3 style="margin: 0 0 0.5rem 0;">Session 1: Pattern Mapping</h3>
+                <p style="margin: 0;">We identify the <em>exact</em> neural circuits causing your blocks using fMRI-inspired techniques</p>
+            </div>
         </div>
-        """, unsafe_allow_html=True)
-    with col2:
-        st.markdown("""
-        <div class='problem-card'>
-            <strong>2. Neural Rewiring</strong><br>
-            Precision hypnotherapy to install new patterns that withstand Bangkok's pressures
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class='problem-card'>
+        <div class="process-step">
+            <div class="step-number">2</div>
+            <div>
+                <h3 style="margin: 0 0 0.5rem 0;">Session 2: Neural Rewiring</h3>
+                <p style="margin: 0;">Precision hypnotherapy to install new patterns that withstand Bangkok's pressures</p>
+            </div>
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
