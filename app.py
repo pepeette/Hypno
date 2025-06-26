@@ -167,377 +167,49 @@ def inject_css():
         --shadow-accent: rgba(212, 175, 55, 0.2);
     }}
 
-    /* Navigation Bar Styles */
-    .stNavbar {{
-        margin-bottom: 0.5rem !important;  /* Reduced gap below navbar */
+    /* Remove all top padding/margin */
+    .stApp {{
+        padding-top: 0 !important;
+        margin-top: 0 !important;
     }}
 
-    /* Stats Numbers - Gold Color */
-    .stat-number {{
-        color: var(--accent) !important;
-        font-size: 1.5rem !important;
-        font-weight: 700 !important;
+    /* Hero Section - No top margin */
+    .hero {{
+        margin-top: 0 !important;
+        border-radius: 0 0 12px 12px !important;
     }}
 
-    /* Problem Result Arrows - Gold Color */
-    .problem-result {{
-        color: var(--accent) !important;
-        border-top: 1px dashed var(--medium) !important;
-        padding-top: 1rem !important;
-        margin-top: 1rem !important;
+    /* Menu Buttons Container */
+    .menu-buttons {{
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 1rem 0 2rem 0;
+    }}
+
+    /* Menu Button Style */
+    .menu-btn {{
+        background: var(--primary) !important;
+        color: var(--white) !important;
+        border: 1px solid var(--accent) !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1rem !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+    }}
+
+    .menu-btn:hover {{
+        background: var(--accent) !important;
+        color: var(--primary) !important;
+        transform: translateY(-2px) !important;
     }}
 
     /* Rest of your existing CSS... */
-    /* Force light mode - no dark mode support */
-
-    /* Base Styles */
-    .stApp {{
-        background: var(--light) !important;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-        line-height: 1.6;
-        color: var(--primary) !important;
-    }}
-
-    /* Override all Streamlit default headings */
-    h1, h2, h3, h4, h5, h6 {{
-        color: var(--primary) !important;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-    }}
-    
-    h1 {{
-        font-size: 1.5rem !important;
-        font-weight: 700 !important;
-        line-height: 1.2 !important;
-        margin: 1rem 0 !important;
-    }}
-    
-    h2 {{
-        font-size: 1.2rem !important;
-        font-weight: 600 !important;
-        line-height: 1.2 !important;
-        margin: 2rem 0 1rem !important;
-        color: var(--primary) !important;
-    }}
-    
-    h3 {{
-        font-size: 1rem !important;
-        font-weight: 600 !important;
-        line-height: 1.2 !important;
-        margin: 1rem 0 0.5rem !important;
-        color: var(--primary) !important;
-    }}
-    
-    /* Force all text elements to use light theme colors */
-    p, li, span, div {{
-        color: var(--primary) !important;
-    }}
-
-    /* Hide Streamlit default elements */
-    #MainMenu {{visibility: hidden;}}
-    footer {{visibility: hidden;}}
-    header {{visibility: hidden;}}
-    .stDeployButton {{display: none;}}
-
-    /* Container */
-    .main-container {{
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }}
-
-    /* Typography - Consistent sizing with 1.5rem max */
-    .hero-title {{ 
-        font-size: 1.5rem; 
-        font-weight: 700; 
-        line-height: 1.2; 
-        margin: 0;
-        color: var(--white) !important;
-    }}
-    
-    .hero-subtitle {{ 
-        font-size: 1rem; 
-        font-weight: 400; 
-        margin: 1rem 0;
-        color: #d1d1d6 !important;
-    }}
-    
-    .section-title {{ 
-        font-size: 1.2rem; 
-        font-weight: 600; 
-        margin: 2rem 0 1rem; 
-        color: var(--primary);
-    }}
-    
-    .card-title {{ 
-        font-size: 1rem; 
-        font-weight: 600; 
-        margin: 0 0 0.75rem;
-        color: var(--primary);
-    }}
-    
-    .body-text {{ 
-        font-size: 1rem; 
-        color: var(--primary); 
-        line-height: 1.6;
-        margin: 0.5rem 0;
-    }}
-    
-    .muted-text {{ 
-        color: var(--muted); 
-        font-size: 1rem;
-    }}
-
-    /* Hero Section - Reduced padding */
-    .hero {{
-        background: var(--primary);
-        color: white;
-        padding: 2rem 1.5rem;
-        text-align: center;
-        border-radius: 12px;
-        margin: 0.5rem 0 2rem 0;  /* Reduced top margin */
-        border-left: 6px solid var(--accent);
-    }}
-    
-    .hero * {{
-        color: var(--white) !important;
-    }}
-    
-    .hero .hero-subtitle {{ 
-        color: #d1d1d6 !important; 
-    }}
-    
-    .hero .muted-text {{ 
-        color: #a1a1a6 !important; 
-    }}
-
-    /* Cards */
-    .card {{
-        background: var(--white);
-        border: 1px solid var(--medium);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 12px var(--shadow);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }}
-    
-    .card:hover {{
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px var(--shadow-hover);
-    }}
-    
-    .card-accent {{
-        border-left: 4px solid var(--accent);
-    }}
-
-    /* Buttons */
-    .btn {{
-        background: var(--accent);
-        color: var(--primary);
-        padding: 0.8rem 1.5rem;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 1rem;
-        display: inline-block;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 4px 8px var(--shadow-accent);
-        margin: 0.5rem 0.5rem 0.5rem 0;
-        text-decoration: none;
-    }}
-    
-    .btn:hover {{
-        background: #C7A133;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
-    }}
-
-    /* Stats Grid - Responsive */
-    .stats {{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin: 2rem 0;
-    }}
-    
-    .stat {{
-        background: var(--white);
-        border: 1px solid var(--medium);
-        border-radius: 12px;
-        padding: 1.5rem;
-        text-align: center;
-    }}
-    
-    .stat-label {{
-        font-size: 1rem;
-        color: var(--muted);
-    }}
-
-    /* Contact Card */
-    .contact {{
-        background: var(--primary);
-        color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        margin: 2rem 0;
-        border-top: 4px solid var(--accent);
-        text-align: center;
-    }}
-    
-    .contact * {{
-        color: var(--white) !important;
-    }}
-
-    /* Process Steps */
-    .process-step {{
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }}
-    
-    .step-number {{
-        background: var(--accent);
-        color: var(--primary);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        flex-shrink: 0;
-    }}
-
-    /* Utility Classes */
-    .text-center {{ text-align: center; }}
-    .mt-1 {{ margin-top: 1rem; }}
-    .mt-2 {{ margin-top: 2rem; }}
-    .mb-1 {{ margin-bottom: 1rem; }}
-
-    /* Mobile Responsive */
-    @media (max-width: 768px) {{
-        .hero {{
-            padding: 1.5rem 1rem;
-            margin: 0.5rem 0 1.5rem;
-        }}
-        
-        .hero-title {{
-            font-size: 1.2rem;
-        }}
-        
-        .hero-subtitle {{
-            font-size: 1rem;
-        }}
-        
-        .section-title {{
-            font-size: 1.1rem;
-        }}
-        
-        /* Mobile heading overrides */
-        h1 {{
-            font-size: 1.2rem !important;
-        }}
-        
-        h2 {{
-            font-size: 1.1rem !important;
-        }}
-        
-        h3 {{
-            font-size: 1rem !important;
-        }}
-        
-        .card {{
-            padding: 1rem;
-        }}
-        
-        .stats {{
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-        }}
-        
-        .stat {{
-            padding: 1rem;
-        }}
-        
-        .process-step {{
-            flex-direction: column;
-            text-align: center;
-        }}
-        
-        .btn {{
-            width: 100%;
-            margin: 0.5rem 0;
-        }}
-    }}
-
-    @media (max-width: 480px) {{
-        .hero-title {{
-            font-size: 1.1rem;
-        }}
-        
-        /* Smaller mobile heading overrides */
-        h1 {{
-            font-size: 1.1rem !important;
-        }}
-        
-        h2 {{
-            font-size: 1rem !important;
-        }}
-        
-        .stats {{
-            grid-template-columns: 1fr;
-        }}
-    }}
+    /* ... (keep all your other existing CSS rules) ... */
     </style>
     """, unsafe_allow_html=True)
 
 inject_css()
-
-# --- NAVIGATION BAR ---
-pages = ["🔥 Your Blocks", "🧠 The Method", "🏆 Results", "👤 About"]
-styles = {
-    "nav": {
-        "background-color": "#1C1C1E",  # Using your --primary color
-        "padding": "0.5rem 1rem",
-    },
-    "div": {
-        "max-width": "1200px",
-        "margin": "0 auto",
-    },
-    "span": {
-        "border-radius": "8px",
-        "color": "#FFFFFF",  # Using your --white color
-        "margin": "0 0.25rem",
-        "padding": "0.5rem 1rem",
-        "font-family": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-        "font-weight": "600",
-        "font-size": "1rem",
-    },
-    "active": {
-        "background-color": "#D4AF37",  # Using your --accent color
-        "color": "#1C1C1E",  # Using your --primary color
-        "box-shadow": "0 2px 8px rgba(212, 175, 55, 0.2)",  # Using your --shadow-accent
-    },
-    "hover": {
-        "background-color": "rgba(255, 255, 255, 0.1)",  # Lighter hover effect
-    },
-}
-
-page = st_navbar(pages, styles=styles)
-
-# Map the navigation bar selection to your page names
-page_mapping = {
-    "🔥 Your Blocks": "problems",
-    "🧠 The Method": "method",
-    "🏆 Results": "results",
-    "👤 About": "about"
-}
-
-# Set the session state based on the selected page
-if page in page_mapping:
-    st.session_state.page = page_mapping[page]
 
 # --- HERO SECTION ---
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
@@ -550,6 +222,21 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# --- MENU BUTTONS ---
+cols = st.columns(4)
+with cols[0]:
+    if st.button("🔥 Your Blocks", key="problems_btn", help="Go to Problems"):
+        st.session_state.page = "problems"
+with cols[1]:
+    if st.button("🧠 The Method", key="method_btn", help="Go to Method"):
+        st.session_state.page = "method"
+with cols[2]:
+    if st.button("🏆 Results", key="results_btn", help="Go to Results"):
+        st.session_state.page = "results"
+with cols[3]:
+    if st.button("👤 About", key="about_btn", help="Go to About"):
+        st.session_state.page = "about"
+        
 # --- PAGE CONTENT ---
 if "page" not in st.session_state:
     st.session_state.page = "problems"
