@@ -148,7 +148,7 @@ def inject_css():
     .hero {{
         background: var(--primary);
         color: white;
-        padding: 2rem 1.5rem;
+        padding: 1.5rem 1.5rem;
         text-align: center;
         border-radius: 12px;
         margin: 0.5rem 0 2rem 0;
@@ -368,7 +368,7 @@ st.markdown("""
 <div class="hero">
     <h1 class="hero-title">Rewire what's holding you back - in 2 sessions</h1>
     <p class="hero-subtitle">Life keeps moving fast, but you are feeling blocked.<br>
-    It is not definite, it is a neuro-programming session you need to activate.</p>
+    It is not definite, it is a neural pathway that needs to be reprogrammed.</p>
     <button class="btn">📅 Book a FREE 15-min Call to see if you're fit for it</button>
     <p class="muted-text mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
 </div>
