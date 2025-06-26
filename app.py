@@ -24,35 +24,6 @@ def inject_css():
         --shadow-accent: rgba(212, 175, 55, 0.2);
     }}
 
-    /* Navigation Buttons */
-    .nav-buttons {{
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        margin: 1.5rem auto 0 auto;
-        max-width: 1200px;
-    }}
-
-    .nav-btn {{
-        background: var(--primary) !important;
-        color: var(--white) !important;
-        border: none !important;
-        font-weight: 600 !important;
-        padding: 0.5rem 1rem !important;
-        border-radius: 8px !important;
-        transition: all 0.3s ease !important;
-    }}
-
-    .nav-btn:hover {{
-        background: rgba(255,255,255,0.1) !important;
-    }}
-
-    .nav-btn.active {{
-        background: var(--accent) !important;
-        color: var(--primary) !important;
-        box-shadow: 0 2px 8px var(--shadow-accent) !important;
-    }}
-
     /* Rest of your original CSS remains completely unchanged */
     .stApp {{
         background: var(--light) !important;
@@ -123,6 +94,13 @@ def inject_css():
         font-size: 1.2rem; 
         font-weight: 600; 
         margin: 2rem 0 1rem; 
+        color: var(--primary);
+    }}
+
+    .sub-section-title {{
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 1.5rem 0 1rem;
         color: var(--primary);
     }}
     
@@ -206,6 +184,11 @@ def inject_css():
         background: #C7A133;
         transform: translateY(-2px);
         box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+    }}
+
+    .nav-btn-active {{
+        background: var(--accent) !important;
+        color: var(--primary) !important;
     }}
 
     .stats {{
@@ -307,15 +290,6 @@ def inject_css():
             padding: 1rem;
         }}
         
-        .nav-buttons {{
-            flex-wrap: wrap;
-        }}
-        
-        .nav-btn {{
-            padding: 0.5rem;
-            font-size: 0.9rem;
-        }}
-        
         .stats {{
             grid-template-columns: repeat(2, 1fr);
             gap: 0.75rem;
@@ -377,44 +351,36 @@ st.markdown("""
 # --- NAVIGATION BUTTONS ---
 cols = st.columns(4)
 with cols[0]:
-    if st.button("🔥 Your Blocks", key="nav_problems", 
-                help="View common problems we solve"):
+    problems_btn = st.button("🔥 Your Blocks", key="nav_problems", 
+                            help="View common problems we solve",
+                            type="primary" if st.session_state.page == "problems" else "secondary")
+    if problems_btn:
         st.session_state.page = "problems"
         st.rerun()
+
 with cols[1]:
-    if st.button("🧠 The Method", key="nav_method", 
-                help="Learn about our 2-session method"):
+    method_btn = st.button("🧠 The Method", key="nav_method", 
+                          help="Learn about our 2-session method",
+                          type="primary" if st.session_state.page == "method" else "secondary")
+    if method_btn:
         st.session_state.page = "method"
         st.rerun()
+
 with cols[2]:
-    if st.button("🏆 Results", key="nav_results", 
-                help="See client transformations"):
+    results_btn = st.button("🏆 Results", key="nav_results", 
+                           help="See client transformations",
+                           type="primary" if st.session_state.page == "results" else "secondary")
+    if results_btn:
         st.session_state.page = "results"
         st.rerun()
+
 with cols[3]:
-    if st.button("👤 About", key="nav_about", 
-                help="About Laetitia and the clinic"):
+    about_btn = st.button("👤 About", key="nav_about", 
+                         help="About Laetitia and the clinic",
+                         type="primary" if st.session_state.page == "about" else "secondary")
+    if about_btn:
         st.session_state.page = "about"
         st.rerun()
-
-# Add CSS class to active button
-st.markdown(f"""
-<script>
-document.addEventListener('DOMContentLoaded', function() {{
-    const activePage = '{st.session_state.page}';
-    const buttons = {{
-        'problems': document.querySelector('[data-testid="baseButton-secondary"][aria-label="🔥 Your Blocks"]'),
-        'method': document.querySelector('[data-testid="baseButton-secondary"][aria-label="🧠 The Method"]'),
-        'results': document.querySelector('[data-testid="baseButton-secondary"][aria-label="🏆 Results"]'),
-        'about': document.querySelector('[data-testid="baseButton-secondary"][aria-label="👤 About"]')
-    }};
-    
-    if (buttons[activePage]) {{
-        buttons[activePage].classList.add('nav-btn-active');
-    }}
-}});
-</script>
-""", unsafe_allow_html=True)
 
 # --- PAGE CONTENT FUNCTIONS ---
 def show_problems():
@@ -469,7 +435,18 @@ def show_problems():
             <div class="stat-label">Ongoing sessions</div>
         </div>
     </div>
+    """, unsafe_allow_html=True)
+
+    # Add FAQ section
+    st.markdown('<div class="sub-section-title">Questions from Asia-Based Leaders</div>', unsafe_allow_html=True)
+    with st.expander("How is this different from coaching?"):
+        st.write("This isn't coaching—it's unconscious neural recalibration. We target the source of performance limits, not just surface habits.")
+    with st.expander("Why does it work in 2 sessions?"):
+        st.write("Our process is precise and rooted in applied neuroscience. No fluff, no long timelines.")
+    with st.expander("Is it confidential?"):
+        st.write("100%. Trusted by leaders across Asia. No client data is stored beyond legal minimums.")
     
+    st.markdown("""
     <div class="text-center mt-2">
         <button class="btn">🚨 Only 3 Spots Left This Month →</button>
     </div>
@@ -527,27 +504,25 @@ def show_results():
     """, unsafe_allow_html=True)
 
 def show_about():
+    st.markdown('<div class="sub-section-title">Your certified therapist</div>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2])
     with col1:
         try:
             st.image("./img/ID.jpg", width=250, caption="Laetitia Sheppard")
         except:
-            st.markdown('<div style="width: 250px; height: 300px; background: var(--medium); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--muted);">Profile Image</div>', unsafe_allow_html=True)
+            st.info("Image not found")
     
     with col2:
-        st.markdown('<h2 class="section-title">About Laetitia</h2>', unsafe_allow_html=True)
         st.markdown("""
-        <div class="body-text">
-            <p><strong>Bangkok-based specialist</strong> with 13 years in Asian financial hubs (Hong Kong, Singapore, Bangkok)</p>
-            <p>Understands the unique pressures of:</p>
-            <ul>
-                <li>Expat stress meets career ambition</li>
-                <li>Thai business culture nuances</li>
-                <li>Metabolic impact of Bangkok's environment</li>
-            </ul>
-            <p>Fellow expat who cracked the code after my own breakdown in Hong Kong</p>
-        </div>
-        """, unsafe_allow_html=True)
+        **Experience Across Asia's Financial Hubs**
+        - 13+ years on trading floors: Bloomberg, HSBC, CA Indosuez
+        - Managed $50M book, coached 48-person teams in 12 countries, cross led 2500 employee performance
+        
+        **Credentials:**
+        - Certified Behavioral Performance Specialist & Hypnotherapy (UK, 2017)
+        - Certified Neuroscience Coach (Dialectical Behavioral Therapy, 2024)
+        - Fluent: English, French, Spanish, Italian
+        """)
     
     st.markdown("""
     <div class="contact">
