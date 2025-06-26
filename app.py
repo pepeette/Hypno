@@ -19,63 +19,150 @@ def inject_css():
         --medium: #E2E2E6;
         --muted: #6E6E73;
         --white: #FFFFFF;
+        --shadow: rgba(0,0,0,0.05);
+        --shadow-hover: rgba(0,0,0,0.1);
+        --shadow-accent: rgba(212, 175, 55, 0.2);
     }}
 
-    /* Force light mode */
-    .stApp {{
-        background: var(--light) !important;
-        color: var(--primary) !important;
-    }}
-    .st-bb, .st-at, .st-ae, .st-af, .st-ag, .st-ah, .st-ai, .st-aj, .st-ak, .st-al, .st-am, .st-an, .st-ao, .st-ap, .st-aq, .st-ar, .st-as {{
-        color: var(--primary) !important;
+    /* Dark mode variables */
+    @media (prefers-color-scheme: dark) {{
+        :root {{
+            --primary: #FFFFFF;
+            --light: #1C1C1E;
+            --white: #2C2C2E;
+            --medium: #3A3A3C;
+            --shadow: rgba(255,255,255,0.05);
+            --shadow-hover: rgba(255,255,255,0.1);
+        }}
     }}
 
     /* Base Styles */
     .stApp {{
-        font-family: 'Inter', sans-serif !important;
+        background: var(--light) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         line-height: 1.6;
     }}
 
-    /* Typography - No font bigger than 1.5rem */
-    h1 {{ font-size: 1.5rem; font-weight: 700; line-height: 1.2; }}
-    h2 {{ font-size: 1.35rem; font-weight: 600; margin: 1.25rem 0 1rem; }}
-    h3 {{ font-size: 1.2rem; font-weight: 600; margin: 1rem 0 0.5rem; }}
-    p, li {{ font-size: 1rem; color: var(--primary); }}
-    .muted {{ color: var(--muted); font-size: 0.95rem; }}
+    /* Hide Streamlit default elements */
+    #MainMenu {{visibility: hidden;}}
+    footer {{visibility: hidden;}}
+    header {{visibility: hidden;}}
+    .stDeployButton {{display: none;}}
 
-    /* Layout */
-    .container {{
+    /* Container */
+    .main-container {{
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 1rem;
     }}
 
-    /* Proper Navigation Menu */
-    .menu-container {{
-        display: flex;
-        justify-content: flex-start;
-        background: var(--white);
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid var(--medium);
+    /* Navigation */
+    .nav-header {{
         position: sticky;
         top: 0;
+        background: var(--white);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--medium);
         z-index: 100;
+        padding: 1rem 0;
+        margin-bottom: 0;
     }}
-    .menu-item {{
-        margin-right: 1.5rem;
-        font-weight: 600;
-        color: var(--muted);
-        text-decoration: none;
-        padding: 0.5rem 0;
-        border-bottom: 2px solid transparent;
-        transition: all 0.3s ease;
+
+    .nav-container {{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        flex-wrap: wrap;
     }}
-    .menu-item:hover {{
+
+    .nav-btn {{
+        background: none !important;
+        border: none !important;
+        color: var(--muted) !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 8px !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        white-space: nowrap !important;
+        min-height: auto !important;
+        height: auto !important;
+    }}
+
+    .nav-btn:hover {{
+        color: var(--primary) !important;
+        background: var(--medium) !important;
+        transform: none !important;
+    }}
+
+    .nav-btn.active {{
+        color: var(--primary) !important;
+        background: var(--accent) !important;
+        box-shadow: 0 2px 8px var(--shadow-accent) !important;
+    }}
+
+    /* Typography - Simplified hierarchy */
+    .hero-title {{ 
+        font-size: 2rem; 
+        font-weight: 700; 
+        line-height: 1.2; 
+        margin: 0;
+    }}
+    
+    .hero-subtitle {{ 
+        font-size: 1.2rem; 
+        font-weight: 400; 
+        margin: 1rem 0;
+    }}
+    
+    .section-title {{ 
+        font-size: 1.5rem; 
+        font-weight: 600; 
+        margin: 2rem 0 1rem; 
         color: var(--primary);
     }}
-    .menu-item.active {{
+    
+    .card-title {{ 
+        font-size: 1.2rem; 
+        font-weight: 600; 
+        margin: 0 0 0.75rem;
         color: var(--primary);
-        border-color: var(--accent);
+    }}
+    
+    .body-text {{ 
+        font-size: 1rem; 
+        color: var(--primary); 
+        line-height: 1.6;
+        margin: 0.5rem 0;
+    }}
+    
+    .muted-text {{ 
+        color: var(--muted); 
+        font-size: 0.9rem;
+    }}
+
+    /* Hero Section - Reduced padding */
+    .hero {{
+        background: var(--primary);
+        color: white;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        border-radius: 12px;
+        margin: 1rem 0 2rem;
+        border-left: 6px solid var(--accent);
+    }}
+    
+    .hero .hero-subtitle {{ 
+        color: #d1d1d6; 
+    }}
+    
+    .hero .muted-text {{ 
+        color: #a1a1a6; 
     }}
 
     /* Cards */
@@ -83,15 +170,17 @@ def inject_css():
         background: var(--white);
         border: 1px solid var(--medium);
         border-radius: 12px;
-        padding: 1.25rem;
-        margin-bottom: 1.25rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px var(--shadow);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }}
+    
     .card:hover {{
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 20px var(--shadow-hover);
     }}
+    
     .card-accent {{
         border-left: 4px solid var(--accent);
     }}
@@ -100,66 +189,50 @@ def inject_css():
     .btn {{
         background: var(--accent);
         color: var(--primary);
-        padding: 0.7rem 1.5rem;
-        border-radius: 6px;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
         font-weight: 600;
+        font-size: 0.95rem;
         display: inline-block;
         transition: all 0.3s ease;
         border: none;
         cursor: pointer;
-        box-shadow: 0 2px 6px rgba(212, 175, 55, 0.2);
-        margin: 0.5rem 0;
+        box-shadow: 0 4px 8px var(--shadow-accent);
+        margin: 0.5rem 0.5rem 0.5rem 0;
         text-decoration: none;
-        font-size: 1rem;
     }}
+    
     .btn:hover {{
         background: #C7A133;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
     }}
 
-    /* Hero Section */
-    .hero {{
-        background: var(--primary);
-        color: white;
-        padding: 1.5rem 1rem;
-        text-align: center;
-        border-radius: 12px;
-        margin: 1rem 0 1.5rem;
-        border-left: 4px solid var(--accent);
-    }}
-    .hero h1 {{ 
-        color: white; 
-        margin-bottom: 0.5rem; 
-        font-size: 1.5rem;
-    }}
-    .hero .muted {{ 
-        color: #d1d1d6; 
-        font-size: 1rem;
-        margin-bottom: 0.75rem;
-    }}
-
-    /* Stats Grid */
+    /* Stats Grid - Responsive */
     .stats {{
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
-        margin: 1.5rem 0;
+        margin: 2rem 0;
     }}
+    
     .stat {{
         background: var(--white);
         border: 1px solid var(--medium);
-        border-radius: 8px;
-        padding: 1rem;
+        border-radius: 12px;
+        padding: 1.5rem;
         text-align: center;
     }}
+    
     .stat-number {{
-        font-size: 1.25rem;
+        font-size: 1.8rem;
         font-weight: 700;
         color: var(--accent);
+        margin-bottom: 0.5rem;
     }}
+    
     .stat-label {{
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         color: var(--muted);
     }}
 
@@ -167,44 +240,109 @@ def inject_css():
     .contact {{
         background: var(--primary);
         color: white;
-        padding: 1.5rem;
+        padding: 2rem;
         border-radius: 12px;
-        margin: 1.5rem 0;
-        border-top: 3px solid var(--accent);
+        margin: 2rem 0;
+        border-top: 4px solid var(--accent);
+        text-align: center;
     }}
-    .contact h3 {{ 
-        color: white; 
-        font-size: 1.25rem;
+
+    /* Process Steps */
+    .process-step {{
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }}
+    
+    .step-number {{
+        background: var(--accent);
+        color: var(--primary);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
     }}
 
     /* Utility Classes */
     .text-center {{ text-align: center; }}
     .mt-1 {{ margin-top: 1rem; }}
-    .mt-2 {{ margin-top: 1.5rem; }}
+    .mt-2 {{ margin-top: 2rem; }}
     .mb-1 {{ margin-bottom: 1rem; }}
 
-    /* Mobile Responsiveness */
+    /* Mobile Responsive */
     @media (max-width: 768px) {{
-        .menu-container {{
-            padding: 0.5rem 1rem;
-            justify-content: space-around;
-        }}
-        .menu-item {{
-            margin-right: 0;
-            font-size: 0.9rem;
-        }}
         .hero {{
-            padding: 1.25rem 0.75rem;
-            margin-bottom: 1.25rem;
+            padding: 1.5rem 1rem;
+            margin: 0.5rem 0 1.5rem;
         }}
+        
+        .hero-title {{
+            font-size: 1.6rem;
+        }}
+        
+        .hero-subtitle {{
+            font-size: 1.1rem;
+        }}
+        
+        .section-title {{
+            font-size: 1.3rem;
+        }}
+        
         .card {{
             padding: 1rem;
         }}
-        .contact {{
-            padding: 1.25rem;
+        
+        .nav-container {{
+            gap: 0.25rem;
+            justify-content: flex-start;
         }}
+        
+        .nav-btn {{
+            font-size: 0.85rem !important;
+            padding: 0.4rem 0.8rem !important;
+        }}
+        
         .stats {{
             grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }}
+        
+        .stat {{
+            padding: 1rem;
+        }}
+        
+        .stat-number {{
+            font-size: 1.5rem;
+        }}
+        
+        .process-step {{
+            flex-direction: column;
+            text-align: center;
+        }}
+        
+        .btn {{
+            width: 100%;
+            margin: 0.5rem 0;
+        }}
+    }}
+
+    @media (max-width: 480px) {{
+        .hero-title {{
+            font-size: 1.4rem;
+        }}
+        
+        .nav-btn {{
+            font-size: 0.8rem !important;
+            padding: 0.3rem 0.6rem !important;
+        }}
+        
+        .stats {{
+            grid-template-columns: 1fr;
         }}
     }}
     </style>
@@ -216,49 +354,36 @@ inject_css()
 if "page" not in st.session_state:
     st.session_state.page = "problems"
 
-# --- PROPER NAVIGATION MENU ---
-tabs = [
-    {"label": "🔥 Your Blocks", "page": "problems"},
-    {"label": "🧠 The Method", "page": "method"},
-    {"label": "🏆 Results", "page": "results"},
-    {"label": "👤 About", "page": "about"}
-]
+# --- NAVIGATION HEADER ---
+st.markdown('<div class="nav-header">', unsafe_allow_html=True)
+st.markdown('<div class="nav-container">', unsafe_allow_html=True)
 
-st.markdown("""
-<div class="container">
-    <div class="menu-container">
-""", unsafe_allow_html=True)
+tabs = [("🔥 Your Blocks", "problems"), ("🧠 The Method", "method"), ("🏆 Results", "results"), ("👤 About", "about")]
 
-for tab in tabs:
-    active = "active" if st.session_state.page == tab["page"] else ""
-    if st.button(tab["label"], key=f"menu_{tab['page']}"):
-        st.session_state.page = tab["page"]
-    st.markdown(f"""
-    <style>
-    div[data-testid="stButton"] > button[kind="secondary"][aria-pressed="true"] {{
-        color: var(--primary) !important;
-        border-bottom: 2px solid var(--accent) !important;
-    }}
-    </style>
-    """, unsafe_allow_html=True)
+cols = st.columns(len(tabs))
+for i, (label, page_name) in enumerate(tabs):
+    with cols[i]:
+        active_class = "active" if st.session_state.page == page_name else ""
+        if st.button(label, key=f"nav_{page_name}", help=f"Go to {label}"):
+            st.session_state.page = page_name
+            st.rerun()
 
-st.markdown("""
-    </div>
-""", unsafe_allow_html=True)
+st.markdown('</div></div>', unsafe_allow_html=True)
 
 # --- HERO SECTION ---
+st.markdown('<div class="main-container">', unsafe_allow_html=True)
 st.markdown("""
-    <div class="hero">
-        <h1>The Expat's Dilemma</h1>
-        <p class="muted">You sacrificed everything for this Bangkok career - so why does success feel like wearing someone else's skin?</p>
-        <button class="btn">🧠 Yes, I Want My Breakthrough Session →</button>
-        <p class="muted mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
-    </div>
+<div class="hero">
+    <h1 class="hero-title">The Expat's Dilemma</h1>
+    <p class="hero-subtitle">You sacrificed everything for this Bangkok career - so why does success feel like wearing someone else's skin?</p>
+    <button class="btn">🧠 Yes, I Want My Breakthrough Session →</button>
+    <p class="muted-text mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
+</div>
 """, unsafe_allow_html=True)
 
 # --- PAGE CONTENT ---
 def show_problems():
-    st.markdown('<h2>The Hidden Blocks We Solve</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">The Hidden Blocks We Solve</h2>', unsafe_allow_html=True)
     
     problems = [
         {
@@ -281,15 +406,15 @@ def show_problems():
     for p in problems:
         st.markdown(f"""
         <div class="card card-accent">
-            <h3>{p['title']}</h3>
-            <p>{p['desc']}</p>
-            <p style="color: var(--accent); border-top: 1px dashed var(--medium); padding-top: 0.75rem;">
+            <h3 class="card-title">{p['title']}</h3>
+            <p class="body-text">{p['desc']}</p>
+            <p class="body-text" style="color: var(--accent); border-top: 1px dashed var(--medium); padding-top: 1rem; margin-top: 1rem;">
                 {p['result']}
             </p>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown('<h2 class="mt-2">Why It Works</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title mt-2">Why It Works</h2>', unsafe_allow_html=True)
     st.markdown("""
     <div class="stats">
         <div class="stat">
@@ -316,62 +441,68 @@ def show_problems():
     """, unsafe_allow_html=True)
 
 def show_method():
-    st.markdown('<h2>Why 2 Sessions Work When Nothing Else Did</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Why 2 Sessions Work When Nothing Else Did</h2>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="card">
-        <h3>Traditional Therapy Failed You Because:</h3>
-        <ul>
+        <h3 class="card-title">Traditional Therapy Failed You Because:</h3>
+        <ul class="body-text">
             <li>It talks <em>about</em> problems instead of rewriting them</li>
             <li>Progress gets derailed by Bangkok's 60-hour work weeks</li>
             <li>Western methods don't address Asian business culture nuances</li>
         </ul>
     </div>
+    """, unsafe_allow_html=True)
     
+    st.markdown("""
     <div class="card card-accent mt-2">
-        <div style="display: flex; align-items: start; gap: 1rem;">
-            <div style="background: var(--accent); color: var(--primary); width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: bold;">1</div>
+        <div class="process-step">
+            <div class="step-number">1</div>
             <div>
-                <h3>Session 1: Pattern Mapping</h3>
-                <p>We identify the <em>exact</em> neural circuits causing your blocks using fMRI-inspired techniques</p>
+                <h3 class="card-title">Session 1: Pattern Mapping</h3>
+                <p class="body-text">We identify the <em>exact</em> neural circuits causing your blocks using fMRI-inspired techniques</p>
             </div>
         </div>
     </div>
     
     <div class="card card-accent mt-1">
-        <div style="display: flex; align-items: start; gap: 1rem;">
-            <div style="background: var(--accent); color: var(--primary); width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: bold;">2</div>
+        <div class="process-step">
+            <div class="step-number">2</div>
             <div>
-                <h3>Session 2: Neural Rewiring</h3>
-                <p>Precision hypnotherapy to install new patterns that withstand Bangkok's pressures</p>
+                <h3 class="card-title">Session 2: Neural Rewiring</h3>
+                <p class="body-text">Precision hypnotherapy to install new patterns that withstand Bangkok's pressures</p>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 def show_results():
-    st.markdown('<h2>Client Transformations</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Client Transformations</h2>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="card card-accent">
-        <p><em>"After 2 sessions, I went from freezing in regional presentations to delivering my best keynote at the ASEAN summit. Laetitia's method helped me access confidence I didn't know I had."</em></p>
-        <p style="font-weight: 600;">— French Tech Director, Fortune 500</p>
+        <p class="body-text"><em>"After 2 sessions, I went from freezing in regional presentations to delivering my best keynote at the ASEAN summit. Laetitia's method helped me access confidence I didn't know I had."</em></p>
+        <p class="body-text" style="font-weight: 600; margin-top: 1rem;">— French Tech Director, Fortune 500</p>
     </div>
     
     <div class="card card-accent mt-1">
-        <p><em>"The weight finally started coming off after years of struggle. More importantly, I stopped stress-eating during high-pressure deals. This changed both my health and career trajectory."</em></p>
-        <p style="font-weight: 600;">— American PE VP, Bangkok</p>
+        <p class="body-text"><em>"The weight finally started coming off after years of struggle. More importantly, I stopped stress-eating during high-pressure deals. This changed both my health and career trajectory."</em></p>
+        <p class="body-text" style="font-weight: 600; margin-top: 1rem;">— American PE VP, Bangkok</p>
     </div>
     """, unsafe_allow_html=True)
 
 def show_about():
     col1, col2 = st.columns([1, 2])
     with col1:
-        st.image("./img/ID.jpg", width=200, caption="Laetitia Sheppard")
+        try:
+            st.image("./img/ID.jpg", width=250, caption="Laetitia Sheppard")
+        except:
+            st.markdown('<div style="width: 250px; height: 300px; background: var(--medium); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--muted);">Profile Image</div>', unsafe_allow_html=True)
+    
     with col2:
-        st.markdown('<h2>About Laetitia</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="section-title">About Laetitia</h2>', unsafe_allow_html=True)
         st.markdown("""
-        <div>
+        <div class="body-text">
             <p><strong>Bangkok-based specialist</strong> with 13 years in Asian financial hubs (Hong Kong, Singapore, Bangkok)</p>
             <p>Understands the unique pressures of:</p>
             <ul>
@@ -385,12 +516,10 @@ def show_about():
     
     st.markdown("""
     <div class="contact">
-        <div class="text-center">
-            <h3>Bangkok Hypnotherapy Clinic</h3>
-            <p style="color: white; margin-bottom: 1rem;">46/9 Soi Sukhumvit 49 (Thong Lor) • Private & Confidential</p>
-            <button class="btn">📍 Get Directions</button>
-            <button class="btn">📅 Book Discovery Call</button>
-        </div>
+        <h3 style="color: white; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">Bangkok Hypnotherapy Clinic</h3>
+        <p style="color: white; margin-bottom: 1.5rem;">46/9 Soi Sukhumvit 49 (Thong Lor) • Private & Confidential</p>
+        <button class="btn">📍 Get Directions</button>
+        <button class="btn">📅 Book Discovery Call</button>
     </div>
     """, unsafe_allow_html=True)
 
@@ -406,9 +535,9 @@ elif st.session_state.page == "about":
 
 # --- FOOTER ---
 st.markdown("""
-    <div class="text-center muted mt-2">
-        <p>Laetitia Sheppard • Neuroscience Hypnotherapy • Bangkok, Thailand</p>
-        <p>© 2023 All Rights Reserved | Confidentiality Guaranteed</p>
-    </div>
-</div> <!-- Close container -->
+<div class="text-center muted-text mt-2" style="border-top: 1px solid var(--medium); padding-top: 2rem; margin-top: 3rem;">
+    <p>Laetitia Sheppard • Neuroscience Hypnotherapy • Bangkok, Thailand</p>
+    <p>© 2023 All Rights Reserved | Confidentiality Guaranteed</p>
+</div>
+</div>
 """, unsafe_allow_html=True)
