@@ -8,149 +8,152 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CUSTOM CSS ---
-st.markdown("""
-<style>
-:root {
-    /* Color Palette */
-    --primary: #1C1C1E;       /* Main text/dark elements */
-    --accent: #D4AF37;        /* Gold for highlights */
-    --light: #F4F4F6;         /* Background */
-    --medium: #E2E2E6;        /* Borders */
-    --muted: #6E6E73;         /* Secondary text */
-    --white: #FFFFFF;         /* Cards */
-}
+# --- CSS INJECTION ---
+def inject_css():
+    st.markdown(f"""
+    <style>
+    :root {{
+        --primary: #1C1C1E;
+        --accent: #D4AF37;
+        --light: #F4F4F6;
+        --medium: #E2E2E6;
+        --muted: #6E6E73;
+        --white: #FFFFFF;
+    }}
 
-/* Base Styles */
-.stApp {
-    font-family: 'Inter', sans-serif;
-    background: var(--light);
-    color: var(--primary);
-    line-height: 1.6;
-    padding: 1rem;
-}
+    /* Base Styles */
+    .stApp {{
+        background: var(--light) !important;
+        font-family: 'Inter', sans-serif !important;
+        line-height: 1.6;
+    }}
 
-/* Typography */
-.h1 { font-size: 2rem; font-weight: 700; line-height: 1.2; }
-.h2 { font-size: 1.75rem; font-weight: 600; margin: 2rem 0 1rem; }
-.h3 { font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }
-.body { font-size: 1.05rem; color: var(--primary); }
-.muted { color: var(--muted); }
+    /* Typography */
+    .h1 {{ font-size: 2rem; font-weight: 700; line-height: 1.2; }}
+    .h2 {{ font-size: 1.75rem; font-weight: 600; margin: 2rem 0 1rem; }}
+    .h3 {{ font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }}
+    .body {{ font-size: 1.05rem; color: var(--primary); }}
+    .muted {{ color: var(--muted); }}
 
-/* Cards */
-.card {
-    background: var(--white);
-    border: 1px solid var(--medium);
-    border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-.card-accent {
-    border-left: 4px solid var(--accent);
-}
+    /* Cards */
+    .card {{
+        background: var(--white);
+        border: 1px solid var(--medium);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }}
+    .card:hover {{
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }}
+    .card-accent {{
+        border-left: 4px solid var(--accent);
+    }}
 
-/* Buttons */
-.btn {
-    background: var(--accent);
-    color: var(--primary);
-    padding: 0.8rem 2rem;
-    border-radius: 6px;
-    font-weight: 600;
-    display: inline-block;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(212, 175, 55, 0.2);
-    margin: 0.5rem 0;
-    text-decoration: none;
-}
-.btn:hover {
-    background: #C7A133;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
-}
+    /* Buttons */
+    .btn {{
+        background: var(--accent);
+        color: var(--primary);
+        padding: 0.8rem 2rem;
+        border-radius: 6px;
+        font-weight: 600;
+        display: inline-block;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(212, 175, 55, 0.2);
+        margin: 0.5rem 0;
+        text-decoration: none;
+    }}
+    .btn:hover {{
+        background: #C7A133;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+    }}
 
-/* Hero Section */
-.hero {
-    background: var(--primary);
-    color: white;
-    padding: 4rem 2rem;
-    text-align: center;
-    border-radius: 12px;
-    margin-bottom: 3rem;
-    border-left: 6px solid var(--accent);
-}
+    /* Hero Section */
+    .hero {{
+        background: var(--primary);
+        color: white;
+        padding: 4rem 2rem;
+        text-align: center;
+        border-radius: 12px;
+        margin-bottom: 3rem;
+        border-left: 6px solid var(--accent);
+    }}
+    .hero .muted {{ color: #d1d1d6; }}
 
-/* Navigation */
-.nav {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin: 2rem 0;
-}
-.nav-item {
-    font-weight: 600;
-    color: var(--muted);
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.nav-item.active {
-    color: var(--primary);
-    border-color: var(--accent);
-}
-.nav-item:hover {
-    color: var(--primary);
-}
+    /* Navigation */
+    .nav-container {{
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin: 2rem 0;
+    }}
+    .nav-btn {{
+        background: none;
+        border: none;
+        font-weight: 600;
+        color: var(--muted);
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }}
+    .nav-btn:hover {{
+        color: var(--primary);
+    }}
+    .nav-btn.active {{
+        color: var(--primary);
+        border-color: var(--accent);
+    }}
 
-/* Stats Grid */
-.stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin: 2rem 0;
-}
-.stat {
-    background: var(--white);
-    border: 1px solid var(--medium);
-    border-radius: 12px;
-    padding: 1.5rem;
-    text-align: center;
-}
-.stat-number {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--accent);
-}
-.stat-label {
-    font-size: 0.9rem;
-    color: var(--muted);
-}
+    /* Stats Grid */
+    .stats {{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin: 2rem 0;
+    }}
+    .stat {{
+        background: var(--white);
+        border: 1px solid var(--medium);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+    }}
+    .stat-number {{
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--accent);
+    }}
+    .stat-label {{
+        font-size: 0.9rem;
+        color: var(--muted);
+    }}
 
-/* Contact Card */
-.contact {
-    background: var(--primary);
-    color: white;
-    padding: 3rem;
-    border-radius: 12px;
-    margin: 3rem 0;
-    border-top: 4px solid var(--accent);
-}
+    /* Contact Card */
+    .contact {{
+        background: var(--primary);
+        color: white;
+        padding: 3rem;
+        border-radius: 12px;
+        margin: 3rem 0;
+        border-top: 4px solid var(--accent);
+    }}
 
-/* Utility Classes */
-.text-center { text-align: center; }
-.mt-1 { margin-top: 1rem; }
-.mt-2 { margin-top: 2rem; }
-.mb-1 { margin-bottom: 1rem; }
-</style>
-""", unsafe_allow_html=True)
+    /* Utility Classes */
+    .text-center {{ text-align: center; }}
+    .mt-1 {{ margin-top: 1rem; }}
+    .mt-2 {{ margin-top: 2rem; }}
+    .mb-1 {{ margin-bottom: 1rem; }}
+    </style>
+    """, unsafe_allow_html=True)
+
+inject_css()
 
 # --- SESSION STATE ---
 if "page" not in st.session_state:
@@ -161,18 +164,40 @@ st.markdown("""
 <div class="hero">
     <h1 class="h1">The Expat's Dilemma</h1>
     <p class="h2 muted">You sacrificed everything for this Bangkok career - so why does success feel like wearing someone else's skin?</p>
-    <a href="#contact" class="btn">🧠 Yes, I Want My Breakthrough Session →</a>
+    <button class="btn">🧠 Yes, I Want My Breakthrough Session →</button>
     <p class="muted mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
 </div>
 """, unsafe_allow_html=True)
 
 # --- NAVIGATION ---
-st.markdown('<div class="nav">', unsafe_allow_html=True)
 tabs = [("🔥 Your Blocks", "problems"), ("🧠 The Method", "method"), ("🏆 Results", "results"), ("👤 About", "about")]
+
+st.markdown('<div class="nav-container">', unsafe_allow_html=True)
 for label, page_name in tabs:
     active = "active" if st.session_state.page == page_name else ""
-    st.markdown(f'<div class="nav-item {active}" onclick="window.streamlitSessionState.set({page_name: true})">{label}</div>', 
-                unsafe_allow_html=True)
+    if st.button(label, key=f"nav_{page_name}"):
+        st.session_state.page = page_name
+    st.markdown(f"""
+    <style>
+    div[data-testid="stButton"] > button[kind="secondary"] {{
+        background: none !important;
+        border: none !important;
+        color: var(--muted) !important;
+        font-weight: 600 !important;
+        padding: 0 0 0.5rem 0 !important;
+        border-bottom: 2px solid transparent !important;
+        border-radius: 0 !important;
+    }}
+    div[data-testid="stButton"] > button[kind="secondary"]:hover {{
+        color: var(--primary) !important;
+        border-bottom: 2px solid var(--accent) !important;
+    }}
+    div[data-testid="stButton"] > button[kind="secondary"][aria-pressed="true"] {{
+        color: var(--primary) !important;
+        border-bottom: 2px solid var(--accent) !important;
+    }}
+    </style>
+    """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # --- PAGE CONTENT ---
@@ -230,7 +255,7 @@ def show_problems():
     </div>
     
     <div class="text-center mt-2">
-        <a href="#contact" class="btn">🚨 Only 3 Spots Left This Month →</a>
+        <button class="btn">🚨 Only 3 Spots Left This Month →</button>
     </div>
     """, unsafe_allow_html=True)
 
@@ -303,12 +328,12 @@ def show_about():
         """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="contact" id="contact">
+    <div class="contact">
         <div class="text-center">
             <h3 class="h3" style="color: white;">Bangkok Hypnotherapy Clinic</h3>
             <p class="body" style="color: white; margin-bottom: 1.5rem;">46/9 Soi Sukhumvit 49 (Thong Lor) • Private & Confidential</p>
-            <a href="#" class="btn">📍 Get Directions</a>
-            <a href="#" class="btn">📅 Book Discovery Call</a>
+            <button class="btn">📍 Get Directions</button>
+            <button class="btn">📅 Book Discovery Call</button>
         </div>
     </div>
     """, unsafe_allow_html=True)
