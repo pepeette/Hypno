@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_navigation_bar import st_navbar
 
 # --- PAGE CONFIG ---
 st.set_page_config(
@@ -82,17 +83,6 @@ def inject_css():
     }}
 
     /* Navigation */
-    # .nav-header {{
-    #     position: sticky;
-    #     top: 0;
-    #     background: var(--primary);
-    #     backdrop-filter: blur(10px);
-    #     border-bottom: 1px solid var(--medium);
-    #     z-index: 100;
-    #     padding: 1rem 0;
-    #     margin-bottom: 0;
-    # }}
-
     .nav-container {{
         display: flex;
         justify-content: flex-start;
@@ -102,33 +92,6 @@ def inject_css():
         margin: 0 auto;
         padding: 0 1rem;
         flex-wrap: wrap;
-    }}
-
-    .nav-btn {{
-        background: none !important;
-        border: none !important;
-        color: var(--white) !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
-        padding: 0.5rem 1rem !important;
-        border-radius: 8px !important;
-        cursor: pointer !important;
-        transition: all 0.3s ease !important;
-        white-space: nowrap !important;
-        min-height: auto !important;
-        height: auto !important;
-    }}
-
-    .nav-btn:hover {{
-        color: var(--white) !important;
-        background: rgba(255, 255, 255, 0.1) !important;
-        transform: none !important;
-    }}
-
-    .nav-btn.active {{
-        color: var(--primary) !important;
-        background: var(--accent) !important;
-        box-shadow: 0 2px 8px var(--shadow-accent) !important;
     }}
 
     /* Typography - Consistent sizing with 1.5rem max */
@@ -350,11 +313,6 @@ def inject_css():
             justify-content: flex-start;
         }}
         
-        .nav-btn {{
-            font-size: 1rem !important;
-            padding: 0.4rem 0.8rem !important;
-        }}
-        
         .stats {{
             grid-template-columns: repeat(2, 1fr);
             gap: 0.75rem;
@@ -393,11 +351,6 @@ def inject_css():
             font-size: 1rem !important;
         }}
         
-        .nav-btn {{
-            font-size: 1rem !important;
-            padding: 0.3rem 0.6rem !important;
-        }}
-        
         .stats {{
             grid-template-columns: 1fr;
         }}
@@ -407,27 +360,49 @@ def inject_css():
 
 inject_css()
 
-# --- SESSION STATE ---
-if "page" not in st.session_state:
-    st.session_state.page = "problems"
+# --- NAVIGATION BAR ---
+pages = ["🔥 Your Blocks", "🧠 The Method", "🏆 Results", "👤 About"]
+styles = {
+    "nav": {
+        "background-color": "#1C1C1E",  # Using your --primary color
+        "padding": "0.5rem 1rem",
+    },
+    "div": {
+        "max-width": "1200px",
+        "margin": "0 auto",
+    },
+    "span": {
+        "border-radius": "8px",
+        "color": "#FFFFFF",  # Using your --white color
+        "margin": "0 0.25rem",
+        "padding": "0.5rem 1rem",
+        "font-family": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "font-weight": "600",
+        "font-size": "1rem",
+    },
+    "active": {
+        "background-color": "#D4AF37",  # Using your --accent color
+        "color": "#1C1C1E",  # Using your --primary color
+        "box-shadow": "0 2px 8px rgba(212, 175, 55, 0.2)",  # Using your --shadow-accent
+    },
+    "hover": {
+        "background-color": "rgba(255, 255, 255, 0.1)",  # Lighter hover effect
+    },
+}
 
-# --- NAVIGATION HEADER (FIXED AT TOP) ---
-# Create a proper menu at the very top
-nav_container = st.container()
-with nav_container:
-    st.markdown('<div class="nav-header">', unsafe_allow_html=True)
-    st.markdown('<div class="nav-container">', unsafe_allow_html=True)
+page = st_navbar(pages, styles=styles)
 
-    tabs = [("🔥 Your Blocks", "problems"), ("🧠 The Method", "method"), ("🏆 Results", "results"), ("👤 About", "about")]
+# Map the navigation bar selection to your page names
+page_mapping = {
+    "🔥 Your Blocks": "problems",
+    "🧠 The Method": "method",
+    "🏆 Results": "results",
+    "👤 About": "about"
+}
 
-    cols = st.columns(len(tabs))
-    for i, (label, page_name) in enumerate(tabs):
-        with cols[i]:
-            if st.button(label, key=f"nav_{page_name}", help=f"Go to {label}"):
-                st.session_state.page = page_name
-                st.rerun()
-
-    st.markdown('</div></div>', unsafe_allow_html=True)
+# Set the session state based on the selected page
+if page in page_mapping:
+    st.session_state.page = page_mapping[page]
 
 # --- HERO SECTION ---
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
@@ -583,6 +558,9 @@ def show_about():
     """, unsafe_allow_html=True)
 
 # --- MAIN CONTENT ---
+if "page" not in st.session_state:
+    st.session_state.page = "problems"
+
 if st.session_state.page == "problems":
     show_problems()
 elif st.session_state.page == "method":
