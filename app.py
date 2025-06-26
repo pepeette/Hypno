@@ -401,9 +401,14 @@ if page in page_mapping:
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
 st.markdown("""
 <div class="hero">
-    <h1 class="hero-title">The Expat's Dilemma</h1>
-    <p class="hero-subtitle">You sacrificed everything for this Bangkok career - so why does success feel like wearing someone else's skin?</p>
-    <button class="btn">🧠 Yes, I Want My Breakthrough Session →</button>
+    <h1 class="hero-title">Rewire what’s holding you back - in 2 sessions</h1>
+    <p class="hero-subtitle">Life keeps moving fast, but you are feeling blocked. <br>
+    It is not definite, it is a neuro-programming session you need to activate.</p>
+    <div style="margin-top: 1rem;">
+        <a href="https://calendly.com/titre/free-session" target="_blank">
+            <button>📅 Book a FREE 15-min Call to if you are fit for it</button>
+        </a>
+    </div>
     <p class="muted-text mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
 </div>
 """, unsafe_allow_html=True)
@@ -446,9 +451,14 @@ def show_problems():
             "result": "→ Reset your metabolic programming without another fad diet"
         },
         {
-            "title": "Performance Anxiety", 
-            "desc": "You nailed presentations in London/NYC - but here, your mind blanks mid-sentence. The harder you try to impress, the more you underwhelm.",
+            "title": "Performance Anxiety & Imposter Syndrome", 
+            "desc": "You know your stuff, but anxiety strikes before meetings, keynotes, or career moves. Confidence feels manufactured.",
             "result": "→ Install bulletproof confidence tailored to Asian boardrooms"
+        },
+        {
+            "title": "Perfectionism That Leads to Burnout", 
+            "desc": "You overwork, overcontrol, and can’t switch off. Your team feels it. So does your nervous system.",
+            "result": "→ Rewire for strategic focus — make high-impact decisions without the mental overload"
         }
     ]
     
@@ -519,7 +529,17 @@ def show_method():
             <div class="step-number">2</div>
             <div>
                 <h3 class="card-title">Session 2: Neural Rewiring</h3>
-                <p class="body-text">Precision hypnotherapy to install new patterns that withstand Bangkok's pressures</p>
+                <p class="body-text">Precision hypnotherapy to install updated, unconscious patterns that withstand high stress</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-accent mt-2">
+        <div class="process-step">
+            <div class="step-number">3</div>
+            <div>
+                <h3 class="card-title">Session 3: Reinforcement (Optional) </h3>
+                <p class="body-text">Booster session to ensure performance under ongoing pressure.</p>
             </div>
         </div>
     </div>
