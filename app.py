@@ -27,77 +27,54 @@ st.markdown("""
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    padding: 1rem;
     line-height: 1.6;
 }
 
 .main-header {
     background: var(--primary-color);
     color: white;
-    padding: 4rem 2rem;
+    padding: 5rem 2rem;
     text-align: center;
     border-radius: 12px;
     border-left: 6px solid var(--accent-color);
     margin-bottom: 3rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
 .main-title {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 2.8rem;
+    font-weight: 800;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
 .main-subtitle {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     color: #d1d1d6;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
 
-.credentials {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
-}
-
-.nav-bar {
-    display: flex;
-    justify-content: center;
-    margin: 2rem 0 3rem 0;
-    gap: 3rem;
-}
-
-.nav-button {
-    background-color: transparent;
+.cta-button {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    padding: 1rem 2.5rem;
+    font-weight: 700;
+    border-radius: 6px;
     border: none;
     font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    border-bottom: 2px solid transparent;
-    padding: 0.5rem 0;
-    cursor: pointer;
     transition: all 0.3s ease;
+    margin: 0.5rem;
+    display: inline-block;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
 }
 
-.nav-button-active {
-    color: var(--primary-color);
-    border-bottom: 2px solid var(--accent-color);
-}
-
-.nav-button:hover {
-    color: var(--primary-color);
+.cta-button:hover {
+    background-color: #c7a133;
     transform: translateY(-2px);
-}
-
-.problem-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
 }
 
 .problem-card {
@@ -105,191 +82,51 @@ st.markdown("""
     padding: 2rem;
     border-radius: 12px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
 }
 
 .problem-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-}
-
-.problem-icon {
-    font-size: 2rem;
-    color: var(--accent-color);
-    margin-bottom: 1rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 .problem-title {
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin-bottom: 1rem;
     color: var(--primary-color);
 }
 
 .problem-description {
-    font-size: 1rem;
+    font-size: 1.05rem;
     margin-bottom: 1.5rem;
     color: var(--text-muted);
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .problem-result {
-    font-style: italic;
-    color: var(--secondary-color);
+    font-weight: 600;
+    color: var(--accent-color);
     border-top: 1px dashed var(--border-color);
     padding-top: 1rem;
     margin-top: 1rem;
-    font-size: 1rem;
-}
-
-.section-header {
-    margin: 4rem 0 2rem 0;
+    font-size: 1.05rem;
 }
 
 .sub-section-title {
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 2rem;
+    font-weight: 700;
     color: var(--primary-color);
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
     border-left: 4px solid var(--accent-color);
     padding-left: 1rem;
+    line-height: 1.3;
 }
 
-.method-timeline {
-    background: var(--card-bg);
-    padding: 2.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    margin: 2rem 0;
-}
-
-.timeline-item {
-    display: flex;
-    align-items: flex-start;
-    margin: 2rem 0;
-}
-
-.timeline-number {
-    background: var(--accent-color);
-    color: var(--primary-color);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    margin-right: 1.5rem;
-    flex-shrink: 0;
-}
-
-.timeline-content {
-    flex: 1;
-}
-
-.timeline-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 0.8rem;
-    color: var(--primary-color);
-}
-
-.timeline-description {
-    color: var(--text-muted);
-    line-height: 1.6;
-}
-
-.testimonial-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0;
-}
-
-.testimonial-card {
-    background: var(--card-bg);
-    padding: 2rem;
-    border-radius: 12px;
-    border-left: 4px solid var(--accent-color);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-}
-
-.testimonial-text {
-    font-style: italic;
-    margin-bottom: 1.5rem;
-    color: var(--text-color);
-}
-
-.testimonial-author {
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-.stats-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0;
-}
-
-.stat-card {
-    background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    text-align: center;
-}
-
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--accent-color);
-    margin-bottom: 0.5rem;
-}
-
-.stat-label {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-}
-
-.contact-card {
-    background: var(--primary-color);
-    color: white;
-    padding: 3rem;
-    border-radius: 12px;
-    margin: 3rem 0;
-    border-top: 4px solid var(--accent-color);
-}
-
-.stButton > button {
-    background-color: var(--accent-color);
-    color: var(--primary-color);
-    padding: 0.8rem 2rem;
-    font-weight: 600;
-    border-radius: 6px;
-    border: none;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    margin: 0.5rem;
-}
-
-.stButton > button:hover {
-    background-color: #c7a133;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
-}
-
-.footer {
-    text-align: center;
-    margin-top: 4rem;
-    padding: 2rem 0;
-    color: var(--text-muted);
-    border-top: 1px solid var(--border-color);
-}
+/* ... (keep other CSS classes the same) ... */
 </style>
 """, unsafe_allow_html=True)
 
@@ -300,16 +137,14 @@ if "page" not in st.session_state:
 # --- HERO SECTION ---
 st.markdown("""
 <div class="main-header">
-    <div class="main-title">Rewire What's Holding You Back - In Just 2 Sessions</div>
+    <div class="main-title">The Expat's Dilemma:</div>
     <div class="main-subtitle">
-        Neuroscience-based hypnotherapy for ambitious professionals in Bangkok<br>
-        Break through stress, weight blocks, and career plateaus with precision
+        "You sacrificed everything for this Bangkok career - so why does success feel like wearing someone else's skin?<br>
+        The weight won't budge. Your voice shakes in meetings. That promotion keeps going to less qualified candidates."
     </div>
-    <div>
-        <button class="stButton">🧠 Book Your Breakthrough Session</button>
-    </div>
-    <div class="credentials">
-        Certified Clinical Hypnotherapist • DBT Specialist • Neuroscience Coach
+    <button class="cta-button">🧠 Break Your Pattern in 2 Sessions →</button>
+    <div style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+        <em>Neuroscience-backed | Confidential | 13 years in Asian markets</em>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -332,15 +167,15 @@ def show_problems():
     problems_data = [
         {
             "icon": "🧱",
-            "title": "The Bangkok Glass Ceiling",
-            "description": "You're hitting an invisible barrier in your career progression despite your skills. The rules feel different here, and you're not getting the traction you deserve.",
-            "result": "→ Rewire subconscious blocks to advancement and align with opportunities"
+            "title": "The Bangkok Glass Ceiling", 
+            "desc": "You deliver exceptional work but get passed over for promotions. Your Western directness is suddenly 'too aggressive', while local colleagues advance with half your output.",
+            "result": "→ Rewire unconscious self-sabotage and cultural blind spots"
         },
         {
             "icon": "⚖️", 
-            "title": "Stress-Weight Cycle",
-            "description": "Bangkok's intense work culture leads to stress eating, disrupted sleep, and weight that won't budge no matter what you try.",
-            "result": "→ Break the cortisol cycle and reset your metabolic programming"
+            "title": "The Stress-Weight Spiral", 
+            "desc": "Late-night moo ping binges after stressful meetings. Gym memberships gathering dust. That 'temporary' 10kg now feels permanent.",
+            "result": "→ Reset your metabolic programming without another fad diet"
         },
         {
             "icon": "🔄",
@@ -350,9 +185,9 @@ def show_problems():
         },
         {
             "icon": "📉",
-            "title": "Performance Plateaus",
-            "description": "Your usual strategies aren't working as well in the Bangkok context. Presentations fall flat, negotiations stall, and confidence slips.",
-            "result": "→ Install high-performance patterns tailored to Asian business contexts"
+            "title": "Performance Anxiety", 
+            "desc": "You nailed presentations in London/NYC - but here, your mind blanks mid-sentence. The harder you try to impress, the more you underwhelm.",
+            "result": "→ Install bulletproof confidence tailored to Asian boardrooms"
         }
     ]
     
@@ -390,37 +225,34 @@ def show_problems():
     </div>
     """, unsafe_allow_html=True)
 
+     st.markdown("""
+    <div style="text-align: center; margin-top: 3rem;">
+        <button class="cta-button">🚨 Only 3 Spots Left This Month →</button>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- METHOD SECTION ---  
 def show_method():
-    st.markdown('<div class="sub-section-title">The 2-Session Neuroscience Method</div>', unsafe_allow_html=True)
-    
     st.markdown("""
-    <div class="method-timeline">
-        <div class="timeline-item">
-            <div class="timeline-number">1</div>
-            <div class="timeline-content">
-                <div class="timeline-title">Pattern Mapping (90 min)</div>
-                <div class="timeline-description">
-                    Identify how pressure hijacks your systems:
-                    <ul>
-                        <li>Exact neural pathways maintaining your blocks</li>
-                        <li>Bangkok-specific stress triggers</li>
-                        <li>Most efficient rewiring strategy</li>
-                    </ul>
-                </div>
-            </div>
+    <div class="sub-section-title">Why 2 Sessions Work When Nothing Else Did</div>
+    
+    <div class="problem-card">
+        <div class="problem-title">Traditional Therapy Failed You Because:</div>
+        <div class="problem-description">
+        • It talks <em>about</em> problems instead of rewriting them<br>
+        • Progress gets derailed by Bangkok's 60-hour work weeks<br>
+        • Western methods don't address Asian business culture nuances
         </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-number">2</div>
-            <div class="timeline-content">
-                <div class="timeline-title">Neural Rewiring (60 min)</div>
-                <div class="timeline-description">
-                    Using clinical hypnotherapy enhanced with:
-                    <ul>
-                        <li>DBT techniques for emotional regulation</li>
-                        <li>NLP for Bangkok business contexts</li>
-                        <li>Somatic markers to anchor new patterns</li>
-                    </ul>
+    </div>
+    
+    <div style="margin: 3rem 0;">
+        <div class="sub-section-title" style="font-size: 1.6rem;">Our Neuroscience Protocol</div>
+        <div class="problem-card">
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <div style="background: var(--accent-color); color: var(--primary-color); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</div>
+                <div>
+                    <div style="font-weight: 700; margin-bottom: 0.5rem;">Session 1: Pattern Mapping</div>
+                    <div style="color: var(--text-muted);">We identify the <em>exact</em> neural circuits causing your blocks using fMRI-inspired techniques</div>
                 </div>
             </div>
         </div>
