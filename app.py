@@ -85,7 +85,7 @@ def inject_css():
     .nav-header {{
         position: sticky;
         top: 0;
-        background: var(--white);
+        background: var(--primary);
         backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--medium);
         z-index: 100;
@@ -107,7 +107,7 @@ def inject_css():
     .nav-btn {{
         background: none !important;
         border: none !important;
-        color: var(--muted) !important;
+        color: var(--white) !important;
         font-weight: 600 !important;
         font-size: 1rem !important;
         padding: 0.5rem 1rem !important;
@@ -120,8 +120,8 @@ def inject_css():
     }}
 
     .nav-btn:hover {{
-        color: var(--primary) !important;
-        background: var(--medium) !important;
+        color: var(--white) !important;
+        background: rgba(255, 255, 255, 0.1) !important;
         transform: none !important;
     }}
 
@@ -137,12 +137,14 @@ def inject_css():
         font-weight: 700; 
         line-height: 1.2; 
         margin: 0;
+        color: var(--white) !important;
     }}
     
     .hero-subtitle {{ 
         font-size: 1rem; 
         font-weight: 400; 
         margin: 1rem 0;
+        color: #d1d1d6 !important;
     }}
     
     .section-title {{ 
@@ -182,12 +184,16 @@ def inject_css():
         border-left: 6px solid var(--accent);
     }}
     
+    .hero * {{
+        color: var(--white) !important;
+    }}
+    
     .hero .hero-subtitle {{ 
-        color: #d1d1d6; 
+        color: #d1d1d6 !important; 
     }}
     
     .hero .muted-text {{ 
-        color: #a1a1a6; 
+        color: #a1a1a6 !important; 
     }}
 
     /* Cards */
@@ -270,6 +276,10 @@ def inject_css():
         margin: 2rem 0;
         border-top: 4px solid var(--accent);
         text-align: center;
+    }}
+    
+    .contact * {{
+        color: var(--white) !important;
     }}
 
     /* Process Steps */
