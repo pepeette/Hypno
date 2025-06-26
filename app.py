@@ -25,6 +25,27 @@ def inject_css():
         --shadow-accent: rgba(212, 175, 55, 0.2);
     }}
 
+    /* Navigation Bar Styles */
+    .stNavbar {{
+        margin-bottom: 0.5rem !important;  /* Reduced gap below navbar */
+    }}
+
+    /* Stats Numbers - Gold Color */
+    .stat-number {{
+        color: var(--accent) !important;
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+    }}
+
+    /* Problem Result Arrows - Gold Color */
+    .problem-result {{
+        color: var(--accent) !important;
+        border-top: 1px dashed var(--medium) !important;
+        padding-top: 1rem !important;
+        margin-top: 1rem !important;
+    }}
+
+    /* Rest of your existing CSS... */
     /* Force light mode - no dark mode support */
 
     /* Base Styles */
@@ -82,18 +103,6 @@ def inject_css():
         padding: 0 1rem;
     }}
 
-    /* Navigation */
-    .nav-container {{
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 0.5rem;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1rem;
-        flex-wrap: wrap;
-    }}
-
     /* Typography - Consistent sizing with 1.5rem max */
     .hero-title {{ 
         font-size: 1.5rem; 
@@ -143,7 +152,7 @@ def inject_css():
         padding: 2rem 1.5rem;
         text-align: center;
         border-radius: 12px;
-        margin: 1rem 0 2rem;
+        margin: 0.5rem 0 2rem 0;  /* Reduced top margin */
         border-left: 6px solid var(--accent);
     }}
     
@@ -216,13 +225,6 @@ def inject_css():
         border-radius: 12px;
         padding: 1.5rem;
         text-align: center;
-    }}
-    
-    .stat-number {{
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--accent);
-        margin-bottom: 0.5rem;
     }}
     
     .stat-label {{
@@ -308,11 +310,6 @@ def inject_css():
             padding: 1rem;
         }}
         
-        .nav-container {{
-            gap: 0.25rem;
-            justify-content: flex-start;
-        }}
-        
         .stats {{
             grid-template-columns: repeat(2, 1fr);
             gap: 0.75rem;
@@ -320,10 +317,6 @@ def inject_css():
         
         .stat {{
             padding: 1rem;
-        }}
-        
-        .stat-number {{
-            font-size: 1.2rem;
         }}
         
         .process-step {{
@@ -416,6 +409,28 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- PAGE CONTENT ---
+if "page" not in st.session_state:
+    st.session_state.page = "problems"
+
+if st.session_state.page == "problems":
+    show_problems()
+elif st.session_state.page == "method":
+    show_method()
+elif st.session_state.page == "results":
+    show_results()
+elif st.session_state.page == "about":
+    show_about()
+
+# --- FOOTER ---
+st.markdown("""
+<div class="text-center muted-text mt-2" style="border-top: 1px solid var(--medium); padding-top: 2rem; margin-top: 3rem;">
+    <p>Laetitia Sheppard • Neuroscience Hypnotherapy • Bangkok, Thailand</p>
+    <p>© 2023 All Rights Reserved | Confidentiality Guaranteed</p>
+</div>
+</div>
+""", unsafe_allow_html=True)
+
+# --- PAGE CONTENT FUNCTIONS ---
 def show_problems():
     st.markdown('<h2 class="section-title">The Hidden Blocks We Solve</h2>', unsafe_allow_html=True)
     
@@ -442,7 +457,7 @@ def show_problems():
         <div class="card card-accent">
             <h3 class="card-title">{p['title']}</h3>
             <p class="body-text">{p['desc']}</p>
-            <p class="body-text" style="color: var(--accent); border-top: 1px dashed var(--medium); padding-top: 1rem; margin-top: 1rem;">
+            <p class="problem-result">
                 {p['result']}
             </p>
         </div>
@@ -556,25 +571,3 @@ def show_about():
         <button class="btn">📅 Book Discovery Call</button>
     </div>
     """, unsafe_allow_html=True)
-
-# --- MAIN CONTENT ---
-if "page" not in st.session_state:
-    st.session_state.page = "problems"
-
-if st.session_state.page == "problems":
-    show_problems()
-elif st.session_state.page == "method":
-    show_method()
-elif st.session_state.page == "results":
-    show_results()
-elif st.session_state.page == "about":
-    show_about()
-
-# --- FOOTER ---
-st.markdown("""
-<div class="text-center muted-text mt-2" style="border-top: 1px solid var(--medium); padding-top: 2rem; margin-top: 3rem;">
-    <p>Laetitia Sheppard • Neuroscience Hypnotherapy • Bangkok, Thailand</p>
-    <p>© 2023 All Rights Reserved | Confidentiality Guaranteed</p>
-</div>
-</div>
-""", unsafe_allow_html=True)
