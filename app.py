@@ -372,13 +372,48 @@ st.markdown("""
     <button class="btn">📅 Book a FREE 15-min Call to see if you're fit for it</button>
     <p class="muted-text mt-1">Neuroscience-backed | Confidential | 13 years in Asian markets</p>
 </div>
+""", unsafe_allow_html=True)
 
-<div class="nav-buttons">
-    <button class="nav-btn {'active' if st.session_state.page == 'problems' else ''}" onclick="window.streamlitSessionState.set('page', 'problems')">🔥 Your Blocks</button>
-    <button class="nav-btn {'active' if st.session_state.page == 'method' else ''}" onclick="window.streamlitSessionState.set('page', 'method')">🧠 The Method</button>
-    <button class="nav-btn {'active' if st.session_state.page == 'results' else ''}" onclick="window.streamlitSessionState.set('page', 'results')">🏆 Results</button>
-    <button class="nav-btn {'active' if st.session_state.page == 'about' else ''}" onclick="window.streamlitSessionState.set('page', 'about')">👤 About</button>
-</div>
+# --- NAVIGATION BUTTONS ---
+cols = st.columns(4)
+with cols[0]:
+    if st.button("🔥 Your Blocks", key="nav_problems", 
+                help="View common problems we solve"):
+        st.session_state.page = "problems"
+        st.rerun()
+with cols[1]:
+    if st.button("🧠 The Method", key="nav_method", 
+                help="Learn about our 2-session method"):
+        st.session_state.page = "method"
+        st.rerun()
+with cols[2]:
+    if st.button("🏆 Results", key="nav_results", 
+                help="See client transformations"):
+        st.session_state.page = "results"
+        st.rerun()
+with cols[3]:
+    if st.button("👤 About", key="nav_about", 
+                help="About Laetitia and the clinic"):
+        st.session_state.page = "about"
+        st.rerun()
+
+# Add CSS class to active button
+st.markdown(f"""
+<script>
+document.addEventListener('DOMContentLoaded', function() {{
+    const activePage = '{st.session_state.page}';
+    const buttons = {{
+        'problems': document.querySelector('[data-testid="baseButton-secondary"][aria-label="🔥 Your Blocks"]'),
+        'method': document.querySelector('[data-testid="baseButton-secondary"][aria-label="🧠 The Method"]'),
+        'results': document.querySelector('[data-testid="baseButton-secondary"][aria-label="🏆 Results"]'),
+        'about': document.querySelector('[data-testid="baseButton-secondary"][aria-label="👤 About"]')
+    }};
+    
+    if (buttons[activePage]) {{
+        buttons[activePage].classList.add('nav-btn-active');
+    }}
+}});
+</script>
 """, unsafe_allow_html=True)
 
 # --- PAGE CONTENT FUNCTIONS ---
