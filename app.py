@@ -37,30 +37,33 @@ def inject_css():
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }}
     
+    /* Typography Hierarchy */
     h1 {{
         font-size: 1.5rem !important;
         font-weight: 700 !important;
         line-height: 1.2 !important;
-        margin: 1rem 0 !important;
+        margin: 2rem 0 1rem 0 !important;
+        color: var(--primary) !important;
     }}
     
     h2 {{
         font-size: 1.2rem !important;
         font-weight: 600 !important;
-        line-height: 1.2 !important;
-        margin: 2rem 0 1rem !important;
-        color: var(--primary) !important;
-    }}
-    
-    h3 {{
-        font-size: 1rem !important;
-        font-weight: 600 !important;
-        line-height: 1.2 !important;
-        margin: 1rem 0 0.5rem !important;
+        line-height: 1.3 !important;
+        margin: 1.5rem 0 1rem 0 !important;
         color: var(--primary) !important;
     }}
     
     p, li, span, div {{
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        line-height: 1.6 !important;
+        color: var(--primary) !important;
+        margin: 0.5rem 0 !important;
+    }}
+    
+    strong, b {{
+        font-weight: 600 !important;
         color: var(--primary) !important;
     }}
 
@@ -76,51 +79,24 @@ def inject_css():
     }}
 
     .hero-title {{ 
-        font-size: 1.5rem; 
-        font-weight: 700; 
-        line-height: 1.2; 
-        margin: 0;
+        font-size: 1.5rem !important; 
+        font-weight: 700 !important; 
+        line-height: 1.2 !important; 
+        margin: 0 !important;
         color: var(--white) !important;
     }}
     
     .hero-subtitle {{ 
-        font-size: 1rem; 
-        font-weight: 400; 
-        margin: 1rem 0;
+        font-size: 1rem !important; 
+        font-weight: 400 !important; 
+        margin: 1rem 0 !important;
         color: #d1d1d6 !important;
     }}
     
-    .section-title {{ 
-        font-size: 1.2rem; 
-        font-weight: 600; 
-        margin: 2rem 0 1rem; 
-        color: var(--primary);
-    }}
-
-    .sub-section-title {{
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin: 1.5rem 0 1rem;
-        color: var(--primary);
-    }}
-    
-    .card-title {{ 
-        font-size: 1rem; 
-        font-weight: 600; 
-        margin: 0 0 0.75rem;
-        color: var(--primary);
-    }}
-    
-    .body-text {{ 
-        font-size: 1rem; 
-        color: var(--primary); 
-        line-height: 1.6;
-        margin: 0.5rem 0;
-    }}
-    
     .muted-text {{ 
-        color: var(--muted); 
-        font-size: 1rem;
+        color: var(--muted) !important; 
+        font-size: 1rem !important;
+        font-weight: 400 !important;
     }}
 
     .hero {{
@@ -227,8 +203,16 @@ def inject_css():
         text-align: center;
     }}
     
-    .contact * {{
+    .contact h2 {{
         color: var(--white) !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        margin-bottom: 0.5rem !important;
+    }}
+    
+    .contact p {{
+        color: var(--white) !important;
+        margin-bottom: 1.5rem !important;
     }}
 
     .process-step {{
@@ -384,7 +368,7 @@ with cols[3]:
 
 # --- PAGE CONTENT FUNCTIONS ---
 def show_problems():
-    st.markdown('<h2 class="section-title">The Hidden Blocks We Solve</h2>', unsafe_allow_html=True)
+    st.markdown('<h1>The Hidden Blocks We Solve</h1>', unsafe_allow_html=True)
     
     problems = [
         {
@@ -407,15 +391,13 @@ def show_problems():
     for p in problems:
         st.markdown(f"""
         <div class="card card-accent">
-            <h3 class="card-title">{p['title']}</h3>
-            <p class="body-text">{p['desc']}</p>
-            <p class="problem-result">
-                {p['result']}
-            </p>
+            <h2>{p['title']}</h2>
+            <p>{p['desc']}</p>
+            <p><strong>{p['result']}</strong></p>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown('<h2 class="section-title mt-2">Why It Works</h2>', unsafe_allow_html=True)
+    st.markdown('<h1>Why It Works</h1>', unsafe_allow_html=True)
     st.markdown("""
     <div class="stats">
         <div class="stat">
@@ -438,7 +420,7 @@ def show_problems():
     """, unsafe_allow_html=True)
 
     # Add FAQ section
-    st.markdown('<div class="sub-section-title">Questions from Asia-Based Leaders</div>', unsafe_allow_html=True)
+    st.markdown('<h2>Questions from Asia-Based Leaders</h2>', unsafe_allow_html=True)
     with st.expander("How is this different from coaching?"):
         st.write("This isn't coaching—it's unconscious neural recalibration. We target the source of performance limits, not just surface habits.")
     with st.expander("Why does it work in 2 sessions?"):
@@ -453,12 +435,12 @@ def show_problems():
     """, unsafe_allow_html=True)
 
 def show_method():
-    st.markdown('<h2 class="section-title">Why 2 Sessions Work When Nothing Else Did</h2>', unsafe_allow_html=True)
+    st.markdown('<h1>Why 2 Sessions Work When Nothing Else Did</h1>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="card">
-        <h3 class="card-title">Traditional Therapy Failed You Because:</h3>
-        <ul class="body-text">
+        <h2>Traditional Therapy Failed You Because:</h2>
+        <ul>
             <li>It talks <em>about</em> problems instead of rewriting them</li>
             <li>Progress gets derailed by Bangkok's 60-hour work weeks</li>
             <li>Western methods don't address Asian business culture nuances</li>
@@ -467,44 +449,44 @@ def show_method():
     """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="card card-accent mt-2">
+    <div class="card card-accent">
         <div class="process-step">
             <div class="step-number">1</div>
             <div>
-                <h3 class="card-title">Session 1: Pattern Mapping</h3>
-                <p class="body-text">We identify the <em>exact</em> neural circuits causing your blocks using fMRI-inspired techniques</p>
+                <h2>Session 1: Pattern Mapping</h2>
+                <p>We identify the <em>exact</em> neural circuits causing your blocks using fMRI-inspired techniques</p>
             </div>
         </div>
     </div>
     
-    <div class="card card-accent mt-1">
+    <div class="card card-accent">
         <div class="process-step">
             <div class="step-number">2</div>
             <div>
-                <h3 class="card-title">Session 2: Neural Rewiring</h3>
-                <p class="body-text">Precision hypnotherapy to install new patterns that withstand Bangkok's pressures</p>
+                <h2>Session 2: Neural Rewiring</h2>
+                <p>Precision hypnotherapy to install new patterns that withstand Bangkok's pressures</p>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 def show_results():
-    st.markdown('<h2 class="section-title">Client Transformations</h2>', unsafe_allow_html=True)
+    st.markdown('<h1>Client Transformations</h1>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="card card-accent">
-        <p class="body-text"><em>"After 2 sessions, I went from freezing in regional presentations to delivering my best keynote at the ASEAN summit. Laetitia's method helped me access confidence I didn't know I had."</em></p>
-        <p class="body-text" style="font-weight: 600; margin-top: 1rem;">— French Tech Director, Fortune 500</p>
+        <p><em>"After 2 sessions, I went from freezing in regional presentations to delivering my best keynote at the ASEAN summit. Laetitia's method helped me access confidence I didn't know I had."</em></p>
+        <p><strong>— French Tech Director, Fortune 500</strong></p>
     </div>
     
-    <div class="card card-accent mt-1">
-        <p class="body-text"><em>"The weight finally started coming off after years of struggle. More importantly, I stopped stress-eating during high-pressure deals. This changed both my health and career trajectory."</em></p>
-        <p class="body-text" style="font-weight: 600; margin-top: 1rem;">— American PE VP, Bangkok</p>
+    <div class="card card-accent">
+        <p><em>"The weight finally started coming off after years of struggle. More importantly, I stopped stress-eating during high-pressure deals. This changed both my health and career trajectory."</em></p>
+        <p><strong>— American PE VP, Bangkok</strong></p>
     </div>
     """, unsafe_allow_html=True)
 
 def show_about():
-    st.markdown('<div class="sub-section-title">Your certified therapist</div>', unsafe_allow_html=True)
+    st.markdown('<h2>Your certified therapist</h2>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2])
     with col1:
         try:
@@ -526,8 +508,8 @@ def show_about():
     
     st.markdown("""
     <div class="contact">
-        <h3 style="color: white; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">Bangkok Hypnotherapy Clinic</h3>
-        <p style="color: white; margin-bottom: 1.5rem;">46/9 Soi Sukhumvit 49 (Thong Lor) • Private & Confidential</p>
+        <h2>Bangkok Hypnotherapy Clinic</h2>
+        <p>46/9 Soi Sukhumvit 49 (Thong Lor) • Private & Confidential</p>
         <button class="btn">📍 Get Directions</button>
         <button class="btn">📅 Book Discovery Call</button>
     </div>
