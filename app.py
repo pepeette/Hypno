@@ -47,9 +47,9 @@ def inject_css():
     }}
 
     /* Typography */
-    h1 {{ font-size: 2rem; font-weight: 700; line-height: 1.2; }}
-    h2 {{ font-size: 1.75rem; font-weight: 600; margin: 1.5rem 0 1rem; }}
-    h3 {{ font-size: 1.5rem; font-weight: 600; margin: 1.25rem 0 0.75rem; }}
+    h1 {{ font-size: 1.5rem; font-weight: 700; line-height: 1.2; }}
+    h2 {{ font-size: 1.5rem; font-weight: 600; margin: 1.25rem 0 1rem; }}
+    h3 {{ font-size: 1.25rem; font-weight: 600; margin: 1.05rem 0 0.75rem; }}
     p, li {{ font-size: 1.05rem; color: var(--primary); }}
     .muted {{ color: var(--muted); font-size: 1rem; }}
 
