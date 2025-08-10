@@ -384,6 +384,30 @@ def show_problems():
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
+    # New Self Assessment Questionnaire Section
+    st.markdown("""
+    <div style="margin-top: 2rem;">
+        <h2>Self Assessment Questionnaire</h2>
+        <p>Take a moment to reflect on your behavioral patterns:</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Text input area
+    user_input = st.text_area(
+        "Describe what you dislike doing or how you respond in certain situations, and how you feel about it:",
+        placeholder="For example: 'I get very anxious when I have to speak in meetings...'",
+        height=150,
+        key="self_assessment"
+    )
+    
+    # AI output placeholder
+    st.markdown("""
+    <div style="margin-top: 1rem; font-style: italic; color: var(--muted);">
+        <p>Section coming soon - This will provide personalized insights based on your input</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+
 def show_method():
     st.markdown('<h2>Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
     
@@ -541,6 +565,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
