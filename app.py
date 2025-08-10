@@ -36,7 +36,7 @@ def inject_css():
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         line-height: 1.6;
         color: var(--primary) !important;
-        padding-top: 0.5rem !important;
+        padding-top: 0.25rem !important;
     }}
     
     /* Remove header space */
@@ -46,8 +46,8 @@ def inject_css():
     
     /* Remove extra space at top */
     .st-emotion-cache-z5fcl4 {{
-        padding-top: 0.5rem !important;
-        padding-bottom: 0.5rem !important;
+        padding-top: 0.25rem !important;
+        padding-bottom: 0.25rem !important;
     }}
 
     h1, h2, h3, h4, h5, h6 {{
@@ -59,7 +59,7 @@ def inject_css():
         font-size: 1.5rem !important;
         font-weight: 700 !important;
         line-height: 1.2 !important;
-        margin: 1rem 0 0.5rem 0 !important;
+        margin: 0.5rem 0 0.5rem 0 !important;
         color: var(--primary) !important;
     }}
     
@@ -67,7 +67,7 @@ def inject_css():
         font-size: 1.2rem !important;
         font-weight: 600 !important;
         line-height: 1.3 !important;
-        margin: 1rem 0 1rem 0 !important;
+        margin: 0.5rem 0 0.5rem 0 !important;
         color: var(--primary) !important;
     }}
     
@@ -122,7 +122,7 @@ def inject_css():
         padding: 1rem 1rem;
         text-align: center;
         border-radius: 12px;
-        margin: 0.5rem 0 1rem 0;
+        margin: 0.25rem 0 0.25rem 0;
         border-left: 6px solid var(--accent);
     }}
     
@@ -541,5 +541,6 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
