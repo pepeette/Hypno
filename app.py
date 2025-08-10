@@ -312,7 +312,7 @@ with cols[3]:
 
 # --- PAGE CONTENT FUNCTIONS ---
 def show_problems():
-    st.markdown('<h1>Common Blocks We Help Overcome</h1>', unsafe_allow_html=True)
+    st.markdown('<h2>Common Blocks We Help Overcome</h2>', unsafe_allow_html=True)
     
     problems = [
         {
@@ -357,7 +357,7 @@ def show_problems():
         """, unsafe_allow_html=True)
 
 def show_method():
-    st.markdown('<h1>Our Simple 2-Session Process</h1>', unsafe_allow_html=True)
+    st.markdown('<h2>Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="card card-accent">
@@ -424,7 +424,7 @@ def show_method():
     """, unsafe_allow_html=True)
 
 def show_results():
-    st.markdown('<h1>Real Client Transformations</h1>', unsafe_allow_html=True)
+    st.markdown('<h2>Real Client Transformations</h2>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="card card-accent">
@@ -489,3 +489,4 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
