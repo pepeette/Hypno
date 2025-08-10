@@ -501,22 +501,22 @@ def show_results():
         {
             "icon": "🌟",
             "quote": "Finally broke free from old patterns – 2 sessions changed everything.",
-            "author": "Client in Bangkok"
+            "author": "Director, Banking, Singapore"
         },
         {
             "icon": "🎓", 
             "quote": "I was struggling with my studies abroad, failing my second year of medicine. Laetitia helped me change direction, and I'm now doing my specialization internship.",
-            "author": "Medical Student, France"
+            "author": "Medical Student, Morocco"
         },
         {
             "icon": "🚭",
             "quote": "My husband was a heavy smoker. After working with Laetitia, he stopped cigarettes completely and only occasionally smokes weed to relax. No more addiction.",
-            "author": "Wife of Former Smoker, UK"
+            "author": "Wife, Bangkok"
         },
         {
             "icon": "🧘",
             "quote": "The anxiety that controlled my daily life is now manageable. I can finally breathe and think clearly in stressful situations.",
-            "author": "Anxiety Patient, Germany"
+            "author": "Anxiety Patient, France"
         }
     ]
     
@@ -652,6 +652,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
