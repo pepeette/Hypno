@@ -683,7 +683,7 @@ def show_about():
         <h2>Bangkok Hypnotherapy Clinic</h2>
         <p>27 Soi Sukhumvit 10 (Asoke) • Confidential Sessions</p>
         <div style="display: flex; justify-content: center; align-items: center;">
-            <a href="https://www.google.com/maps/place/46%2F9+Soi+Sukhumvit+49,+Thong+Lor,+Bangkok" target="_blank">
+            <a href="https://www.google.com/maps/place/27+Soi+Sukhumvit+10,+Asoke,+Bangkok" target="_blank">
                 <button class="btn">📍 Get Directions</button>
             </a>
             <a href="https://calendly.com/laetitiasheppard/new-meeting" target="_blank">
@@ -711,6 +711,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
