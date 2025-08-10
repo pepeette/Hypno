@@ -495,16 +495,35 @@ def show_results():
     st.markdown('<h2>Real Client Transformations</h2>', unsafe_allow_html=True)
     
     st.markdown('<div class="card-container">', unsafe_allow_html=True)
-    st.markdown("""
+        st.markdown("""
     <div class="card card-accent">
         <div class="card-content">
             <p><em>"Finally broke free from old patterns – 2 sessions changed everything."</em></p>
             <p><strong>— Client in Bangkok</strong></p>
         </div>
     </div>
-    """, unsafe_allow_html=True)
     
-    st.markdown("""
+    <div class="card card-accent">
+        <div class="card-content">
+            <p><em>"I was struggling keeping up with my studies, being an international student far from my home country. I was lacking my roots, my support network and failed my second year of medicine. Laetitia helped me change the direction I was heading, and I am now doing my specialization internship."</em></p>
+            <p><strong>— Medical Student, France</strong></p>
+        </div>
+    </div>
+    
+    <div class="card card-accent">
+        <div class="card-content">
+            <p><em>"My husband was a heavy smoker, not a social smoker, but a heavy lonely smoker. This behavior was impeding our relationship and our social circle. After working with Laetitia, he now stopped smoking cigarettes and only smokes weed occasionally to relax. No addiction anymore and a more aligned life with our friends."</em></p>
+            <p><strong>— Wife of Former Smoker, UK</strong></p>
+        </div>
+    </div>
+
+    <div class="card card-accent">
+        <div class="card-content">
+            <p><em>"Finally broke free from old patterns – 2 sessions changed everything."</em></p>
+            <p><strong>— Client in Bangkok</strong></p>
+        </div>
+    </div>
+
     <div class="card card-accent">
         <div class="card-content">
             <p><em>"No more struggling; hypnotherapy reprogrammed my responses effectively."</em></p>
@@ -513,6 +532,32 @@ def show_results():
     </div>
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # Testimonial Submission Form
+    st.markdown("""
+    <div style="margin-top: 2rem;">
+        <h3>Share Your Transformation</h3>
+        <p>Add your testimony to help others see what's possible:</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    with st.form("testimonial_form"):
+        col1, col2 = st.columns(2)
+        with col1:
+            name = st.text_input("Your Name (optional)", placeholder="How you'd like to be credited")
+        with col2:
+            session_date = st.date_input("Session 2 Date (for verification)", help="Please provide the date of your second session")
+        
+        testimonial = st.text_area(
+            "Your Testimonial",
+            placeholder="Describe your experience and transformation...",
+            height=150
+        )
+        
+        submitted = st.form_submit_button("Submit Testimonial")
+        if submitted:
+            st.success("Thank you for sharing your story! We'll review and may contact you to verify before publishing.")
+    #add submission handling + data gathering + success msg
 
 def show_about():
     st.markdown('<h2>About Laetitia Sheppard</h2>', unsafe_allow_html=True)
@@ -565,6 +610,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
