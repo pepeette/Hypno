@@ -24,11 +24,30 @@ def inject_css():
         --shadow-accent: rgba(212, 175, 55, 0.2);
     }}
 
+    /* Force light mode */
+    [data-testid="stAppViewContainer"] {{
+        background-color: var(--light) !important;
+        color-scheme: light !important;
+    }}
+    
+    /* Remove top padding */
     .stApp {{
         background: var(--light) !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         line-height: 1.6;
         color: var(--primary) !important;
+        padding-top: 0.5rem !important;
+    }}
+    
+    /* Remove header space */
+    .st-emotion-cache-1avcm0n {{
+        display: none !important;
+    }}
+    
+    /* Remove extra space at top */
+    .st-emotion-cache-z5fcl4 {{
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
     }}
 
     h1, h2, h3, h4, h5, h6 {{
@@ -251,7 +270,7 @@ st.markdown('<div class="main-container">', unsafe_allow_html=True)
 st.markdown("""
 <div class="hero">
     <h1 class="hero-title">Reprogram Your Mind, Change Your Life</h1>
-    <p class="hero-subtitle">Hypnotherapy doesn’t just change what you do—it changes how you do it. In just 2 sessions, it reprograms the patterns holding you back, so you can finally get the results you deserve.</p>
+    <p class="hero-subtitle">Hypnotherapy doesn't just change what you do—it changes how you do it. In just 2 sessions, it reprograms the patterns holding you back, so you can finally get the results you deserve.</p>
     <button class="btn">📅 Book a FREE 15-min Call</button>
     <p class="muted-text mt-1">Expert-guided | Confidential | Certified in Hypnotherapy and DBT</p>
 </div>
@@ -470,6 +489,3 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
-
-
-
