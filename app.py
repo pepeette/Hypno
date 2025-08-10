@@ -502,7 +502,7 @@ def show_problems():
     </div>
     """, unsafe_allow_html=True)
 
-    add_back_to_top()
+    back_to_top()
 
 def show_method():
     st.markdown('<h2>Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
@@ -643,7 +643,7 @@ def show_method():
         </div>
     </div>
     """, unsafe_allow_html=True)
-    add_back_to_top()
+    back_to_top()
 
 def show_results():
     st.markdown("""
@@ -754,7 +754,7 @@ def show_results():
     </div>
     </div>
     """, unsafe_allow_html=True)
-    add_back_to_top()
+    back_to_top()
 
 def show_about():
     st.markdown('<h2>About Laetitia Sheppard</h2>', unsafe_allow_html=True)
@@ -788,7 +788,9 @@ def show_about():
         </div>
     </div>
     """, unsafe_allow_html=True)
-    add_back_to_top()
+    back_to_top()
+
+    
 # --- MAIN CONTENT ---
 if st.session_state.page == "problems":
     show_problems()
@@ -807,6 +809,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
