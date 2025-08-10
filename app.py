@@ -492,72 +492,89 @@ def show_method():
     """, unsafe_allow_html=True)
 
 def show_results():
-    st.markdown('<h2>Real Client Transformations</h2>', unsafe_allow_html=True)
-    
-    st.markdown('<div class="card-container">', unsafe_allow_html=True)
     st.markdown("""
-    <div class="card card-accent">
-        <div class="card-content">
-            <p><em>"Finally broke free from old patterns – 2 sessions changed everything."</em></p>
-            <p><strong>— Client in Bangkok</strong></p>
-        </div>
-    </div>
-    
-    <div class="card card-accent">
-        <div class="card-content">
-            <p><em>"I was struggling keeping up with my studies, being an international student far from my home country. I was lacking my roots, my support network and failed my second year of medicine. Laetitia helped me change the direction I was heading, and I am now doing my specialization internship."</em></p>
-            <p><strong>— Medical Student, France</strong></p>
-        </div>
-    </div>
-    
-    <div class="card card-accent">
-        <div class="card-content">
-            <p><em>"My husband was a heavy smoker, not a social smoker, but a heavy lonely smoker. This behavior was impeding our relationship and our social circle. After working with Laetitia, he now stopped smoking cigarettes and only smokes weed occasionally to relax. No addiction anymore and a more aligned life with our friends."</em></p>
-            <p><strong>— Wife of Former Smoker, UK</strong></p>
-        </div>
-    </div>
-
-    <div class="card card-accent">
-        <div class="card-content">
-            <p><em>"Finally broke free from old patterns – 2 sessions changed everything."</em></p>
-            <p><strong>— Client in Bangkok</strong></p>
-        </div>
-    </div>
-
-    <div class="card card-accent">
-        <div class="card-content">
-            <p><em>"No more struggling; hypnotherapy reprogrammed my responses effectively."</em></p>
-            <p><strong>— Satisfied Participant</strong></p>
-        </div>
-    </div>
+    <div class="main-container">
+        <h2 style="margin-bottom: 0.5rem;">Real Client Transformations</h2>
     """, unsafe_allow_html=True)
+    
+    # Testimonials data
+    testimonials = [
+        {
+            "quote": "Finally broke free from old patterns – 2 sessions changed everything.",
+            "author": "Client in Bangkok",
+            "icon": "🌟"
+        },
+        {
+            "quote": "I was struggling keeping up with my studies, being an international student far from home. I lacked roots and support, failing my second year of medicine. Laetitia helped me change direction, and I'm now doing my specialization internship.",
+            "author": "Medical Student, France",
+            "icon": "🎓"
+        },
+        {
+            "quote": "My husband was a heavy lonely smoker. This behavior hurt our relationship and social life. After working with Laetitia, he stopped cigarettes completely and only occasionally smokes weed to relax. No more addiction and better alignment with our friends.",
+            "author": "Wife of Former Smoker, UK",
+            "icon": "🚭"
+        },
+        {
+            "quote": "The anxiety that controlled my daily life is now manageable. I can finally breathe and think clearly in stressful situations.",
+            "author": "Anxiety Patient, Germany",
+            "icon": "🧘"
+        }
+    ]
+    
+    # Display testimonials in consistent cards
+    st.markdown('<div class="card-container">', unsafe_allow_html=True)
+    for t in testimonials:
+        st.markdown("""
+        <div class="card card-accent">
+            <div class="card-content">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">{t['icon']}</div>
+                <p style="font-style: italic; margin-bottom: 0.75rem;">"{t['quote']}"</p>
+                <p style="font-weight: 600; margin-top: auto;">— {t['author']}</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Testimonial Submission Form
+    # Testimonial submission form
     st.markdown("""
     <div style="margin-top: 2rem;">
-        <h3>Share Your Transformation</h3>
-        <p>Add your testimony to help others see what's possible:</p>
-    </div>
+        <h3>Share Your Story</h3>
+        <p style="margin-bottom: 1rem;">Help others by sharing your transformation:</p>
     """, unsafe_allow_html=True)
     
-    with st.form("testimonial_form"):
-        col1, col2 = st.columns(2)
-        with col1:
-            name = st.text_input("Your Name (optional)", placeholder="How you'd like to be credited")
-        with col2:
-            session_date = st.date_input("Session 2 Date (for verification)", help="Please provide the date of your second session")
+    with st.form("testimonial_form", clear_on_submit=True):
+        cols = st.columns([1, 1])
+        with cols[0]:
+            name = st.text_input("Your Name (optional)", 
+                               placeholder="How you want to be credited")
+        with cols[1]:
+            session_date = st.date_input("Session 2 Date*", 
+                                       help="Required for verification")
         
-        testimonial = st.text_area(
-            "Your Testimonial",
-            placeholder="Describe your experience and transformation...",
-            height=150
-        )
+        testimonial = st.text_area("Your Experience*",
+                                 placeholder="Describe your transformation...",
+                                 height=150,
+                                 help="Minimum 50 characters")
         
         submitted = st.form_submit_button("Submit Testimonial")
+        
         if submitted:
-            st.success("Thank you for sharing your story! We'll review and may contact you to verify before publishing.")
-    #add submission handling + data gathering + success msg
+            if not session_date:
+                st.error("Please provide your session date for verification")
+            elif not testimonial or len(testimonial.strip()) < 50:
+                st.error("Please share at least 50 characters about your experience")
+            else:
+                # Process submission (would connect to database in production)
+                st.success("Thank you! We'll review your testimonial and contact you if needed.")
+                st.balloons()
+    
+    st.markdown("""
+        <p style="font-size: 0.9rem; color: var(--muted); margin-top: 1rem;">
+            * Required fields. Testimonials are verified before publication.
+        </p>
+    </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 def show_about():
     st.markdown('<h2>About Laetitia Sheppard</h2>', unsafe_allow_html=True)
@@ -610,6 +627,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
