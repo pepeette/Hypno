@@ -66,7 +66,8 @@ def inject_css():
     }}
 
     #MainMenu {{visibility: hidden;}}
-    footer" {{visibility: hidden;}}\n   " header {{visibility: hidden;}}
+    footer {{visibility: hidden;}}
+    header {{visibility: hidden;}}
     .stDeployButton {{display: none;}}
 
     .main-container {{
@@ -309,6 +310,21 @@ def show_problems():
             "title": "Performance Anxiety", 
             "desc": "Struggling in high-pressure situations? Hypnotherapy redesigns your responses with expert guidance.",
             "result": "→ Build confidence through behavioral change"
+        },
+        {
+            "title": "Emotional Dysregulation", 
+            "desc": "Struggling with intense emotions or mood swings? Hypnotherapy helps stabilize emotional responses and improve self-awareness.",
+            "result": "→ Find balance and emotional stability"
+        },
+        {
+            "title": "Impulse Control", 
+            "desc": "Finding it hard to resist impulses or make thoughtful decisions? Reprogramming can help build self-control and long-term focus.",
+            "result": "→ Strengthen impulse control"
+        },
+        {
+            "title": "Self-Harm Tendencies", 
+            "desc": "Struggling with self-harm or self-destructive behaviors? Hypnotherapy provides tools to redirect these patterns safely.",
+            "result": "→ Replace harmful behaviors with healthy coping"
         }
     ]
     
@@ -320,28 +336,6 @@ def show_problems():
             <p><strong>{p['result']}</strong></p>
         </div>
         """, unsafe_allow_html=True)
-
-    st.markdown('<h2>Why Choose This Approach?</h2>', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="stats">
-        <div class="stat">
-            <div class="stat-number">2</div>
-            <div class="stat-label">Sessions for change</div>
-        </div>
-        <div class="stat">
-            <div class="stat-number">92%</div>
-            <div class="stat-label">Report improvement</div>
-        </div>
-        <div class="stat">
-            <div class="stat-number">5-7x</div>
-            <div class="stat-label">Faster than therapy</div>
-        </div>
-        <div class="stat">
-            <div class="stat-number">Optional</div>
-            <div class="stat-label">Follow-up session</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
 
 def show_method():
     st.markdown('<h1>Our Simple 2-Session Process</h1>', unsafe_allow_html=True)
@@ -373,6 +367,38 @@ def show_method():
                 <h2>Session 2: Hypnosis</h2>
                 <p>Reprogram behaviors with certified expertise for immediate, lasting change.</p>
             </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="process-step">
+            <div class="step-number">3</div>
+            <div>
+                <h2>Session 3: Reinforcement (Optional)</h2>
+                <p>Optional follow-up to reinforce the new pattern, typically not needed but available at your request.</p>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<h2>Why Choose This Approach?</h2>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number">2</div>
+            <div class="stat-label">Sessions for change</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">92%</div>
+            <div class="stat-label">Report improvement</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">5-7x</div>
+            <div class="stat-label">Faster than therapy</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">Optional</div>
+            <div class="stat-label">Follow-up session</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -414,8 +440,14 @@ def show_about():
     <div class="contact">
         <h2>Bangkok Hypnotherapy Clinic</h2>
         <p>46/9 Soi Sukhumvit 49 (Thong Lor) • Confidential Sessions</p>
-        <button class="btn">📍 Get Directions</button>
-        <button class="btn">📅 Book Now</button>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <a href="https://www.google.com/maps/place/46%2F9+Soi+Sukhumvit+49,+Thong+Lor,+Bangkok" target="_blank">
+                <button class="btn">📍 Get Directions</button>
+            </a>
+            <a href="https://calendly.com/laetitia-sheppard-hypnotherapy" target="_blank">
+                <button class="btn">📅 Book Now</button>
+            </a>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
