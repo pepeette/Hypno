@@ -278,7 +278,7 @@ def inject_css():
 
     .text-center {{ text-align: center; }}
     .mt-1 {{ margin-top: 1rem; }}
-    .mt-2 {{ margin-top: 2rem; }}
+    .mt-2 {{ margin-top: 1rem; }}
     .mb-1 {{ margin-bottom: 1rem; }}
     </style>
     """, unsafe_allow_html=True)
@@ -386,7 +386,7 @@ def show_problems():
 
     # New Self Assessment Questionnaire Section
     st.markdown("""
-    <div style="margin-top: 2rem;">
+    <div style="margin-top: 1rem;">
         <h2>Self Assessment Questionnaire</h2>
         <p>Take a moment to reflect on your behavioral patterns:</p>
     </div>
@@ -562,8 +562,8 @@ def show_results():
 
     # Testimonial submission form
     st.markdown("""
-    <div style="margin-top: 2rem;">
-        <h3>Share Your Story</h3>
+    <div style="margin-top: 1rem;">
+        <h2>Share Your Story</h2>
         <p style="margin-bottom: 1rem;">Help others by sharing your transformation:</p>
     """, unsafe_allow_html=True)
     
@@ -652,6 +652,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
