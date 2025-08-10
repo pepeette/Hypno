@@ -280,7 +280,78 @@ def inject_css():
     .mt-1 {{ margin-top: 1rem; }}
     .mt-2 {{ margin-top: 1rem; }}
     .mb-1 {{ margin-bottom: 1rem; }}
+
+    /* Mobile-friendly navigation */
+    @media (max-width: 768px) {{
+        .mobile-nav {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }}
+        .mobile-nav button {{
+            flex: 1 0 calc(50% - 0.5rem);
+            min-width: 0;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }}
+    }}
+
+    /* Back to top button */
+    .back-to-top {{
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--accent);
+        color: var(--primary);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        cursor: pointer;
+        z-index: 100;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }}
+    .back-to-top.visible {{
+        opacity: 1;
+    }}
+    .back-to-top:hover {{
+        transform: translateY(-2px);
+    }}
+
+    /* Add this to your existing :root CSS */
+    :root {{
+        /* [Previous variables remain] */
+        --mobile-breakpoint: 768px;
+    }}
     </style>
+
+    <script>
+    // Back to top functionality
+    document.addEventListener('DOMContentLoaded', function() {{
+        const backToTop = document.createElement('div');
+        backToTop.className = 'back-to-top';
+        backToTop.innerHTML = '↑';
+        backToTop.onclick = function() {{
+            window.scrollTo({{top: 0, behavior: 'smooth'}});
+        }};
+        document.body.appendChild(backToTop);
+
+        window.addEventListener('scroll', function() {{
+            if (window.pageYOffset > 300) {{
+                backToTop.classList.add('visible');
+            }} else {{
+                backToTop.classList.remove('visible');
+            }}
+        }});
+    }});
+    </script>
+
     """, unsafe_allow_html=True)
 
 inject_css()
@@ -303,39 +374,115 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- NAVIGATION BUTTONS ---
-cols = st.columns(4)
-with cols[0]:
-    problems_btn = st.button("🔥 Your Blocks", key="nav_problems", 
-                            help="View common problems we solve",
-                            type="primary" if st.session_state.page == "problems" else "secondary")
-    if problems_btn:
+# # --- NAVIGATION BUTTONS ---
+# cols = st.columns(4)
+# with cols[0]:
+#     problems_btn = st.button("🔥 Your Blocks", key="nav_problems", 
+#                             help="View common problems we solve",
+#                             type="primary" if st.session_state.page == "problems" else "secondary")
+#     if problems_btn:
+#         st.session_state.page = "problems"
+#         st.rerun()
+
+# with cols[1]:
+#     method_btn = st.button("🧠 The Method", key="nav_method", 
+#                           help="Learn about our 2-session method",
+#                           type="primary" if st.session_state.page == "method" else "secondary")
+#     if method_btn:
+#         st.session_state.page = "method"
+#         st.rerun()
+
+# with cols[2]:
+#     results_btn = st.button("🏆 Results", key="nav_results", 
+#                            help="See client transformations",
+#                            type="primary" if st.session_state.page == "results" else "secondary")
+#     if results_btn:
+#         st.session_state.page = "results"
+#         st.rerun()
+
+# with cols[3]:
+#     about_btn = st.button("👤 About", key="nav_about", 
+#                          help="About Laetitia and the clinic",
+#                          type="primary" if st.session_state.page == "about" else "secondary")
+#     if about_btn:
+#         st.session_state.page = "about"
+#         st.rerun()
+
+# --- NAVIGATION BUTTONS (REPLACE THE ABOVE) ---
+def show_navigation():
+    st.markdown("""
+    <style>
+    .desktop-nav {{
+        display: block;
+    }}
+    @media (max-width: 768px) {{
+        .desktop-nav {{
+            display: none;
+        }}
+        .mobile-nav {{
+            display: flex;
+        }}
+    }}
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Desktop navigation
+    st.markdown('<div class="desktop-nav">', unsafe_allow_html=True)
+    cols = st.columns(4)
+    with cols[0]:
+        problems_btn = st.button("🔥 Your Blocks", key="nav_problems", 
+                                help="View common problems we solve",
+                                type="primary" if st.session_state.page == "problems" else "secondary")
+    with cols[1]:
+        method_btn = st.button("🧠 The Method", key="nav_method", 
+                              help="Learn about our 2-session method",
+                              type="primary" if st.session_state.page == "method" else "secondary")
+    with cols[2]:
+        results_btn = st.button("🏆 Results", key="nav_results", 
+                               help="See client transformations",
+                               type="primary" if st.session_state.page == "results" else "secondary")
+    with cols[3]:
+        about_btn = st.button("👤 About", key="nav_about", 
+                             help="About Laetitia and the clinic",
+                             type="primary" if st.session_state.page == "about" else "secondary")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Mobile navigation
+    st.markdown('<div class="mobile-nav">', unsafe_allow_html=True)
+    if st.button("🔥 Blocks", key="nav_problems_mobile", 
+                type="primary" if st.session_state.page == "problems" else "secondary"):
         st.session_state.page = "problems"
-        st.rerun()
-
-with cols[1]:
-    method_btn = st.button("🧠 The Method", key="nav_method", 
-                          help="Learn about our 2-session method",
-                          type="primary" if st.session_state.page == "method" else "secondary")
-    if method_btn:
+    if st.button("🧠 Method", key="nav_method_mobile", 
+                type="primary" if st.session_state.page == "method" else "secondary"):
         st.session_state.page = "method"
-        st.rerun()
-
-with cols[2]:
-    results_btn = st.button("🏆 Results", key="nav_results", 
-                           help="See client transformations",
-                           type="primary" if st.session_state.page == "results" else "secondary")
-    if results_btn:
+    if st.button("🏆 Results", key="nav_results_mobile", 
+                type="primary" if st.session_state.page == "results" else "secondary"):
         st.session_state.page = "results"
-        st.rerun()
-
-with cols[3]:
-    about_btn = st.button("👤 About", key="nav_about", 
-                         help="About Laetitia and the clinic",
-                         type="primary" if st.session_state.page == "about" else "secondary")
-    if about_btn:
+    if st.button("👤 About", key="nav_about_mobile", 
+                type="primary" if st.session_state.page == "about" else "secondary"):
         st.session_state.page = "about"
-        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Handle navigation
+    if problems_btn or st.session_state.page == "problems":
+        st.session_state.page = "problems"
+    if method_btn or st.session_state.page == "method":
+        st.session_state.page = "method"
+    if results_btn or st.session_state.page == "results":
+        st.session_state.page = "results"
+    if about_btn or st.session_state.page == "about":
+        st.session_state.page = "about"
+
+# --- IN EACH CONTENT SECTION (ADD AT THE END) ---
+def add_back_to_top():
+    st.markdown("""
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="#" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}}); return false;" 
+           style="color: var(--accent); text-decoration: none; font-weight: 600;">
+            ↑ Back to top
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
 
 # --- PAGE CONTENT FUNCTIONS ---
 def show_problems():
@@ -409,6 +556,8 @@ def show_problems():
         <p>Section coming soon - This will provide personalized insights based on your input</p>
     </div>
     """, unsafe_allow_html=True)
+
+    add_back_to_top()
 
 def show_method():
     st.markdown('<h2>Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
@@ -549,6 +698,7 @@ def show_method():
         </div>
     </div>
     """, unsafe_allow_html=True)
+    add_back_to_top()
 
 def show_results():
     st.markdown("""
@@ -659,6 +809,7 @@ def show_results():
     </div>
     </div>
     """, unsafe_allow_html=True)
+    add_back_to_top()
 
 def show_about():
     st.markdown('<h2>About Laetitia Sheppard</h2>', unsafe_allow_html=True)
@@ -692,7 +843,7 @@ def show_about():
         </div>
     </div>
     """, unsafe_allow_html=True)
-
+    add_back_to_top()
 # --- MAIN CONTENT ---
 if st.session_state.page == "problems":
     show_problems()
@@ -711,6 +862,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
