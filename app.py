@@ -411,9 +411,10 @@ def show_problems():
 def show_method():
     st.markdown('<h2>Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
     
+    # Add CSS and JavaScript for modal
     st.markdown("""
     <style>
-        .modal {{
+        .modal {
             display: none;
             position: fixed;
             z-index: 1000;
@@ -422,15 +423,15 @@ def show_method():
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.8);
-        }}
-        .modal-content {{
+        }
+        .modal-content {
             margin: auto;
             display: block;
             max-width: 90%;
             max-height: 90%;
             margin-top: 5vh;
-        }}
-        .close {{
+        }
+        .close {
             position: absolute;
             top: 20px;
             right: 35px;
@@ -438,17 +439,17 @@ def show_method():
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
-        }}
-        .card-image {{
+        }
+        .card-image {
             width: 100%;
             border-radius: 8px;
             cursor: pointer;
             transition: transform 0.3s;
             margin-top: 1rem;
-        }}
-        .card-image:hover {{
+        }
+        .card-image:hover {
             transform: scale(1.02);
-        }}
+        }
     </style>
 
     <div id="imageModal" class="modal">
@@ -461,20 +462,20 @@ def show_method():
         var modalImg = document.getElementById("modalImage");
         var span = document.getElementsByClassName("close")[0];
         
-        function openModal(imgSrc) {{
+        function openModal(imgSrc) {
             modal.style.display = "block";
             modalImg.src = imgSrc;
-        }}
+        }
         
-        span.onclick = function() {{ 
+        span.onclick = function() { 
             modal.style.display = "none";
-        }}
+        }
         
-        window.onclick = function(event) {{
-            if (event.target == modal) {{
+        window.onclick = function(event) {
+            if (event.target == modal) {
                 modal.style.display = "none";
-            }}
-        }}
+            }
+        }
     </script>
     """, unsafe_allow_html=True)
 
@@ -496,40 +497,52 @@ def show_method():
     """, unsafe_allow_html=True)
     
     # Session 1: Analysis card with image
-    st.markdown(f"""
-    <div class="card">
-        <div class="card-content">
-            <div class="process-step">
-                <div class="step-number">1</div>
-                <div>
-                    <h2>Session 1: Analysis</h2>
-                    <p>Identify patterns holding you back and design a personalized reprogramming plan.</p>
-                    <img src="/img/BehaviourMap.png" class="card-image" 
-                         onclick="openModal('/img/BehaviourMap.png')"
-                         alt="Behavior Mapping Diagram">
+    try:
+        st.markdown("""
+        <div class="card">
+            <div class="card-content">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h2>Session 1: Analysis</h2>
+                        <p>Identify patterns holding you back and design a personalized reprogramming plan.</p>
+        """, unsafe_allow_html=True)
+        
+        # Display image using Streamlit's image function
+        st.image("img/BehaviourMap.png", caption="Behavior Mapping", use_column_width=True)
+        
+        st.markdown("""
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+    except:
+        st.error("BehaviorMap.png not found in img directory")
     
     # Session 2: Hypnosis card with image
-    st.markdown(f"""
-    <div class="card card-accent">
-        <div class="card-content">
-            <div class="process-step">
-                <div class="step-number">2</div>
-                <div>
-                    <h2>Session 2: Hypnosis</h2>
-                    <p>Reprogram behaviors with certified expertise for immediate, lasting change.</p>
-                    <img src="/img/emo.jpg" class="card-image" 
-                         onclick="openModal('/img/emo.jpg')"
-                         alt="Emotional Reprogramming">
+    try:
+        st.markdown("""
+        <div class="card card-accent">
+            <div class="card-content">
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h2>Session 2: Hypnosis</h2>
+                        <p>Reprogram behaviors with certified expertise for immediate, lasting change.</p>
+        """, unsafe_allow_html=True)
+        
+        # Display image using Streamlit's image function
+        st.image("img/emo.jpg", caption="Emotional Reprogramming", use_column_width=True)
+        
+        st.markdown("""
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+    except:
+        st.error("emo.jpg not found in img directory")
     
     # Optional Session 3 card
     st.markdown("""
@@ -731,6 +744,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
