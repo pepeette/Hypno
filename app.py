@@ -297,7 +297,7 @@ def show_problems():
     
     problems = [
         {
-            "title": "The Bangkok Glass Ceiling", 
+            "title": "The professional Glass Ceiling", 
             "desc": "Delivering great work but not advancing? Changing efforts alone won't fix it – we reprogram the underlying patterns.",
             "result": "→ Achieve breakthroughs with hypnotherapy"
         },
@@ -470,5 +470,6 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
