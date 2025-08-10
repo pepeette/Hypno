@@ -335,91 +335,91 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# # --- NAVIGATION BUTTONS ---
-# cols = st.columns(4)
-# with cols[0]:
-#     problems_btn = st.button("🔥 Your Blocks", key="nav_problems", 
-#                             help="View common problems we solve",
-#                             type="primary" if st.session_state.page == "problems" else "secondary")
-#     if problems_btn:
-#         st.session_state.page = "problems"
-#         st.rerun()
-
-# with cols[1]:
-#     method_btn = st.button("🧠 The Method", key="nav_method", 
-#                           help="Learn about our 2-session method",
-#                           type="primary" if st.session_state.page == "method" else "secondary")
-#     if method_btn:
-#         st.session_state.page = "method"
-#         st.rerun()
-
-# with cols[2]:
-#     results_btn = st.button("🏆 Results", key="nav_results", 
-#                            help="See client transformations",
-#                            type="primary" if st.session_state.page == "results" else "secondary")
-#     if results_btn:
-#         st.session_state.page = "results"
-#         st.rerun()
-
-# with cols[3]:
-#     about_btn = st.button("👤 About", key="nav_about", 
-#                          help="About Laetitia and the clinic",
-#                          type="primary" if st.session_state.page == "about" else "secondary")
-#     if about_btn:
-#         st.session_state.page = "about"
-#         st.rerun()
-
-# --- NAVIGATION BUTTONS (REPLACE THE ABOVE) ---
-def show_navigation():
-    # Desktop navigation
-    cols = st.columns(4)
-    with cols[0]:
-        problems_btn = st.button("🔥 Your Blocks", 
-                               key="nav_problems",
-                               type="primary" if st.session_state.page == "problems" else "secondary")
-    with cols[1]:
-        method_btn = st.button("🧠 The Method",
-                             key="nav_method",
-                             type="primary" if st.session_state.page == "method" else "secondary")
-    with cols[2]:
-        results_btn = st.button("🏆 Results",
-                              key="nav_results",
-                              type="primary" if st.session_state.page == "results" else "secondary")
-    with cols[3]:
-        about_btn = st.button("👤 About",
-                            key="nav_about",
-                            type="primary" if st.session_state.page == "about" else "secondary")
-
-    # Mobile navigation - will only show on small screens via CSS
-    with st.container():
-        st.markdown('<div class="mobile-nav">', unsafe_allow_html=True)
-        if st.button("🔥 Blocks", key="nav_problems_mobile"):
-            st.session_state.page = "problems"
-            st.rerun()
-        if st.button("🧠 Method", key="nav_method_mobile"):
-            st.session_state.page = "method"
-            st.rerun()
-        if st.button("🏆 Results", key="nav_results_mobile"):
-            st.session_state.page = "results"
-            st.rerun()
-        if st.button("👤 About", key="nav_about_mobile"):
-            st.session_state.page = "about"
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # Navigation logic
+# --- NAVIGATION BUTTONS ---
+cols = st.columns(4)
+with cols[0]:
+    problems_btn = st.button("🔥 Your Blocks", key="nav_problems", 
+                            help="View common problems we solve",
+                            type="primary" if st.session_state.page == "problems" else "secondary")
     if problems_btn:
         st.session_state.page = "problems"
         st.rerun()
+
+with cols[1]:
+    method_btn = st.button("🧠 The Method", key="nav_method", 
+                          help="Learn about our 2-session method",
+                          type="primary" if st.session_state.page == "method" else "secondary")
     if method_btn:
         st.session_state.page = "method"
         st.rerun()
+
+with cols[2]:
+    results_btn = st.button("🏆 Results", key="nav_results", 
+                           help="See client transformations",
+                           type="primary" if st.session_state.page == "results" else "secondary")
     if results_btn:
         st.session_state.page = "results"
         st.rerun()
+
+with cols[3]:
+    about_btn = st.button("👤 About", key="nav_about", 
+                         help="About Laetitia and the clinic",
+                         type="primary" if st.session_state.page == "about" else "secondary")
     if about_btn:
         st.session_state.page = "about"
         st.rerun()
+
+# # --- NAVIGATION BUTTONS (REPLACE THE ABOVE) ---
+# def show_navigation():
+#     # Desktop navigation
+#     cols = st.columns(4)
+#     with cols[0]:
+#         problems_btn = st.button("🔥 Your Blocks", 
+#                                key="nav_problems",
+#                                type="primary" if st.session_state.page == "problems" else "secondary")
+#     with cols[1]:
+#         method_btn = st.button("🧠 The Method",
+#                              key="nav_method",
+#                              type="primary" if st.session_state.page == "method" else "secondary")
+#     with cols[2]:
+#         results_btn = st.button("🏆 Results",
+#                               key="nav_results",
+#                               type="primary" if st.session_state.page == "results" else "secondary")
+#     with cols[3]:
+#         about_btn = st.button("👤 About",
+#                             key="nav_about",
+#                             type="primary" if st.session_state.page == "about" else "secondary")
+
+#     # Mobile navigation - will only show on small screens via CSS
+#     with st.container():
+#         st.markdown('<div class="mobile-nav">', unsafe_allow_html=True)
+#         if st.button("🔥 Blocks", key="nav_problems_mobile"):
+#             st.session_state.page = "problems"
+#             st.rerun()
+#         if st.button("🧠 Method", key="nav_method_mobile"):
+#             st.session_state.page = "method"
+#             st.rerun()
+#         if st.button("🏆 Results", key="nav_results_mobile"):
+#             st.session_state.page = "results"
+#             st.rerun()
+#         if st.button("👤 About", key="nav_about_mobile"):
+#             st.session_state.page = "about"
+#             st.rerun()
+#         st.markdown('</div>', unsafe_allow_html=True)
+
+#     # Navigation logic
+#     if problems_btn:
+#         st.session_state.page = "problems"
+#         st.rerun()
+#     if method_btn:
+#         st.session_state.page = "method"
+#         st.rerun()
+#     if results_btn:
+#         st.session_state.page = "results"
+#         st.rerun()
+#     if about_btn:
+#         st.session_state.page = "about"
+#         st.rerun()
 
 # --- IN EACH CONTENT SECTION (ADD AT THE END) ---
 def back_to_top():
@@ -809,6 +809,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
