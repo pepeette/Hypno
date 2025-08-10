@@ -1,19 +1,30 @@
-# Hypno Website - Carte de Visite
+# HypnoTech - Réprogrammation Comportementale Éthique
 
-Nous créons des outils digitaux visant à maximiser le profit pour le plus grand nombre. Cela conduit à des algorithmes qui ne sont pas inclusifs, mais qui fonctionnent pour 60% des gens. Par conséquent, une partie de la population se sent mise à l'écart et culpabilisée de ne pas faire partie du "peloton mouton". 
+🌍 Philosophie
+"L'hypnose thérapeutique doit être l'antidote aux manipulations algorithmiques, pas leur complice."
 
-Il est donc crucial de développer des compétences en Data Behavioral Therapy (DBT), que j'applique moi-même dans ma vie pour être heureuse.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)
 
-Resultat >> [website created with Taipy](https://seashell-app-wlnbb.ondigitalocean.app/)
+Une plateforme d'hypnothérapie digitale qui questionne l'impact des algorithmes sur nos comportements, inspirée par les critiques de la surveillance numérique.
 
-Modifiee de Digital Ocean a Streamlit >> change requirements de taipy et flask a streamlit
-et deployment depuis app.y
+<p align="center">
+  <img src="https://via.placeholder.com/800x400?text=Interface+HypnoTech" alt="Prévisualisation">
+</p>
 
+## 📌 Contexte Critique
 
-## Liens Utiles
+Ce projet s'inscrit en réaction aux mécanismes de manipulation comportementale identifiés dans :
+- [Comment la Big Tech pave la voie aux dictatures (Usbek & Rica)](https://usbeketrica.com/fr/article/comment-la-big-tech-pave-la-voie-aux-dictatures)
+- [Weapons of Math Destruction (Cathy O'Neil)](https://en.wikipedia.org/wiki/Weapons_of_Math_Destruction)
 
-- [Comment la Big Tech pave la voie aux dictatures](https://usbeketrica.com/fr/article/comment-la-big-tech-pave-la-voie-aux-dictatures)
+## ✨ Fonctionnalités
 
-### Inspirations
+| 🔍 Analyse Comportementale | 🧠 Reprogrammation | 🛡️ Protection |
+|---------------------------|--------------------|---------------|
+| Détection des patterns influencés par les algorithmes | Protocoles anti-"dark patterns" | Aucun tracking utilisateur |
+| Cartographie des biais cognitifs | Techniques d'hypnose éthique | Chiffrement des données |
 
-- [Weapons of Math Destruction - Wikipedia](https://en.wikipedia.org/wiki/Weapons_of_Math_Destruction)
+## 🚀 Loading
+
+https://hypnotherapy.streamlit.app/
