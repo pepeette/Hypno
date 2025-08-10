@@ -9,7 +9,7 @@
 Une branche d'hypnothérapie digitale qui questionne l'impact des algorithmes sur nos comportements, inspirée par les critiques de la surveillance numérique.
 
 <p align="center">
-  <img src="https://via.placeholder.com/800x400?text=Interface+HypnoTech" alt="Prévisualisation">
+  <img src="https://hypnotherapy.streamlit.app/" alt="Prévisualisation">
 </p>
 
 ## 📌 Contexte Critique
