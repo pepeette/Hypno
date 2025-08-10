@@ -495,7 +495,7 @@ def show_results():
     st.markdown('<h2>Real Client Transformations</h2>', unsafe_allow_html=True)
     
     st.markdown('<div class="card-container">', unsafe_allow_html=True)
-        st.markdown("""
+    st.markdown("""
     <div class="card card-accent">
         <div class="card-content">
             <p><em>"Finally broke free from old patterns – 2 sessions changed everything."</em></p>
@@ -610,6 +610,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
