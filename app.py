@@ -146,6 +146,30 @@ def inject_css():
         margin-bottom: 1rem;
         box-shadow: 0 4px 12px var(--shadow);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        min-height: 180px; /* Added minimum height for consistency */
+        display: flex;
+        flex-direction: column;
+    }}
+
+        .card-container {{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }}
+    
+    .card-content {{
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }}
+    
+    .card h2 {{
+        margin-top: 0 !important;
+    }}
+    
+    .card p:last-child {{
+        margin-top: auto;
+        padding-top: 0.5rem;
     }}
     
     .card:hover {{
@@ -347,59 +371,79 @@ def show_problems():
         }
     ]
     
+    st.markdown('<div class="card-container">', unsafe_allow_html=True)
     for p in problems:
         st.markdown(f"""
         <div class="card card-accent">
-            <h2>{p['title']}</h2>
-            <p>{p['desc']}</p>
-            <p><strong>{p['result']}</strong></p>
+            <div class="card-content">
+                <h2>{p['title']}</h2>
+                <p>{p['desc']}</p>
+                <p><strong>{p['result']}</strong></p>
+            </div>
         </div>
         """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def show_method():
     st.markdown('<h2>Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
     
+    st.markdown('<div class="card-container">', unsafe_allow_html=True)
     st.markdown("""
     <div class="card card-accent">
-        <h2>Why Reprogramming Works:</h2>
-        <ul>
-            <li>Changing inputs (like habits) often fails...</li>
-            <li>Hypnotherapy rewires the root cause towards your desired behavioral output.</li>
-            <li>Designing the new patterns with the expert framework ensures long-term results.</li>
-            <li>Includes 2 sessions for 3000 THB; follow-up is optional and rarely needed.</li>
-        </ul>
-    </div>
-    
-    <div class="card">
-        <div class="process-step">
-            <div class="step-number">1</div>
-            <div>
-                <h2>Session 1: Analysis</h2>
-                <p>Identify patterns holding you back and design a personalized reprogramming plan.</p>
-            </div>
+        <div class="card-content">
+            <h2>Why Reprogramming Works:</h2>
+            <ul>
+                <li>Changing inputs (like habits) often fails...</li>
+                <li>Hypnotherapy rewires the root cause towards your desired behavioral output.</li>
+                <li>Designing the new patterns with the expert framework ensures long-term results.</li>
+                <li>Includes 2 sessions for 3000 THB; follow-up is optional and rarely needed.</li>
+            </ul>
         </div>
     </div>
+    """, unsafe_allow_html=True)
     
-    <div class="card card-accent">
-        <div class="process-step">
-            <div class="step-number">2</div>
-            <div>
-                <h2>Session 2: Hypnosis</h2>
-                <p>Reprogram behaviors with certified expertise for immediate, lasting change.</p>
-            </div>
-        </div>
-    </div>
-    
+    st.markdown("""
     <div class="card">
-        <div class="process-step">
-            <div class="step-number">3</div>
-            <div>
-                <h2>Session 3: Reinforcement (Optional)</h2>
-                <p>Optional follow-up to reinforce the new pattern, typically not needed but available at your request.</p>
+        <div class="card-content">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div>
+                    <h2>Session 1: Analysis</h2>
+                    <p>Identify patterns holding you back and design a personalized reprogramming plan.</p>
+                </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="card card-accent">
+        <div class="card-content">
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div>
+                    <h2>Session 2: Hypnosis</h2>
+                    <p>Reprogram behaviors with certified expertise for immediate, lasting change.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="card">
+        <div class="card-content">
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <div>
+                    <h2>Session 3: Reinforcement (Optional)</h2>
+                    <p>Optional follow-up to reinforce the new pattern, typically not needed but available at your request.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<h2>Why Choose This Approach?</h2>', unsafe_allow_html=True)
     st.markdown("""
@@ -426,17 +470,25 @@ def show_method():
 def show_results():
     st.markdown('<h2>Real Client Transformations</h2>', unsafe_allow_html=True)
     
+    st.markdown('<div class="card-container">', unsafe_allow_html=True)
     st.markdown("""
     <div class="card card-accent">
-        <p><em>"Finally broke free from old patterns – 2 sessions changed everything."</em></p>
-        <p><strong>— Client in Bangkok</strong></p>
-    </div>
-    
-    <div class="card card-accent">
-        <p><em>"No more struggling; hypnotherapy reprogrammed my responses effectively."</em></p>
-        <p><strong>— Satisfied Participant</strong></p>
+        <div class="card-content">
+            <p><em>"Finally broke free from old patterns – 2 sessions changed everything."</em></p>
+            <p><strong>— Client in Bangkok</strong></p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="card card-accent">
+        <div class="card-content">
+            <p><em>"No more struggling; hypnotherapy reprogrammed my responses effectively."</em></p>
+            <p><strong>— Satisfied Participant</strong></p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def show_about():
     st.markdown('<h2>About Laetitia Sheppard</h2>', unsafe_allow_html=True)
@@ -489,4 +541,5 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
