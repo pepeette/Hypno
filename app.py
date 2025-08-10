@@ -296,7 +296,7 @@ st.markdown("""
     <h1 class="hero-title">Reprogram Your Mind, Change Your Life</h1>
     <p class="hero-subtitle">Hypnotherapy doesn't just change what you do—it changes how you do it. In just 2 sessions, it reprograms the patterns holding you back, so you can finally get the results you deserve.</p>
     </a>
-        <a href="https://calendly.com/laetitia-sheppard-hypnotherapy" target="_blank">
+        <a href="https://calendly.com/laetitiasheppard/30min" target="_blank">
         <button class="btn">📅 Book a FREE 15-min Call</button>
     </a>
     <p class="muted-text mt-1">Expert-guided | Confidential | Certified in Hypnotherapy and DBT</p>
@@ -686,7 +686,7 @@ def show_about():
             <a href="https://www.google.com/maps/place/46%2F9+Soi+Sukhumvit+49,+Thong+Lor,+Bangkok" target="_blank">
                 <button class="btn">📍 Get Directions</button>
             </a>
-            <a href="https://calendly.com/laetitia-sheppard-hypnotherapy" target="_blank">
+            <a href="https://calendly.com/laetitiasheppard/new-meeting" target="_blank">
                 <button class="btn">📅 Book Now</button>
             </a>
         </div>
@@ -711,6 +711,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
