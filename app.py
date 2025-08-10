@@ -681,7 +681,7 @@ def show_about():
     st.markdown("""
     <div class="contact">
         <h2>Bangkok Hypnotherapy Clinic</h2>
-        <p>46/9 Soi Sukhumvit 49 (Thong Lor) • Confidential Sessions</p>
+        <p>27 Soi Sukhumvit 10 (Asoke) • Confidential Sessions</p>
         <div style="display: flex; justify-content: center; align-items: center;">
             <a href="https://www.google.com/maps/place/46%2F9+Soi+Sukhumvit+49,+Thong+Lor,+Bangkok" target="_blank">
                 <button class="btn">📍 Get Directions</button>
@@ -711,6 +711,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
