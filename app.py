@@ -411,22 +411,92 @@ def show_problems():
 def show_method():
     st.markdown('<h2>Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
     
+    st.markdown("""
+    <style>
+        .modal {{
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }}
+        .modal-content {{
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            margin-top: 5vh;
+        }}
+        .close {{
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }}
+        .card-image {{
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin-top: 1rem;
+        }}
+        .card-image:hover {{
+            transform: scale(1.02);
+        }}
+    </style>
+
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        var modal = document.getElementById("imageModal");
+        var modalImg = document.getElementById("modalImage");
+        var span = document.getElementsByClassName("close")[0];
+        
+        function openModal(imgSrc) {{
+            modal.style.display = "block";
+            modalImg.src = imgSrc;
+        }}
+        
+        span.onclick = function() {{ 
+            modal.style.display = "none";
+        }}
+        
+        window.onclick = function(event) {{
+            if (event.target == modal) {{
+                modal.style.display = "none";
+            }}
+        }}
+    </script>
+    """, unsafe_allow_html=True)
+
     st.markdown('<div class="card-container">', unsafe_allow_html=True)
+    
+    # Why Reprogramming Works card
     st.markdown("""
     <div class="card card-accent">
         <div class="card-content">
-            <h2>Why Reprogramming Works:</h2>
+            <h2>Why Reprogramming Works</h2>
             <ul>
                 <li>Changing inputs (like habits) often fails...</li>
-                <li>Hypnotherapy rewires the root cause towards your desired behavioral output.</li>
-                <li>Designing the new patterns with the expert framework ensures long-term results.</li>
-                <li>Includes 2 sessions for 3000 THB; follow-up is optional and rarely needed.</li>
+                <li>Hypnotherapy rewires the root cause towards your desired behavioral output</li>
+                <li>Designing new patterns with expert framework ensures long-term results</li>
+                <li>Includes 2 sessions for 3000 THB; follow-up is optional</li>
             </ul>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("""
+    # Session 1: Analysis card with image
+    st.markdown(f"""
     <div class="card">
         <div class="card-content">
             <div class="process-step">
@@ -434,13 +504,17 @@ def show_method():
                 <div>
                     <h2>Session 1: Analysis</h2>
                     <p>Identify patterns holding you back and design a personalized reprogramming plan.</p>
+                    <img src="/img/BehaviourMap.png" class="card-image" 
+                         onclick="openModal('/img/BehaviourMap.png')"
+                         alt="Behavior Mapping Diagram">
                 </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("""
+    # Session 2: Hypnosis card with image
+    st.markdown(f"""
     <div class="card card-accent">
         <div class="card-content">
             <div class="process-step">
@@ -448,12 +522,16 @@ def show_method():
                 <div>
                     <h2>Session 2: Hypnosis</h2>
                     <p>Reprogram behaviors with certified expertise for immediate, lasting change.</p>
+                    <img src="/img/emo.jpg" class="card-image" 
+                         onclick="openModal('/img/emo.jpg')"
+                         alt="Emotional Reprogramming">
                 </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
+    # Optional Session 3 card
     st.markdown("""
     <div class="card">
         <div class="card-content">
@@ -461,12 +539,13 @@ def show_method():
                 <div class="step-number">3</div>
                 <div>
                     <h2>Session 3: Reinforcement (Optional)</h2>
-                    <p>Optional follow-up to reinforce the new pattern, typically not needed but available at your request.</p>
+                    <p>Optional follow-up to reinforce the new pattern, typically not needed but available.</p>
                 </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<h2>Why Choose This Approach?</h2>', unsafe_allow_html=True)
@@ -652,6 +731,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
