@@ -250,7 +250,7 @@ if "page" not in st.session_state:
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
 st.markdown("""
 <div class="hero">
-    <h1 class="hero-title">Reprogram Your Behaviors for Lasting Change</h1>
+    <h1 class="hero-title">Reprogram Your Mind, Change Your Life</h1>
     <p class="hero-subtitle">If you're unhappy with your results, changing your actions alone might not work. Hypnotherapy can reprogram your mind for real behavioral change in just 2 sessions for 3000 THB – with an optional follow-up if needed.</p>
     <button class="btn">📅 Book a FREE 15-min Call</button>
     <p class="muted-text mt-1">Expert-guided | Confidential | Certified in Hypnotherapy and DBT</p>
@@ -344,8 +344,9 @@ def show_method():
     <div class="card card-accent">
         <h2>Why Reprogramming Works:</h2>
         <ul>
-            <li>Changing inputs (like habits) often fails – hypnotherapy targets the root for behavioral change.</li>
-            <li>Expert design of new patterns ensures long-term results.</li>
+            <li>Changing inputs (like habits) often fails...</li>
+            <li>Hypnotherapy rewires the root cause towards your desired behavioral output.</li>
+            <li>Designing the new patterns with the expert framework ensures long-term results.</li>
             <li>Includes 2 sessions for 3000 THB; follow-up is optional and rarely needed.</li>
         </ul>
     </div>
@@ -469,3 +470,4 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
