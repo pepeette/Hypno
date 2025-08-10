@@ -21,9 +21,7 @@ Ce projet s'inscrit en réaction aux mécanismes de manipulation comportementale
 ## ✨ Fonctionnalités
 
 | 🔍 Analyse Comportementale | 🧠 Reprogrammation | 🛡️ Protection |
-|---------------------------|--------------------|---------------|
-| Détection des patterns influencés par les algorithmes | Protocoles anti-"dark patterns" | Aucun tracking utilisateur |
-| Cartographie des biais cognitifs | Techniques d'hypnose éthique | Chiffrement des données |
+
 
 ## 🚀 Loading
 
