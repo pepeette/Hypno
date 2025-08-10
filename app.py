@@ -768,10 +768,10 @@ def show_about():
     with col2:
         st.markdown("""
         **Expert in Behavioral Change**
-        - 13+ years experience in Asian markets
-        - Certified Hypnotherapy (LCCH, 2016)
+        - 10+ years experience in change management
+        - Certified in Hypnotherapy & cognitive behaviour (LCCH, 2016)
         - Certified in Dialectical Behavioral Therapy for Borderline Personality Disorder (2023)
-        - Fluent: English, French, Spanish, Italian
+        - Fluent: English, French, can deliver in Italian if needed
         """)
     
     st.markdown("""
@@ -809,6 +809,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
