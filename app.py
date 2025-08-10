@@ -494,46 +494,71 @@ def show_method():
 def show_results():
     st.markdown("""
     <div class="main-container">
-        <h2 style="margin-bottom: 0.5rem;">Real Client Transformations</h2>
+        <h2>Real Client Transformations</h2>
     """, unsafe_allow_html=True)
     
-    # Testimonials data
     testimonials = [
         {
+            "icon": "🌟",
             "quote": "Finally broke free from old patterns – 2 sessions changed everything.",
-            "author": "Client in Bangkok",
-            "icon": "🌟"
+            "author": "Client in Bangkok"
         },
         {
-            "quote": "I was struggling keeping up with my studies, being an international student far from home. I lacked roots and support, failing my second year of medicine. Laetitia helped me change direction, and I'm now doing my specialization internship.",
-            "author": "Medical Student, France",
-            "icon": "🎓"
+            "icon": "🎓", 
+            "quote": "I was struggling with my studies abroad, failing my second year of medicine. Laetitia helped me change direction, and I'm now doing my specialization internship.",
+            "author": "Medical Student, France"
         },
         {
-            "quote": "My husband was a heavy lonely smoker. This behavior hurt our relationship and social life. After working with Laetitia, he stopped cigarettes completely and only occasionally smokes weed to relax. No more addiction and better alignment with our friends.",
-            "author": "Wife of Former Smoker, UK",
-            "icon": "🚭"
+            "icon": "🚭",
+            "quote": "My husband was a heavy smoker. After working with Laetitia, he stopped cigarettes completely and only occasionally smokes weed to relax. No more addiction.",
+            "author": "Wife of Former Smoker, UK"
         },
         {
+            "icon": "🧘",
             "quote": "The anxiety that controlled my daily life is now manageable. I can finally breathe and think clearly in stressful situations.",
-            "author": "Anxiety Patient, Germany",
-            "icon": "🧘"
+            "author": "Anxiety Patient, Germany"
         }
     ]
     
-    # Display testimonials in consistent cards
-    st.markdown('<div class="card-container">', unsafe_allow_html=True)
+    st.markdown("""
+    <style>
+        .testimonial-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        .testimonial-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+        }
+        .testimonial-quote {
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .testimonial-author {
+            font-weight: 600;
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+    </style>
+    <div class="card-container">
+    """, unsafe_allow_html=True)
+    
     for t in testimonials:
-        st.markdown("""
-        <div class="card card-accent">
-            <div class="card-content">
-                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">{t['icon']}</div>
-                <p style="font-style: italic; margin-bottom: 0.75rem;">"{t['quote']}"</p>
-                <p style="font-weight: 600; margin-top: auto;">— {t['author']}</p>
-            </div>
+        st.markdown(f"""
+        <div class="testimonial-card">
+            <div class="testimonial-icon">{t['icon']}</div>
+            <div class="testimonial-quote">"{t['quote']}"</div>
+            <div class="testimonial-author">— {t['author']}</div>
         </div>
         """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Testimonial submission form
     st.markdown("""
@@ -627,6 +652,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
