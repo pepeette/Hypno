@@ -295,7 +295,10 @@ st.markdown("""
 <div class="hero">
     <h1 class="hero-title">Reprogram Your Mind, Change Your Life</h1>
     <p class="hero-subtitle">Hypnotherapy doesn't just change what you do—it changes how you do it. In just 2 sessions, it reprograms the patterns holding you back, so you can finally get the results you deserve.</p>
-    <button class="btn">📅 Book a FREE 15-min Call</button>
+    </a>
+        <a href="https://calendly.com/laetitia-sheppard-hypnotherapy" target="_blank">
+        <button class="btn">📅 Book a FREE 15-min Call</button>
+    </a>
     <p class="muted-text mt-1">Expert-guided | Confidential | Certified in Hypnotherapy and DBT</p>
 </div>
 """, unsafe_allow_html=True)
@@ -407,76 +410,26 @@ def show_problems():
     </div>
     """, unsafe_allow_html=True)
 
-
 def show_method():
     st.markdown('<h2>Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
     
-    # Add CSS and JavaScript for modal
+    # Add CSS for styling (modal functionality would require custom components)
     st.markdown("""
     <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
+        .card-image-container {
+            margin-top: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
         }
-        .modal-content {
-            margin: auto;
-            display: block;
-            max-width: 90%;
-            max-height: 90%;
-            margin-top: 5vh;
-        }
-        .close {
-            position: absolute;
-            top: 20px;
-            right: 35px;
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .card-image {
+        .card-image-container img {
             width: 100%;
             border-radius: 8px;
-            cursor: pointer;
             transition: transform 0.3s;
-            margin-top: 1rem;
         }
-        .card-image:hover {
+        .card-image-container img:hover {
             transform: scale(1.02);
         }
     </style>
-
-    <div id="imageModal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="modalImage">
-    </div>
-
-    <script>
-        var modal = document.getElementById("imageModal");
-        var modalImg = document.getElementById("modalImage");
-        var span = document.getElementsByClassName("close")[0];
-        
-        function openModal(imgSrc) {
-            modal.style.display = "block";
-            modalImg.src = imgSrc;
-        }
-        
-        span.onclick = function() { 
-            modal.style.display = "none";
-        }
-        
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
     """, unsafe_allow_html=True)
 
     st.markdown('<div class="card-container">', unsafe_allow_html=True)
@@ -497,7 +450,7 @@ def show_method():
     """, unsafe_allow_html=True)
     
     # Session 1: Analysis card with image
-    try:
+    with st.container():
         st.markdown("""
         <div class="card">
             <div class="card-content">
@@ -508,8 +461,17 @@ def show_method():
                         <p>Identify patterns holding you back and design a personalized reprogramming plan.</p>
         """, unsafe_allow_html=True)
         
-        # Display image using Streamlit's image function
-        st.image("img/BehaviourMap.png", caption="Behavior Mapping", use_column_width=True)
+        # Display image using Streamlit's image function with use_container_width
+        try:
+            col1, col2, col3 = st.columns([1,6,1])
+            with col2:
+                st.markdown('<div class="card-image-container">', unsafe_allow_html=True)
+                st.image("img/BehaviourMap.png", 
+                        caption="Behavior Mapping", 
+                        use_container_width=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+        except FileNotFoundError:
+            st.error("BehaviorMap.png not found in img directory")
         
         st.markdown("""
                     </div>
@@ -517,11 +479,9 @@ def show_method():
             </div>
         </div>
         """, unsafe_allow_html=True)
-    except:
-        st.error("BehaviorMap.png not found in img directory")
     
     # Session 2: Hypnosis card with image
-    try:
+    with st.container():
         st.markdown("""
         <div class="card card-accent">
             <div class="card-content">
@@ -532,8 +492,17 @@ def show_method():
                         <p>Reprogram behaviors with certified expertise for immediate, lasting change.</p>
         """, unsafe_allow_html=True)
         
-        # Display image using Streamlit's image function
-        st.image("img/emo.jpg", caption="Emotional Reprogramming", use_column_width=True)
+        # Display image using Streamlit's image function with use_container_width
+        try:
+            col1, col2, col3 = st.columns([1,6,1])
+            with col2:
+                st.markdown('<div class="card-image-container">', unsafe_allow_html=True)
+                st.image("img/emo.jpg", 
+                        caption="Emotional Reprogramming", 
+                        use_container_width=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+        except FileNotFoundError:
+            st.error("emo.jpg not found in img directory")
         
         st.markdown("""
                     </div>
@@ -541,8 +510,6 @@ def show_method():
             </div>
         </div>
         """, unsafe_allow_html=True)
-    except:
-        st.error("emo.jpg not found in img directory")
     
     # Optional Session 3 card
     st.markdown("""
@@ -744,6 +711,7 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
