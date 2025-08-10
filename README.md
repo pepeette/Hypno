@@ -1,4 +1,4 @@
-# HypnoTech - Réprogrammation Comportementale Éthique
+# Hypnotherapy : Réprogrammation Comportementale Éthique
 
 🌍 Philosophie
 "L'hypnose thérapeutique doit être l'antidote aux manipulations algorithmiques, pas leur complice."
@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)
 
-Une plateforme d'hypnothérapie digitale qui questionne l'impact des algorithmes sur nos comportements, inspirée par les critiques de la surveillance numérique.
+Une branche d'hypnothérapie digitale qui questionne l'impact des algorithmes sur nos comportements, inspirée par les critiques de la surveillance numérique.
 
 <p align="center">
   <img src="https://via.placeholder.com/800x400?text=Interface+HypnoTech" alt="Prévisualisation">
