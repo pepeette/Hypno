@@ -251,7 +251,7 @@ st.markdown('<div class="main-container">', unsafe_allow_html=True)
 st.markdown("""
 <div class="hero">
     <h1 class="hero-title">Reprogram Your Mind, Change Your Life</h1>
-    <p class="hero-subtitle">If you're unhappy with your results, changing your actions alone might not work. Hypnotherapy can reprogram your mind for real behavioral change in just 2 sessions for 3000 THB – with an optional follow-up if needed.</p>
+    <p class="hero-subtitle">Hypnotherapy doesn’t just change what you do—it changes how you do it. In just 2 sessions, it reprograms the patterns holding you back, so you can finally get the results you deserve.</p>
     <button class="btn">📅 Book a FREE 15-min Call</button>
     <p class="muted-text mt-1">Expert-guided | Confidential | Certified in Hypnotherapy and DBT</p>
 </div>
@@ -470,4 +470,5 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
