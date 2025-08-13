@@ -39,8 +39,26 @@ def load_optimized_image(image_path, alt_text, caption=None, width=None):
 
 # --- CSS WITH ACCESSIBILITY ENHANCEMENTS ---
 def inject_css():
-    st.markdown(f"""
+    st.markdown("""
     <style>
+    /* Force light mode */
+    [data-testid="stAppViewContainer"] {
+        background-color: white !important;
+        color-scheme: light !important;
+    }
+    body {
+        color-scheme: light !important;
+    }
+    /* Dark mode overrides */
+    .stApp [data-testid="stAppViewContainer"] {
+        background-color: white !important;
+    }
+    /* Text/input elements */
+    .stTextInput, .stTextArea, .stSelectbox, .stSlider {
+        background-color: white !important;
+        color: #1C1C1E !important;
+    }
+
     :root {{
         --primary: #1C1C1E;  /* AA contrast with light background */
         --accent: #D4AF37;   /* AA contrast with dark text */
@@ -95,7 +113,7 @@ def inject_css():
         border-color: var(--accent);
     }}
     
-    /* Rest of your CSS... */
+
     </style>
     """, unsafe_allow_html=True)
 
