@@ -108,11 +108,11 @@ selected = option_menu(
 # --- HERO SECTION ---
 st.markdown("""
 <div class="hero">
-    <h1>Break Free in Just 2 Sessions</h1>
+    <h2 style="color: var(--accent);">Break Free in Just 2 Sessions</h2>
     <p style="font-size:1.2rem; color:#E9ECEF; max-width:700px; margin:0 auto 2rem;">
         Clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits
     </p>
-    <a href="#quiz" style="background:#D4AF37; color:#1C1C1E; padding:0.8rem 2rem; border-radius:8px; font-weight:600; display:inline-block; margin:0.5rem; text-decoration:none;">Take Our 30-Second Quiz</a>
+    <a href="#quiz" style="background:#D4AF37; color:#1C1C1E; padding:0.8rem 2rem; border-radius:8px; font-weight:600; display:inline-block; margin:0.5rem; text-decoration:none;">Take the 30-Second Quiz</a>
 </div>
 """, unsafe_allow_html=True)
 
@@ -121,7 +121,7 @@ if selected == "Home":
     st.markdown("""
     <div id="quiz" style="text-align:center; margin:3rem 0;">
         <h2>30-Second Suitability Quiz</h2>
-        <p>Answer 3 questions to see if our method is right for you</p>
+        <p>Answer 3 questions to see if the method is right for you</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -138,7 +138,7 @@ if selected == "Home":
         "active" if st.session_state.quiz_step == 3 else ""
     ), unsafe_allow_html=True)
     
-    # Quiz Questions
+    # Question 1
     if st.session_state.quiz_step == 1:
         st.markdown("### Q1: What are you looking to change?")
         options = ["Quit smoking", "Reduce anxiety", "Improve sleep", "Other"]
@@ -148,36 +148,37 @@ if selected == "Home":
                 if st.button(option, key=f"q1o{i}"):
                     handle_quiz_answer(1, option)
     
+    # Question 2
     elif st.session_state.quiz_step == 2:
         st.markdown("### Q2: How long have you struggled with this?")
-        options = ["<6 months", "6 months-2 years", ">2 years"]
+        options = ["Less than 6 months", "6 months to 2 years", "More than 2 years"]
         cols = st.columns(len(options))
         for i, option in enumerate(options):
             with cols[i]:
                 if st.button(option, key=f"q2o{i}"):
                     handle_quiz_answer(2, option)
     
+    # Question 3
     elif st.session_state.quiz_step == 3:
         st.markdown("### Q3: How ready are you to make a change?")
-        options = ["Just exploring", "Somewhat ready", "Very ready"]
+        options = ["Just exploring options", "Somewhat ready", "Very ready - I'm committed"]
         cols = st.columns(len(options))
         for i, option in enumerate(options):
             with cols[i]:
                 if st.button(option, key=f"q3o{i}"):
                     handle_quiz_answer(3, option)
-                    
-    if len(st.session_state.quiz_answers) == 3:
-        st.success("Our method is a good fit for you!")
-        col1, col2 = st.columns(2)
-        with col1:
-            st.link_button("Book Consultation", "#discovery")
-        with col2:
-            if st.button("Retake Quiz"):
-                reset_quiz()
-            
+    
     # Quiz Results
     if len(st.session_state.quiz_answers) == 3:
         st.success("### Based on your answers, our 2-session method would likely work well for you!")
+        
+        # Show summary of answers
+        with st.expander("See your answers"):
+            st.write(f"1. Goal: {st.session_state.quiz_answers.get(1, 'Not answered')}")
+            st.write(f"2. Duration: {st.session_state.quiz_answers.get(2, 'Not answered')}")
+            st.write(f"3. Readiness: {st.session_state.quiz_answers.get(3, 'Not answered')}")
+        
+        # Action buttons
         col1, col2 = st.columns([1,1])
         with col1:
             st.markdown("""
@@ -192,13 +193,11 @@ if selected == "Home":
 # --- OTHER PAGE CONTENT WOULD GO HERE ---
 # (Method, Success Stories, Blog sections would follow similar patterns)
 
-# [Previous imports and configuration remain the same until the page sections]
-
 # --- METHOD PAGE ---
 elif selected == "Method":
     st.markdown("""
     <div style="text-align:center; margin-bottom:2rem;">
-        <h2>Our Proven 2-Step Method</h2>
+        <h2>Proven 2-Step Method</h2>
         <p>Why most clients achieve lasting change in just two sessions</p>
     </div>
     """, unsafe_allow_html=True)
@@ -223,7 +222,7 @@ elif selected == "Method":
                 <li>Comprehensive evaluation</li>
                 <li>Identify subconscious drivers</li>
                 <li>Develop personalized plan</li>
-                <li>90 minutes in-person/Zoom</li>
+                <li>Around 90 minutes in-person/Zoom</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -238,7 +237,7 @@ elif selected == "Method":
                 <li>Guided hypnosis</li>
                 <li>Create new neural pathways</li>
                 <li>Anchor positive behaviors</li>
-                <li>90 minutes (3-7 days later)</li>
+                <li>Around 90 minutes (3-7 days later)</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -253,9 +252,8 @@ elif selected == "Method":
                 <li>Strengthen new patterns</li>
                 <li>Address remaining blocks</li>
                 <li>Typically not needed</li>
-                <li>60 minutes (optional)</li>
+                <li>Around 60 minutes (optional)</li>
             </ul>
-            <p style="color:#D4AF37; font-weight:bold;">+1000 THB</p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -365,7 +363,101 @@ elif selected == "Blog":
             st.write(faq['answer'])
 
 # [Booking form and footer remain the same as in your original code]
+elif selected == "Book Now":
+    st.markdown("""
+    <div style="text-align:center; margin-bottom:2rem;">
+        <h2>Start Your Transformation</h2>
+        <p>Choose your preferred booking option below</p>
+    </div>
+    """, unsafe_allow_html=True)
 
+    # Create two columns for the booking options
+    col1, col2 = st.columns(2, gap="large")
+    
+    with col1:
+        st.markdown("""
+        <div style="background:#F8F9FA; padding:1.5rem; border-radius:12px; height:100%;">
+            <h3 style="color:#D4AF37; text-align:center;">Free Discovery Call</h3>
+            <p style="text-align:center;">15-minute consultation to discuss your goals</p>
+            <ul style="margin-left:1rem;">
+                <li>No obligation</li>
+                <li>Learn how hypnotherapy can help</li>
+                <li>Get your questions answered</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style="background:#F8F9FA; padding:1.5rem; border-radius:12px; height:100%;">
+            <h3 style="color:#D4AF37; text-align:center;">Rewiring Package</h3>
+            <p style="text-align:center;">Complete 2-session transformation</p>
+            <ul style="margin-left:1rem;">
+                <li>Analysis Session (90 mins)</li>
+                <li>Transformation Session (90 mins)</li>
+                <li>Email support between sessions</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Booking form (same for both options)
+    st.markdown("""
+    <div id="discovery" style="background:white; padding:2rem; border-radius:12px; margin:3rem 0;">
+        <h3 style="text-align:center;">Book Your Session</h3>
+    """, unsafe_allow_html=True)
+
+    with st.form("booking_form"):
+        booking_type = st.radio(
+            "Session Type*",
+            ["Free Discovery Call (15 mins)", "Rewiring Package (2 sessions)"],
+            horizontal=True
+        )
+        
+        cols = st.columns(2)
+        with cols[0]:
+            name = st.text_input("Your Name*", placeholder="First and last name")
+        with cols[1]:
+            email = st.text_input("Email*", placeholder="Your email address")
+        
+        concern = st.selectbox(
+            "Primary Concern*",
+            ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"]
+        )
+        
+        message = st.text_area("Anything we should know", placeholder="Brief details about your situation")
+        
+        submitted = st.form_submit_button(f"Book My {'Discovery Call' if 'Discovery' in booking_type else 'Package'}")
+        
+        if submitted:
+            if not name or not email or concern == "Select one...":
+                st.error("Please fill in all required fields")
+            elif not is_valid_email(email):
+                st.error("Please enter a valid email address")
+            else:
+                # Different Calendly links for each type
+                calendly_url = (
+                    "https://calendly.com/laetitiasheppard/discovery" 
+                    if "Discovery" in booking_type else
+                    "https://calendly.com/laetitiasheppard/package"
+                )
+                
+                # Send email with booking type
+                email_success = send_email(
+                    name, email, concern, 
+                    f"Booking type: {booking_type}\n\n{message}"
+                )
+                
+                # Redirect to Calendly
+                st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', 
+                           unsafe_allow_html=True)
+                
+                if email_success:
+                    st.success("✓ Appointment scheduled! Check your email for confirmation.")
+                else:
+                    st.success("✓ Appointment scheduled! (Email confirmation pending)")
+                
+                st.balloons()
+                
 # --- BOOKING FORM ---
 st.markdown("""
 <div id="discovery" style="background:white; padding:2rem; border-radius:12px; margin:3rem 0;">
@@ -404,10 +496,18 @@ with st.form("booking_form"):
             
             st.balloons()
 
+
 # --- FOOTER ---
 st.markdown(f"""
 <div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid #DEE2E6;">
-    <p style="color:#6C757D;">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok</p>
-    <p style="color:#6C757D; font-size:0.9rem;">© {datetime.datetime.now().year} All Rights Reserved</p>
+    <p style="color:#6C757D;">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok, Thailand</p>
+    <p style="color:#6C757D; font-size:0.9rem; margin-bottom:1rem;">NEW ADDRESS in ASOKE Sukhumvit</p>
+    <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" 
+       target="_blank"
+       style="background:#D4AF37; color:#1C1C1E; padding:0.5rem 1.5rem; border-radius:8px; 
+       font-weight:600; display:inline-block; text-decoration:none; margin:0.5rem;">
+       Get Directions
+    </a>
+    <p style="color:#6C757D; font-size:0.9rem;">© {datetime.datetime.now().year} All Rights Reserved | Confidentiality Guaranteed</p>
 </div>
 """, unsafe_allow_html=True)
