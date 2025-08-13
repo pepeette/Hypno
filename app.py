@@ -13,72 +13,106 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- FORCE LIGHT MODE (works even with user dark mode) ---
+# --- FORCE LIGHT MODE WITH ENHANCED CONTRAST ---
 def force_light_mode():
     st.markdown("""
     <style>
-    /* Force light mode */
+    /* Force light mode with AA/AAA contrast */
     html, body, [data-testid="stAppViewContainer"] {
-        background-color: #F4F4F6 !important;
-        color: #1C1C1E !important;
+        background-color: #F8F9FA !important;
+        color: #212529 !important;
         color-scheme: light !important;
     }
-    /* Component overrides */
+    
+    /* Improved contrast for text */
+    h1, h2, h3, h4, h5, h6, p, li, span, div {
+        color: #212529 !important;
+    }
+    
+    /* Input fields */
     .stTextInput, .stTextArea, .stSelectbox {
         background-color: white !important;
-    }
-    /* Fix tooltips/popups */
-    [data-baseweb="tooltip"], [data-baseweb="popover"] {
-        background-color: white !important;
-        color: #1C1C1E !important;
+        border-color: #D4AF37 !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
 force_light_mode()
 
-# --- PROFESSIONAL COLOR SCHEME ---
+# --- ENHANCED TYPOGRAPHY SCALE ---
 def inject_css():
     st.markdown(f"""
     <style>
     :root {{
-        --primary: #1C1C1E;    /* Dark gray for text */
+        --primary: #212529;    /* Dark gray for text (AAA contrast) */
         --accent: #D4AF37;     /* Gold accent */
-        --light: #F4F4F6;      /* Light gray background */
-        --medium: #E2E2E6;     /* Medium gray for borders */
-        --white: #FFFFFF;      /* Pure white */
+        --light: #F8F9FA;      /* Light background */
+        --border: #DEE2E6;     /* Light border */
     }}
     
-    /* Consistent checkmarks */
-    .checkmark {{
+    /* Typography scale */
+    h1 {{
+        font-size: 2.5rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 1rem !important;
+        color: var(--accent) !important; /* Accent color for H1 */
+    }}
+    h2 {{
+        font-size: 1.8rem !important;
+        font-weight: 600 !important;
+        margin-bottom: 0.8rem !important;
+    }}
+    h3 {{
+        font-size: 1.4rem !important;
+        font-weight: 500 !important;
+        margin-bottom: 0.6rem !important;
+    }}
+    
+    /* Hero section specific */
+    .hero h1 {{
         color: var(--accent) !important;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }}
+    
+    /* Progress indicators */
+    .progress-steps {{
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+        gap: 1rem;
+    }}
+    .step {{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--border);
+        color: white;
         font-weight: bold;
     }}
-    
-    /* Elegant buttons */
-    .cta {{
+    .step.active {{
         background: var(--accent);
-        color: var(--primary) !important;
-        padding: 0.8rem 2rem;
-        border-radius: 8px;
-        font-weight: 600;
-        text-decoration: none !important;
-        display: inline-block;
-        margin: 0.5rem;
-        transition: all 0.3s ease;
-    }}
-    .cta:hover {{
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        color: var(--primary);
     }}
     
-    /* Blog cards */
-    .blog-card {{
+    /* FAQ accordions */
+    .faq-item {{
+        margin-bottom: 1rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+    }}
+    .faq-question {{
+        padding: 1rem;
         background: white;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        font-weight: 600;
+        cursor: pointer;
+    }}
+    .faq-answer {{
+        padding: 1rem;
+        background: #F8F9FA;
     }}
     </style>
     """, unsafe_allow_html=True)
@@ -100,22 +134,23 @@ def send_email(name, email, concern, message):
         msg['From'] = 'website@laetitiasheppard.com'
         msg['To'] = 'laetitiasheppard@gmail.com'
         
-        # Configure your SMTP settings (example using Gmail)
         with smtplib.SMTP('smtp.gmail.com', 587) as server:
             server.starttls()
-            server.login('laetitiasheppard@gmail.com', 'app_password_from_gmail')  # REPLACE WITH YOUR CREDENTIALS
+            server.login('your_email@gmail.com', 'your_app_password')  # REPLACE WITH YOUR CREDENTIALS
             server.send_message(msg)
         return True
     except Exception as e:
         st.error(f"Error sending email: {str(e)}")
         return False
 
-# --- QUIZ DATA HANDLING ---
+# --- QUIZ SYSTEM WITH PROGRESS TRACKING ---
 if 'quiz_answers' not in st.session_state:
     st.session_state.quiz_answers = {}
+    st.session_state.quiz_step = 1
 
 def handle_quiz_answer(question_id, answer):
     st.session_state.quiz_answers[question_id] = answer
+    st.session_state.quiz_step += 1
 
 # --- NAVIGATION ---
 selected = option_menu(
@@ -135,72 +170,109 @@ selected = option_menu(
 
 # --- HERO SECTION ---
 st.markdown("""
-<div class="hero" id="top">
-    <h1 style="font-size:2.3rem; margin:0 0 1rem 0; color:white;">Break Free in Just 2 Sessions</h1>
-    <p style="font-size:1.2rem; color:#d1d1d6; max-width:700px; margin:0 auto 2rem;">Clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits - without relying on willpower</p>
-    <a href="#quiz" class="cta">Take Our 30-Second Quiz</a>
-    <p style="margin: 1.5rem 0 0 0; color:rgba(255,255,255,0.9);">
-        <span class="checkmark">✓</span> <span style="font-weight:500;">92% success rate</span> &nbsp;&nbsp;
-        <span class="checkmark">✓</span> <span style="font-weight:500;">No withdrawal symptoms</span> &nbsp;&nbsp;
-        <span class="checkmark">✓</span> <span style="font-weight:500;">English/French/Italian</span>
+<div class="hero" style="background:#1C1C1E; padding:4rem 1rem; text-align:center; border-radius:12px; margin-bottom:2rem;">
+    <h1>Break Free in Just 2 Sessions</h1>
+    <p style="font-size:1.2rem; color:#E9ECEF; max-width:700px; margin:0 auto 2rem;">
+        Clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits - without relying on willpower
     </p>
+    <a href="#quiz" style="background:#D4AF37; color:#1C1C1E; padding:0.8rem 2rem; border-radius:8px; font-weight:600; display:inline-block; margin:0.5rem; text-decoration:none;">Take Our 30-Second Quiz</a>
+    <div style="margin:1.5rem 0 0 0; color:#ADB5BD;">
+        <span style="color:#D4AF37; font-weight:bold;">✓</span> 92% success rate &nbsp;&nbsp;
+        <span style="color:#D4AF37; font-weight:bold;">✓</span> No withdrawal symptoms &nbsp;&nbsp;
+        <span style="color:#D4AF37; font-weight:bold;">✓</span> English/French/Italian
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
 # --- HOME PAGE ---
 if selected == "Home":
     st.markdown("""
-    <div id="quiz" style="text-align: center; margin: 3rem 0;">
+    <div id="quiz" style="text-align:center; margin:3rem 0;">
         <h2>30-Second Suitability Quiz</h2>
         <p>Answer 3 questions to see if our method is right for you</p>
     </div>
     """, unsafe_allow_html=True)
     
-    questions = [
-        {
-            "id": 1,
-            "question": "What are you looking to change?",
-            "options": ["Quit smoking", "Reduce anxiety", "Improve sleep", "Other"]
-        },
-        {
-            "id": 2,
-            "question": "How long have you struggled with this?",
-            "options": ["<6 months", "6 months-2 years", ">2 years"]
-        },
-        {
-            "id": 3,
-            "question": "How ready are you to make a change?",
-            "options": ["Just exploring", "Somewhat ready", "Very ready"]
-        }
-    ]
+    # Progress indicator
+    st.markdown("""
+    <div class="progress-steps">
+        <div class="step {}">1</div>
+        <div class="step {}">2</div>
+        <div class="step {}">3</div>
+    </div>
+    """.format(
+        "active" if st.session_state.quiz_step == 1 else "",
+        "active" if st.session_state.quiz_step == 2 else "",
+        "active" if st.session_state.quiz_step == 3 else ""
+    ), unsafe_allow_html=True)
     
-    for q in questions:
-        st.markdown(f"""
+    # Question 1
+    if st.session_state.quiz_step == 1:
+        st.markdown("""
         <div style="background:white; padding:1.5rem; border-radius:12px; margin-bottom:1rem;">
-            <h3>Q{q['id']}: {q['question']}</h3>
+            <h3>Q1: What are you looking to change?</h3>
         </div>
         """, unsafe_allow_html=True)
         
-        cols = st.columns(len(q['options']))
-        for i, option in enumerate(q['options']):
+        options = ["Quit smoking", "Reduce anxiety", "Improve sleep", "Other"]
+        cols = st.columns(len(options))
+        for i, option in enumerate(options):
             with cols[i]:
-                if st.button(option, key=f"q{q['id']}o{i}"):
-                    handle_quiz_answer(q['id'], option)
+                if st.button(option, key=f"q1o{i}"):
+                    handle_quiz_answer(1, option)
     
-    if len(st.session_state.quiz_answers) == len(questions):
-        st.success("### Based on your answers, our 2-session method would likely work well for you!")
+    # Question 2
+    elif st.session_state.quiz_step == 2:
         st.markdown("""
-        <div style="text-align: center; margin: 1.5rem 0;">
-            <a href="#discovery" class="cta">Book Your Free Consultation</a>
+        <div style="background:white; padding:1.5rem; border-radius:12px; margin-bottom:1rem;">
+            <h3>Q2: How long have you struggled with this?</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        options = ["<6 months", "6 months-2 years", ">2 years"]
+        cols = st.columns(len(options))
+        for i, option in enumerate(options):
+            with cols[i]:
+                if st.button(option, key=f"q2o{i}"):
+                    handle_quiz_answer(2, option)
+    
+    # Question 3
+    elif st.session_state.quiz_step == 3:
+        st.markdown("""
+        <div style="background:white; padding:1.5rem; border-radius:12px; margin-bottom:1rem;">
+            <h3>Q3: How ready are you to make a change?</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        options = ["Just exploring", "Somewhat ready", "Very ready"]
+        cols = st.columns(len(options))
+        for i, option in enumerate(options):
+            with cols[i]:
+                if st.button(option, key=f"q3o{i}"):
+                    handle_quiz_answer(3, option)
+    
+    # Results
+    if len(st.session_state.quiz_answers) == 3:
+        st.success("""
+        ### Based on your answers, our 2-session method would likely work well for you!
+        """)
+        st.markdown("""
+        <div style="text-align:center; margin:1.5rem 0;">
+            <a href="#discovery" style="background:#D4AF37; color:#1C1C1E; padding:0.8rem 2rem; border-radius:8px; font-weight:600; display:inline-block; text-decoration:none;">Book Your Free Consultation</a>
         </div>
         """, unsafe_allow_html=True)
 
 # --- METHOD PAGE ---
 elif selected == "Method":
     st.markdown("""
-    <div style="text-align: center; margin-bottom: 2rem;">
+    <div style="text-align:center; margin-bottom:2rem;">
         <h2>Our Proven 2-Step Method</h2>
         <p>Why most clients achieve lasting change in just two sessions</p>
+    </div>
+    
+    <div style="text-align:center; margin:2rem 0;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="max-width:100%; border-radius:12px;"></iframe>
+        <p style="font-size:0.9rem; color:#6C757D;">Watch our 90-second explainer video</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -245,8 +317,8 @@ elif selected == "Method":
         with cols[i]:
             st.markdown(f"""
             <div style="background:white; padding:1.5rem; border-radius:12px; height:100%;">
-                <div style="background:{'#D4AF37' if i < 2 else '#f4f4f6'}; color:#1C1C1E; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; margin:0 auto 1rem;">{step['number']}</div>
-                <h3 style="margin:0 0 1rem 0;">{step['title']}</h3>
+                <div style="background:{'#D4AF37' if i < 2 else '#F8F9FA'}; color:#1C1C1E; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; margin:0 auto 1rem;">{step['number']}</div>
+                <h3>{step['title']}</h3>
                 <div style="text-align:left; margin-bottom:1rem;">{step['desc']}</div>
                 {f'<p style="color:#D4AF37; font-weight:bold; margin:0;">{step["price"]}</p>' if step["price"] else ''}
             </div>
@@ -257,14 +329,14 @@ elif selected == "Method":
         <h3 style="margin-top:0;">Pricing Options</h3>
         <p><strong>Standard Package:</strong> 3000 THB (Sessions 1 & 2)</p>
         <p><strong>Premium Package:</strong> 4000 THB (Includes optional reinforcement)</p>
-        <p style="font-size:0.9rem; color:#6E6E73;">Payment is due at first session. Cash and bank transfer accepted.</p>
+        <p style="font-size:0.9rem; color:#6C757D;">Payment is due at first session. Cash and bank transfer accepted.</p>
     </div>
     """, unsafe_allow_html=True)
 
 # --- SUCCESS STORIES ---
 elif selected == "Success":
     st.markdown("""
-    <div style="text-align: center; margin-bottom: 2rem;">
+    <div style="text-align:center; margin-bottom:2rem;">
         <h2>Client Transformations</h2>
         <p>Real people who changed their lives in 2 sessions</p>
     </div>
@@ -303,17 +375,32 @@ elif selected == "Success":
         """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div style="text-align: center; margin: 2rem 0;">
-        <a href="#quiz" class="cta">Take Our Quiz</a>
+    <div style="text-align:center; margin:2rem 0;">
+        <a href="#quiz" style="background:#D4AF37; color:#1C1C1E; padding:0.8rem 2rem; border-radius:8px; font-weight:600; display:inline-block; text-decoration:none;">Take Our Quiz</a>
     </div>
     """, unsafe_allow_html=True)
 
-# --- BLOG SECTION ---
+# --- BLOG & FAQ SECTION ---
 elif selected == "Blog":
     st.markdown("""
-    <div style="text-align: center; margin-bottom: 2rem;">
+    <div style="text-align:center; margin-bottom:2rem;">
         <h2>Hypnotherapy Insights</h2>
-        <p>Educational resources about our method</p>
+        <p>Educational resources and frequently asked questions</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Featured Video
+    st.markdown("""
+    <div style="text-align:center; margin:2rem 0;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="max-width:100%; border-radius:12px;"></iframe>
+        <p style="font-size:0.9rem; color:#6C757D;">Watch our 90-second explainer video</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Blog Posts
+    st.markdown("""
+    <div style="margin:3rem 0;">
+        <h3>Latest Articles</h3>
     </div>
     """, unsafe_allow_html=True)
     
@@ -327,37 +414,48 @@ elif selected == "Blog":
             "title": "Quit Smoking Without Willpower: A Case Study",
             "summary": "How John quit his 20-year smoking habit in just 2 sessions...",
             "date": "April 2, 2023"
-        },
-        {
-            "title": "Anxiety Relief: Why Traditional Therapy Takes Longer",
-            "summary": "Comparing cognitive and subconscious approaches to anxiety reduction...",
-            "date": "March 10, 2023"
         }
     ]
     
     for post in blog_posts:
         st.markdown(f"""
-        <div class="blog-card">
-            <h3 style="margin-top:0;">{post['title']}</h3>
+        <div style="background:white; padding:1.5rem; border-radius:12px; margin-bottom:1.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+            <h4 style="margin-top:0;">{post['title']}</h4>
             <p>{post['summary']}</p>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="color:#6E6E73; font-size:0.9rem;">{post['date']}</span>
+                <span style="color:#6C757D; font-size:0.9rem;">{post['date']}</span>
                 <button style="background:#D4AF37; color:#1C1C1E; border:none; padding:0.5rem 1rem; border-radius:6px; cursor:pointer;">Read Article</button>
             </div>
         </div>
         """, unsafe_allow_html=True)
     
+    # FAQ Section
     st.markdown("""
-    <div style="text-align: center; margin: 2rem 0;">
-        <a href="#discovery" class="cta">Get Our Free Guide</a>
+    <div style="margin:3rem 0;">
+        <h3>Frequently Asked Questions</h3>
     </div>
     """, unsafe_allow_html=True)
+    
+    faqs = [
+        {
+            "question": "Is hypnotherapy safe?",
+            "answer": "Yes, clinical hypnotherapy is a safe, non-invasive approach. You remain fully aware and in control at all times."
+        },
+        {
+            "question": "How many sessions will I need?",
+            "answer": "Most clients achieve their goals in just 2 sessions. About 15% opt for an optional third session."
+        }
+    ]
+    
+    for faq in faqs:
+        with st.expander(f"❓ {faq['question']}", expanded=False):
+            st.write(faq['answer'])
 
 # --- BOOKING FORM ---
 st.markdown("""
 <div id="discovery" style="background:white; padding:2rem; border-radius:12px; margin:3rem 0;">
-    <h2 style="text-align: center; margin-top: 0;">Free 15-Minute Discovery Call</h2>
-    <p style="text-align: center;">Let's discuss your goals and how we can help</p>
+    <h2 style="text-align:center; margin-top:0;">Free 15-Minute Discovery Call</h2>
+    <p style="text-align:center;">Let's discuss your goals and how we can help</p>
 """, unsafe_allow_html=True)
 
 with st.form("booking_form"):
@@ -396,8 +494,8 @@ with st.form("booking_form"):
 
 st.markdown("""
 </div>
-<div style="text-align: center; margin: 3rem 0 1rem 0; padding-top: 2rem; border-top: 1px solid #E2E2E6;">
-    <p style="color: #6E6E73;">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok</p>
-    <p style="color: #6E6E73; font-size: 0.9rem;">© {datetime.datetime.now().year} All Rights Reserved</p>
+<div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid #DEE2E6;">
+    <p style="color:#6C757D;">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok</p>
+    <p style="color:#6C757D; font-size:0.9rem;">© {datetime.datetime.now().year} All Rights Reserved</p>
 </div>
 """, unsafe_allow_html=True)
