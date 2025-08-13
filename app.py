@@ -191,13 +191,13 @@ if selected == "Home":
                     handle_quiz_answer(3, option)
                     
     if len(st.session_state.quiz_answers) == 3:
-    st.success("Our method is a good fit for you!")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.link_button("Book Consultation", "#discovery")
-    with col2:
-        if st.button("Retake Quiz"):
-            reset_quiz()
+        st.success("Our method is a good fit for you!")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.link_button("Book Consultation", "#discovery")
+        with col2:
+            if st.button("Retake Quiz"):
+                reset_quiz()
             
     # Quiz Results
     if len(st.session_state.quiz_answers) == 3:
