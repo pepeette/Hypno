@@ -340,41 +340,41 @@ def inject_css():
 
     /* Responsive adjustments */
     # In the CSS injection section, update the media queries:
-
-@media (max-width: 768px) {
-    .card-container {
-        grid-template-columns: 1fr !important;
-    }
-    .stats {
-        grid-template-columns: 1fr 1fr !important;
-    }
-    .hero-title {
-        font-size: 1.3rem !important;
-    }
-    .hero-subtitle {
-        font-size: 0.9rem !important;
-    }
-    /* New navigation styling for tablets */
-    [data-testid="column"] {
-        min-width: 50% !important;
-        flex: 1 1 50% !important;
-    }
-}
-@media (max-width: 480px) {
-    .stats {
-        grid-template-columns: 1fr !important;
-    }
-    /* New navigation styling for mobile */
-    [data-testid="column"] {
-        min-width: 100% !important;
-        flex: 1 1 100% !important;
-    }
-    /* Adjust button sizes */
-    .stButton button {
-        width: 100% !important;
-        margin: 0.25rem 0 !important;
-    }
-}
+    @media (max-width: 768px) {{
+        .card-container {{
+            grid-template-columns: 1fr !important;
+        }}
+        .stats {{
+            grid-template-columns: 1fr 1fr !important;
+        }}
+        .hero-title {{
+            font-size: 1.3rem !important;
+        }}
+        .hero-subtitle {{
+            font-size: 0.9rem !important;
+        }}
+        [data-testid="column"] {{
+            min-width: 50% !important;
+            flex: 1 1 50% !important;
+        }}
+        .stButton button {{
+            width: 90% !important;
+            margin: 0.25rem auto !important;
+        }}
+    }}
+    @media (max-width: 480px) {{
+        .stats {{
+            grid-template-columns: 1fr !important;
+        }}
+        [data-testid="column"] {{
+            min-width: 100% !important;
+            flex: 1 1 100% !important;
+        }}
+        .stButton button {{
+            width: 100% !important;
+            margin: 0.25rem 0 !important;
+        }}
+    }}
     </style>
     """, unsafe_allow_html=True)
 inject_css()
