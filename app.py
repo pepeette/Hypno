@@ -380,7 +380,7 @@ def back_to_top():
 # --- IMAGE HANDLING ---
 def load_image(image_path, width=None, caption=None):
     try:
-        st.image(image_path, width=width, caption=caption, use_column_width=True if width is None else False)
+        st.image(image_path, width=width, caption=caption, use_container_width=True if width is None else False)
     except FileNotFoundError:
         st.warning(f"Image not found: {image_path}")
     except Exception as e:
@@ -687,3 +687,4 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
