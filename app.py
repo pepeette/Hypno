@@ -51,11 +51,28 @@ def inject_css():
         margin-top: 0 !important;
         padding-top: 0 !important;
     }
+    
     /* Navigation menu styling */
     div[data-testid="stHorizontalBlock"] {
         margin-top: 0.5rem !important;
         margin-bottom: 0.5rem !important;
     }
+    /* Selected menu item */
+    .st-ae.st-emotion-cache-1aehpvj {
+        font-weight: 600 !important;
+        color: var(--accent) !important;
+    }
+    
+    /* Collapse toggle button */
+    .collapse-toggle {
+        display: inline-block;
+        margin-left: 0.5rem;
+        color: var(--accent);
+        cursor: pointer;
+        font-weight: 600;
+        vertical-align: middle;
+    }
+    
     /* Process step numbers */
     .step-number {
         background: var(--accent);
@@ -71,25 +88,16 @@ def inject_css():
         font-size: 1rem;
         margin-right: 0.5rem;
     }
-    /* Card expand/collapse */
-    .collapsed .card-content {
-        display: none;
-    }
-    .expand-btn {
-        background: transparent;
-        border: none;
-        color: var(--accent);
-        cursor: pointer;
-        font-weight: 600;
-        padding: 0;
-        margin-top: 0.5rem;
-        text-align: left;
-    }
+    
     /* Rest of your CSS */
     [data-testid="stAppViewContainer"] { background-color: var(--light) !important; color-scheme: light !important; }
     #MainMenu, footer, .stDeployButton { visibility: hidden; }
     h1 { font-size: 1.5rem!important; margin: 0.5rem 0!important; }
-    h2 { font-size: 1.3rem!important; margin: 0.6rem 0!important; }
+    h2 { 
+        font-size: 1.3rem!important; 
+        margin: 0.6rem 0 0.2rem 0!important; /* Reduced space below headings */
+        display: inline-block;
+    }
     p, li, span, div { font-size: 1rem!important; margin: 0.3rem 0!important; }
     
     /* Hero Section */
@@ -123,11 +131,10 @@ def inject_css():
     }
     
     /* Cards */
-    .card-container{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; margin:1rem 0 1rem 0; }
+    .card-container{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; margin:0.5rem 0 1rem 0; }
     .card{ background: var(--white); border:1px solid var(--medium); border-radius:12px; padding:1.5rem; box-shadow:0 6px 16px var(--shadow); transition: transform 0.4s ease, box-shadow 0.4s ease; }
     .card:hover{ transform: translateY(-5px); box-shadow:0 12px 28px var(--shadow-hover); }
     .result-badge { color: var(--accent); font-weight: 600; margin-top: 1rem; display: inline-block; }
-    .card-content { transition: all 0.3s ease; }
     
     /* Process Tracker */
     .process-tracker{ display:flex; justify-content:center; align-items:center; margin:1rem 0; gap:1rem; font-weight:600; color:var(--muted); }
@@ -176,8 +183,9 @@ if 'cards_collapsed' not in st.session_state:
 st.markdown("""
 <div class="main-container">
 <div class="hero" id="top">
-    <h1 class="hero-title">Reprogram Your Mind, Change Your Life</h1>
-    <p class="hero-subtitle">Hypnotherapy doesn't just change what you do—it changes how you do it. In just 2 sessions, it reprograms the patterns holding you back, so you can finally get the results you deserve.</p>
+    <h1 class="hero-title">Reprogram your Mind, Change your Life</h1>
+    <p class="hero-subtitle">Hypnotherapy doesn't just change what you do—it changes how you do it.</p>
+    <p class="hero-subtitle">In just 2 sessions, it reprograms the patterns holding you back, so you can finally get the results you deserve.</p>
     <a href="https://calendly.com/laetitiasheppard/30min" target="_blank">
         <button class="btn">📅 Book a FREE 15-min Call</button>
     </a>
@@ -232,12 +240,18 @@ def back_to_top():
 
 # --- PAGE FUNCTIONS ---
 def show_problems():
-    st.markdown('<h2 id="problems">Common Challenges We Help You Overcome</h2>', unsafe_allow_html=True)
+    # Collapse/Expand button integrated with heading
+    st.markdown("""
+    <h2 id="problems">
+        Common challenges addressed by CBT & Hypnotherapy
+        <span class="collapse-toggle" onclick="this.textContent = this.textContent === '[−]' ? '[+]' : '[−]';">
+            [%s]
+        </span>
+    </h2>
+    """ % ("−" if not st.session_state.cards_collapsed else "+"), unsafe_allow_html=True)
     
-    # Collapse/Expand button
-    if st.button(f"{'▼' if st.session_state.cards_collapsed else '▲'} Collapse All Cards", 
-                key="toggle_cards",
-                help="Show/hide all challenge cards"):
+    # Toggle button functionality
+    if st.button("Toggle Cards", key="toggle_cards_hidden", help="Show/hide all challenge cards"):
         st.session_state.cards_collapsed = not st.session_state.cards_collapsed
         st.rerun()
     
@@ -251,24 +265,23 @@ def show_problems():
         {"title":"Embracing Life's Changes","desc":"Change is constant; struggle is optional. Build adaptability and calm in uncertainty.","result":"→ Cultivate flexibility and peace of mind"}
     ]
     
-    st.markdown(f'<div class="card-container {"collapsed" if st.session_state.cards_collapsed else ""}">', unsafe_allow_html=True)
-    for p in problems:
-        st.markdown(f"""
-            <div class="card">
-              <h2>{p['title']}</h2>
-              <div class="card-content">
-                <p>{p['desc']}</p>
-                <span class="result-badge">{p['result']}</span>
-              </div>
-            </div>
-        """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    if not st.session_state.cards_collapsed:
+        st.markdown('<div class="card-container">', unsafe_allow_html=True)
+        for p in problems:
+            st.markdown(f"""
+                <div class="card">
+                  <h2>{p['title']}</h2>
+                  <p>{p['desc']}</p>
+                  <span class="result-badge">{p['result']}</span>
+                </div>
+            """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     
-    # Self Assessment Questionnaire Section
+    # Self-assessment questionnaire 
     st.markdown("""
     <div style="margin-top: 1rem;">
         <h2>Self Assessment Questionnaire</h2>
-        <p>Take a moment to reflect on your behavioral patterns:</p>
+        <p>Take a moment to reflect on your behavioral patterns...</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -288,7 +301,7 @@ def show_problems():
 
 def show_method():
     # Why Reprogramming Works section
-    st.markdown('<h2>Why Reprogramming Works</h2>', unsafe_allow_html=True)
+    st.markdown('<h2>Why reprogramming works</h2>', unsafe_allow_html=True)
     st.markdown("""
     <div class="card">
         <ul>
@@ -301,7 +314,7 @@ def show_method():
     """, unsafe_allow_html=True)
     
     # Our Simple 2-Session Process section
-    st.markdown('<h2 id="method">Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 id="method">A simple 2-session process</h2>', unsafe_allow_html=True)
     st.markdown("""
       <div class="process-tracker">
         <div class="step active">1</div><div>→</div>
@@ -366,7 +379,7 @@ def show_method():
     back_to_top()
 
 def show_results():
-    st.markdown('<h2 id="results">Real Client Transformations</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 id="results" style="margin-bottom: 0.2rem !important;">Real Transformation Engineered</h2>', unsafe_allow_html=True)
     testimonials = [
         ("🌟","Finally broke free from old patterns – 2 sessions changed everything.","Director, Banking, Singapore"),
         ("🎓","I was struggling with my studies abroad... now doing my specialization internship.","Medical Student, Morocco"),
@@ -423,7 +436,7 @@ def show_results():
     back_to_top()
 
 def show_about():
-    st.markdown('<h2 id="about">About Laetitia Sheppard</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 id="about">Meet the founder : Laetitia Sheppard</h2>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2])
     with col1:
         load_image("./img/ID.jpg", caption="Laetitia Sheppard")
