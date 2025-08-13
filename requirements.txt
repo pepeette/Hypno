@@ -5,7 +5,8 @@ streamlit-option-menu
 datetime
 smtplib
 email
-dotenv
+python-dotenv
+
 
 
 
