@@ -306,6 +306,12 @@ def inject_css():
         .card-container {{
             grid-template-columns: 1fr !important;
         }}
+        .hero-title {{
+            font-size: 1.3rem !important;
+        }}
+        .hero-subtitle {{
+            font-size: 0.9rem !important;
+        }}
     }}
     </style>
     """, unsafe_allow_html=True)
@@ -324,40 +330,44 @@ st.markdown("""
     <a href="https://calendly.com/laetitiasheppard/30min" target="_blank">
         <button class="btn">📅 Book a FREE 15-min Call</button>
     </a>
-    <p class="muted-text mt-1">Expert-guided | Confidential | Certified in Hypnotherapy and DBT</p>
+    <p class="muted-text">Expert-guided | Confidential | Certified in Hypnotherapy and DBT</p>
 </div>
 """, unsafe_allow_html=True)
 
 # --- NAVIGATION BUTTONS ---
 cols = st.columns(4)
 with cols[0]:
-    problems_btn = st.button("🔥 Your Blocks", key="nav_problems",
-                            help="View common problems we solve",
-                            type="primary" if st.session_state.page == "problems" else "secondary")
+    problems_btn = st.button("🔥 Your Blocks", 
+                           key="nav_problems",
+                           help="View common problems we solve",
+                           type="primary" if st.session_state.page == "problems" else "secondary")
     if problems_btn:
         st.session_state.page = "problems"
-        st.experimental_rerun()
+        st.rerun()
 with cols[1]:
-    method_btn = st.button("🧠 The Method", key="nav_method",
-                          help="Learn about our 2-session method",
-                          type="primary" if st.session_state.page == "method" else "secondary")
+    method_btn = st.button("🧠 The Method", 
+                         key="nav_method",
+                         help="Learn about our 2-session method",
+                         type="primary" if st.session_state.page == "method" else "secondary")
     if method_btn:
         st.session_state.page = "method"
-        st.experimental_rerun()
+        st.rerun()
 with cols[2]:
-    results_btn = st.button("🏆 Results", key="nav_results",
-                           help="See client transformations",
-                           type="primary" if st.session_state.page == "results" else "secondary")
+    results_btn = st.button("🏆 Results", 
+                          key="nav_results",
+                          help="See client transformations",
+                          type="primary" if st.session_state.page == "results" else "secondary")
     if results_btn:
         st.session_state.page = "results"
-        st.experimental_rerun()
+        st.rerun()
 with cols[3]:
-    about_btn = st.button("👤 About", key="nav_about",
-                         help="About Laetitia and the clinic",
-                         type="primary" if st.session_state.page == "about" else "secondary")
+    about_btn = st.button("👤 About", 
+                        key="nav_about",
+                        help="About Laetitia and the clinic",
+                        type="primary" if st.session_state.page == "about" else "secondary")
     if about_btn:
         st.session_state.page = "about"
-        st.experimental_rerun()
+        st.rerun()
 
 # --- Back to top link ---
 def back_to_top():
@@ -367,6 +377,14 @@ def back_to_top():
     </div>
     """, unsafe_allow_html=True)
 
+# --- IMAGE HANDLING ---
+def load_image(image_path, width=None, caption=None):
+    try:
+        st.image(image_path, width=width, caption=caption, use_column_width=True if width is None else False)
+    except FileNotFoundError:
+        st.warning(f"Image not found: {image_path}")
+    except Exception as e:
+        st.error(f"Error loading image: {str(e)}")
 
 # --- PAGE CONTENT FUNCTIONS ---
 def show_problems():
@@ -404,7 +422,7 @@ def show_problems():
             "result": "→ Thrive comfortably in your new environment"
         },
         {
-            "title": "Embracing Life’s Changes",
+            "title": "Embracing Life's Changes",
             "desc": "Change is constant; struggle is optional. Hypnotherapy helps build adaptability and calm in uncertainty.",
             "result": "→ Cultivate flexibility and peace of mind"
         }
@@ -413,7 +431,7 @@ def show_problems():
     st.markdown('<div class="card-container">', unsafe_allow_html=True)
     for p in problems:
         st.markdown(f"""
-        <div class="card card-accent">
+        <div class="card">
             <div class="card-content">
                 <h2>{p['title']}</h2>
                 <p>{p['desc']}</p>
@@ -445,7 +463,6 @@ def show_problems():
     """, unsafe_allow_html=True)
     back_to_top()
 
-
 def show_method():
     st.markdown('<h2>Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
 
@@ -453,70 +470,58 @@ def show_method():
     
     # Why Reprogramming Works card
     st.markdown("""
-    <div class="card card-accent">
+    <div class="card">
         <div class="card-content">
             <h2>Why Reprogramming Works</h2>
             <ul>
-                <li>Changing habits alone often fails because the patterns driving behaviors are subconscious.</li>
-                <li>Hypnotherapy rewires root causes towards your desired behavioral outcomes.</li>
-                <li>Expert-designed framework for sustainable change within just 2 focused sessions.</li>
-                <li>All-inclusive price: 3000 THB per 2 sessions; follow-up optional.</li>
+                <li>Changing habits alone often fails because the patterns driving behaviors are subconscious</li>
+                <li>Hypnotherapy rewires root causes towards your desired behavioral outcomes</li>
+                <li>Expert-designed framework for sustainable change within just 2 focused sessions</li>
+                <li>All-inclusive price: 3000 THB per 2 sessions; follow-up optional</li>
             </ul>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
     # Session 1: Analysis
-    with st.container():
-        st.markdown("""
-        <div class="card">
-            <div class="card-content">
-                <div class="process-step">
-                    <div class="step-number">1</div>
-                    <div>
-                        <h2>Session 1: Analysis</h2>
-                        <p>Identify limiting patterns and create a personalized mind reprogramming plan.</p>
-                    </div>
-                </div>
-                <div class="card-image-container">
-        """, unsafe_allow_html=True)
-
-        try:
-            st.image("img/BehaviourMap.png", caption="Behavior Mapping", use_container_width=True)
-        except FileNotFoundError:
-            st.error("Image BehaviourMap.png not found in img directory")
-
-        st.markdown("""
+    st.markdown("""
+    <div class="card">
+        <div class="card-content">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div>
+                    <h2>Session 1: Analysis</h2>
+                    <p>Identify limiting patterns and create a personalized mind reprogramming plan.</p>
                 </div>
             </div>
+            <div class="card-image-container">
+    """, unsafe_allow_html=True)
+    load_image("./img/BehaviourMap.png", caption="Behavior Mapping")
+    st.markdown("""
+            </div>
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
     # Session 2: Hypnosis
-    with st.container():
-        st.markdown("""
-        <div class="card card-accent">
-            <div class="card-content">
-                <div class="process-step">
-                    <div class="step-number">2</div>
-                    <div>
-                        <h2>Session 2: Hypnosis</h2>
-                        <p>Reprogram behaviors with certified expertise for rapid, lasting change.</p>
-                    </div>
-                </div>
-                <div class="card-image-container">
-        """, unsafe_allow_html=True)
-
-        try:
-            st.image("img/emo.jpg", caption="Emotional Reprogramming", use_container_width=True)
-        except FileNotFoundError:
-            st.error("Image emo.jpg not found in img directory")
-
-        st.markdown("""
+    st.markdown("""
+    <div class="card">
+        <div class="card-content">
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div>
+                    <h2>Session 2: Hypnosis</h2>
+                    <p>Reprogram behaviors with certified expertise for rapid, lasting change.</p>
                 </div>
             </div>
+            <div class="card-image-container">
+    """, unsafe_allow_html=True)
+    load_image("./img/emo.jpg", caption="Emotional Reprogramming")
+    st.markdown("""
+            </div>
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
     # Optional Session 3: Reinforcement
     st.markdown("""
@@ -557,7 +562,6 @@ def show_method():
     </div>
     """, unsafe_allow_html=True)
     back_to_top()
-
 
 def show_results():
     st.markdown('<h2>Real Client Transformations</h2>', unsafe_allow_html=True)
@@ -610,7 +614,10 @@ def show_results():
         with cols[1]:
             session_date = st.date_input("Session 2 Date*", help="Required for verification")
         
-        testimonial = st.text_area("Your Experience*", placeholder="Describe your transformation...", height=150, help="Minimum 50 characters")
+        testimonial = st.text_area("Your Experience*", 
+                                 placeholder="Describe your transformation...", 
+                                 height=150, 
+                                 help="Minimum 50 characters")
         
         submitted = st.form_submit_button("Submit Testimonial")
         
@@ -620,7 +627,6 @@ def show_results():
             elif not testimonial or len(testimonial.strip()) < 50:
                 st.error("Please share at least 50 characters about your experience.")
             else:
-                # Placeholder for actual submission logic
                 st.success("Thank you! We'll review your testimonial and contact you if needed.")
                 st.balloons()
 
@@ -632,15 +638,11 @@ def show_results():
     """, unsafe_allow_html=True)
     back_to_top()
 
-
 def show_about():
-    st.markdown('<h2>About Laetitia Sheppard</h2>', unsafe_allow_html=True)
+    st.markdown('<h2>The founder : Laetitia Sheppard</h2>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2])
     with col1:
-        try:
-            st.image("./img/ID.jpg", width=250, caption="Laetitia Sheppard")
-        except:
-            st.info("Image not found")
+        load_image("./img/ID.jpg", width=250, caption="Laetitia Sheppard")
     
     with col2:
         st.markdown("""
@@ -654,7 +656,7 @@ def show_about():
     st.markdown("""
     <div class="contact">
         <h2>Bangkok Hypnotherapy Clinic</h2>
-        <p>27 Soi Sukhumvit 10 (Asoke) • Confidential Sessions</p>
+        <p>Please note address change27 Soi Sukhumvit 10 (Asoke) • Confidential Sessions</p>
         <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
             <a href="https://www.google.com/maps/place/27+Soi+Sukhumvit+10,+Asoke,+Bangkok" target="_blank">
                 <button class="btn">📍 Get Directions</button>
@@ -666,7 +668,6 @@ def show_about():
     </div>
     """, unsafe_allow_html=True)
     back_to_top()
-
 
 # --- MAIN CONTENT ---
 if st.session_state.page == "problems":
@@ -680,7 +681,7 @@ elif st.session_state.page == "about":
 
 # --- FOOTER ---
 st.markdown("""
-<div class="text-center muted-text mt-2" style="border-top: 1px solid var(--medium); padding-top: 2rem; margin-top: 3rem;">
+<div class="text-center muted-text" style="border-top: 1px solid var(--medium); padding-top: 2rem; margin-top: 3rem;">
     <p>Laetitia Sheppard • Hypnotherapy for Change • Bangkok, Thailand</p>
     <p>© 2025 All Rights Reserved | Confidentiality Guaranteed</p>
 </div>
