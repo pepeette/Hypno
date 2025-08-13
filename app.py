@@ -658,11 +658,11 @@ if st.session_state.page == "problems":
     show_problems()
 # Add your other page functions calls here as needed (method, results, about)
 elif st.session_state.page == "method":
-    st.write("Method page coming soon.")
+    show_method()
 elif st.session_state.page == "results":
-    st.write("Results page coming soon.")
+    show_results()
 elif st.session_state.page == "about":
-    st.write("About page coming soon.")
+    show_about()
 
 # --- FOOTER ---
 st.markdown("""
@@ -672,3 +672,4 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
