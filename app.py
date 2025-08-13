@@ -4,11 +4,7 @@ import datetime
 import smtplib
 from email.mime.text import MIMEText
 import os
-from dotenv import load_dotenv
 import re
-
-# --- Load Environment Variables ---
-load_dotenv()
 
 # --- PAGE CONFIG ---
 st.set_page_config(
@@ -18,11 +14,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CONSTANTS ---
-SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
-SMTP_PORT = int(os.getenv('SMTP_PORT', 587))
-EMAIL_FROM = os.getenv('EMAIL_FROM', 'website@laetitiasheppard.com')
-EMAIL_TO = os.getenv('EMAIL_TO', 'laetitiasheppard@gmail.com')
+# --- CONSTANTS (Updated for Streamlit Secrets) ---
+SMTP_SERVER = st.secrets.get("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(st.secrets.get("SMTP_PORT", 587))
+EMAIL_FROM = st.secrets.get("EMAIL_FROM", "website@laetitiasheppard.com")
+EMAIL_TO = st.secrets.get("EMAIL_TO", "laetitiasheppard@gmail.com")
 
 # --- UTILITY FUNCTIONS ---
 def is_valid_email(email):
@@ -31,86 +27,80 @@ def is_valid_email(email):
     return re.match(pattern, email) is not None
 
 def send_email(name, email, concern, message):
+    """Send email using Streamlit secrets"""
     try:
         if not all([name, email, concern != "Select one..."]):
             st.error("Missing required fields")
             return False
 
-        msg = MIMEText(f"Name: {name}\nEmail: {email}\nConcern: {concern}\nMessage: {message}")
-        msg['Subject'] = 'New Consultation Request'
-        msg['From'] = os.getenv('EMAIL_FROM')
-        msg['To'] = os.getenv('EMAIL_TO')
+        msg = MIMEText(f"""
+        New Consultation Request:
+        Name: {name}
+        Email: {email}
+        Concern: {concern}
+        Message: {message}
+        """)
+        
+        msg['Subject'] = 'New Hypnotherapy Consultation Request'
+        msg['From'] = EMAIL_FROM
+        msg['To'] = EMAIL_TO
 
-        with smtplib.SMTP(os.getenv('SMTP_SERVER'), os.getenv('SMTP_PORT')) as server:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
             server.starttls()
-            server.login(os.getenv('SMTP_USERNAME'), os.getenv('SMTP_PASSWORD'))
+            server.login(
+                st.secrets["SMTP_USERNAME"],
+                st.secrets["SMTP_PASSWORD"]
+            )
             server.send_message(msg)
         return True
     except Exception as e:
         st.error(f"Email failed: {str(e)}")
         return False
 
+# --- QUIZ FUNCTIONS ---
 def reset_quiz():
-    """Reset quiz progress"""
     st.session_state.quiz_answers = {}
     st.session_state.quiz_step = 1
 
 def handle_quiz_answer(question_id, answer):
-    """Store quiz answer and advance to next question"""
     st.session_state.quiz_answers[question_id] = answer
     st.session_state.quiz_step += 1
 
 # --- STYLING ---
 def inject_css():
-    """Inject custom CSS styles"""
-    st.markdown(f"""
+    st.markdown("""
     <style>
-    :root {{
+    :root {
         --primary: #212529;
         --accent: #D4AF37;
         --light: #F8F9FA;
         --border: #DEE2E6;
-    }}
-    
-    /* Typography */
-    h1 {{
-        font-size: 2.5rem !important;
-        color: var(--accent) !important;
-    }}
-    
-    /* Progress steps */
-    .step {{
+    }
+    .hero {
+        background: #1C1C1E;
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+    }
+    .step {
         width: 30px;
         height: 30px;
         border-radius: 50%;
         background: var(--border);
-    }}
-    .step.active {{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .step.active {
         background: var(--accent);
-    }}
-    
-    /* Responsive iframes */
-    .responsive-iframe {{
-        position: relative;
-        padding-bottom: 56.25%;
-        height: 0;
-        overflow: hidden;
-    }}
-    .responsive-iframe iframe {{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }}
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# --- INITIALIZE SESSION STATE ---
+# --- INITIALIZE APP ---
 if 'quiz_answers' not in st.session_state:
     reset_quiz()
 
-# --- APP LAYOUT ---
 inject_css()
 
 # --- NAVIGATION ---
@@ -131,7 +121,7 @@ selected = option_menu(
 
 # --- HERO SECTION ---
 st.markdown("""
-<div class="hero" style="background:#1C1C1E; padding:2rem; text-align:center; border-radius:12px; margin-bottom:2rem;">
+<div class="hero">
     <h1>Break Free in Just 2 Sessions</h1>
     <p style="font-size:1.2rem; color:#E9ECEF; max-width:700px; margin:0 auto 2rem;">
         Clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits
@@ -215,6 +205,180 @@ if selected == "Home":
 
 # --- OTHER PAGE CONTENT WOULD GO HERE ---
 # (Method, Success Stories, Blog sections would follow similar patterns)
+
+# [Previous imports and configuration remain the same until the page sections]
+
+# --- METHOD PAGE ---
+elif selected == "Method":
+    st.markdown("""
+    <div style="text-align:center; margin-bottom:2rem;">
+        <h2>Our Proven 2-Step Method</h2>
+        <p>Why most clients achieve lasting change in just two sessions</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Video Embed
+    st.markdown("""
+    <div class="responsive-iframe" style="margin:2rem 0;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/EXAMPLE_VIDEO_ID" 
+        frameborder="0" allowfullscreen></iframe>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Method Steps
+    steps = st.columns(3)
+    with steps[0]:
+        st.markdown("""
+        <div style="background:white; padding:1.5rem; border-radius:12px; height:100%;">
+            <div style="background:#D4AF37; color:#1C1C1E; width:50px; height:50px; border-radius:50%; 
+            display:flex; align-items:center; justify-content:center; font-weight:bold; margin:0 auto 1rem;">1</div>
+            <h3>Analysis Session</h3>
+            <ul style="text-align:left;">
+                <li>Comprehensive evaluation</li>
+                <li>Identify subconscious drivers</li>
+                <li>Develop personalized plan</li>
+                <li>90 minutes in-person/Zoom</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with steps[1]:
+        st.markdown("""
+        <div style="background:white; padding:1.5rem; border-radius:12px; height:100%;">
+            <div style="background:#D4AF37; color:#1C1C1E; width:50px; height:50px; border-radius:50%; 
+            display:flex; align-items:center; justify-content:center; font-weight:bold; margin:0 auto 1rem;">2</div>
+            <h3>Transformation</h3>
+            <ul style="text-align:left;">
+                <li>Guided hypnosis</li>
+                <li>Create new neural pathways</li>
+                <li>Anchor positive behaviors</li>
+                <li>90 minutes (3-7 days later)</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with steps[2]:
+        st.markdown("""
+        <div style="background:white; padding:1.5rem; border-radius:12px; height:100%;">
+            <div style="background:#F8F9FA; color:#1C1C1E; width:50px; height:50px; border-radius:50%; 
+            display:flex; align-items:center; justify-content:center; font-weight:bold; margin:0 auto 1rem;">+1</div>
+            <h3>Reinforcement</h3>
+            <ul style="text-align:left;">
+                <li>Strengthen new patterns</li>
+                <li>Address remaining blocks</li>
+                <li>Typically not needed</li>
+                <li>60 minutes (optional)</li>
+            </ul>
+            <p style="color:#D4AF37; font-weight:bold;">+1000 THB</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Pricing
+    st.markdown("""
+    <div style="background:white; padding:1.5rem; border-radius:12px; margin:2rem auto; max-width:800px;">
+        <h3 style="margin-top:0;">Pricing Options</h3>
+        <p><strong>Standard Package:</strong> 3000 THB (Sessions 1 & 2)</p>
+        <p><strong>Premium Package:</strong> 4000 THB (Includes optional reinforcement)</p>
+        <p style="font-size:0.9rem; color:#6C757D;">Payment is due at first session. Cash and bank transfer accepted.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- SUCCESS STORIES PAGE ---
+elif selected == "Success":
+    st.markdown("""
+    <div style="text-align:center; margin-bottom:2rem;">
+        <h2>Client Transformations</h2>
+        <p>Real people who changed their lives in 2 sessions</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Testimonials
+    testimonials = [
+        {
+            "icon": "🌟",
+            "quote": "Finally broke free from old patterns – 2 sessions changed everything.",
+            "author": "Director, Banking, Singapore"
+        },
+        {
+            "icon": "🎓", 
+            "quote": "I was struggling with my studies abroad... now doing my specialization internship.",
+            "author": "Medical Student, Morocco"
+        },
+        {
+            "icon": "🚭",
+            "quote": "My husband was a heavy smoker... No more addiction.",
+            "author": "Wife, Bangkok"
+        }
+    ]
+    
+    for t in testimonials:
+        st.markdown(f"""
+        <div style="background:white; padding:1.5rem; border-radius:12px; margin-bottom:1rem; border-left:4px solid #D4AF37;">
+            <div style="font-size:1.8rem; margin-bottom:0.5rem;">{t['icon']}</div>
+            <p style="font-style:italic; font-size:1.1rem;">"{t['quote']}"</p>
+            <p style="text-align:right; font-weight:600; margin-bottom:0;">— {t['author']}</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # CTA
+    st.markdown("""
+    <div style="text-align:center; margin:2rem 0;">
+        <a href="#discovery" style="background:#D4AF37; color:#1C1C1E; padding:0.8rem 2rem; border-radius:8px; 
+        font-weight:600; display:inline-block; text-decoration:none;">Book Your Session</a>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- BLOG PAGE ---
+elif selected == "Blog":
+    st.markdown("""
+    <div style="text-align:center; margin-bottom:2rem;">
+        <h2>Hypnotherapy Insights</h2>
+        <p>Educational resources and frequently asked questions</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Featured Articles
+    articles = [
+        {
+            "title": "How Hypnosis Rewires Your Brain",
+            "summary": "The neuroscience behind why brief hypnotherapy can create lasting change...",
+            "date": "May 15, 2023"
+        },
+        {
+            "title": "Quit Smoking Without Willpower",
+            "summary": "How John quit his 20-year smoking habit in just 2 sessions...",
+            "date": "April 2, 2023"
+        }
+    ]
+    
+    for article in articles:
+        with st.expander(f"📝 {article['title']} - {article['date']}"):
+            st.write(article['summary'])
+            st.button("Read Article", key=f"article_{article['title']}")
+    
+    # FAQ Section
+    st.markdown("""
+    <div style="margin:3rem 0;">
+        <h3>Frequently Asked Questions</h3>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    faqs = [
+        {
+            "question": "Is hypnotherapy safe?",
+            "answer": "Yes, clinical hypnotherapy is a safe, non-invasive approach. You remain fully aware and in control at all times."
+        },
+        {
+            "question": "How many sessions will I need?",
+            "answer": "Most clients achieve their goals in just 2 sessions. About 15% opt for an optional third session."
+        }
+    ]
+    
+    for faq in faqs:
+        with st.expander(f"❓ {faq['question']}"):
+            st.write(faq['answer'])
+
+# [Booking form and footer remain the same as in your original code]
 
 # --- BOOKING FORM ---
 st.markdown("""
