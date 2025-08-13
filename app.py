@@ -20,6 +20,9 @@ def inject_css():
         --medium: #E2E2E6;
         --muted: #6E6E73;
         --white: #FFFFFF;
+        --shadow: rgba(0,0,0,0.05);
+        --shadow-hover: rgba(0,0,0,0.15);
+        --shadow-accent: rgba(212, 175, 55, 0.25);
     }
     [data-testid="stAppViewContainer"] { background-color: var(--light) !important; color-scheme: light !important; }
     .stApp { background: var(--light)!important; font-family: 'Inter', sans-serif!important; color: var(--primary)!important; padding-top: 0!important; }
@@ -28,23 +31,90 @@ def inject_css():
     h1 { font-size: 1.5rem!important; margin: 0.5rem 0!important; }
     h2 { font-size: 1.3rem!important; margin: 0.6rem 0!important; }
     p, li, span, div { font-size: 1rem!important; margin: 0.3rem 0!important; }
-    .hero{ background: var(--primary); color: var(--white); padding: 1rem; border-radius: 12px; margin: 0.25rem 0; text-align: center; }
-    .btn{ background: var(--accent); color: var(--primary); padding: 0.8rem 1.5rem; border-radius: 8px; font-weight:600; font-size:1rem; border:none; cursor:pointer; margin:0.5rem 0 0 0; }
-    .btn:hover{ background:#C7A133; }
+    
+    /* Hero Section */
+    .hero-title { 
+        font-size: 1.5rem !important; 
+        font-weight: 700 !important; 
+        line-height: 1.2 !important; 
+        margin: 0 !important;
+        color: var(--white) !important;
+    }
+    .hero-subtitle { 
+        font-size: 1rem !important; 
+        font-weight: 400 !important; 
+        margin: 1rem 0 !important;
+        color: #d1d1d6 !important;
+    }
+    .hero {
+        background: var(--primary);
+        color: white;
+        padding: 1rem 1rem;
+        text-align: center;
+        border-radius: 12px;
+        margin: 0.25rem 0 0.25rem 0;
+        border-left: 6px solid var(--accent);
+    }
+    .hero * {
+        color: var(--white) !important;
+    }
+    .hero .hero-subtitle { 
+        color: #d1d1d6 !important; 
+    }
+    
+    /* Cards */
     .card-container{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; margin:1rem 0 1rem 0; }
-    .card{ background: var(--white); border:1px solid var(--medium); border-radius:12px; padding:1.8rem 2rem; box-shadow:0 6px 16px rgba(0,0,0,0.05); }
+    .card{ background: var(--white); border:1px solid var(--medium); border-radius:12px; padding:1.8rem 2rem; box-shadow:0 6px 16px var(--shadow); transition: transform 0.4s ease, box-shadow 0.4s ease; }
+    .card:hover{ transform: translateY(-5px); box-shadow:0 12px 28px var(--shadow-hover); }
+    .result-badge { color: var(--accent); font-weight: 600; margin-top: 1rem; display: inline-block; }
+    
+    /* Process Tracker */
     .process-tracker{ display:flex; justify-content:center; align-items:center; margin:1rem 0; gap:1rem; font-weight:600; color:var(--muted); }
     .process-tracker .active{ color: var(--accent); }
+    
+    /* Stats */
     .stats{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:0.75rem; margin:1rem 0; }
-    .stat{ background: var(--white); border:1px solid var(--medium); border-radius:12px; padding:1.5rem 1rem; text-align:center; }
+    .stat{ background: var(--white); border:1px solid var(--medium); border-radius:12px; padding:1.5rem 1rem; text-align:center; transition: all 0.3s ease; }
+    .stat:hover{ transform: translateY(-3px); box-shadow:0 8px 16px var(--shadow-hover); }
     .stat-number{ color: var(--accent); font-size:2rem; font-weight:700; }
-    .testimonial-card{ background: var(--white); border-radius:12px; padding:1.5rem; margin-bottom:1rem; border-left:4px solid var(--accent); box-shadow:0 4px 12px rgba(0,0,0,0.05); }
+    
+    /* Testimonials */
+    .testimonial-card{ background: var(--white); border-radius:12px; padding:1.5rem; margin-bottom:1rem; border-left:4px solid var(--accent); box-shadow:0 4px 12px var(--shadow); }
+    .testimonial-icon{ font-size:1.8rem; margin-bottom:0.8rem; }
+    
+    /* Image Container */
+    .card-image-container{ margin-top:1rem; border-radius:8px; overflow:hidden; }
+    .card-image-container img{ width:100%; border-radius:8px; transition:transform 0.3s; }
+    .card-image-container img:hover{ transform:scale(1.02); }
+    
+    /* Buttons */
+    .btn{ background: var(--accent); color: var(--primary); padding: 0.8rem 1.5rem; border-radius: 8px; font-weight:600; font-size:1rem; border:none; cursor:pointer; margin:0.5rem 0 0 0; transition: all 0.3s ease; }
+    .btn:hover{ background:#C7A133; transform: translateY(-2px); box-shadow:0 6px 12px var(--shadow-accent); }
+    
+    /* Back to top */
     .back-to-top-link{ text-align:center; margin:1rem 0; color:var(--accent); font-weight:600; }
-    @media(max-width:768px){ .card-container, .stats{ grid-template-columns:1fr!important; } .btn{ width:100%!important; } }
+    
+    @media(max-width:768px){ 
+        .card-container, .stats{ grid-template-columns:1fr!important; } 
+        .btn{ width:100%!important; } 
+    }
     </style>
     """, unsafe_allow_html=True)
 
 inject_css()
+
+# --- HERO SECTION ---
+st.markdown('<div class="main-container">', unsafe_allow_html=True)
+st.markdown("""
+<div class="hero" id="top">
+    <h1 class="hero-title">Reprogram Your Mind, Change Your Life</h1>
+    <p class="hero-subtitle">Hypnotherapy doesn't just change what you do—it changes how you do it. In just 2 sessions, it reprograms the patterns holding you back, so you can finally get the results you deserve.</p>
+    <a href="https://calendly.com/laetitiasheppard/30min" target="_blank">
+        <button class="btn">📅 Book a FREE 15-min Call</button>
+    </a>
+    <p style="color: #a1a1a6 !important;">Expert-guided | Confidential | Certified in Hypnotherapy and DBT</p>
+</div>
+""", unsafe_allow_html=True)
 
 # --- NAVIGATION MENU VIA HAMBURGER ---
 selected = option_menu(
@@ -65,8 +135,12 @@ page_map = {
 }
 st.session_state.page = page_map[selected]
 
-# --- MAIN CONTAINER START ---
-st.markdown('<div class="main-container">', unsafe_allow_html=True)
+# --- IMAGE HANDLING ---
+def load_image(image_path, caption=None):
+    try:
+        st.image(image_path, caption=caption, use_container_width=True)
+    except:
+        st.warning(f"Image not found: {image_path}")
 
 def back_to_top():
     st.markdown('<div class="back-to-top-link"><a href="#top">↑ Back to Top</a></div>', unsafe_allow_html=True)
@@ -93,6 +167,27 @@ def show_problems():
             </div>
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Self Assessment Questionnaire Section
+    st.markdown("""
+    <div style="margin-top: 1rem;">
+        <h2>Self Assessment Questionnaire</h2>
+        <p>Take a moment to reflect on your behavioral patterns:</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    user_input = st.text_area(
+        "Describe what you dislike doing or how you respond in certain situations, and how you feel about it:",
+        placeholder="For example: 'I get very anxious when I have to speak in meetings...'",
+        height=150,
+        key="self_assessment"
+    )
+    
+    st.markdown("""
+    <div style="margin-top: 1rem; font-style: italic; color: var(--muted);">
+        <p>Section coming soon - This will provide personalized insights based on your input.</p>
+    </div>
+    """, unsafe_allow_html=True)
     back_to_top()
 
 def show_method():
@@ -104,23 +199,52 @@ def show_method():
         <div class="step">3 (Optional)</div>
       </div>
     """, unsafe_allow_html=True)
+    
     st.markdown('<div class="card-container">', unsafe_allow_html=True)
-    # Session Cards...
+    
+    # Why Reprogramming Works card
     st.markdown("""
-        <div class="card">
-          <h2>Session 1: Analysis</h2>
-          <p>Identify limiting patterns and create a personalized mind reprogramming plan.</p>
-        </div>
-        <div class="card">
-          <h2>Session 2: Hypnosis</h2>
-          <p>Reprogram behaviors with certified expertise for rapid, lasting change.</p>
-        </div>
-        <div class="card">
-          <h2>Session 3: Reinforcement (Optional)</h2>
-          <p>Optional follow-up session to strengthen new patterns, typically not required but available.</p>
-        </div>
+    <div class="card">
+        <h2>Why Reprogramming Works</h2>
+        <ul>
+            <li>Changing habits alone often fails because the patterns driving behaviors are subconscious</li>
+            <li>Hypnotherapy rewires root causes towards your desired behavioral outcomes</li>
+            <li>Expert-designed framework for sustainable change within just 2 focused sessions</li>
+            <li>All-inclusive price: 3000 THB per 2 sessions; follow-up optional</li>
+        </ul>
+    </div>
     """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Session 1: Analysis
+    st.markdown("""
+    <div class="card">
+        <h2>Session 1: Analysis</h2>
+        <p>Identify limiting patterns and create a personalized mind reprogramming plan.</p>
+        <div class="card-image-container">
+    """, unsafe_allow_html=True)
+    load_image("./img/BehaviourMap.png", caption="Behavior Mapping")
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
+    # Session 2: Hypnosis
+    st.markdown("""
+    <div class="card">
+        <h2>Session 2: Hypnosis</h2>
+        <p>Reprogram behaviors with certified expertise for rapid, lasting change.</p>
+        <div class="card-image-container">
+    """, unsafe_allow_html=True)
+    load_image("./img/emo.jpg", caption="Emotional Reprogramming")
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
+    # Optional Session 3: Reinforcement
+    st.markdown("""
+    <div class="card">
+        <h2>Session 3: Reinforcement (Optional)</h2>
+        <p>Optional follow-up session to strengthen new patterns, typically not required but available.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)  # Close card-container
+
     # Stats
     st.markdown('<div class="stats">', unsafe_allow_html=True)
     stats = [("2","Sessions for Change"),("92%","Client Reported Improvement"),("5‑7x","Faster Than Traditional Therapy"),("3000฿","All‑Inclusive Price")]
@@ -139,24 +263,86 @@ def show_results():
     ]
     st.markdown('<div class="card-container">', unsafe_allow_html=True)
     for icon, quote, author in testimonials:
-        st.markdown(f'<div class="testimonial-card"><div class="testimonial-icon">{icon}</div><div class="testimonial-quote">"{quote}"</div><div class="testimonial-author">— {author}</div></div>', unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="testimonial-card">
+            <div class="testimonial-icon">{icon}</div>
+            <div class="testimonial-quote">"{quote}"</div>
+            <div class="testimonial-author">— {author}</div>
+        </div>
+        """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Testimonial submission form
+    st.markdown("""
+    <div style="margin-top: 2rem;">
+        <h2>Share Your Story</h2>
+        <p style="margin-bottom: 1rem;">Help others by sharing your transformation:</p>
+    """, unsafe_allow_html=True)
+    
+    with st.form("testimonial_form", clear_on_submit=True):
+        cols = st.columns([1, 1])
+        with cols[0]:
+            name = st.text_input("Your Name (optional)", placeholder="How you want to be credited")
+        with cols[1]:
+            session_date = st.date_input("Session 2 Date*", help="Required for verification")
+        
+        testimonial = st.text_area("Your Experience*", 
+                                 placeholder="Describe your transformation...", 
+                                 height=150, 
+                                 help="Minimum 50 characters")
+        
+        submitted = st.form_submit_button("Submit Testimonial")
+        
+        if submitted:
+            if not session_date:
+                st.error("Please provide your session date for verification.")
+            elif not testimonial or len(testimonial.strip()) < 50:
+                st.error("Please share at least 50 characters about your experience.")
+            else:
+                st.success("Thank you! We'll review your testimonial and contact you if needed.")
+                st.balloons()
+
+    st.markdown("""
+        <p style="font-size: 0.9rem; color: var(--muted); margin-top: 1rem;">
+            * Required fields. Testimonials are verified before publication.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     back_to_top()
 
 def show_about():
     st.markdown('<h2 id="about">About Laetitia Sheppard</h2>', unsafe_allow_html=True)
-    st.markdown('<div class="card-container">', unsafe_allow_html=True)
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        load_image("./img/ID.jpg", caption="Laetitia Sheppard")
+    
+    with col2:
+        st.markdown("""
+        <div class="card">
+            <h2>Expert in Behavioral Change</h2>
+            <ul>
+                <li>10+ years of experience in change management</li>
+                <li>Certified in Hypnotherapy & Cognitive Behaviour (LCCH, 2016)</li>
+                <li>Certified in Dialectical Behavioral Therapy for Borderline Personality Disorder (2023)</li>
+                <li>Fluent: English, French, can deliver in Italian if needed</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
     st.markdown("""
-      <div class="card">
-        <h2>Expert in Behavioral Change</h2>
-        <ul>
-           <li>10+ years of experience</li>
-           <li>Certified in Hypnotherapy & DBT</li>
-           <li>Fluent: English, French; Italian possible</li>
-        </ul>
-      </div>
+    <div style="background: var(--primary); color: white; padding: 1rem; border-radius: 12px; margin: 1rem 0; border-top: 4px solid var(--accent); text-align: center;">
+        <h2 style="color: var(--white) !important;">Bangkok Hypnotherapy Clinic</h2>
+        <p style="color: var(--white) !important;">27 Soi Sukhumvit 10 (Asoke) • Confidential Sessions</p>
+        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+            <a href="https://www.google.com/maps/place/27+Soi+Sukhumvit+10,+Asoke,+Bangkok" target="_blank">
+                <button class="btn">📍 Get Directions</button>
+            </a>
+            <a href="https://calendly.com/laetitiasheppard/new-meeting" target="_blank">
+                <button class="btn">📅 Book Now</button>
+            </a>
+        </div>
+    </div>
     """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
     back_to_top()
 
 # Display selected page
@@ -171,8 +357,8 @@ elif st.session_state.page == "about":
 
 # --- FOOTER ---
 st.markdown("""
-<div style="text-align:center; font-size:0.9rem; color:var(--muted); margin:1rem 0;">
-  Laetitia Sheppard • Hypnotherapy for Change • Bangkok, Thailand<br>© 2025 All Rights Reserved
+<div style="text-align:center; font-size:0.9rem; color:var(--muted); margin:1rem 0; border-top: 1px solid var(--medium); padding-top: 2rem;">
+  Laetitia Sheppard • Hypnotherapy for Change • Bangkok, Thailand<br>© 2025 All Rights Reserved | Confidentiality Guaranteed
 </div>
 </div>  <!-- close main-container -->
 """, unsafe_allow_html=True)
