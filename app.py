@@ -15,57 +15,41 @@ st.set_page_config(
 )
 
 # --- CONSTANTS ---
-try:
-    # Try Streamlit secrets first
-    SMTP_SERVER = st.secrets["SMTP_SERVER"]
-    SMTP_PORT = int(st.secrets["SMTP_PORT"])
-    EMAIL_FROM = st.secrets["EMAIL_FROM"]
-    EMAIL_TO = st.secrets["EMAIL_TO"]
-    SMTP_USERNAME = st.secrets["SMTP_USERNAME"]
-    SMTP_PASSWORD = st.secrets["SMTP_PASSWORD"]
-except:
-    # Fallback to environment variables (for local testing)
-    SMTP_SERVER = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
-    SMTP_PORT = int(os.environ.get("SMTP_PORT", 587))
-    EMAIL_FROM = os.environ.get("EMAIL_FROM", "website@laetitiasheppard.com")
-    EMAIL_TO = os.environ.get("EMAIL_TO", "laetitiasheppard@gmail.com")
-    SMTP_USERNAME = os.environ.get("SMTP_USERNAME")
-    SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
+SMTP_CONFIG = {
+    "server": os.environ.get("SMTP_SERVER", "smtp.gmail.com"),
+    "port": int(os.environ.get("SMTP_PORT", 587)),
+    "from_email": os.environ.get("EMAIL_FROM", "website@laetitiasheppard.com"),
+    "to_email": os.environ.get("EMAIL_TO", "laetitiasheppard@gmail.com"),
+    "username": os.environ.get("SMTP_USERNAME"),
+    "password": os.environ.get("SMTP_PASSWORD")
+}
 
 # --- UTILITY FUNCTIONS ---
 def is_valid_email(email):
-    pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
-    return re.match(pattern, email) is not None
+    return re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email)
 
 def send_email(name, email, concern, message):
+    if not all([name, email, concern != "Select one..."]):
+        st.error("Missing required fields")
+        return False
+
     try:
-        if not all([name, email, concern != "Select one..."]):
-            st.error("Missing required fields")
-            return False
+        msg = MIMEText(f"Name: {name}\nEmail: {email}\nConcern: {concern}\nMessage: {message}")
+        msg['Subject'] = 'New Consultation Request'
+        msg['From'] = SMTP_CONFIG["from_email"]
+        msg['To'] = SMTP_CONFIG["to_email"]
 
-        msg = MIMEText(f"""
-        New Consultation Request:
-        Name: {name}
-        Email: {email}
-        Concern: {concern}
-        Message: {message}
-        """)
-        
-        msg['Subject'] = 'New Hypnotherapy Consultation Request'
-        msg['From'] = EMAIL_FROM
-        msg['To'] = EMAIL_TO
-
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+        with smtplib.SMTP(SMTP_CONFIG["server"], SMTP_CONFIG["port"]) as server:
             server.starttls()
-            server.login(SMTP_USERNAME, SMTP_PASSWORD)
+            server.login(SMTP_CONFIG["username"], SMTP_CONFIG["password"])
             server.send_message(msg)
         return True
     except Exception as e:
         st.error(f"Email failed: {str(e)}")
         return False
 
-# --- QUIZ FUNCTIONS ---
-def reset_quiz():
+# --- SESSION MANAGEMENT ---
+if 'quiz_answers' not in st.session_state:
     st.session_state.quiz_answers = {}
     st.session_state.quiz_step = 1
 
@@ -74,41 +58,36 @@ def handle_quiz_answer(question_id, answer):
     st.session_state.quiz_step += 1
 
 # --- STYLING ---
-def inject_css():
-    st.markdown("""
-    <style>
-    :root {
-        --primary: #212529;
-        --accent: #D4AF37;
-        --light: #F8F9FA;
-        --border: #DEE2E6;
-    }
-    .hero {
-        background: #1C1C1E;
-        padding: 2rem;
-        border-radius: 12px;
-        text-align: center;
-    }
-    .step {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: var(--border);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .step.active {
-        background: var(--accent);
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-# --- INITIALIZE APP ---
-if 'quiz_answers' not in st.session_state:
-    reset_quiz()
-
-inject_css()
+st.markdown("""
+<style>
+:root {
+    --primary: #212529;
+    --accent: #D4AF37;
+    --light: #F8F9FA;
+    --border: #DEE2E6;
+}
+.hero {
+    background: #1C1C1E;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.step {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0.5rem;
+}
+.step.active {
+    background: var(--accent);
+}
+</style>
+""", unsafe_allow_html=True)
 
 # --- NAVIGATION ---
 selected = option_menu(
