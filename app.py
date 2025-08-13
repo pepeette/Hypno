@@ -24,10 +24,47 @@ def inject_css():
         --shadow-hover: rgba(0,0,0,0.15);
         --shadow-accent: rgba(212, 175, 55, 0.25);
     }
+    /* Remove all padding at top */
+    .stApp {
+        padding-top: 0 !important;
+    }
+    /* Remove header completely */
+    header {
+        display: none !important;
+    }
+    /* Main container styling */
+    .main-container { 
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+    /* Hero section at very top */
+    .hero {
+        margin-top: 0 !important;
+    }
+    /* Navigation menu styling */
+    div[data-testid="stHorizontalBlock"] {
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    /* Process step numbers */
+    .step-number {
+        background: var(--accent);
+        color: var(--primary);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 1rem;
+        margin-right: 0.5rem;
+    }
+    /* Rest of your CSS */
     [data-testid="stAppViewContainer"] { background-color: var(--light) !important; color-scheme: light !important; }
-    .stApp { background: var(--light)!important; font-family: 'Inter', sans-serif!important; color: var(--primary)!important; padding-top: 0!important; }
-    #MainMenu, header, footer, .stDeployButton { visibility: hidden; }
-    .main-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    #MainMenu, footer, .stDeployButton { visibility: hidden; }
     h1 { font-size: 1.5rem!important; margin: 0.5rem 0!important; }
     h2 { font-size: 1.3rem!important; margin: 0.6rem 0!important; }
     p, li, span, div { font-size: 1rem!important; margin: 0.3rem 0!important; }
@@ -49,10 +86,10 @@ def inject_css():
     .hero {
         background: var(--primary);
         color: white;
-        padding: 1rem 1rem;
+        padding: 1.5rem 1rem;
         text-align: center;
         border-radius: 12px;
-        margin: 0.25rem 0 0.25rem 0;
+        margin: 0 0 0.5rem 0 !important;
         border-left: 6px solid var(--accent);
     }
     .hero * {
@@ -64,7 +101,7 @@ def inject_css():
     
     /* Cards */
     .card-container{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; margin:1rem 0 1rem 0; }
-    .card{ background: var(--white); border:1px solid var(--medium); border-radius:12px; padding:1.8rem 2rem; box-shadow:0 6px 16px var(--shadow); transition: transform 0.4s ease, box-shadow 0.4s ease; }
+    .card{ background: var(--white); border:1px solid var(--medium); border-radius:12px; padding:1.5rem; box-shadow:0 6px 16px var(--shadow); transition: transform 0.4s ease, box-shadow 0.4s ease; }
     .card:hover{ transform: translateY(-5px); box-shadow:0 12px 28px var(--shadow-hover); }
     .result-badge { color: var(--accent); font-weight: 600; margin-top: 1rem; display: inline-block; }
     
@@ -103,9 +140,9 @@ def inject_css():
 
 inject_css()
 
-# --- HERO SECTION ---
-st.markdown('<div class="main-container">', unsafe_allow_html=True)
+# --- HERO SECTION AT VERY TOP ---
 st.markdown("""
+<div class="main-container">
 <div class="hero" id="top">
     <h1 class="hero-title">Reprogram Your Mind, Change Your Life</h1>
     <p class="hero-subtitle">Hypnotherapy doesn't just change what you do—it changes how you do it. In just 2 sessions, it reprograms the patterns holding you back, so you can finally get the results you deserve.</p>
@@ -116,7 +153,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- NAVIGATION MENU VIA HAMBURGER ---
+# --- NAVIGATION MENU ---
 selected = option_menu(
     menu_title=None,
     options=["Your Blocks", "The Method", "Results", "About"],
@@ -124,7 +161,23 @@ selected = option_menu(
     menu_icon="list",
     default_index=0,
     orientation="horizontal",
-    styles={"container": {"padding": "0!important", "margin": "0!important"}}
+    styles={
+        "container": {
+            "padding": "0!important", 
+            "margin": "0!important",
+            "background-color": "transparent"
+        },
+        "nav-link": {
+            "font-size": "1rem",
+            "font-weight": "normal",
+            "padding": "0.5rem 1rem",
+        },
+        "nav-link-selected": {
+            "background-color": "var(--accent)",
+            "color": "var(--primary)",
+            "font-weight": "600"
+        },
+    }
 )
 
 page_map = {
@@ -218,8 +271,13 @@ def show_method():
     # Session 1: Analysis
     st.markdown("""
     <div class="card">
-        <h2>Session 1: Analysis</h2>
-        <p>Identify limiting patterns and create a personalized mind reprogramming plan.</p>
+        <div style="display: flex; align-items: flex-start; gap: 1rem;">
+            <div class="step-number">1</div>
+            <div>
+                <h2>Session 1: Analysis</h2>
+                <p>Identify limiting patterns and create a personalized mind reprogramming plan.</p>
+            </div>
+        </div>
         <div class="card-image-container">
     """, unsafe_allow_html=True)
     load_image("./img/BehaviourMap.png", caption="Behavior Mapping")
@@ -228,8 +286,13 @@ def show_method():
     # Session 2: Hypnosis
     st.markdown("""
     <div class="card">
-        <h2>Session 2: Hypnosis</h2>
-        <p>Reprogram behaviors with certified expertise for rapid, lasting change.</p>
+        <div style="display: flex; align-items: flex-start; gap: 1rem;">
+            <div class="step-number">2</div>
+            <div>
+                <h2>Session 2: Hypnosis</h2>
+                <p>Reprogram behaviors with certified expertise for rapid, lasting change.</p>
+            </div>
+        </div>
         <div class="card-image-container">
     """, unsafe_allow_html=True)
     load_image("./img/emo.jpg", caption="Emotional Reprogramming")
@@ -238,8 +301,13 @@ def show_method():
     # Optional Session 3: Reinforcement
     st.markdown("""
     <div class="card">
-        <h2>Session 3: Reinforcement (Optional)</h2>
-        <p>Optional follow-up session to strengthen new patterns, typically not required but available.</p>
+        <div style="display: flex; align-items: flex-start; gap: 1rem;">
+            <div class="step-number">3</div>
+            <div>
+                <h2>Session 3: Reinforcement (Optional)</h2>
+                <p>Optional follow-up session to strengthen new patterns, typically not required but available.</p>
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
