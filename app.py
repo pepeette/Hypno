@@ -120,6 +120,43 @@ def inject_css():
         color: #a1a1a6 !important; 
     }}
 
+    /* Stats Section */
+    .stats {{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 0.75rem;
+        margin: 1rem 0 2rem 0;
+    }}
+    
+    .stat {{
+        background: var(--white);
+        border: 1px solid var(--medium);
+        border-radius: 12px;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        box-shadow: 0 4px 12px var(--shadow);
+        transition: all 0.3s ease;
+    }}
+    
+    .stat:hover {{
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px var(--shadow-hover);
+    }}
+    
+    .stat-number {{
+        color: var(--accent) !important;
+        font-size: 2rem !important;
+        font-weight: 700 !important;
+        margin: 0.5rem 0 !important;
+        line-height: 1 !important;
+    }}
+    
+    .stat-label {{
+        font-size: 1rem !important;
+        color: var(--muted) !important;
+        margin: 0.5rem 0 0 0 !important;
+    }}
+
     /* Responsive grid for cards */
     .card-container {{
         display: grid;
@@ -306,11 +343,19 @@ def inject_css():
         .card-container {{
             grid-template-columns: 1fr !important;
         }}
+        .stats {{
+            grid-template-columns: 1fr 1fr !important;
+        }}
         .hero-title {{
             font-size: 1.3rem !important;
         }}
         .hero-subtitle {{
             font-size: 0.9rem !important;
+        }}
+    }}
+    @media (max-width: 480px) {{
+        .stats {{
+            grid-template-columns: 1fr !important;
         }}
     }}
     </style>
@@ -380,7 +425,7 @@ def back_to_top():
 # --- IMAGE HANDLING ---
 def load_image(image_path, width=None, caption=None):
     try:
-        st.image(image_path, width=width, caption=caption, use_container_width=True if width is None else False)
+        st.image(image_path, width=width, caption=caption, use_column_width=True if width is None else False)
     except FileNotFoundError:
         st.warning(f"Image not found: {image_path}")
     except Exception as e:
@@ -542,22 +587,22 @@ def show_method():
 
     st.markdown('<h2>Why Choose This Approach?</h2>', unsafe_allow_html=True)
     st.markdown("""
-    <div class="card-container">
-        <div class="card text-center">
-            <h2>2</h2>
-            <p><strong>Sessions for Change</strong></p>
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number">2</div>
+            <div class="stat-label">Sessions for Change</div>
         </div>
-        <div class="card text-center">
-            <h2>92%</h2>
-            <p><strong>Client Reported Improvement</strong></p>
+        <div class="stat">
+            <div class="stat-number">92%</div>
+            <div class="stat-label">Client Reported Improvement</div>
         </div>
-        <div class="card text-center">
-            <h2>5-7x</h2>
-            <p><strong>Faster Results Than Traditional Therapy</strong></p>
+        <div class="stat">
+            <div class="stat-number">5-7x</div>
+            <div class="stat-label">Faster Than Traditional Therapy</div>
         </div>
-        <div class="card text-center">
-            <h2>Optional</h2>
-            <p><strong>Follow-up Session</strong></p>
+        <div class="stat">
+            <div class="stat-number">3000฿</div>
+            <div class="stat-label">All-Inclusive Price</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -639,7 +684,7 @@ def show_results():
     back_to_top()
 
 def show_about():
-    st.markdown('<h2>The founder : Laetitia Sheppard</h2>', unsafe_allow_html=True)
+    st.markdown('<h2>About Laetitia Sheppard</h2>', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2])
     with col1:
         load_image("./img/ID.jpg", width=250, caption="Laetitia Sheppard")
@@ -656,7 +701,7 @@ def show_about():
     st.markdown("""
     <div class="contact">
         <h2>Bangkok Hypnotherapy Clinic</h2>
-        <p>Please note address change27 Soi Sukhumvit 10 (Asoke) • Confidential Sessions</p>
+        <p>27 Soi Sukhumvit 10 (Asoke) • Confidential Sessions</p>
         <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
             <a href="https://www.google.com/maps/place/27+Soi+Sukhumvit+10,+Asoke,+Bangkok" target="_blank">
                 <button class="btn">📍 Get Directions</button>
@@ -687,4 +732,3 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
-
