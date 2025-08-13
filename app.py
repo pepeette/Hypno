@@ -25,8 +25,16 @@ def inject_css():
         --shadow-accent: rgba(212, 175, 55, 0.25);
     }
     /* Remove all padding at top */
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+    }
     .stApp {
         padding-top: 0 !important;
+        margin-top: 0 !important;
     }
     /* Remove header completely */
     header {
@@ -39,8 +47,9 @@ def inject_css():
         padding: 0 1rem;
     }
     /* Hero section at very top */
-    .hero {
+    #top {
         margin-top: 0 !important;
+        padding-top: 0 !important;
     }
     /* Navigation menu styling */
     div[data-testid="stHorizontalBlock"] {
@@ -61,6 +70,20 @@ def inject_css():
         flex-shrink: 0;
         font-size: 1rem;
         margin-right: 0.5rem;
+    }
+    /* Card expand/collapse */
+    .collapsed .card-content {
+        display: none;
+    }
+    .expand-btn {
+        background: transparent;
+        border: none;
+        color: var(--accent);
+        cursor: pointer;
+        font-weight: 600;
+        padding: 0;
+        margin-top: 0.5rem;
+        text-align: left;
     }
     /* Rest of your CSS */
     [data-testid="stAppViewContainer"] { background-color: var(--light) !important; color-scheme: light !important; }
@@ -104,13 +127,14 @@ def inject_css():
     .card{ background: var(--white); border:1px solid var(--medium); border-radius:12px; padding:1.5rem; box-shadow:0 6px 16px var(--shadow); transition: transform 0.4s ease, box-shadow 0.4s ease; }
     .card:hover{ transform: translateY(-5px); box-shadow:0 12px 28px var(--shadow-hover); }
     .result-badge { color: var(--accent); font-weight: 600; margin-top: 1rem; display: inline-block; }
+    .card-content { transition: all 0.3s ease; }
     
     /* Process Tracker */
     .process-tracker{ display:flex; justify-content:center; align-items:center; margin:1rem 0; gap:1rem; font-weight:600; color:var(--muted); }
     .process-tracker .active{ color: var(--accent); }
     
     /* Stats */
-    .stats{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:0.75rem; margin:1rem 0; }
+    .stats{ display:grid; grid-template-columns:repeat(4, 1fr)); gap:0.75rem; margin:1rem 0; }
     .stat{ background: var(--white); border:1px solid var(--medium); border-radius:12px; padding:1.5rem 1rem; text-align:center; transition: all 0.3s ease; }
     .stat:hover{ transform: translateY(-3px); box-shadow:0 8px 16px var(--shadow-hover); }
     .stat-number{ color: var(--accent); font-size:2rem; font-weight:700; }
@@ -132,13 +156,21 @@ def inject_css():
     .back-to-top-link{ text-align:center; margin:1rem 0; color:var(--accent); font-weight:600; }
     
     @media(max-width:768px){ 
-        .card-container, .stats{ grid-template-columns:1fr!important; } 
+        .card-container{ grid-template-columns:1fr!important; } 
+        .stats{ grid-template-columns:repeat(2, 1fr)!important; }
         .btn{ width:100%!important; } 
+    }
+    @media(max-width:480px){ 
+        .stats{ grid-template-columns:1fr!important; }
     }
     </style>
     """, unsafe_allow_html=True)
 
 inject_css()
+
+# --- SESSION STATE FOR CARD COLLAPSE ---
+if 'cards_collapsed' not in st.session_state:
+    st.session_state.cards_collapsed = False
 
 # --- HERO SECTION AT VERY TOP ---
 st.markdown("""
@@ -201,6 +233,14 @@ def back_to_top():
 # --- PAGE FUNCTIONS ---
 def show_problems():
     st.markdown('<h2 id="problems">Common Challenges We Help You Overcome</h2>', unsafe_allow_html=True)
+    
+    # Collapse/Expand button
+    if st.button(f"{'▼' if st.session_state.cards_collapsed else '▲'} Collapse All Cards", 
+                key="toggle_cards",
+                help="Show/hide all challenge cards"):
+        st.session_state.cards_collapsed = not st.session_state.cards_collapsed
+        st.rerun()
+    
     problems = [
         {"title":"Overcoming Drinking Challenges","desc":"Struggling with unhealthy drinking habits? We help reprogram your subconscious patterns for lasting change.","result":"→ Empower yourself to regain control"},
         {"title":"Breaking Free from Smoking","desc":"Tobacco addiction can be tough to beat alone. Our hypnotherapy creates new habits that support your freedom.","result":"→ Quit smoking with confidence and ease"},
@@ -210,13 +250,16 @@ def show_problems():
         {"title":"Adapting to New Surroundings","desc":"Moving or life transitions can be stressful. Reprogram your mindset for resilience.","result":"→ Thrive comfortably in your new environment"},
         {"title":"Embracing Life's Changes","desc":"Change is constant; struggle is optional. Build adaptability and calm in uncertainty.","result":"→ Cultivate flexibility and peace of mind"}
     ]
-    st.markdown('<div class="card-container">', unsafe_allow_html=True)
+    
+    st.markdown(f'<div class="card-container {"collapsed" if st.session_state.cards_collapsed else ""}">', unsafe_allow_html=True)
     for p in problems:
         st.markdown(f"""
             <div class="card">
               <h2>{p['title']}</h2>
-              <p>{p['desc']}</p>
-              <span class="result-badge">{p['result']}</span>
+              <div class="card-content">
+                <p>{p['desc']}</p>
+                <span class="result-badge">{p['result']}</span>
+              </div>
             </div>
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
@@ -244,6 +287,20 @@ def show_problems():
     back_to_top()
 
 def show_method():
+    # Why Reprogramming Works section
+    st.markdown('<h2>Why Reprogramming Works</h2>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card">
+        <ul>
+            <li>Changing habits alone often fails because the patterns driving behaviors are subconscious</li>
+            <li>Hypnotherapy rewires root causes towards your desired behavioral outcomes</li>
+            <li>Expert-designed framework for sustainable change within just 2 focused sessions</li>
+            <li>All-inclusive price: 3000 THB per 2 sessions; follow-up optional</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Our Simple 2-Session Process section
     st.markdown('<h2 id="method">Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
     st.markdown("""
       <div class="process-tracker">
@@ -254,19 +311,6 @@ def show_method():
     """, unsafe_allow_html=True)
     
     st.markdown('<div class="card-container">', unsafe_allow_html=True)
-    
-    # Why Reprogramming Works card
-    st.markdown("""
-    <div class="card">
-        <h2>Why Reprogramming Works</h2>
-        <ul>
-            <li>Changing habits alone often fails because the patterns driving behaviors are subconscious</li>
-            <li>Hypnotherapy rewires root causes towards your desired behavioral outcomes</li>
-            <li>Expert-designed framework for sustainable change within just 2 focused sessions</li>
-            <li>All-inclusive price: 3000 THB per 2 sessions; follow-up optional</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
 
     # Session 1: Analysis
     st.markdown("""
@@ -313,7 +357,7 @@ def show_method():
     
     st.markdown('</div>', unsafe_allow_html=True)  # Close card-container
 
-    # Stats
+    # Stats - now 4 cards side by side
     st.markdown('<div class="stats">', unsafe_allow_html=True)
     stats = [("2","Sessions for Change"),("92%","Client Reported Improvement"),("5‑7x","Faster Than Traditional Therapy"),("3000฿","All‑Inclusive Price")]
     for num, label in stats:
@@ -412,6 +456,18 @@ def show_about():
     </div>
     """, unsafe_allow_html=True)
     back_to_top()
+
+# --- AUTO-SCROLL TO TOP ---
+st.markdown(
+    """
+    <script>
+    window.addEventListener('load', function() {
+        window.location.hash = '#top';
+    });
+    </script>
+    """,
+    unsafe_allow_html=True
+)
 
 # Display selected page
 if st.session_state.page == "problems":
