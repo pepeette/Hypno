@@ -251,7 +251,7 @@ def show_problems():
     """ % ("−" if not st.session_state.cards_collapsed else "+"), unsafe_allow_html=True)
     
     # Toggle button functionality
-    if st.button("Show common blocks", key="toggle_cards_hidden", help="Show/hide common blocks addressed"):
+    if st.button("Show/hide common blocks", key="toggle_cards_hidden"):
         st.session_state.cards_collapsed = not st.session_state.cards_collapsed
         st.rerun()
     
@@ -499,4 +499,5 @@ st.markdown("""
 </div>
 </div>  <!-- close main-container -->
 """, unsafe_allow_html=True)
+
 
