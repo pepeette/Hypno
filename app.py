@@ -272,6 +272,16 @@ def inject_css():
     .card-image-container img:hover {{
         transform: scale(1.02);
     }}
+    
+    /* Sticky nav bar */
+    .navbar-sticky {{
+        position: sticky;
+        top: 0;
+        background-color: var(--light);
+        z-index: 1000;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--medium);
+    }}
 
     /* Testimonial card */
     .testimonial-card {{
@@ -397,6 +407,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- NAVIGATION BUTTONS ---
+st.markdown('<div class="navbar-sticky">', unsafe_allow_html=True)
 cols = st.columns(4)
 button_style = """
 <style>
@@ -443,6 +454,7 @@ with cols[3]:
     if about_btn:
         st.session_state.page = "about"
         st.rerun()
+st.markdown('</div>', unsafe_allow_html=True)
 
 # --- Back to top link ---
 def back_to_top():
@@ -455,7 +467,7 @@ def back_to_top():
 # --- IMAGE HANDLING ---
 def load_image(image_path, width=None, caption=None):
     try:
-        st.image(image_path, width=width, caption=caption, use_column_width=True if width is None else False)
+        st.image(image_path, width=width, caption=caption, use_container_width=True if width is None else False)
     except FileNotFoundError:
         st.warning(f"Image not found: {image_path}")
     except Exception as e:
@@ -762,4 +774,5 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
 
