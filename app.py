@@ -339,25 +339,42 @@ def inject_css():
     .text-center {{ text-align: center; }}
 
     /* Responsive adjustments */
-    @media (max-width: 768px) {{
-        .card-container {{
-            grid-template-columns: 1fr !important;
-        }}
-        .stats {{
-            grid-template-columns: 1fr 1fr !important;
-        }}
-        .hero-title {{
-            font-size: 1.3rem !important;
-        }}
-        .hero-subtitle {{
-            font-size: 0.9rem !important;
-        }}
-    }}
-    @media (max-width: 480px) {{
-        .stats {{
-            grid-template-columns: 1fr !important;
-        }}
-    }}
+    # In the CSS injection section, update the media queries:
+
+@media (max-width: 768px) {
+    .card-container {
+        grid-template-columns: 1fr !important;
+    }
+    .stats {
+        grid-template-columns: 1fr 1fr !important;
+    }
+    .hero-title {
+        font-size: 1.3rem !important;
+    }
+    .hero-subtitle {
+        font-size: 0.9rem !important;
+    }
+    /* New navigation styling for tablets */
+    [data-testid="column"] {
+        min-width: 50% !important;
+        flex: 1 1 50% !important;
+    }
+}
+@media (max-width: 480px) {
+    .stats {
+        grid-template-columns: 1fr !important;
+    }
+    /* New navigation styling for mobile */
+    [data-testid="column"] {
+        min-width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+    /* Adjust button sizes */
+    .stButton button {
+        width: 100% !important;
+        margin: 0.25rem 0 !important;
+    }
+}
     </style>
     """, unsafe_allow_html=True)
 inject_css()
@@ -381,6 +398,19 @@ st.markdown("""
 
 # --- NAVIGATION BUTTONS ---
 cols = st.columns(4)
+button_style = """
+<style>
+    @media (max-width: 768px) {
+        /* Make buttons take full width on mobile */
+        .stButton>button {
+            width: 100%;
+            margin: 0.25rem 0;
+        }
+    }
+</style>
+"""
+st.markdown(button_style, unsafe_allow_html=True)
+
 with cols[0]:
     problems_btn = st.button("🔥 Your Blocks", 
                            key="nav_problems",
@@ -732,3 +762,4 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
+
