@@ -1,3 +1,6 @@
 streamlit
 pillow
 streamlit-community-navigation-bar
+streamlit-option-menu
+
+
