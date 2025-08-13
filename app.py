@@ -371,92 +371,78 @@ elif selected == "Book Now":
     </div>
     """, unsafe_allow_html=True)
 
-    # Create two columns for the booking options
-    col1, col2 = st.columns(2, gap="large")
+    # Create tabs for different booking options
+    tab1, tab2 = st.tabs(["Free Discovery Call", "Rewiring Package"])
     
-    with col1:
-        st.markdown("""
-        <div style="background:#F8F9FA; padding:1.5rem; border-radius:12px; height:100%;">
-            <h3 style="color:#D4AF37; text-align:center;">Free Discovery Call</h3>
-            <p style="text-align:center;">15-minute consultation to discuss your goals</p>
-            <ul style="margin-left:1rem;">
-                <li>No obligation</li>
-                <li>Learn how hypnotherapy can help</li>
-                <li>Get your questions answered</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div style="background:#F8F9FA; padding:1.5rem; border-radius:12px; height:100%;">
-            <h3 style="color:#D4AF37; text-align:center;">Rewiring Package</h3>
-            <p style="text-align:center;">Complete 2-session transformation</p>
-            <ul style="margin-left:1rem;">
-                <li>Analysis Session (90 mins)</li>
-                <li>Transformation Session (90 mins)</li>
-                <li>Email support between sessions</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # Booking form (same for both options)
-    st.markdown("""
-    <div id="discovery" style="background:white; padding:2rem; border-radius:12px; margin:3rem 0;">
-        <h3 style="text-align:center;">Book Your Session</h3>
-    """, unsafe_allow_html=True)
-
-    with st.form("booking_form"):
-        booking_type = st.radio(
-            "Session Type*",
-            ["Free Discovery Call (15 mins)", "Rewiring Package (2 sessions)"],
-            horizontal=True
-        )
-        
-        cols = st.columns(2)
-        with cols[0]:
-            name = st.text_input("Your Name*", placeholder="First and last name")
-        with cols[1]:
-            email = st.text_input("Email*", placeholder="Your email address")
-        
-        concern = st.selectbox(
-            "Primary Concern*",
-            ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"]
-        )
-        
-        message = st.text_area("Anything we should know", placeholder="Brief details about your situation")
-        
-        submitted = st.form_submit_button(f"Book My {'Discovery Call' if 'Discovery' in booking_type else 'Package'}")
-        
-        if submitted:
-            if not name or not email or concern == "Select one...":
-                st.error("Please fill in all required fields")
-            elif not is_valid_email(email):
-                st.error("Please enter a valid email address")
-            else:
-                # Different Calendly links for each type
-                calendly_url = (
-                    "https://calendly.com/laetitiasheppard/discovery" 
-                    if "Discovery" in booking_type else
-                    "https://calendly.com/laetitiasheppard/package"
-                )
-                
-                # Send email with booking type
-                email_success = send_email(
-                    name, email, concern, 
-                    f"Booking type: {booking_type}\n\n{message}"
-                )
-                
-                # Redirect to Calendly
-                st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', 
-                           unsafe_allow_html=True)
-                
-                if email_success:
-                    st.success("✓ Appointment scheduled! Check your email for confirmation.")
+    with tab1:
+        with st.form("discovery_form"):  # Unique key
+            st.markdown("""
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <h3 style="color:#D4AF37;">Free 15-Minute Discovery Call</h3>
+                <p>No obligation consultation to discuss your goals</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            cols = st.columns(2)
+            with cols[0]:
+                name = st.text_input("Your Name*", key="disc_name")
+            with cols[1]:
+                email = st.text_input("Email*", key="disc_email")
+            
+            concern = st.selectbox(
+                "Primary Concern*",
+                ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
+                key="disc_concern"
+            )
+            
+            submitted = st.form_submit_button("Book Discovery Call")
+            
+            if submitted:
+                if not name or not email or concern == "Select one...":
+                    st.error("Please fill in all required fields")
+                elif not is_valid_email(email):
+                    st.error("Please enter a valid email address")
                 else:
-                    st.success("✓ Appointment scheduled! (Email confirmation pending)")
-                
-                st.balloons()
+                    calendly_url = "https://calendly.com/laetitiasheppard/discovery"
+                    st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
+                    if send_email(name, email, concern, "Booking type: Discovery Call"):
+                        st.success("✓ Appointment scheduled!")
+                    st.balloons()
+
+    with tab2:
+        with st.form("package_form"):  # Unique key
+            st.markdown("""
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <h3 style="color:#D4AF37;">Rewiring Package</h3>
+                <p>Complete 2-session transformation program</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            cols = st.columns(2)
+            with cols[0]:
+                name = st.text_input("Your Name*", key="pkg_name")
+            with cols[1]:
+                email = st.text_input("Email*", key="pkg_email")
+            
+            concern = st.selectbox(
+                "Primary Concern*",
+                ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
+                key="pkg_concern"
+            )
+            
+            submitted = st.form_submit_button("Book Package Now")
+            
+            if submitted:
+                if not name or not email or concern == "Select one...":
+                    st.error("Please fill in all required fields")
+                elif not is_valid_email(email):
+                    st.error("Please enter a valid email address")
+                else:
+                    calendly_url = "https://calendly.com/laetitiasheppard/package"
+                    st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
+                    if send_email(name, email, concern, "Booking type: Rewiring Package"):
+                        st.success("✓ Package booked!")
+                    st.balloons()
                 
 # --- BOOKING FORM ---
 st.markdown("""
