@@ -31,31 +31,23 @@ def is_valid_email(email):
     return re.match(pattern, email) is not None
 
 def send_email(name, email, concern, message):
-    """Send email with form data"""
     try:
-        if not is_valid_email(email):
-            st.error("Please enter a valid email address")
+        if not all([name, email, concern != "Select one..."]):
+            st.error("Missing required fields")
             return False
-            
-        msg = MIMEText(f"""
-        New Consultation Request:
-        Name: {name}
-        Email: {email}
-        Concern: {concern}
-        Message: {message}
-        """)
-        
-        msg['Subject'] = 'New Hypnotherapy Consultation Request'
-        msg['From'] = EMAIL_FROM
-        msg['To'] = EMAIL_TO
-        
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+
+        msg = MIMEText(f"Name: {name}\nEmail: {email}\nConcern: {concern}\nMessage: {message}")
+        msg['Subject'] = 'New Consultation Request'
+        msg['From'] = os.getenv('EMAIL_FROM')
+        msg['To'] = os.getenv('EMAIL_TO')
+
+        with smtplib.SMTP(os.getenv('SMTP_SERVER'), os.getenv('SMTP_PORT')) as server:
             server.starttls()
             server.login(os.getenv('SMTP_USERNAME'), os.getenv('SMTP_PASSWORD'))
             server.send_message(msg)
         return True
     except Exception as e:
-        st.error(f"Error sending email: {str(e)}")
+        st.error(f"Email failed: {str(e)}")
         return False
 
 def reset_quiz():
@@ -139,7 +131,7 @@ selected = option_menu(
 
 # --- HERO SECTION ---
 st.markdown("""
-<div class="hero" style="background:#1C1C1E; padding:4rem 1rem; text-align:center; border-radius:12px; margin-bottom:2rem;">
+<div class="hero" style="background:#1C1C1E; padding:2rem; text-align:center; border-radius:12px; margin-bottom:2rem;">
     <h1>Break Free in Just 2 Sessions</h1>
     <p style="font-size:1.2rem; color:#E9ECEF; max-width:700px; margin:0 auto 2rem;">
         Clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits
@@ -197,7 +189,16 @@ if selected == "Home":
             with cols[i]:
                 if st.button(option, key=f"q3o{i}"):
                     handle_quiz_answer(3, option)
-    
+                    
+    if len(st.session_state.quiz_answers) == 3:
+    st.success("Our method is a good fit for you!")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.link_button("Book Consultation", "#discovery")
+    with col2:
+        if st.button("Retake Quiz"):
+            reset_quiz()
+            
     # Quiz Results
     if len(st.session_state.quiz_answers) == 3:
         st.success("### Based on your answers, our 2-session method would likely work well for you!")
