@@ -14,31 +14,30 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CONSTANTS WITH SAFE DEFAULTS ---
+# --- CONSTANTS ---
 try:
+    # Try Streamlit secrets first
     SMTP_SERVER = st.secrets["SMTP_SERVER"]
     SMTP_PORT = int(st.secrets["SMTP_PORT"])
     EMAIL_FROM = st.secrets["EMAIL_FROM"]
     EMAIL_TO = st.secrets["EMAIL_TO"]
     SMTP_USERNAME = st.secrets["SMTP_USERNAME"]
     SMTP_PASSWORD = st.secrets["SMTP_PASSWORD"]
-except (KeyError, AttributeError):
-    # Fallback for local development without secrets
-    SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-    SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
-    EMAIL_FROM = os.getenv("EMAIL_FROM", "website@laetitiasheppard.com")
-    EMAIL_TO = os.getenv("EMAIL_TO", "laetitiasheppard@gmail.com")
-    SMTP_USERNAME = os.getenv("SMTP_USERNAME")
-    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+except:
+    # Fallback to environment variables (for local testing)
+    SMTP_SERVER = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
+    SMTP_PORT = int(os.environ.get("SMTP_PORT", 587))
+    EMAIL_FROM = os.environ.get("EMAIL_FROM", "website@laetitiasheppard.com")
+    EMAIL_TO = os.environ.get("EMAIL_TO", "laetitiasheppard@gmail.com")
+    SMTP_USERNAME = os.environ.get("SMTP_USERNAME")
+    SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
 
 # --- UTILITY FUNCTIONS ---
 def is_valid_email(email):
-    """Validate email format"""
     pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
     return re.match(pattern, email) is not None
 
 def send_email(name, email, concern, message):
-    """Send email using credentials"""
     try:
         if not all([name, email, concern != "Select one..."]):
             st.error("Missing required fields")
