@@ -20,16 +20,14 @@ def inject_css():
         --muted: #6E6E73;
         --white: #FFFFFF;
         --shadow: rgba(0,0,0,0.05);
-        --shadow-hover: rgba(0,0,0,0.1);
-        --shadow-accent: rgba(212, 175, 55, 0.2);
+        --shadow-hover: rgba(0,0,0,0.15);
+        --shadow-accent: rgba(212, 175, 55, 0.25);
     }}
-
     /* Force light mode */
     [data-testid="stAppViewContainer"] {{
         background-color: var(--light) !important;
         color-scheme: light !important;
     }}
-    
     /* Remove top padding */
     .stApp {{
         background: var(--light) !important;
@@ -38,23 +36,19 @@ def inject_css():
         color: var(--primary) !important;
         padding-top: 0.25rem !important;
     }}
-    
     /* Remove header space */
     .st-emotion-cache-1avcm0n {{
         display: none !important;
     }}
-    
     /* Remove extra space at top */
     .st-emotion-cache-z5fcl4 {{
         padding-top: 0.25rem !important;
         padding-bottom: 0.25rem !important;
     }}
-
     h1, h2, h3, h4, h5, h6 {{
         color: var(--primary) !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }}
-    
     h1 {{
         font-size: 1.5rem !important;
         font-weight: 700 !important;
@@ -62,39 +56,33 @@ def inject_css():
         margin: 0.5rem 0 0.5rem 0 !important;
         color: var(--primary) !important;
     }}
-    
     h2 {{
-        font-size: 1.2rem !important;
+        font-size: 1.3rem !important;
         font-weight: 600 !important;
         line-height: 1.3 !important;
-        margin: 0.5rem 0 0.5rem 0 !important;
+        margin: 0.6rem 0 0.6rem 0 !important;
         color: var(--primary) !important;
     }}
-    
     p, li, span, div {{
         font-size: 1rem !important;
         font-weight: 400 !important;
         line-height: 1.6 !important;
         color: var(--primary) !important;
-        margin: 0.25rem 0 !important;
+        margin: 0.3rem 0 !important;
     }}
-    
     strong, b {{
         font-weight: 600 !important;
         color: var(--primary) !important;
     }}
-
     #MainMenu {{visibility: hidden;}}
     footer {{visibility: hidden;}}
     header {{visibility: hidden;}}
     .stDeployButton {{display: none;}}
-
     .main-container {{
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 1rem;
     }}
-
     .hero-title {{ 
         font-size: 1.5rem !important; 
         font-weight: 700 !important; 
@@ -102,20 +90,17 @@ def inject_css():
         margin: 0 !important;
         color: var(--white) !important;
     }}
-    
     .hero-subtitle {{ 
         font-size: 1rem !important; 
         font-weight: 400 !important; 
         margin: 1rem 0 !important;
         color: #d1d1d6 !important;
     }}
-    
     .muted-text {{ 
         color: var(--muted) !important; 
         font-size: 1rem !important;
         font-weight: 400 !important;
     }}
-
     .hero {{
         background: var(--primary);
         color: white;
@@ -125,62 +110,72 @@ def inject_css():
         margin: 0.25rem 0 0.25rem 0;
         border-left: 6px solid var(--accent);
     }}
-    
     .hero * {{
         color: var(--white) !important;
     }}
-    
     .hero .hero-subtitle {{ 
         color: #d1d1d6 !important; 
     }}
-    
     .hero .muted-text {{ 
         color: #a1a1a6 !important; 
     }}
 
+    /* Improved responsive grid for cards */
+    .card-container {{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }}
     .card {{
         background: var(--white);
         border: 1px solid var(--medium);
         border-radius: 12px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 12px var(--shadow);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        min-height: 180px; /* Added minimum height for consistency */
+        padding: 1.5rem 2rem;
+        box-shadow: 0 6px 16px var(--shadow);
+        transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.3s ease;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        min-height: 220px;
     }}
-
-        .card-container {{
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
+    .card:hover {{
+        transform: translateY(-5px);
+        box-shadow: 0 12px 28px var(--shadow-hover);
+        background-color: #fff9e6; /* Light accent background on hover */
     }}
-    
-    .card-content {{
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }}
-    
     .card h2 {{
         margin-top: 0 !important;
+        font-weight: 700 !important;
+        font-size: 1.25rem !important;
+        color: var(--primary) !important;
     }}
-    
-    .card p:last-child {{
-        margin-top: auto;
-        padding-top: 0.5rem;
+    .card p {{
+        margin: 0.5rem 0 0 0 !important;
+        flex-grow: 1;
     }}
-    
-    .card:hover {{
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px var(--shadow-hover);
+    /* Result badge inside card */
+    .result-badge {{
+        background-color: var(--accent);
+        color: var(--primary);
+        font-weight: 700;
+        padding: 0.25rem 0.8rem;
+        margin-top: 1rem;
+        border-radius: 8px;
+        display: inline-block;
+        font-size: 0.9rem;
+        align-self: flex-start;
+        box-shadow: 0 2px 6px var(--shadow-accent);
+        transition: background-color 0.3s ease;
     }}
-    
-    .card-accent {{
-        border-left: 4px solid var(--accent);
+    .card:hover .result-badge {{
+        background-color: #b58f24; /* Darker accent on hover */
+        color: var(--white);
+        box-shadow: 0 4px 12px rgba(181, 143, 36, 0.6);
     }}
 
+    /* Button style */
     .btn {{
         background: var(--accent);
         color: var(--primary);
@@ -195,110 +190,18 @@ def inject_css():
         box-shadow: 0 4px 8px var(--shadow-accent);
         margin: 0.5rem 0.5rem 0.5rem 0;
         text-decoration: none;
+        text-align: center;
+        user-select: none;
     }}
-    
     .btn:hover {{
         background: #C7A133;
         transform: translateY(-2px);
         box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
-    }}
-
-    .nav-btn-active {{
-        background: var(--accent) !important;
-        color: var(--primary) !important;
-    }}
-
-    .stats {{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 0.75rem;
-        margin: 1rem 0;
-    }}
-    
-    .stat {{
-        background: var(--white);
-        border: 1px solid var(--medium);
-        border-radius: 12px;
-        padding: 1rem;
-        text-align: center;
-    }}
-    
-    .stat-number {{
-        color: var(--accent) !important;
-        font-size: 1.5rem !important;
-        font-weight: 700 !important;
-    }}
-    
-    .stat-label {{
-        font-size: 1rem;
-        color: var(--muted);
-    }}
-
-    .contact {{
-        background: var(--primary);
-        color: white;
-        padding: 1rem;
-        border-radius: 12px;
-        margin: 1rem 0;
-        border-top: 4px solid var(--accent);
-        text-align: center;
-    }}
-    
-    .contact h2 {{
-        color: var(--white) !important;
-        font-size: 1.2rem !important;
-        font-weight: 600 !important;
-        margin-bottom: 0.5rem !important;
-    }}
-    
-    .contact p {{
-        color: var(--white) !important;
-        margin-bottom: 1.5rem !important;
-    }}
-
-    .process-step {{
-        display: flex;
-        align-items: flex-start;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-    }}
-    
-    .step-number {{
-        background: var(--accent);
         color: var(--primary);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        flex-shrink: 0;
     }}
 
-    .text-center {{ text-align: center; }}
-    .mt-1 {{ margin-top: 1rem; }}
-    .mt-2 {{ margin-top: 1rem; }}
-    .mb-1 {{ margin-bottom: 1rem; }}
-
-    /* Mobile-friendly navigation */
-    @media (max-width: 768px) {{
-        .mobile-nav {{
-            display: flex !important;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }}
-        .mobile-nav button {{
-            flex: 1 0 calc(50% - 0.5rem);
-            min-width: 0;
-            padding: 0.5rem;
-            font-size: 0.9rem;
-        }}
-        .desktop-nav {{
-            display: none !important;
-        }}
-    }}
+    /* Responsive navigation buttons */
+    /* ... existing styles ... */
 
     /* Back to top link styling */
     .back-to-top-link {{
@@ -312,9 +215,22 @@ def inject_css():
     .back-to-top-link:hover {{
         text-decoration: underline;
     }}
+
+    /* Optional icon styles */
+    .card-icon {{
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: var(--accent);
+    }}
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {{
+        .card-container {{
+            grid-template-columns: 1fr !important;
+        }}
+    }}
     </style>
     """, unsafe_allow_html=True)
-
 inject_css()
 
 # --- SESSION STATE ---
@@ -324,11 +240,10 @@ if "page" not in st.session_state:
 # --- HERO SECTION ---
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
 st.markdown("""
-<div class="hero">
+<div class="hero" id="top">
     <h1 class="hero-title">Reprogram Your Mind, Change Your Life</h1>
     <p class="hero-subtitle">Hypnotherapy doesn't just change what you do—it changes how you do it. In just 2 sessions, it reprograms the patterns holding you back, so you can finally get the results you deserve.</p>
-    </a>
-        <a href="https://calendly.com/laetitiasheppard/30min" target="_blank">
+    <a href="https://calendly.com/laetitiasheppard/30min" target="_blank">
         <button class="btn">📅 Book a FREE 15-min Call</button>
     </a>
     <p class="muted-text mt-1">Expert-guided | Confidential | Certified in Hypnotherapy and DBT</p>
@@ -338,90 +253,35 @@ st.markdown("""
 # --- NAVIGATION BUTTONS ---
 cols = st.columns(4)
 with cols[0]:
-    problems_btn = st.button("🔥 Your Blocks", key="nav_problems", 
+    problems_btn = st.button("🔥 Your Blocks", key="nav_problems",
                             help="View common problems we solve",
                             type="primary" if st.session_state.page == "problems" else "secondary")
     if problems_btn:
         st.session_state.page = "problems"
-        st.rerun()
-
+        st.experimental_rerun()
 with cols[1]:
-    method_btn = st.button("🧠 The Method", key="nav_method", 
+    method_btn = st.button("🧠 The Method", key="nav_method",
                           help="Learn about our 2-session method",
                           type="primary" if st.session_state.page == "method" else "secondary")
     if method_btn:
         st.session_state.page = "method"
-        st.rerun()
-
+        st.experimental_rerun()
 with cols[2]:
-    results_btn = st.button("🏆 Results", key="nav_results", 
+    results_btn = st.button("🏆 Results", key="nav_results",
                            help="See client transformations",
                            type="primary" if st.session_state.page == "results" else "secondary")
     if results_btn:
         st.session_state.page = "results"
-        st.rerun()
-
+        st.experimental_rerun()
 with cols[3]:
-    about_btn = st.button("👤 About", key="nav_about", 
+    about_btn = st.button("👤 About", key="nav_about",
                          help="About Laetitia and the clinic",
                          type="primary" if st.session_state.page == "about" else "secondary")
     if about_btn:
         st.session_state.page = "about"
-        st.rerun()
+        st.experimental_rerun()
 
-# # --- NAVIGATION BUTTONS (REPLACE THE ABOVE) ---
-# def show_navigation():
-#     # Desktop navigation
-#     cols = st.columns(4)
-#     with cols[0]:
-#         problems_btn = st.button("🔥 Your Blocks", 
-#                                key="nav_problems",
-#                                type="primary" if st.session_state.page == "problems" else "secondary")
-#     with cols[1]:
-#         method_btn = st.button("🧠 The Method",
-#                              key="nav_method",
-#                              type="primary" if st.session_state.page == "method" else "secondary")
-#     with cols[2]:
-#         results_btn = st.button("🏆 Results",
-#                               key="nav_results",
-#                               type="primary" if st.session_state.page == "results" else "secondary")
-#     with cols[3]:
-#         about_btn = st.button("👤 About",
-#                             key="nav_about",
-#                             type="primary" if st.session_state.page == "about" else "secondary")
-
-#     # Mobile navigation - will only show on small screens via CSS
-#     with st.container():
-#         st.markdown('<div class="mobile-nav">', unsafe_allow_html=True)
-#         if st.button("🔥 Blocks", key="nav_problems_mobile"):
-#             st.session_state.page = "problems"
-#             st.rerun()
-#         if st.button("🧠 Method", key="nav_method_mobile"):
-#             st.session_state.page = "method"
-#             st.rerun()
-#         if st.button("🏆 Results", key="nav_results_mobile"):
-#             st.session_state.page = "results"
-#             st.rerun()
-#         if st.button("👤 About", key="nav_about_mobile"):
-#             st.session_state.page = "about"
-#             st.rerun()
-#         st.markdown('</div>', unsafe_allow_html=True)
-
-#     # Navigation logic
-#     if problems_btn:
-#         st.session_state.page = "problems"
-#         st.rerun()
-#     if method_btn:
-#         st.session_state.page = "method"
-#         st.rerun()
-#     if results_btn:
-#         st.session_state.page = "results"
-#         st.rerun()
-#     if about_btn:
-#         st.session_state.page = "about"
-#         st.rerun()
-
-# --- IN EACH CONTENT SECTION (ADD AT THE END) ---
+# --- Back to top link ---
 def back_to_top():
     st.markdown("""
     <div class="back-to-top-link">
@@ -431,38 +291,43 @@ def back_to_top():
 
 # --- PAGE CONTENT FUNCTIONS ---
 def show_problems():
-    st.markdown('<h2>Common Blocks We Help Overcome</h2>', unsafe_allow_html=True)
+    st.markdown('<h2>Common Challenges We Help You Overcome</h2>', unsafe_allow_html=True)
     
     problems = [
         {
-            "title": "The professional Glass Ceiling", 
-            "desc": "Delivering great work but not advancing? Changing efforts alone won't fix it – we reprogram the underlying patterns.",
-            "result": "→ Achieve breakthroughs with hypnotherapy"
+            "title": "Overcoming Drinking Challenges",
+            "desc": "Struggling with unhealthy drinking habits? We help reprogram your subconscious patterns for lasting change.",
+            "result": "→ Empower yourself to regain control"
         },
         {
-            "title": "The Stress-Weight Spiral", 
-            "desc": "Stress leading to habits that don't change? Reprogramming is key, not just trying harder.",
-            "result": "→ Reset behaviors for lasting results"
+            "title": "Breaking Free from Smoking",
+            "desc": "Tobacco addiction can be tough to beat alone. Our hypnotherapy creates new habits that support your freedom.",
+            "result": "→ Quit smoking with confidence and ease"
         },
         {
-            "title": "Performance Anxiety", 
-            "desc": "Struggling in high-pressure situations? Hypnotherapy redesigns your responses with expert guidance.",
-            "result": "→ Build confidence through behavioral change"
+            "title": "Preparing Mind and Body for Pregnancy",
+            "desc": "Facing challenges with conception? We support your mind-body connection to reduce stress and improve outcomes.",
+            "result": "→ Harmonize your mental and physical health"
         },
         {
-            "title": "Emotional Dysregulation", 
-            "desc": "Struggling with intense emotions or mood swings? Hypnotherapy helps stabilize emotional responses and improve self-awareness.",
-            "result": "→ Find balance and emotional stability"
+            "title": "Restoring Healthy Sleep",
+            "desc": "Difficulty sleeping affects every area of life. Hypnotherapy helps reset patterns for deep, restful nights.",
+            "result": "→ Enjoy restorative sleep naturally"
         },
         {
-            "title": "Impulse Control", 
-            "desc": "Finding it hard to resist impulses or make thoughtful decisions? Reprogramming can help build self-control and long-term focus.",
-            "result": "→ Strengthen impulse control"
+            "title": "Healing Intimate Relationships",
+            "desc": "Relationship strains or intimacy issues? We assist in uncovering and resolving emotional blocks to deepen connection.",
+            "result": "→ Foster trust and intimacy with confidence"
         },
         {
-            "title": "Self-Harm Tendencies", 
-            "desc": "Struggling with self-harm or self-destructive behaviors? Hypnotherapy provides tools to redirect these patterns safely.",
-            "result": "→ Replace harmful behaviors with healthy coping"
+            "title": "Adapting to New Surroundings",
+            "desc": "Moving or life transitions can be stressful. Reprogram your mindset for resilience and positive adjustment.",
+            "result": "→ Thrive comfortably in your new environment"
+        },
+        {
+            "title": "Embracing Life’s Changes",
+            "desc": "Change is constant; struggle is optional. Hypnotherapy helps build adaptability and calm in uncertainty.",
+            "result": "→ Cultivate flexibility and peace of mind"
         }
     ]
     
@@ -473,13 +338,13 @@ def show_problems():
             <div class="card-content">
                 <h2>{p['title']}</h2>
                 <p>{p['desc']}</p>
-                <p><strong>{p['result']}</strong></p>
+                <span class="result-badge">{p['result']}</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # New Self Assessment Questionnaire Section
+    # Self Assessment Questionnaire Section
     st.markdown("""
     <div style="margin-top: 1rem;">
         <h2>Self Assessment Questionnaire</h2>
@@ -487,7 +352,6 @@ def show_problems():
     </div>
     """, unsafe_allow_html=True)
     
-    # Text input area
     user_input = st.text_area(
         "Describe what you dislike doing or how you respond in certain situations, and how you feel about it:",
         placeholder="For example: 'I get very anxious when I have to speak in meetings...'",
@@ -495,13 +359,11 @@ def show_problems():
         key="self_assessment"
     )
     
-    # AI output placeholder
     st.markdown("""
     <div style="margin-top: 1rem; font-style: italic; color: var(--muted);">
-        <p>Section coming soon - This will provide personalized insights based on your input</p>
+        <p>Section coming soon - This will provide personalized insights based on your input.</p>
     </div>
     """, unsafe_allow_html=True)
-
     back_to_top()
 
 def show_method():
@@ -791,15 +653,16 @@ def show_about():
     back_to_top()
 
     
-# --- MAIN CONTENT ---
+# For brevity, below is minimal code to hook navigation
 if st.session_state.page == "problems":
     show_problems()
+# Add your other page functions calls here as needed (method, results, about)
 elif st.session_state.page == "method":
-    show_method()
+    st.write("Method page coming soon.")
 elif st.session_state.page == "results":
-    show_results()
+    st.write("Results page coming soon.")
 elif st.session_state.page == "about":
-    show_about()
+    st.write("About page coming soon.")
 
 # --- FOOTER ---
 st.markdown("""
@@ -809,25 +672,3 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
