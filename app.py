@@ -251,7 +251,7 @@ def show_problems():
     """ % ("−" if not st.session_state.cards_collapsed else "+"), unsafe_allow_html=True)
     
     # Toggle button functionality
-    if st.button("Toggle Cards", key="toggle_cards_hidden", help="Show/hide all challenge cards"):
+    if st.button("Show common blocks", key="toggle_cards_hidden", help="Show/hide common blocks addressed"):
         st.session_state.cards_collapsed = not st.session_state.cards_collapsed
         st.rerun()
     
@@ -314,8 +314,8 @@ def show_method():
     """, unsafe_allow_html=True)
     
     # Our Simple 2-Session Process section
-    st.markdown('<h2 id="method">A simple 2-session process</h2>', unsafe_allow_html=True)
-    st.markdown("""
+    st.markdown('<h2 id="method">A simple 2-session process</h2>'
+    """
       <div class="process-tracker">
         <div class="step active">1</div><div>→</div>
         <div class="step active">2</div><div>→</div>
@@ -456,7 +456,7 @@ def show_about():
     
     st.markdown("""
     <div style="background: var(--primary); color: white; padding: 1rem; border-radius: 12px; margin: 1rem 0; border-top: 4px solid var(--accent); text-align: center;">
-        <h2 style="color: var(--white) !important;">Bangkok Hypnotherapy Clinic</h2>
+        <h2 style="color: var(--white) !important;">Bangkok Hypnotherapy Clinic [⚠️ NEW ADDRESS starting 09/25]</h2>
         <p style="color: var(--white) !important;">27 Soi Sukhumvit 10 (Asoke) • Confidential Sessions</p>
         <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
             <a href="https://www.google.com/maps/place/27+Soi+Sukhumvit+10,+Asoke,+Bangkok" target="_blank">
@@ -499,3 +499,4 @@ st.markdown("""
 </div>
 </div>  <!-- close main-container -->
 """, unsafe_allow_html=True)
+
