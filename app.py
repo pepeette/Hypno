@@ -120,7 +120,7 @@ def inject_css():
         color: #a1a1a6 !important; 
     }}
 
-    /* Improved responsive grid for cards */
+    /* Responsive grid for cards */
     .card-container {{
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -143,7 +143,7 @@ def inject_css():
     .card:hover {{
         transform: translateY(-5px);
         box-shadow: 0 12px 28px var(--shadow-hover);
-        background-color: #fff9e6; /* Light accent background on hover */
+        background-color: #fff9e6;
     }}
     .card h2 {{
         margin-top: 0 !important;
@@ -170,7 +170,7 @@ def inject_css():
         transition: background-color 0.3s ease;
     }}
     .card:hover .result-badge {{
-        background-color: #b58f24; /* Darker accent on hover */
+        background-color: #b58f24;
         color: var(--white);
         box-shadow: 0 4px 12px rgba(181, 143, 36, 0.6);
     }}
@@ -200,8 +200,90 @@ def inject_css():
         color: var(--primary);
     }}
 
-    /* Responsive navigation buttons */
-    /* ... existing styles ... */
+    /* Process step styling */
+    .process-step {{
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }}
+    .step-number {{
+        background: var(--accent);
+        color: var(--primary);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 6px var(--shadow-accent);
+    }}
+
+    .card-image-container {{
+        margin-top: 1rem;
+        border-radius: 8px;
+        overflow: hidden;
+    }}
+    .card-image-container img {{
+        width: 100%;
+        border-radius: 8px;
+        transition: transform 0.3s;
+    }}
+    .card-image-container img:hover {{
+        transform: scale(1.02);
+    }}
+
+    /* Testimonial card */
+    .testimonial-card {{
+        background: var(--white);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--accent);
+        box-shadow: 0 4px 12px var(--shadow);
+    }}
+    .testimonial-icon {{
+        font-size: 1.8rem;
+        margin-bottom: 0.8rem;
+    }}
+    .testimonial-quote {{
+        font-style: italic;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }}
+    .testimonial-author {{
+        font-weight: 600;
+        text-align: right;
+        margin-top: 0.5rem;
+    }}
+
+    /* Contact Section */
+    .contact {{
+        background: var(--primary);
+        color: white;
+        padding: 1rem;
+        border-radius: 12px;
+        margin: 1rem 0;
+        border-top: 4px solid var(--accent);
+        text-align: center;
+    }}
+    .contact h2 {{
+        color: var(--white) !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        margin-bottom: 0.5rem !important;
+    }}
+    .contact p {{
+        color: var(--white) !important;
+        margin-bottom: 1.5rem !important;
+    }}
+    .contact a {{
+        margin-right: 1rem;
+    }}
 
     /* Back to top link styling */
     .back-to-top-link {{
@@ -216,14 +298,10 @@ def inject_css():
         text-decoration: underline;
     }}
 
-    /* Optional icon styles */
-    .card-icon {{
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-        color: var(--accent);
-    }}
+    /* Text Center Utility */
+    .text-center {{ text-align: center; }}
 
-    /* Mobile adjustments */
+    /* Responsive adjustments */
     @media (max-width: 768px) {{
         .card-container {{
             grid-template-columns: 1fr !important;
@@ -288,6 +366,7 @@ def back_to_top():
         <a href="#top">↑ Back to Top</a>
     </div>
     """, unsafe_allow_html=True)
+
 
 # --- PAGE CONTENT FUNCTIONS ---
 def show_problems():
@@ -366,27 +445,9 @@ def show_problems():
     """, unsafe_allow_html=True)
     back_to_top()
 
+
 def show_method():
     st.markdown('<h2>Our Simple 2-Session Process</h2>', unsafe_allow_html=True)
-    
-    # Add CSS for styling (modal functionality would require custom components)
-    st.markdown("""
-    <style>
-        .card-image-container {
-            margin-top: 1rem;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .card-image-container img {
-            width: 100%;
-            border-radius: 8px;
-            transition: transform 0.3s;
-        }
-        .card-image-container img:hover {
-            transform: scale(1.02);
-        }
-    </style>
-    """, unsafe_allow_html=True)
 
     st.markdown('<div class="card-container">', unsafe_allow_html=True)
     
@@ -396,16 +457,16 @@ def show_method():
         <div class="card-content">
             <h2>Why Reprogramming Works</h2>
             <ul>
-                <li>Changing inputs (like habits) often fails...</li>
-                <li>Hypnotherapy rewires the root cause towards your desired behavioral output</li>
-                <li>Designing new patterns with expert framework ensures long-term results</li>
-                <li>Includes 2 sessions for 3000 THB; follow-up is optional</li>
+                <li>Changing habits alone often fails because the patterns driving behaviors are subconscious.</li>
+                <li>Hypnotherapy rewires root causes towards your desired behavioral outcomes.</li>
+                <li>Expert-designed framework for sustainable change within just 2 focused sessions.</li>
+                <li>All-inclusive price: 3000 THB per 2 sessions; follow-up optional.</li>
             </ul>
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
-    # Session 1: Analysis card with image
+
+    # Session 1: Analysis
     with st.container():
         st.markdown("""
         <div class="card">
@@ -414,29 +475,24 @@ def show_method():
                     <div class="step-number">1</div>
                     <div>
                         <h2>Session 1: Analysis</h2>
-                        <p>Identify patterns holding you back and design a personalized reprogramming plan.</p>
-        """, unsafe_allow_html=True)
-        
-        # Display image using Streamlit's image function with use_container_width
-        try:
-            col1, col2, col3 = st.columns([1,6,1])
-            with col2:
-                st.markdown('<div class="card-image-container">', unsafe_allow_html=True)
-                st.image("img/BehaviourMap.png", 
-                        caption="Behavior Mapping", 
-                        use_container_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
-        except FileNotFoundError:
-            st.error("BehaviorMap.png not found in img directory")
-        
-        st.markdown("""
+                        <p>Identify limiting patterns and create a personalized mind reprogramming plan.</p>
                     </div>
+                </div>
+                <div class="card-image-container">
+        """, unsafe_allow_html=True)
+
+        try:
+            st.image("img/BehaviourMap.png", caption="Behavior Mapping", use_container_width=True)
+        except FileNotFoundError:
+            st.error("Image BehaviourMap.png not found in img directory")
+
+        st.markdown("""
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
-    
-    # Session 2: Hypnosis card with image
+
+    # Session 2: Hypnosis
     with st.container():
         st.markdown("""
         <div class="card card-accent">
@@ -445,29 +501,24 @@ def show_method():
                     <div class="step-number">2</div>
                     <div>
                         <h2>Session 2: Hypnosis</h2>
-                        <p>Reprogram behaviors with certified expertise for immediate, lasting change.</p>
-        """, unsafe_allow_html=True)
-        
-        # Display image using Streamlit's image function with use_container_width
-        try:
-            col1, col2, col3 = st.columns([1,6,1])
-            with col2:
-                st.markdown('<div class="card-image-container">', unsafe_allow_html=True)
-                st.image("img/emo.jpg", 
-                        caption="Emotional Reprogramming", 
-                        use_container_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
-        except FileNotFoundError:
-            st.error("emo.jpg not found in img directory")
-        
-        st.markdown("""
+                        <p>Reprogram behaviors with certified expertise for rapid, lasting change.</p>
                     </div>
+                </div>
+                <div class="card-image-container">
+        """, unsafe_allow_html=True)
+
+        try:
+            st.image("img/emo.jpg", caption="Emotional Reprogramming", use_container_width=True)
+        except FileNotFoundError:
+            st.error("Image emo.jpg not found in img directory")
+
+        st.markdown("""
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
-    
-    # Optional Session 3 card
+
+    # Optional Session 3: Reinforcement
     st.markdown("""
     <div class="card">
         <div class="card-content">
@@ -475,43 +526,41 @@ def show_method():
                 <div class="step-number">3</div>
                 <div>
                     <h2>Session 3: Reinforcement (Optional)</h2>
-                    <p>Optional follow-up to reinforce the new pattern, typically not needed but available.</p>
+                    <p>Optional follow-up session to strengthen new patterns, typically not required but available.</p>
                 </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)  # Close card-container
 
     st.markdown('<h2>Why Choose This Approach?</h2>', unsafe_allow_html=True)
     st.markdown("""
-    <div class="stats">
-        <div class="stat">
-            <div class="stat-number">2</div>
-            <div class="stat-label">Sessions for change</div>
+    <div class="card-container">
+        <div class="card text-center">
+            <h2>2</h2>
+            <p><strong>Sessions for Change</strong></p>
         </div>
-        <div class="stat">
-            <div class="stat-number">92%</div>
-            <div class="stat-label">Report improvement</div>
+        <div class="card text-center">
+            <h2>92%</h2>
+            <p><strong>Client Reported Improvement</strong></p>
         </div>
-        <div class="stat">
-            <div class="stat-number">5-7x</div>
-            <div class="stat-label">Faster than therapy</div>
+        <div class="card text-center">
+            <h2>5-7x</h2>
+            <p><strong>Faster Results Than Traditional Therapy</strong></p>
         </div>
-        <div class="stat">
-            <div class="stat-number">Optional</div>
-            <div class="stat-label">Follow-up session</div>
+        <div class="card text-center">
+            <h2>Optional</h2>
+            <p><strong>Follow-up Session</strong></p>
         </div>
     </div>
     """, unsafe_allow_html=True)
     back_to_top()
 
+
 def show_results():
-    st.markdown("""
-    <div class="main-container">
-        <h2>Real Client Transformations</h2>
-    """, unsafe_allow_html=True)
+    st.markdown('<h2>Real Client Transformations</h2>', unsafe_allow_html=True)
     
     testimonials = [
         {
@@ -536,35 +585,7 @@ def show_results():
         }
     ]
     
-    st.markdown("""
-    <style>
-        .testimonial-card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--accent);
-            box-shadow: 0 4px 12px var(--shadow);
-        }
-        .testimonial-icon {
-            font-size: 1.8rem;
-            margin-bottom: 0.8rem;
-        }
-        .testimonial-quote {
-            font-style: italic;
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-        .testimonial-author {
-            font-weight: 600;
-            text-align: right;
-            margin-top: 0.5rem;
-        }
-    </style>
-    <div class="card-container">
-    """, unsafe_allow_html=True)
-    
+    st.markdown('<div class="card-container">', unsafe_allow_html=True)
     for t in testimonials:
         st.markdown(f"""
         <div class="testimonial-card">
@@ -573,12 +594,11 @@ def show_results():
             <div class="testimonial-author">— {t['author']}</div>
         </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     # Testimonial submission form
     st.markdown("""
-    <div style="margin-top: 1rem;">
+    <div style="margin-top: 2rem;">
         <h2>Share Your Story</h2>
         <p style="margin-bottom: 1rem;">Help others by sharing your transformation:</p>
     """, unsafe_allow_html=True)
@@ -586,37 +606,32 @@ def show_results():
     with st.form("testimonial_form", clear_on_submit=True):
         cols = st.columns([1, 1])
         with cols[0]:
-            name = st.text_input("Your Name (optional)", 
-                               placeholder="How you want to be credited")
+            name = st.text_input("Your Name (optional)", placeholder="How you want to be credited")
         with cols[1]:
-            session_date = st.date_input("Session 2 Date*", 
-                                       help="Required for verification")
+            session_date = st.date_input("Session 2 Date*", help="Required for verification")
         
-        testimonial = st.text_area("Your Experience*",
-                                 placeholder="Describe your transformation...",
-                                 height=150,
-                                 help="Minimum 50 characters")
+        testimonial = st.text_area("Your Experience*", placeholder="Describe your transformation...", height=150, help="Minimum 50 characters")
         
         submitted = st.form_submit_button("Submit Testimonial")
         
         if submitted:
             if not session_date:
-                st.error("Please provide your session date for verification")
+                st.error("Please provide your session date for verification.")
             elif not testimonial or len(testimonial.strip()) < 50:
-                st.error("Please share at least 50 characters about your experience")
+                st.error("Please share at least 50 characters about your experience.")
             else:
-                # Process submission (would connect to database in production)
+                # Placeholder for actual submission logic
                 st.success("Thank you! We'll review your testimonial and contact you if needed.")
                 st.balloons()
-    
+
     st.markdown("""
         <p style="font-size: 0.9rem; color: var(--muted); margin-top: 1rem;">
             * Required fields. Testimonials are verified before publication.
         </p>
     </div>
-    </div>
     """, unsafe_allow_html=True)
     back_to_top()
+
 
 def show_about():
     st.markdown('<h2>About Laetitia Sheppard</h2>', unsafe_allow_html=True)
@@ -629,18 +644,18 @@ def show_about():
     
     with col2:
         st.markdown("""
-        **Expert in Behavioral Change**
-        - 10+ years experience in change management
-        - Certified in Hypnotherapy & cognitive behaviour (LCCH, 2016)
-        - Certified in Dialectical Behavioral Therapy for Borderline Personality Disorder (2023)
-        - Fluent: English, French, can deliver in Italian if needed
+        **Expert in Behavioral Change**  
+        - 10+ years of experience in change management  
+        - Certified in Hypnotherapy & Cognitive Behaviour (LCCH, 2016)  
+        - Certified in Dialectical Behavioral Therapy for Borderline Personality Disorder (2023)  
+        - Fluent: English, French, can deliver in Italian if needed  
         """)
     
     st.markdown("""
     <div class="contact">
         <h2>Bangkok Hypnotherapy Clinic</h2>
         <p>27 Soi Sukhumvit 10 (Asoke) • Confidential Sessions</p>
-        <div style="display: flex; justify-content: center; align-items: center;">
+        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
             <a href="https://www.google.com/maps/place/27+Soi+Sukhumvit+10,+Asoke,+Bangkok" target="_blank">
                 <button class="btn">📍 Get Directions</button>
             </a>
@@ -652,11 +667,10 @@ def show_about():
     """, unsafe_allow_html=True)
     back_to_top()
 
-    
-# For brevity, below is minimal code to hook navigation
+
+# --- MAIN CONTENT ---
 if st.session_state.page == "problems":
     show_problems()
-# Add your other page functions calls here as needed (method, results, about)
 elif st.session_state.page == "method":
     show_method()
 elif st.session_state.page == "results":
@@ -672,4 +686,3 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
-
