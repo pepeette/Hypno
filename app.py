@@ -13,6 +13,34 @@ st.set_page_config(
 def inject_css():
     st.markdown("""
     <style>
+    /* ===== FORCE LIGHT MODE ===== */
+    /* Main container */
+    [data-testid="stAppViewContainer"] {
+        background-color: white !important;
+        color-scheme: light !important;
+    }
+    
+    /* Sidebar (if you have one) */
+    [data-testid="stSidebar"] {
+        background-color: #f0f2f6 !important;
+        color-scheme: light !important;
+    }
+    
+    /* Text elements */
+    .stApp, .stMarkdown, .stText, .stAlert, 
+    .stButton, .stTextInput, .stTextArea,
+    .stSelectbox, .stSlider {
+        color: #1C1C1E !important;  /* Your --primary color */
+    }
+    
+    /* Override dark mode inputs */
+    .stTextInput input, .stTextArea textarea,
+    .stSelectbox select {
+        background-color: white !important;
+        color: #1C1C1E !important;
+        border-color: #E2E2E6 !important;  /* Your --medium color */
+    }
+    
     :root {
         --primary: #1C1C1E;
         --accent: #D4AF37;
