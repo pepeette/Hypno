@@ -371,6 +371,35 @@ elif selected == "Book Now":
     </div>
     """, unsafe_allow_html=True)
 
+    # Create two columns for the booking options
+    col1, col2 = st.columns(2, gap="large")
+    
+    with col1:
+        st.markdown("""
+        <div style="background:#F8F9FA; padding:1.5rem; border-radius:12px; height:100%;">
+            <h3 style="color:#D4AF37; text-align:center;">Free Discovery Call</h3>
+            <p style="text-align:center;">15-minute consultation to discuss your goals</p>
+            <ul style="margin-left:1rem;">
+                <li>No obligation</li>
+                <li>Learn how hypnotherapy can help</li>
+                <li>Get your questions answered</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style="background:#F8F9FA; padding:1.5rem; border-radius:12px; height:100%;">
+            <h3 style="color:#D4AF37; text-align:center;">Rewiring Package</h3>
+            <p style="text-align:center;">Complete 2-session transformation</p>
+            <ul style="margin-left:1rem;">
+                <li>Analysis Session (90 mins)</li>
+                <li>Transformation Session (90 mins)</li>
+                <li>Email support between sessions</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        
     # Create tabs for different booking options
     tab1, tab2 = st.tabs(["Free Discovery Call", "Rewiring Package"])
     
