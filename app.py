@@ -788,8 +788,82 @@ with st.form("booking_form"):
             st.balloons()
 
 # --- FOOTER ---
+# --- FOOTER ---
 st.markdown(f"""
-<div class="footer">
+<style>
+    /* Footer container */
+    .footer-container {{
+        background-color: var(--bg);
+        padding: 2rem 1rem;
+        margin-top: 3rem;
+        border-top: 1px solid var(--border);
+    }}
+
+    .footer-content {{
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }}
+
+    .footer-about {{
+        text-align: left;
+    }}
+
+    .footer-links {{
+        text-align: right;
+    }}
+
+    .footer-badge {{
+        background-color: var(--card-bg);
+        border-radius: var(--radius-sm);
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+    }}
+
+    .footer-credits {{
+        grid-column: 1 / -1;
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }}
+
+    .footer-button {{
+        background-color: var(--accent) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: var(--radius-sm) !important;
+        padding: 0.5rem 1.5rem !important;
+        font-weight: 600 !important;
+        transition: var(--transition) !important;
+        margin-top: 0.5rem;
+        display: inline-block;
+        text-decoration: none !important;
+    }}
+
+    .footer-button:hover {{
+        background-color: var(--accent-hover) !important;
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-accent);
+    }}
+
+    @media (max-width: 768px) {{
+        .footer-content {{
+            grid-template-columns: 1fr;
+        }}
+        .footer-about, .footer-links {{
+            text-align: center;
+        }}
+    }}
+</style>
+
+<div class="footer-container">
     <div class="footer-content">
         <div class="footer-about">
             <div class="footer-badge">
@@ -797,11 +871,11 @@ st.markdown(f"""
                 Certified Clinical Hypnotherapist<br>
                 LCCH (Asia) Certified | DBT Certified
             </div>
-            <p>Specializing in rapid transformation techniques to help clients overcome limiting patterns and achieve lasting change.</p>
+            <p style="color: var(--text-secondary);">Specializing in rapid transformation techniques to help clients overcome limiting patterns and achieve lasting change.</p>
         </div>
         
         <div class="footer-links">
-            <p><strong>Bangkok Hypnotherapy Clinic</strong><br>
+            <p style="color: var(--text-secondary);"><strong>Bangkok Hypnotherapy Clinic</strong><br>
             27 Soi Sukhumvit 10 (Asoke)<br>
             Bangkok, Thailand</p>
             
