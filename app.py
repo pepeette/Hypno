@@ -766,15 +766,122 @@ with st.form("booking_form"):
             st.balloons()
 
 # --- FOOTER ---
+# st.markdown(f"""
+# <div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid var(--border);">
+#     <p style="color:var(--text-secondary);">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok, Thailand</p>
+#     <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:1rem;">NEW ADDRESS in ASOKE Sukhumvit</p>
+#     <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" target="_blank">
+#         <button style="background-color: var(--accent); color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+#             Get Directions
+#         </button>
+#     </a>
+#     <p style="color:var(--text-secondary); font-size:0.9rem;">© {datetime.datetime.now().year} All Rights Reserved | Confidentiality Guaranteed</p>
+# </div>
+# """, unsafe_allow_html=True)
+
+
 st.markdown(f"""
-<div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid var(--border);">
-    <p style="color:var(--text-secondary);">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok, Thailand</p>
-    <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:1rem;">NEW ADDRESS in ASOKE Sukhumvit</p>
-    <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" target="_blank">
-        <button style="background-color: var(--accent); color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
-            Get Directions
-        </button>
-    </a>
-    <p style="color:var(--text-secondary); font-size:0.9rem;">© {datetime.datetime.now().year} All Rights Reserved | Confidentiality Guaranteed</p>
+<style>
+    /* Footer container */
+    .footer {{
+        margin: 4rem 0 2rem 0;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+    }}
+
+    /* Founder info area */
+    .footer-founder {{
+        flex: 1 1 300px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }}
+
+    .footer-founder img {{
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--accent);
+    }}
+
+    .footer-founder-text {{
+        max-width: 400px;
+    }}
+
+    /* Location and buttons */
+    .footer-contact {{
+        flex: 1 1 260px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+        text-align: right;
+    }}
+
+    .footer-contact p {{
+        margin: 0;
+    }}
+
+    /* Buttons inside footer */
+    .footer-button {{
+        margin-top: 0.5rem;
+        background-color: var(--accent);
+        color: var(--light);
+        border: none;
+        padding: 0.5rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 0.9rem;
+    }}
+
+    .footer-button:hover {{
+        background-color: #b88b2d;  /* slightly darker gold */
+        text-decoration: none;
+        color: var(--light);
+    }}
+
+    /* Copyright line */
+    .footer-copy {{
+        flex-basis: 100%;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        margin-top: 1.5rem;
+    }}
+</style>
+
+<div class="footer">
+    <div class="footer-founder">
+        <img src="./img/ID.jpg" alt="Laetitia Sheppard">
+        <div class="footer-founder-text">
+            <strong>Laetitia Sheppard</strong>  
+            <br>Certified Clinical Hypnotherapist with over 10 years of experience in behavioral change and mental wellness.<br>
+            Certified in Hypnotherapy & Cognitive Behavioural Therapy (LCCH, 2016) and Dialectical Behavioral Therapy (2023).
+        </div>
+    </div>
+
+    <div class="footer-contact">
+        <p><strong>Bangkok Hypnotherapy Clinic</strong></p>
+        <p>27 Soi Sukhumvit 10 (Asoke), Bangkok, Thailand</p>
+        <div>
+            <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" target="_blank" class="footer-button">Get Directions</a>
+            <a href="https://calendly.com/laetitiasheppard/new-meeting" target="_blank" class="footer-button">Book Now</a>
+        </div>
+    </div>
+
+    <div class="footer-copy">© {datetime.datetime.now().year} Laetitia Sheppard • All Rights Reserved • Confidentiality Guaranteed</div>
 </div>
 """, unsafe_allow_html=True)
+
