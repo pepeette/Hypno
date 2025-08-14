@@ -64,6 +64,18 @@ def handle_quiz_answer(question_id, answer):
 # --- STYLING ---
 st.markdown("""
 <style>
+/* Force light mode */
+:root {
+    color-scheme: light;
+}
+html, body, .stApp {
+    color-scheme: light !important;
+}
+.stApp {
+    background-color: var(--bg) !important;
+    color: var(--text-primary) !important;
+}
+
 /* ================ */
 /* Color Variables */
 /* ================ */
@@ -209,6 +221,28 @@ p, li {
 .cta-button:hover {
     background-color: var(--accent-hover) !important;
     transform: translateY(-2px);
+    box-shadow: var(--shadow-accent);
+}
+
+/* Unified primary button styles */
+.stButton>button.primary,
+.stButton>button[type="primary"],
+.st-emotion-cache-1avcm0n.e1f1d6gn3,
+button[data-testid="baseButton-primary"] {
+    background-color: var(--accent) !important;
+    color: white !important;
+    border: none !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1.5rem !important;
+    border-radius: var(--radius-sm) !important;
+}
+
+.stButton>button.primary:hover,
+.stButton>button[type="primary"]:hover,
+.st-emotion-cache-1avcm0n.e1f1d6gn3:hover,
+button[data-testid="baseButton-primary"]:hover {
+    background-color: var(--accent-hover) !important;
+    transform: translateY(-1px);
     box-shadow: var(--shadow-accent);
 }
 
@@ -701,9 +735,9 @@ elif selected == "Book Now":
 
 # --- BOOKING FORM ---
 st.markdown("""
-<div id="discovery" class="card" style="margin:3rem 0; padding:2rem; border:1px solid #CBD5E1;">
+<div id="discovery" class="card" style="margin:3rem 0; padding:2rem; border:1px solid var(--border);">
     <h2 style="color: var(--accent); text-align:center; margin-bottom:1.5rem;">Free 15-Minute Discovery Call</h2>
-    <p style="text-align:center; color: #556D7A; margin-bottom:2rem;">Begin your journey to transformation with a complimentary consultation</p>
+    <p style="text-align:center; color: var(--text-secondary); margin-bottom:2rem;">Begin your journey to transformation with a complimentary consultation</p>
 """, unsafe_allow_html=True)
 
 with st.form("booking_form"):
@@ -729,9 +763,10 @@ with st.form("booking_form"):
 
     submitted = st.form_submit_button(
         "Schedule My Free Call", 
-        type="primary",  # This will now use our teal color
+        type="primary",
         help="You'll be redirected to our booking calendar"
     )
+    
     if submitted:
         if not name or not email or concern == "Select one...":
             st.error("Please fill in all required fields")
@@ -745,6 +780,8 @@ with st.form("booking_form"):
             else:
                 st.success("✓ Appointment scheduled! (Email confirmation pending)")
             st.balloons()
+
+            
 # --- FOOTER ---
 st.markdown(f"""
 <div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid var(--border);">
