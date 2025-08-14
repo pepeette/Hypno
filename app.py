@@ -68,6 +68,51 @@ if 'quiz_answers' not in st.session_state:
 # --- STYLING ---
 st.markdown("""
 <style>
+/* FORCE LIGHT MODE */
+:root {
+    color-scheme: light;
+}
+html, body, [class*="st"] {
+    color-scheme: light !important;
+}
+.stApp {
+    background-color: var(--bg) !important;
+    color: var(--text-primary) !important;
+}
+
+/* STRICT TYPOGRAPHY - ONLY 3 SIZES */
+h1 {
+    font-size: 2.2rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 1.5rem !important;
+    color: var(--text-primary) !important;
+}
+
+h2 {
+    font-size: 1.8rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 1.2rem !important;
+    color: var(--text-primary) !important;
+}
+
+p, li, span, div, a, button, input, textarea, select, label, .text {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+    color: var(--text-secondary) !important;
+}
+
+/* Force all text to use one of these sizes */
+* {
+    font-size: inherit !important;
+    line-height: inherit !important;
+}
+
+/* Convert all other headings to h2 size */
+h3, h4, h5, h6 {
+    font-size: 1.8rem !important;
+}
+
+/* Color variables for light mode */
 :root {
     --bg: #F3F6F8;
     --card-bg: #FFFFFF;
