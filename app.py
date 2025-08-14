@@ -719,29 +719,101 @@ def show_booking_form():
 
 # --- FOOTER ---
 def show_footer():
-    """Display the footer section"""
+    """Display the responsive footer section"""
     st.markdown(f"""
-    <div class="footer">
-        <div class="footer-founder">
-            <img src="https://github.com/pepeette/Hypno/blob/main/img/ID.jpg?raw=true" alt="Laetitia Sheppard">
-            <div>
-                <h2>Laetitia Sheppard</h2>  
+    <style>
+    .responsive-footer {{
+        margin: 4rem 0 2rem 0;
+        padding: 2rem 1rem;
+        border-top: 1px solid var(--border);
+        color: var(--text-secondary);
+    }}
+    
+    .footer-content {{
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }}
+    
+    .footer-section {{
+        padding: 0 1rem;
+    }}
+    
+    .footer-image {{
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--accent);
+        margin-bottom: 1rem;
+    }}
+    
+    .footer-buttons {{
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+    }}
+    
+    .footer-copyright {{
+        grid-column: 1 / -1;
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: 2rem;
+        border-top: 1px solid var(--border);
+    }}
+    
+    @media (max-width: 768px) {{
+        .footer-content {{
+            grid-template-columns: 1fr;
+            text-align: center;
+        }}
+        
+        .footer-buttons {{
+            justify-content: center;
+        }}
+        
+        .footer-image {{
+            margin: 0 auto 1rem;
+        }}
+    }}
+    </style>
+
+    <div class="responsive-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="https://github.com/pepeette/Hypno/blob/main/img/ID.jpg?raw=true" 
+                     alt="Laetitia Sheppard" class="footer-image">
+                <h2>Laetitia Sheppard</h2>
                 <p>Certified Clinical Hypnotherapist with over 10 years of experience in behavioral change and mental wellness.</p>
-                <p>Certified in Hypnotherapy & Cognitive Behavioural Therapy (LCCH, 2016) and Dialectical Behavioral Therapy (2023).</p>
             </div>
-        </div>
-
-        <div class="footer-contact">
-            <h2>Bangkok Hypnotherapy Clinic</h2>
-            <p>27 Soi Sukhumvit 10 (Asoke), Bangkok, Thailand</p>
-            <div>
-                <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" target="_blank" class="stButton primary">Get Directions</a>
-                <a href="https://calendly.com/laetitiasheppard/new-meeting" target="_blank" class="stButton primary">Book Now</a>
+            
+            <div class="footer-section">
+                <h2>Contact</h2>
+                <p>Bangkok Hypnotherapy Clinic</p>
+                <p>27 Soi Sukhumvit 10 (Asoke)</p>
+                <p>Bangkok, Thailand</p>
+                
+                <div class="footer-buttons">
+                    <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" 
+                       target="_blank" 
+                       class="stButton primary">
+                        Get Directions
+                    </a>
+                    <a href="https://calendly.com/laetitiasheppard/new-meeting" 
+                       target="_blank" 
+                       class="stButton primary">
+                        Book Now
+                    </a>
+                </div>
             </div>
-        </div>
-
-        <div class="footer-copy">
-            <p>© {datetime.datetime.now().year} Laetitia Sheppard • All Rights Reserved • Confidentiality Guaranteed</p>
+            
+            <div class="footer-copyright">
+                <p>© {datetime.datetime.now().year} Laetitia Sheppard • All Rights Reserved</p>
+                <p>Confidentiality Guaranteed</p>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
