@@ -64,7 +64,6 @@ def handle_quiz_answer(question_id, answer):
 # --- STYLING ---
 st.markdown("""
 <style>
-/* Force light mode */
 :root {
     color-scheme: light;
 }
@@ -76,17 +75,14 @@ html, body, .stApp {
     color: var(--text-primary) !important;
 }
 
-/* ================ */
-/* Color Variables */
-/* ================ */
 :root {
-    --bg: #F3F6F8;             /* Light cool grayish blue */
-    --card-bg: #FFFFFF;        /* Bright white */
-    --text-primary: #273548;   /* Dark blue-gray */
-    --text-secondary: #556D7A; /* Mid-tone slate blue */
-    --accent: #4CA1A3;         /* Teal blue */
-    --accent-hover: #3B7A7A;   /* Deeper teal */
-    --border: #CBD5E1;         /* Muted slate gray */
+    --bg: #F3F6F8;
+    --card-bg: #FFFFFF;
+    --text-primary: #273548;
+    --text-secondary: #556D7A;
+    --accent: #4CA1A3;
+    --accent-hover: #3B7A7A;
+    --border: #CBD5E1;
     --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
     --shadow-accent: 0 2px 8px rgba(59, 122, 122, 0.2);
@@ -96,17 +92,11 @@ html, body, .stApp {
     --transition: all 0.3s ease;
 }
 
-/* ================ */
-/* Base Styles */
-/* ================ */
 body {
     background-color: var(--bg);
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* ================ */
-/* Typography */
-/* ================ */
 h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary);
 }
@@ -115,10 +105,6 @@ p, li {
     color: var(--text-secondary);
 }
 
-/* ================ */
-/* Components */
-/* ================ */
-/* Cards */
 .card {
     background: var(--card-bg);
     border-radius: var(--radius-md);
@@ -137,7 +123,6 @@ p, li {
     border-left: 4px solid var(--accent);
 }
 
-/* Hero Section */
 .hero {
     background: linear-gradient(135deg, var(--accent) 0%, #E1F0F0 100%);
     padding: 3rem 2rem;
@@ -147,7 +132,6 @@ p, li {
     box-shadow: var(--shadow-sm);
 }
 
-/* Progress Steps */
 .step {
     width: 36px;
     height: 36px;
@@ -166,10 +150,6 @@ p, li {
     color: white;
 }
 
-/* ================ */
-/* Buttons */
-/* ================ */
-/* Base Button Styles */
 .stButton>button {
     border-radius: var(--radius-sm) !important;
     transition: var(--transition) !important;
@@ -178,23 +158,24 @@ p, li {
     cursor: pointer !important;
 }
 
-/* Primary Buttons */
 .stButton>button.primary,
 .stButton>button[type="primary"],
-.st-emotion-cache-1avcm0n.e1f1d6gn3 {
+.st-emotion-cache-1avcm0n.e1f1d6gn3,
+button[data-testid="baseButton-primary"] {
     background-color: var(--accent) !important;
     color: white !important;
     border: none !important;
 }
 
 .stButton>button.primary:hover,
-.stButton>button[type="primary"]:hover {
+.stButton>button[type="primary"]:hover,
+.st-emotion-cache-1avcm0n.e1f1d6gn3:hover,
+button[data-testid="baseButton-primary"]:hover {
     background-color: var(--accent-hover) !important;
     transform: translateY(-1px);
     box-shadow: var(--shadow-accent);
 }
 
-/* Secondary Buttons */
 .stButton>button:not(.primary):not([type="primary"]) {
     background-color: white !important;
     color: var(--text-primary) !important;
@@ -206,7 +187,6 @@ p, li {
     color: var(--accent-hover) !important;
 }
 
-/* CTA Buttons */
 .cta-button {
     display: inline-block !important;
     padding: 0.8rem 2rem !important;
@@ -224,31 +204,6 @@ p, li {
     box-shadow: var(--shadow-accent);
 }
 
-/* Unified primary button styles */
-.stButton>button.primary,
-.stButton>button[type="primary"],
-.st-emotion-cache-1avcm0n.e1f1d6gn3,
-button[data-testid="baseButton-primary"] {
-    background-color: var(--accent) !important;
-    color: white !important;
-    border: none !important;
-    font-weight: 600 !important;
-    padding: 0.5rem 1.5rem !important;
-    border-radius: var(--radius-sm) !important;
-}
-
-.stButton>button.primary:hover,
-.stButton>button[type="primary"]:hover,
-.st-emotion-cache-1avcm0n.e1f1d6gn3:hover,
-button[data-testid="baseButton-primary"]:hover {
-    background-color: var(--accent-hover) !important;
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-accent);
-}
-
-/* ================ */
-/* Form Elements */
-/* ================ */
 .stTextInput>div>div>input, 
 .stSelectbox>div>div>select,
 .stTextArea>div>textarea {
@@ -266,19 +221,16 @@ button[data-testid="baseButton-primary"]:hover {
     box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.2) !important;
 }
 
-.st-bq { /* Help text */
+.st-bq {
     color: var(--text-secondary) !important;
     font-size: 0.85rem !important;
 }
 
-/* ================ */
-/* Navigation */
-/* ================ */
-.st-bh { /* Nav container */
+.st-bh {
     background-color: var(--bg) !important;
 }
 
-.st-c0 { /* Nav links */
+.st-c0 {
     color: var(--text-primary) !important;
     transition: var(--transition) !important;
 }
@@ -287,15 +239,12 @@ button[data-testid="baseButton-primary"]:hover {
     color: var(--accent-hover) !important;
 }
 
-.st-dn { /* Selected nav item */
+.st-dn {
     background-color: var(--accent) !important;
     color: white !important;
     font-weight: 600 !important;
 }
 
-/* ================ */
-/* Utility Classes */
-/* ================ */
 .wave-divider {
     height: 15px;
     width: 100%;
@@ -311,6 +260,55 @@ button[data-testid="baseButton-primary"]:hover {
 .mb-2 {
     margin-bottom: 2rem;
 }
+
+.footer-container {
+    background-color: var(--bg);
+    padding: 2rem 1rem;
+    margin-top: 3rem;
+    border-top: 1px solid var(--border);
+}
+
+.footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.footer-about {
+    text-align: left;
+}
+
+.footer-links {
+    text-align: right;
+}
+
+.footer-badge {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+}
+
+.footer-credits {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+    .footer-about, .footer-links {
+        text-align: center;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -323,33 +321,33 @@ selected = option_menu(
     orientation="horizontal",
     styles={
         "container": {
-            "background-color": "#F3F6F8",  # Light cool grayish blue background
+            "background-color": "#F3F6F8",
             "padding": "0",
             "margin": "0"
         },
         "nav-link": {
             "font-size": "16px",
             "font-weight": "400",
-            "color": "#273548",  # Dark blue-gray text
+            "color": "#273548",
             "padding": "8px 16px",
             "transition": "all 0.3s ease",
         },
         "nav-link:hover": {
-            "color": "#3B7A7A",  # Deeper teal on hover
-            "background-color": "rgba(76, 161, 163, 0.1)"  # Light teal tint
+            "color": "#3B7A7A",
+            "background-color": "rgba(76, 161, 163, 0.1)"
         },
         "nav-link-selected": {
-            "background": "#4CA1A3",  # Teal blue background
-            "color": "white",  # White text for better contrast
+            "background": "#4CA1A3",
+            "color": "white",
             "font-weight": "600",
-            "border-bottom": "3px solid #3B7A7A"  # Deeper teal accent
+            "border-bottom": "3px solid #3B7A7A"
         },
         "icon": {
-            "color": "#4CA1A3",  # Teal icons
+            "color": "#4CA1A3",
             "font-size": "18px"
         },
         "icon-selected": {
-            "color": "white"  # White icons for selected state
+            "color": "white"
         }
     }
 )
@@ -361,17 +359,15 @@ st.markdown("""
     <p style="font-size:1.2rem; color:var(--text-primary); max-width:700px; margin:0 auto 2rem;">
         Clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits
     </p>
-    <button onclick="document.getElementById('quiz').scrollIntoView()" class="stButton cta-button">
-        Take the 30-Second Quiz
-    </button>
+    <a href="#quiz" class="stButton cta-button" style="display:inline-block; text-decoration:none;">Take the 30-Second Quiz</a>
 </div>
 """, unsafe_allow_html=True)
 
 # --- HOME PAGE ---
 if selected == "Home":
     st.markdown("""
-    <div id="quiz" style="text-align:center; margin:2rem 0;">
-        <h2 style="color: var(--text-primary);">30-second suitability Quiz</h2>
+    <div id="quiz" style="text-align:center; margin:3rem 0;">
+        <h2 style="color: var(--text-primary);">30-Second Suitability Quiz</h2>
         <p style="color: var(--text-secondary);">Answer 3 questions to see if the method is right for you</p>
     </div>
     """, unsafe_allow_html=True)
@@ -549,7 +545,7 @@ elif selected == "Success":
     ]
 
     for t in testimonials:
-        st.markdown("""
+        st.markdown(f"""
         <div class="card testimonial-card" style="margin-bottom:1rem;">
             <div style="font-size:1.8rem; margin-bottom:0.5rem; color:var(--accent);">{t['icon']}</div>
             <p style="font-style:italic; font-size:1.1rem; color:var(--text-primary);">"{t['quote']}"</p>
@@ -652,86 +648,78 @@ elif selected == "Book Now":
         </div>
         """, unsafe_allow_html=True)
 
-    # # Create tabs for different booking options
-    # tab1, tab2 = st.tabs(["Free Discovery Call", "Rewiring Package"])
+    # Create tabs for different booking options
+    tab1, tab2 = st.tabs(["Free Discovery Call", "Rewiring Package"])
 
-    # with tab1:
-    #     with st.form("discovery_form"):
-    #         st.markdown("""
-    #         <div style="text-align:center; margin-bottom:1.5rem;">
-    #             <h3 style="color: var(--accent);">Free 15-Minute Discovery Call</h3>
-    #             <p style="color: var(--text-secondary);">No obligation consultation to discuss your goals</p>
-    #         </div>
-    #         """, unsafe_allow_html=True)
+    with tab1:
+        with st.form("discovery_form"):
+            st.markdown("""
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <h3 style="color: var(--accent);">Free 15-Minute Discovery Call</h3>
+                <p style="color: var(--text-secondary);">No obligation consultation to discuss your goals</p>
+            </div>
+            """, unsafe_allow_html=True)
 
-    #         cols = st.columns(2)
-    #         with cols[0]:
-    #             name = st.text_input("Your Name*", key="disc_name")
-    #         with cols[1]:
-    #             email = st.text_input("Email*", key="disc_email")
+            cols = st.columns(2)
+            with cols[0]:
+                name = st.text_input("Your Name*", key="disc_name")
+            with cols[1]:
+                email = st.text_input("Email*", key="disc_email")
 
-    #         concern = st.selectbox(
-    #             "Primary Concern*",
-    #             ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
-    #             key="disc_concern"
-    #         )
+            concern = st.selectbox(
+                "Primary Concern*",
+                ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
+                key="disc_concern"
+            )
 
-    #         submitted = st.form_submit_button(
-    #             "Book Discovery Call", 
-    #             type="primary",  # This will now use our teal color
-    #             help="Schedule your free 15-minute consultation"
-    #         )
+            submitted = st.form_submit_button("Book Discovery Call", type="primary")
 
-    #         if submitted:
-    #             if not name or not email or concern == "Select one...":
-    #                 st.error("Please fill in all required fields")
-    #             elif not is_valid_email(email):
-    #                 st.error("Please enter a valid email address")
-    #             else:
-    #                 calendly_url = "https://calendly.com/laetitiasheppard/discovery"
-    #                 st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
-    #                 if send_email(name, email, concern, "Booking type: Discovery Call"):
-    #                     st.success("✓ Appointment scheduled!")
-    #                 st.balloons()
+            if submitted:
+                if not name or not email or concern == "Select one...":
+                    st.error("Please fill in all required fields")
+                elif not is_valid_email(email):
+                    st.error("Please enter a valid email address")
+                else:
+                    calendly_url = "https://calendly.com/laetitiasheppard/discovery"
+                    st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
+                    if send_email(name, email, concern, "Booking type: Discovery Call"):
+                        st.success("✓ Appointment scheduled!")
+                    st.balloons()
 
-    # with tab2:
-    #     with st.form("package_form"):
-    #         st.markdown("""
-    #         <div style="text-align:center; margin-bottom:1.5rem;">
-    #             <h3 style="color: var(--accent);">Rewiring Package</h3>
-    #             <p style="color: var(--text-secondary);">Complete 2-session transformation program</p>
-    #         </div>
-    #         """, unsafe_allow_html=True)
+    with tab2:
+        with st.form("package_form"):
+            st.markdown("""
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <h3 style="color: var(--accent);">Rewiring Package</h3>
+                <p style="color: var(--text-secondary);">Complete 2-session transformation program</p>
+            </div>
+            """, unsafe_allow_html=True)
 
-    #         cols = st.columns(2)
-    #         with cols[0]:
-    #             name = st.text_input("Your Name*", key="pkg_name")
-    #         with cols[1]:
-    #             email = st.text_input("Email*", key="pkg_email")
+            cols = st.columns(2)
+            with cols[0]:
+                name = st.text_input("Your Name*", key="pkg_name")
+            with cols[1]:
+                email = st.text_input("Email*", key="pkg_email")
 
-    #         concern = st.selectbox(
-    #             "Primary Concern*",
-    #             ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
-    #             key="pkg_concern"
-    #         )
+            concern = st.selectbox(
+                "Primary Concern*",
+                ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
+                key="pkg_concern"
+            )
 
-    #         submitted = st.form_submit_button(
-    #             "Book Package Now", 
-    #             type="primary",  # This will now use our teal color
-    #             help="Schedule your complete transformation package"
-    #         )
+            submitted = st.form_submit_button("Book Package Now", type="primary")
 
-    #         if submitted:
-    #             if not name or not email or concern == "Select one...":
-    #                 st.error("Please fill in all required fields")
-    #             elif not is_valid_email(email):
-    #                 st.error("Please enter a valid email address")
-    #             else:
-    #                 calendly_url = "https://calendly.com/laetitiasheppard/package"
-    #                 st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
-    #                 if send_email(name, email, concern, "Booking type: Rewiring Package"):
-    #                     st.success("✓ Package booked!")
-    #                 st.balloons()
+            if submitted:
+                if not name or not email or concern == "Select one...":
+                    st.error("Please fill in all required fields")
+                elif not is_valid_email(email):
+                    st.error("Please enter a valid email address")
+                else:
+                    calendly_url = "https://calendly.com/laetitiasheppard/package"
+                    st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
+                    if send_email(name, email, concern, "Booking type: Rewiring Package"):
+                        st.success("✓ Package booked!")
+                    st.balloons()
 
 # --- BOOKING FORM ---
 st.markdown("""
@@ -761,13 +749,8 @@ with st.form("booking_form"):
                          placeholder="Brief details about your situation",
                          help="Optional - share anything that might help us prepare")
 
-    submitted = st.form_submit_button(
-        "Schedule My Free Call", 
-        type="primary",
-        #class="stButton cta-button",
-        help="You'll be redirected to our booking calendar"
-    )
-    
+    submitted = st.form_submit_button("Schedule My Free Call", type="primary")
+
     if submitted:
         if not name or not email or concern == "Select one...":
             st.error("Please fill in all required fields")
@@ -782,18 +765,46 @@ with st.form("booking_form"):
                 st.success("✓ Appointment scheduled! (Email confirmation pending)")
             st.balloons()
 
-  
 # --- FOOTER ---
-st.markdown("""
-<div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid var(--border);">
-    <p style="color:var(--text-secondary);">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok, Thailand</p>
-    <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:1rem;">NEW ADDRESS in ASOKE Sukhumvit</p>
-    <button onclick="window.open('https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw', '_blank')" 
-       class="stButton cta-button">
-       Get Directions
-    </button>
-    <p style="color:var(--text-secondary); font-size:0.9rem;">© {datetime.datetime.now().year} All Rights Reserved | Confidentiality Guaranteed</p>
+st.markdown(f"""
+<div class="footer-container">
+    <div class="footer-content">
+        <div class="footer-about">
+            <div class="footer-badge">
+                <h3 style="color: var(--accent); margin-top: 0;">Laetitia Sheppard</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">
+                    <span style="font-weight: 600;">Clinical Hypnotherapist</span><br>
+                    Certified in Hypnotherapy & Cognitive Behaviour (LCCH, 2016)
+                </p>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                    Fluent in English, French, and Italian
+                </p>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                27 Soi Sukhumvit 10 (Asoke), Bangkok<br>
+                Confidential sessions by appointment
+            </p>
+        </div>
+        
+        <div class="footer-links">
+            <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" target="_blank">
+                <button class="stButton cta-button" style="margin-bottom: 1rem; width: 100%; max-width: 200px;">
+                    📍 Get Directions
+                </button>
+            </a>
+            <a href="https://calendly.com/laetitiasheppard/new-meeting" target="_blank">
+                <button class="stButton cta-button" style="width: 100%; max-width: 200px;">
+                    📅 Book Consultation
+                </button>
+            </a>
+        </div>
+        
+        <div class="footer-credits">
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                © {datetime.datetime.now().year} Laetitia Sheppard Clinical Hypnotherapy • All Rights Reserved<br>
+                Confidentiality Guaranteed
+            </p>
+        </div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
-
-
