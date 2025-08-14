@@ -62,9 +62,6 @@ def handle_quiz_answer(question_id, answer):
     st.session_state.quiz_step += 1
 
 # --- STYLING ---
-# Replace the existing CSS section with this new version:
-
-# --- STYLING ---
 st.markdown("""
 <style>
 :root {
@@ -99,7 +96,7 @@ body {
 
 .hero {
     background: linear-gradient(135deg, var(--accent) 0%, #E1F0F0 100%);
-    padding: 3rem 2rem;
+    padding: 2rem 2rem;
     border-radius: 16px;
     text-align: center;
     margin-bottom: 2rem;
@@ -140,29 +137,6 @@ body {
 
 .testimonial-card {
     border-left: 4px solid var(--accent);
-}
-
-.cta-button {
-    background-color: var(--accent) !important;
-    color: white !important;
-    border: none !important;
-    font-weight: 600 !important;
-}
-
-.cta-button:hover {
-    background-color: var(--accent-hover) !important;
-    color: white !important;
-}
-
-.secondary-button {
-    background-color: var(--card-bg) !important;
-    color: var(--text-primary) !important;
-    border: 1px solid var(--border) !important;
-}
-
-.secondary-button:hover {
-    border-color: var(--accent) !important;
-    color: var(--text-primary) !important;
 }
 
 /* Unified button styles */
@@ -374,8 +348,8 @@ st.markdown("""
 # --- HOME PAGE ---
 if selected == "Home":
     st.markdown("""
-    <div id="quiz" style="text-align:center; margin:3rem 0;">
-        <h2 style="color: var(--text-primary);">30-Second Suitability Quiz</h2>
+    <div id="quiz" style="text-align:center; margin:2rem 0;">
+        <h2 style="color: var(--text-primary);">30-second suitability Quiz</h2>
         <p style="color: var(--text-secondary);">Answer 3 questions to see if the method is right for you</p>
     </div>
     """, unsafe_allow_html=True)
@@ -740,7 +714,7 @@ elif selected == "Book Now":
 # --- BOOKING FORM ---
 st.markdown("""
 <div id="discovery" class="card" style="margin:3rem 0; padding:2rem; border:1px solid #CBD5E1;">
-    <h2 style="text-align:center; color: #273548; margin-bottom:1.5rem;">Free 15-Minute Discovery Call</h2>
+    <h2 style="color: var(--accent); text-align:center; margin-bottom:1.5rem;">Free 15-Minute Discovery Call</h2>
     <p style="text-align:center; color: #556D7A; margin-bottom:2rem;">Begin your journey to transformation with a complimentary consultation</p>
 """, unsafe_allow_html=True)
 
