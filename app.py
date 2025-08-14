@@ -741,7 +741,7 @@ with st.form("booking_form"):
 
     submitted = st.form_submit_button(
         "Schedule My Free Call", 
-        type="primary",  # This will now use our teal color
+        type="--accent",  # This will now use our teal color
         help="You'll be redirected to our booking calendar"
     )
     if submitted:
