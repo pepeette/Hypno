@@ -64,45 +64,78 @@ def handle_quiz_answer(question_id, answer):
 # --- STYLING ---
 st.markdown("""
 <style>
+/* ================ */
+/* Color Variables */
+/* ================ */
 :root {
-    --bg: #F3F6F8;
-    --card-bg: #FFFFFF;
-    --text-primary: #273548;
-    --text-secondary: #556D7A;
-    --accent: #4CA1A3;
-    --accent-hover: #3B7A7A;
-    --border: #CBD5E1;
+    --bg: #F3F6F8;             /* Light cool grayish blue */
+    --card-bg: #FFFFFF;        /* Bright white */
+    --text-primary: #273548;   /* Dark blue-gray */
+    --text-secondary: #556D7A; /* Mid-tone slate blue */
+    --accent: #4CA1A3;         /* Teal blue */
+    --accent-hover: #3B7A7A;   /* Deeper teal */
+    --border: #CBD5E1;         /* Muted slate gray */
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-accent: 0 2px 8px rgba(59, 122, 122, 0.2);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --transition: all 0.3s ease;
 }
 
+/* ================ */
+/* Base Styles */
+/* ================ */
 body {
     background-color: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.stButton>button {
+/* ================ */
+/* Typography */
+/* ================ */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+}
+
+p, li {
+    color: var(--text-secondary);
+}
+
+/* ================ */
+/* Components */
+/* ================ */
+/* Cards */
+.card {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
     border: 1px solid var(--border);
-    color: var(--text-primary);
-    background-color: var(--card-bg);
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
-.stButton>button:hover {
-    border-color: var(--accent-hover);
-    color: var(--text-primary);
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
 }
 
-.stButton>button:focus {
-    box-shadow: 0 0 0 0.2rem rgba(76, 161, 163, 0.25);
+.testimonial-card {
+    border-left: 4px solid var(--accent);
 }
 
+/* Hero Section */
 .hero {
     background: linear-gradient(135deg, var(--accent) 0%, #E1F0F0 100%);
-    padding: 2rem 2rem;
-    border-radius: 16px;
+    padding: 3rem 2rem;
+    border-radius: var(--radius-lg);
     text-align: center;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-sm);
 }
 
+/* Progress Steps */
 .step {
     width: 36px;
     height: 36px;
@@ -121,122 +154,114 @@ body {
     color: white;
 }
 
-.card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    border: 1px solid var(--border);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* ================ */
+/* Buttons */
+/* ================ */
+/* Base Button Styles */
+.stButton>button {
+    border-radius: var(--radius-sm) !important;
+    transition: var(--transition) !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1.5rem !important;
+    cursor: pointer !important;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-}
-
-.testimonial-card {
-    border-left: 4px solid var(--accent);
-}
-
-/* Unified button styles */
-.stButton>button, 
-.stButton>button:focus,
-.stButton>button:hover {
-    border-radius: 8px !important;
-    transition: all 0.3s ease !important;
-}
-
-/* Primary button styles */
+/* Primary Buttons */
 .stButton>button.primary,
 .stButton>button[type="primary"],
 .st-emotion-cache-1avcm0n.e1f1d6gn3 {
     background-color: var(--accent) !important;
     color: white !important;
     border: none !important;
-    font-weight: 600 !important;
-    padding: 0.5rem 1.5rem !important;
 }
 
 .stButton>button.primary:hover,
-.stButton>button[type="primary"]:hover,
-.st-emotion-cache-1avcm0n.e1f1d6gn3:hover {
+.stButton>button[type="primary"]:hover {
     background-color: var(--accent-hover) !important;
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(59, 122, 122, 0.2);
+    box-shadow: var(--shadow-accent);
 }
 
-/* Secondary button styles */
-.stButton>button.secondary {
+/* Secondary Buttons */
+.stButton>button:not(.primary):not([type="primary"]) {
     background-color: white !important;
     color: var(--text-primary) !important;
     border: 1px solid var(--border) !important;
-    font-weight: 500 !important;
-    padding: 0.5rem 1.5rem !important;
 }
 
-.stButton>button.secondary:hover {
+.stButton>button:not(.primary):not([type="primary"]):hover {
     border-color: var(--accent) !important;
     color: var(--accent-hover) !important;
 }
 
-/* Custom CTA button styles */
+/* CTA Buttons */
 .cta-button {
     display: inline-block !important;
     padding: 0.8rem 2rem !important;
-    border-radius: 8px !important;
+    border-radius: var(--radius-sm) !important;
     text-decoration: none !important;
-    font-weight: 600 !important;
     background-color: var(--accent) !important;
     color: white !important;
     border: none !important;
-    transition: all 0.3s ease !important;
+    transition: var(--transition) !important;
 }
 
 .cta-button:hover {
     background-color: var(--accent-hover) !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 122, 122, 0.2);
+    box-shadow: var(--shadow-accent);
 }
 
-.css-1aumxhk {
-    background-color: var(--bg);
-}
-
-/* Navigation styling */
-.st-bh {
-    background-color: var(--bg) !important;
-}
-
-.st-c0 {
-    color: var(--text-primary) !important;
-}
-
-.st-c0:hover {
-    color: var(--accent-hover) !important;
-}
-
-.st-dn {
-    background-color: var(--accent) !important;
-    color: white !important;
-    font-weight: 600 !important;
-}
-
-/* Form styling */
+/* ================ */
+/* Form Elements */
+/* ================ */
 .stTextInput>div>div>input, 
 .stSelectbox>div>div>select,
 .stTextArea>div>textarea {
+    background-color: white;
     border: 1px solid var(--border) !important;
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
 }
 
 .stTextInput>div>div>input:focus, 
 .stSelectbox>div>div>select:focus,
 .stTextArea>div>textarea:focus {
     border-color: var(--accent) !important;
-    box-shadow: 0 0 0 0.2rem rgba(76, 161, 163, 0.25) !important;
+    box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.2) !important;
 }
 
-/* Additional ocean-themed elements */
+.st-bq { /* Help text */
+    color: var(--text-secondary) !important;
+    font-size: 0.85rem !important;
+}
+
+/* ================ */
+/* Navigation */
+/* ================ */
+.st-bh { /* Nav container */
+    background-color: var(--bg) !important;
+}
+
+.st-c0 { /* Nav links */
+    color: var(--text-primary) !important;
+    transition: var(--transition) !important;
+}
+
+.st-c0:hover {
+    color: var(--accent-hover) !important;
+}
+
+.st-dn { /* Selected nav item */
+    background-color: var(--accent) !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+/* ================ */
+/* Utility Classes */
+/* ================ */
 .wave-divider {
     height: 15px;
     width: 100%;
@@ -245,49 +270,12 @@ body {
     margin: 2rem 0;
 }
 
-.beach-highlight {
-    background-color: #F8F3E6;
-    border-left: 3px solid #E8D4A8;
-    padding: 1rem;
-    border-radius: 0 8px 8px 0;
-}
-/* Add this to your existing CSS section */
-.stSelectbox>div>div>select, 
-.stTextInput>div>div>input,
-.stTextArea>div>textarea {
-    background-color: white;
-    border: 1px solid #CBD5E1 !important;
-    color: #273548;
-    border-radius: 8px;
-    padding: 8px 12px;
+.text-center {
+    text-align: center;
 }
 
-.stSelectbox>div>div>select:focus, 
-.stTextInput>div>div>input:focus,
-.stTextArea>div>textarea:focus {
-    border-color: #4CA1A3 !important;
-    box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.2) !important;
-}
-
-.st-bq {
-    color: #556D7A !important;  /* Help text color */
-    font-size: 0.85rem !important;
-}
-
-.st-bd {
-    border-color: #CBD5E1 !important;  /* Selectbox dropdown border */
-}
-
-.st-cg {
-    color: #273548 !important;  /* Dropdown text color */
-}
-
-.st-ci {
-    background-color: white !important;  /* Dropdown background */
-}
-
-.st-cj:hover {
-    background-color: #F3F6F8 !important;  /* Dropdown hover */
+.mb-2 {
+    margin-bottom: 2rem;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -630,86 +618,86 @@ elif selected == "Book Now":
         </div>
         """, unsafe_allow_html=True)
 
-    # Create tabs for different booking options
-    tab1, tab2 = st.tabs(["Free Discovery Call", "Rewiring Package"])
+    # # Create tabs for different booking options
+    # tab1, tab2 = st.tabs(["Free Discovery Call", "Rewiring Package"])
 
-    with tab1:
-        with st.form("discovery_form"):
-            st.markdown("""
-            <div style="text-align:center; margin-bottom:1.5rem;">
-                <h3 style="color: var(--accent);">Free 15-Minute Discovery Call</h3>
-                <p style="color: var(--text-secondary);">No obligation consultation to discuss your goals</p>
-            </div>
-            """, unsafe_allow_html=True)
+    # with tab1:
+    #     with st.form("discovery_form"):
+    #         st.markdown("""
+    #         <div style="text-align:center; margin-bottom:1.5rem;">
+    #             <h3 style="color: var(--accent);">Free 15-Minute Discovery Call</h3>
+    #             <p style="color: var(--text-secondary);">No obligation consultation to discuss your goals</p>
+    #         </div>
+    #         """, unsafe_allow_html=True)
 
-            cols = st.columns(2)
-            with cols[0]:
-                name = st.text_input("Your Name*", key="disc_name")
-            with cols[1]:
-                email = st.text_input("Email*", key="disc_email")
+    #         cols = st.columns(2)
+    #         with cols[0]:
+    #             name = st.text_input("Your Name*", key="disc_name")
+    #         with cols[1]:
+    #             email = st.text_input("Email*", key="disc_email")
 
-            concern = st.selectbox(
-                "Primary Concern*",
-                ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
-                key="disc_concern"
-            )
+    #         concern = st.selectbox(
+    #             "Primary Concern*",
+    #             ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
+    #             key="disc_concern"
+    #         )
 
-            submitted = st.form_submit_button(
-                "Book Discovery Call", 
-                type="primary",  # This will now use our teal color
-                help="Schedule your free 15-minute consultation"
-            )
+    #         submitted = st.form_submit_button(
+    #             "Book Discovery Call", 
+    #             type="primary",  # This will now use our teal color
+    #             help="Schedule your free 15-minute consultation"
+    #         )
 
-            if submitted:
-                if not name or not email or concern == "Select one...":
-                    st.error("Please fill in all required fields")
-                elif not is_valid_email(email):
-                    st.error("Please enter a valid email address")
-                else:
-                    calendly_url = "https://calendly.com/laetitiasheppard/discovery"
-                    st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
-                    if send_email(name, email, concern, "Booking type: Discovery Call"):
-                        st.success("✓ Appointment scheduled!")
-                    st.balloons()
+    #         if submitted:
+    #             if not name or not email or concern == "Select one...":
+    #                 st.error("Please fill in all required fields")
+    #             elif not is_valid_email(email):
+    #                 st.error("Please enter a valid email address")
+    #             else:
+    #                 calendly_url = "https://calendly.com/laetitiasheppard/discovery"
+    #                 st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
+    #                 if send_email(name, email, concern, "Booking type: Discovery Call"):
+    #                     st.success("✓ Appointment scheduled!")
+    #                 st.balloons()
 
-    with tab2:
-        with st.form("package_form"):
-            st.markdown("""
-            <div style="text-align:center; margin-bottom:1.5rem;">
-                <h3 style="color: var(--accent);">Rewiring Package</h3>
-                <p style="color: var(--text-secondary);">Complete 2-session transformation program</p>
-            </div>
-            """, unsafe_allow_html=True)
+    # with tab2:
+    #     with st.form("package_form"):
+    #         st.markdown("""
+    #         <div style="text-align:center; margin-bottom:1.5rem;">
+    #             <h3 style="color: var(--accent);">Rewiring Package</h3>
+    #             <p style="color: var(--text-secondary);">Complete 2-session transformation program</p>
+    #         </div>
+    #         """, unsafe_allow_html=True)
 
-            cols = st.columns(2)
-            with cols[0]:
-                name = st.text_input("Your Name*", key="pkg_name")
-            with cols[1]:
-                email = st.text_input("Email*", key="pkg_email")
+    #         cols = st.columns(2)
+    #         with cols[0]:
+    #             name = st.text_input("Your Name*", key="pkg_name")
+    #         with cols[1]:
+    #             email = st.text_input("Email*", key="pkg_email")
 
-            concern = st.selectbox(
-                "Primary Concern*",
-                ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
-                key="pkg_concern"
-            )
+    #         concern = st.selectbox(
+    #             "Primary Concern*",
+    #             ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
+    #             key="pkg_concern"
+    #         )
 
-            submitted = st.form_submit_button(
-                "Book Package Now", 
-                type="primary",  # This will now use our teal color
-                help="Schedule your complete transformation package"
-            )
+    #         submitted = st.form_submit_button(
+    #             "Book Package Now", 
+    #             type="primary",  # This will now use our teal color
+    #             help="Schedule your complete transformation package"
+    #         )
 
-            if submitted:
-                if not name or not email or concern == "Select one...":
-                    st.error("Please fill in all required fields")
-                elif not is_valid_email(email):
-                    st.error("Please enter a valid email address")
-                else:
-                    calendly_url = "https://calendly.com/laetitiasheppard/package"
-                    st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
-                    if send_email(name, email, concern, "Booking type: Rewiring Package"):
-                        st.success("✓ Package booked!")
-                    st.balloons()
+    #         if submitted:
+    #             if not name or not email or concern == "Select one...":
+    #                 st.error("Please fill in all required fields")
+    #             elif not is_valid_email(email):
+    #                 st.error("Please enter a valid email address")
+    #             else:
+    #                 calendly_url = "https://calendly.com/laetitiasheppard/package"
+    #                 st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
+    #                 if send_email(name, email, concern, "Booking type: Rewiring Package"):
+    #                     st.success("✓ Package booked!")
+    #                 st.balloons()
 
 # --- BOOKING FORM ---
 st.markdown("""
@@ -741,7 +729,7 @@ with st.form("booking_form"):
 
     submitted = st.form_submit_button(
         "Schedule My Free Call", 
-        type="--accent",  # This will now use our teal color
+        type="primary",  # This will now use our teal color
         help="You'll be redirected to our booking calendar"
     )
     if submitted:
