@@ -792,59 +792,68 @@ with st.form("booking_form"):
 st.markdown(f"""
 <style>
     /* Footer container */
-    .footer-container {{
-        background-color: var(--bg);
-        padding: 2rem 1rem;
-        margin-top: 3rem;
+    .footer {{
+        margin: 4rem 0 2rem 0;
+        padding-top: 2rem;
         border-top: 1px solid var(--border);
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
     }}
 
-    .footer-content {{
-        max-width: 1000px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
+    /* Founder info area */
+    .footer-founder {{
+        flex: 1 1 300px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
     }}
 
-    .footer-about {{
-        text-align: left;
+    .footer-founder img {{
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--accent);
     }}
 
-    .footer-links {{
+    .footer-founder-text {{
+        max-width: 400px;
+    }}
+
+    /* Location and buttons */
+    .footer-contact {{
+        flex: 1 1 260px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
         text-align: right;
     }}
 
-    .footer-badge {{
-        background-color: var(--card-bg);
-        border-radius: var(--radius-sm);
-        padding: 1rem;
-        margin-bottom: 1rem;
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--border);
-    }}
-
-    .footer-credits {{
-        grid-column: 1 / -1;
-        text-align: center;
-        padding-top: 2rem;
-        border-top: 1px solid var(--border);
-        margin-top: 1rem;
-        font-size: 0.9rem;
+    .footer-contact p {{
+        margin: 0;
         color: var(--text-secondary);
     }}
 
+    /* Buttons inside footer */
     .footer-button {{
+        margin-top: 0.5rem;
         background-color: var(--accent) !important;
         color: white !important;
         border: none !important;
+        padding: 0.5rem 1.2rem !important;
         border-radius: var(--radius-sm) !important;
-        padding: 0.5rem 1.5rem !important;
         font-weight: 600 !important;
+        cursor: pointer !important;
         transition: var(--transition) !important;
-        margin-top: 0.5rem;
-        display: inline-block;
         text-decoration: none !important;
+        display: inline-block !important;
+        font-size: 0.9rem !important;
     }}
 
     .footer-button:hover {{
@@ -853,39 +862,56 @@ st.markdown(f"""
         box-shadow: var(--shadow-accent);
     }}
 
+    /* Copyright line */
+    .footer-copy {{
+        flex-basis: 100%;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        margin-top: 1.5rem;
+    }}
+
     @media (max-width: 768px) {{
-        .footer-content {{
-            grid-template-columns: 1fr;
+        .footer {{
+            flex-direction: column;
+            gap: 1rem;
         }}
-        .footer-about, .footer-links {{
+        
+        .footer-founder {{
+            flex-direction: column;
             text-align: center;
+        }}
+        
+        .footer-contact {{
+            text-align: center;
+            align-items: center;
+        }}
+        
+        .footer-founder-text {{
+            max-width: 100%;
         }}
     }}
 </style>
 
-<div class="footer-container">
-    <div class="footer-content">
-        <div class="footer-about">
-            <div class="footer-badge">
-                <strong>Laetitia Sheppard</strong><br>
-                Certified Clinical Hypnotherapist<br>
-                LCCH (Asia) Certified | DBT Certified
-            </div>
-            <p style="color: var(--text-secondary);">Specializing in rapid transformation techniques to help clients overcome limiting patterns and achieve lasting change.</p>
+<div class="footer">
+    <div class="footer-founder">
+        <img src="https://github.com/pepeette/Hypno/blob/main/img/ID.jpg?raw=true" alt="Laetitia Sheppard">
+        <div class="footer-founder-text">
+            <strong>Laetitia Sheppard</strong>  
+            <br>Certified Clinical Hypnotherapist with over 10 years of experience in behavioral change and mental wellness.<br>
+            Certified in Hypnotherapy & Cognitive Behavioural Therapy (LCCH, 2016) and Dialectical Behavioral Therapy (2023).
         </div>
-        
-        <div class="footer-links">
-            <p style="color: var(--text-secondary);"><strong>Bangkok Hypnotherapy Clinic</strong><br>
-            27 Soi Sukhumvit 10 (Asoke)<br>
-            Bangkok, Thailand</p>
-            
+    </div>
+
+    <div class="footer-contact">
+        <p><strong>Bangkok Hypnotherapy Clinic</strong></p>
+        <p>27 Soi Sukhumvit 10 (Asoke), Bangkok, Thailand</p>
+        <div>
             <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" target="_blank" class="footer-button">Get Directions</a>
             <a href="https://calendly.com/laetitiasheppard/new-meeting" target="_blank" class="footer-button">Book Now</a>
         </div>
-        
-        <div class="footer-credits">
-            © {datetime.datetime.now().year} Laetitia Sheppard • All Rights Reserved • Confidentiality Guaranteed
-        </div>
     </div>
+
+    <div class="footer-copy">© {datetime.datetime.now().year} Laetitia Sheppard • All Rights Reserved • Confidentiality Guaranteed</div>
 </div>
 """, unsafe_allow_html=True)
