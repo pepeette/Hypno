@@ -227,20 +227,20 @@ selected = option_menu(
     icons=["house", "magic", "stars", "book", "calendar"],
     default_index=0,
     orientation="horizontal",
-    styles={
-        "container": {"background-color": "#FAF9F7"},
-        "nav-link": {
-            "font-size": "16px",
-            "font-weight": "400",
-            "color": "#222222",
-            "padding": "8px 16px",
-        },
-        "nav-link-selected": {
-            "background": "#CBAACB",
-            "color": "#222222",
-            "font-weight": "600",
-        },
-    }
+    # styles={
+    #     "container": {"background-color": "#FAF9F7"},
+    #     "nav-link": {
+    #         "font-size": "16px",
+    #         "font-weight": "400",
+    #         "color": "#222222",
+    #         "padding": "8px 16px",
+    #     },
+    #     "nav-link-selected": {
+    #         "background": "#CBAACB",
+    #         "color": "#222222",
+    #         "font-weight": "600",
+    #     },
+    # }
 )
 
 # --- HERO SECTION ---
