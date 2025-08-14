@@ -555,6 +555,9 @@ def show_method_page():
 
     for i, step in enumerate(steps):
         with step:
+            # Build the list items string first
+            list_items = "".join([f"<li>{item}</li>" for item in step_data[i]["items"]])
+            
             st.markdown(f"""
             <div class="card">
                 <div style="background:{'var(--accent)' if i < 2 else 'var(--border)'}; color:var(--text-primary); 
@@ -562,7 +565,7 @@ def show_method_page():
                 justify-content:center; font-weight:bold; margin:0 auto 1rem;">{i+1 if i < 2 else '+1'}</div>
                 <h3 class="text-center">{step_data[i]['title']}</h3>
                 <ul style="text-align:left;">
-                    {''.join([f'<li>{item}</li>' for item in step_data[i]['items'])}
+                    {list_items}
                 </ul>
             </div>
             """, unsafe_allow_html=True)
