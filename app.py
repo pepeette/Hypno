@@ -62,16 +62,19 @@ def handle_quiz_answer(question_id, answer):
     st.session_state.quiz_step += 1
 
 # --- STYLING ---
+# Replace the existing CSS section with this new version:
+
+# --- STYLING ---
 st.markdown("""
 <style>
 :root {
-    --bg: #FAF9F7;
+    --bg: #F3F6F8;
     --card-bg: #FFFFFF;
-    --text-primary: #222222;
-    --text-secondary: #6B7280;
-    --accent: #CBAACB;
-    --accent-hover: #A67AA9;
-    --border: #E5E7EB;
+    --text-primary: #273548;
+    --text-secondary: #556D7A;
+    --accent: #4CA1A3;
+    --accent-hover: #3B7A7A;
+    --border: #CBD5E1;
 }
 
 body {
@@ -91,11 +94,11 @@ body {
 }
 
 .stButton>button:focus {
-    box-shadow: 0 0 0 0.2rem rgba(203, 170, 203, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(76, 161, 163, 0.25);
 }
 
 .hero {
-    background: linear-gradient(135deg, var(--accent) 0%, #F8F4E9 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, #E1F0F0 100%);
     padding: 3rem 2rem;
     border-radius: 16px;
     text-align: center;
@@ -118,7 +121,7 @@ body {
 
 .step.active {
     background: var(--accent);
-    color: var(--text-primary);
+    color: white;
 }
 
 .card {
@@ -141,7 +144,7 @@ body {
 
 .cta-button {
     background-color: var(--accent) !important;
-    color: var(--text-primary) !important;
+    color: white !important;
     border: none !important;
     font-weight: 600 !important;
 }
@@ -181,7 +184,7 @@ body {
 
 .st-dn {
     background-color: var(--accent) !important;
-    color: var(--text-primary) !important;
+    color: white !important;
     font-weight: 600 !important;
 }
 
@@ -196,7 +199,23 @@ body {
 .stSelectbox>div>div>select:focus,
 .stTextArea>div>textarea:focus {
     border-color: var(--accent) !important;
-    box-shadow: 0 0 0 0.2rem rgba(203, 170, 203, 0.25) !important;
+    box-shadow: 0 0 0 0.2rem rgba(76, 161, 163, 0.25) !important;
+}
+
+/* Additional ocean-themed elements */
+.wave-divider {
+    height: 15px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--bg) 100%);
+    opacity: 0.3;
+    margin: 2rem 0;
+}
+
+.beach-highlight {
+    background-color: #F8F3E6;
+    border-left: 3px solid #E8D4A8;
+    padding: 1rem;
+    border-radius: 0 8px 8px 0;
 }
 </style>
 """, unsafe_allow_html=True)
