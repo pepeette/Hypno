@@ -549,7 +549,7 @@ elif selected == "Success":
     ]
 
     for t in testimonials:
-        st.markdown(f"""
+        st.markdown("""
         <div class="card testimonial-card" style="margin-bottom:1rem;">
             <div style="font-size:1.8rem; margin-bottom:0.5rem; color:var(--accent);">{t['icon']}</div>
             <p style="font-style:italic; font-size:1.1rem; color:var(--text-primary);">"{t['quote']}"</p>
@@ -783,15 +783,108 @@ with st.form("booking_form"):
 
             
 # --- FOOTER ---
+# st.markdown(f"""
+# <div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid var(--border);">
+#     <p style="color:var(--text-secondary);">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok, Thailand</p>
+#     <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:1rem;">NEW ADDRESS in ASOKE Sukhumvit</p>
+#     <button onclick="window.open('https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw', '_blank')" 
+#        class="stButton cta-button">
+#        Get Directions
+#     </button>
+#     <p style="color:var(--text-secondary); font-size:0.9rem;">© {datetime.datetime.now().year} All Rights Reserved | Confidentiality Guaranteed</p>
+# </div>
+# """, unsafe_allow_html=True)
 st.markdown(f"""
-<div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid var(--border);">
-    <p style="color:var(--text-secondary);">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok, Thailand</p>
-    <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:1rem;">NEW ADDRESS in ASOKE Sukhumvit</p>
-    <button onclick="window.open('https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw', '_blank')" 
-       class="stButton cta-button">
-       Get Directions
-    </button>
-    <p style="color:var(--text-secondary); font-size:0.9rem;">© {datetime.datetime.now().year} All Rights Reserved | Confidentiality Guaranteed</p>
+<style>
+.footer-container {{
+    background-color: var(--bg);
+    padding: 2rem 1rem;
+    margin-top: 3rem;
+    border-top: 1px solid var(--border);
+}}
+
+.footer-content {{
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}}
+
+.footer-about {{
+    text-align: left;
+}}
+
+.footer-links {{
+    text-align: right;
+}}
+
+.footer-badge {{
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+}}
+
+.footer-credits {{
+    grid-column: 1 / -1;
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+}}
+
+@media (max-width: 768px) {{
+    .footer-content {{
+        grid-template-columns: 1fr;
+    }}
+    .footer-about, .footer-links {{
+        text-align: center;
+    }}
+}}
+</style>
+
+<div class="footer-container">
+    <div class="footer-content">
+        <div class="footer-about">
+            <div class="footer-badge">
+                <h3 style="color: var(--accent); margin-top: 0;">Laetitia Sheppard</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">
+                    <span style="font-weight: 600;">Clinical Hypnotherapist</span><br>
+                    Certified in Hypnotherapy & Cognitive Behaviour (LCCH, 2016)
+                </p>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                    Fluent in English, French, and Italian
+                </p>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                27 Soi Sukhumvit 10 (Asoke), Bangkok<br>
+                Confidential sessions by appointment
+            </p>
+        </div>
+        
+        <div class="footer-links">
+            <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" target="_blank">
+                <button class="stButton cta-button" style="margin-bottom: 1rem; width: 100%; max-width: 200px;">
+                    📍 Get Directions
+                </button>
+            </a>
+            <a href="https://calendly.com/laetitiasheppard/new-meeting" target="_blank">
+                <button class="stButton cta-button" style="width: 100%; max-width: 200px;">
+                    📅 Book Consultation
+                </button>
+            </a>
+        </div>
+        
+        <div class="footer-credits">
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                © {datetime.datetime.now().year} Laetitia Sheppard Clinical Hypnotherapy • All Rights Reserved<br>
+                Confidentiality Guaranteed
+            </p>
+        </div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
