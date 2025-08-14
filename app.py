@@ -217,6 +217,44 @@ body {
     padding: 1rem;
     border-radius: 0 8px 8px 0;
 }
+/* Add this to your existing CSS section */
+.stSelectbox>div>div>select, 
+.stTextInput>div>div>input,
+.stTextArea>div>textarea {
+    background-color: white;
+    border: 1px solid #CBD5E1 !important;
+    color: #273548;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.stSelectbox>div>div>select:focus, 
+.stTextInput>div>div>input:focus,
+.stTextArea>div>textarea:focus {
+    border-color: #4CA1A3 !important;
+    box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.2) !important;
+}
+
+.st-bq {
+    color: #556D7A !important;  /* Help text color */
+    font-size: 0.85rem !important;
+}
+
+.st-bd {
+    border-color: #CBD5E1 !important;  /* Selectbox dropdown border */
+}
+
+.st-cg {
+    color: #273548 !important;  /* Dropdown text color */
+}
+
+.st-ci {
+    background-color: white !important;  /* Dropdown background */
+}
+
+.st-cj:hover {
+    background-color: #F3F6F8 !important;  /* Dropdown hover */
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -227,20 +265,37 @@ selected = option_menu(
     icons=["house", "magic", "stars", "book", "calendar"],
     default_index=0,
     orientation="horizontal",
-    # styles={
-    #     "container": {"background-color": "#FAF9F7"},
-    #     "nav-link": {
-    #         "font-size": "16px",
-    #         "font-weight": "400",
-    #         "color": "#222222",
-    #         "padding": "8px 16px",
-    #     },
-    #     "nav-link-selected": {
-    #         "background": "#CBAACB",
-    #         "color": "#222222",
-    #         "font-weight": "600",
-    #     },
-    # }
+    styles={
+        "container": {
+            "background-color": "#F3F6F8",  # Light cool grayish blue background
+            "padding": "0",
+            "margin": "0"
+        },
+        "nav-link": {
+            "font-size": "16px",
+            "font-weight": "400",
+            "color": "#273548",  # Dark blue-gray text
+            "padding": "8px 16px",
+            "transition": "all 0.3s ease",
+        },
+        "nav-link:hover": {
+            "color": "#3B7A7A",  # Deeper teal on hover
+            "background-color": "rgba(76, 161, 163, 0.1)"  # Light teal tint
+        },
+        "nav-link-selected": {
+            "background": "#4CA1A3",  # Teal blue background
+            "color": "white",  # White text for better contrast
+            "font-weight": "600",
+            "border-bottom": "3px solid #3B7A7A"  # Deeper teal accent
+        },
+        "icon": {
+            "color": "#4CA1A3",  # Teal icons
+            "font-size": "18px"
+        },
+        "icon-selected": {
+            "color": "white"  # White icons for selected state
+        }
+    }
 )
 
 # --- HERO SECTION ---
@@ -614,25 +669,35 @@ elif selected == "Book Now":
 
 # --- BOOKING FORM ---
 st.markdown("""
-<div id="discovery" class="card" style="margin:3rem 0; padding:2rem;">
-    <h2 style="text-align:center; color: var(--text-primary);">Free 15-Minute Discovery Call</h2>
+<div id="discovery" class="card" style="margin:3rem 0; padding:2rem; border:1px solid #CBD5E1;">
+    <h2 style="text-align:center; color: #273548; margin-bottom:1.5rem;">Free 15-Minute Discovery Call</h2>
+    <p style="text-align:center; color: #556D7A; margin-bottom:2rem;">Begin your journey to transformation with a complimentary consultation</p>
 """, unsafe_allow_html=True)
 
 with st.form("booking_form"):
     cols = st.columns(2)
     with cols[0]:
-        name = st.text_input("Your Name*", placeholder="First and last name")
+        name = st.text_input("Your Name*", 
+                           placeholder="First and last name",
+                           help="Please enter your full name")
     with cols[1]:
-        email = st.text_input("Email*", placeholder="Your email address")
+        email = st.text_input("Email*", 
+                            placeholder="Your email address",
+                            help="We'll send confirmation to this address")
 
     concern = st.selectbox(
         "Primary Concern*",
-        ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"]
+        ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
+        help="What would you like help with?"
     )
 
-    message = st.text_area("Anything we should know", placeholder="Brief details about your situation")
+    message = st.text_area("Anything we should know", 
+                         placeholder="Brief details about your situation",
+                         help="Optional - share anything that might help us prepare")
 
-    submitted = st.form_submit_button("Schedule My Free Call", type="primary")
+    submitted = st.form_submit_button("Schedule My Free Call", 
+                                    type="primary",
+                                    help="You'll be redirected to our booking calendar")
 
     if submitted:
         if not name or not email or concern == "Select one...":
@@ -642,14 +707,11 @@ with st.form("booking_form"):
         else:
             calendly_url = "https://calendly.com/laetitiasheppard/30min"
             st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
-
             if send_email(name, email, concern, message):
                 st.success("✓ Appointment scheduled! Check your email for confirmation.")
             else:
                 st.success("✓ Appointment scheduled! (Email confirmation pending)")
-
             st.balloons()
-
 # --- FOOTER ---
 st.markdown(f"""
 <div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid var(--border);">
