@@ -864,7 +864,7 @@ st.markdown(f"""
 
 <div class="footer">
     <div class="footer-founder">
-        <img src="./img/ID.jpg" alt="Laetitia Sheppard">
+        <img src="https://github.com/pepeette/Hypno/blob/main/img/ID.jpg?raw=true" alt="Laetitia Sheppard">
         <div class="footer-founder-text">
             <strong>Laetitia Sheppard</strong>  
             <br>Certified Clinical Hypnotherapist with over 10 years of experience in behavioral change and mental wellness.<br>
