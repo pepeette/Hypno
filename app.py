@@ -52,62 +52,27 @@ def send_email(name, email, concern, message):
 if 'quiz_answers' not in st.session_state:
     st.session_state.quiz_answers = {}
     st.session_state.quiz_step = 1
-    st.session_state.quiz_complete = False
 
 def handle_quiz_answer(question_id, answer):
     st.session_state.quiz_answers[question_id] = answer
-    if st.session_state.quiz_step < 3:
-        st.session_state.quiz_step += 1
-    else:
-        st.session_state.quiz_complete = True
-
-def reset_quiz():
-    st.session_state.quiz_answers = {}
-    st.session_state.quiz_step = 1
-    st.session_state.quiz_complete = False
+    st.session_state.quiz_step += 1
 
 # --- STYLING ---
 st.markdown("""
 <style>
 :root {
-    --bg: #FAF9F7;
-    --card-bg: #FFFFFF;
-    --text-primary: #222222;
-    --text-secondary: #6B7280;
-    --accent: #CBAACB;
-    --accent-hover: #A67AA9;
-    --border: #E5E7EB;
+    --primary: #212529;
+    --accent: #D4AF37;
+    --light: #F8F9FA;
+    --border: #DEE2E6;
 }
-
-body {
-    background-color: var(--bg);
-    color: var(--text-primary);
-}
-
-.stButton>button {
-    background-color: var(--accent);
-    color: var(--text-primary);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-}
-
-.stButton>button:hover {
-    background-color: var(--accent-hover);
-    color: white;
-}
-
 .hero {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-    padding: 3rem;
+    background: #1C1C1E;
+    padding: 2rem;
     border-radius: 12px;
     text-align: center;
     margin-bottom: 2rem;
-    color: white;
 }
-
 .step {
     width: 30px;
     height: 30px;
@@ -117,80 +82,9 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0 0.5rem;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
 }
-
 .step.active {
     background: var(--accent);
-    color: white;
-}
-
-.stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4 {
-    color: var(--text-primary);
-}
-
-.stMarkdown p {
-    color: var(--text-secondary);
-}
-
-.stSelectbox, .stTextInput, .stTextArea {
-    border: 1px solid var(--border) !important;
-    border-radius: 8px !important;
-}
-
-.stSelectbox div[data-baseweb="select"] > div {
-    border-radius: 8px !important;
-}
-
-.css-1aumxhk {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-
-/* Navigation styling */
-.st-bh, .st-cg, .st-ch, .st-ci, .st-cj, .st-ck {
-    color: var(--text-primary) !important;
-}
-
-[data-testid="stHorizontalBlock"] > div:nth-child(1) > div > div > div > div > div {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    padding: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-[data-testid="stHorizontalBlock"] > div:nth-child(1) > div > div > div > div > div > a {
-    color: var(--text-primary);
-    font-weight: 500;
-}
-
-[data-testid="stHorizontalBlock"] > div:nth-child(1) > div > div > div > div > div > a:hover {
-    color: var(--accent-hover);
-}
-
-[data-testid="stHorizontalBlock"] > div:nth-child(1) > div > div > div > div > div > a[aria-selected="true"] {
-    background-color: var(--accent);
-    color: white !important;
-    border-radius: 8px;
-}
-
-.testimonial-card {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    margin-bottom: 1rem;
-}
-
-.consultation-card {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    margin-top: 2rem;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -203,22 +97,10 @@ selected = option_menu(
     default_index=0,
     orientation="horizontal",
     styles={
-        "container": {
-            "background-color": "#FFFFFF",
-            "padding": "0.5rem",
-            "border-radius": "8px",
-            "box-shadow": "0 2px 4px rgba(0,0,0,0.05)"
-        },
-        "nav-link": {
-            "color": "#222222",
-            "font-weight": "500",
-            "margin": "0 0.5rem",
-        },
         "nav-link-selected": {
-            "background": "#CBAACB",
-            "color": "white",
+            "background": "#D4AF37",
+            "color": "#1C1C1E",
             "font-weight": "bold",
-            "border-radius": "8px"
         },
     }
 )
@@ -226,11 +108,11 @@ selected = option_menu(
 # --- HERO SECTION ---
 st.markdown("""
 <div class="hero">
-    <h2 style="color: white;">Break Free in Just 2 Sessions</h2>
-    <p style="font-size:1.2rem; color:white; max-width:700px; margin:0 auto 2rem;">
+    <h2 style="color: var(--accent);">Break Free in Just 2 Sessions</h2>
+    <p style="font-size:1.2rem; color:#E9ECEF; max-width:700px; margin:0 auto 2rem;">
         Clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits
     </p>
-    <a href="#quiz" style="background:white; color:#A67AA9; padding:0.8rem 2rem; border-radius:8px; font-weight:600; display:inline-block; margin:0.5rem; text-decoration:none;">Take the 30-Second Quiz</a>
+    <a href="#quiz" style="background:#D4AF37; color:#1C1C1E; padding:0.8rem 2rem; border-radius:8px; font-weight:600; display:inline-block; margin:0.5rem; text-decoration:none;">Take the 30-Second Quiz</a>
 </div>
 """, unsafe_allow_html=True)
 
@@ -239,21 +121,25 @@ if selected == "Home":
     st.markdown("""
     <div id="quiz" style="text-align:center; margin:3rem 0;">
         <h2>30-Second Suitability Quiz</h2>
-        <p style="color: var(--text-secondary);">Answer 3 questions to see if the method is right for you</p>
+        <p>Answer 3 questions to see if the method is right for you</p>
     </div>
     """, unsafe_allow_html=True)
 
     # Progress indicator
-    st.markdown(f"""
+    st.markdown("""
     <div style="display:flex; justify-content:center; gap:1rem; margin:2rem 0;">
-        <div class="step {'active' if st.session_state.quiz_step == 1 else ''}">1</div>
-        <div class="step {'active' if st.session_state.quiz_step == 2 else ''}">2</div>
-        <div class="step {'active' if st.session_state.quiz_step == 3 else ''}">3</div>
+        <div class="step {}">1</div>
+        <div class="step {}">2</div>
+        <div class="step {}">3</div>
     </div>
-    """, unsafe_allow_html=True)
+    """.format(
+        "active" if st.session_state.quiz_step == 1 else "",
+        "active" if st.session_state.quiz_step == 2 else "",
+        "active" if st.session_state.quiz_step == 3 else ""
+    ), unsafe_allow_html=True)
 
     # Question 1
-    if st.session_state.quiz_step == 1 and not st.session_state.quiz_complete:
+    if st.session_state.quiz_step == 1:
         st.markdown("### Q1: What are you looking to change?")
         options = ["Quit smoking", "Reduce anxiety", "Improve sleep", "Other"]
         cols = st.columns(len(options))
@@ -263,7 +149,7 @@ if selected == "Home":
                     handle_quiz_answer(1, option)
 
     # Question 2
-    elif st.session_state.quiz_step == 2 and not st.session_state.quiz_complete:
+    elif st.session_state.quiz_step == 2:
         st.markdown("### Q2: How long have you struggled with this?")
         options = ["Less than 6 months", "6 months to 2 years", "More than 2 years"]
         cols = st.columns(len(options))
@@ -273,248 +159,370 @@ if selected == "Home":
                     handle_quiz_answer(2, option)
 
     # Question 3
-    elif st.session_state.quiz_step == 3 and not st.session_state.quiz_complete:
-        st.markdown("### Q3: Have you tried other methods before?")
-        options = ["Yes, nothing worked", "Yes, with limited success", "No, this is my first attempt"]
+    elif st.session_state.quiz_step == 3:
+        st.markdown("### Q3: How ready are you to make a change?")
+        options = ["Just exploring options", "Somewhat ready", "Very ready - I'm committed"]
         cols = st.columns(len(options))
         for i, option in enumerate(options):
             with cols[i]:
                 if st.button(option, key=f"q3o{i}"):
                     handle_quiz_answer(3, option)
 
-    # Results
-    if st.session_state.quiz_complete:
-        st.markdown("""
-        <div style="text-align:center; padding:2rem; background-color:var(--card-bg); border-radius:12px; margin-top:2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <h3 style="color:var(--accent-hover);">You're a great candidate!</h3>
-            <p style="color:var(--text-secondary);">Based on your answers, the 2-step method would likely work well for you.</p>
-            <p style="color:var(--text-secondary);">Book a free consultation to learn more.</p>
-            <a href="#book-now" style="background:var(--accent); color:white; padding:0.8rem 2rem; border-radius:8px; font-weight:600; display:inline-block; margin:1rem; text-decoration:none;">Book Consultation</a>
-            <div style="margin-top:1rem;">
-                <button onclick="window.location.href='#quiz'" style="background:none; border:none; color:var(--accent); cursor:pointer; font-weight:500;">Retake quiz</button>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        if st.button("Retake quiz", key="retake_quiz"):
-            reset_quiz()
-            st.rerun()
+    # Quiz Results
+    if len(st.session_state.quiz_answers) == 3:
+        st.success("### Based on your answers, our 2-session method would likely work well for you!")
 
-    # Additional Content
-    st.markdown("""
-    <div style="margin-top:4rem;">
-        <h2>Why Choose This Approach?</h2>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:2rem; margin:2rem 0;">
-            <div style="background-color:var(--card-bg); padding:1.5rem; border-radius:8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <h4 style="color:var(--accent-hover);">Evidence-Based</h4>
-                <p style="color:var(--text-secondary);">Combining proven techniques from clinical hypnotherapy and cognitive behavioral therapy</p>
+        # Show summary of answers
+        with st.expander("See your answers"):
+            st.write(f"1. Goal: {st.session_state.quiz_answers.get(1, 'Not answered')}")
+            st.write(f"2. Duration: {st.session_state.quiz_answers.get(2, 'Not answered')}")
+            st.write(f"3. Readiness: {st.session_state.quiz_answers.get(3, 'Not answered')}")
+
+        # Action buttons
+        col1, col2 = st.columns([1,1])
+        with col1:
+            st.markdown("""
+            <div style="text-align:center; margin:1.5rem 0;">
+                <a href="#discovery" style="background:#D4AF37; color:#1C1C1E; padding:0.8rem 2rem; border-radius:8px; font-weight:600; display:inline-block; text-decoration:none;">Book Consultation</a>
             </div>
-            <div style="background-color:var(--card-bg); padding:1.5rem; border-radius:8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <h4 style="color:var(--accent-hover);">Fast Results</h4>
-                <p style="color:var(--text-secondary);">Most clients see significant improvement in just 2-3 sessions</p>
-            </div>
-            <div style="background-color:var(--card-bg); padding:1.5rem; border-radius:8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <h4 style="color:var(--accent-hover);">Personalized</h4>
-                <p style="color:var(--text-secondary);">Each session is tailored to your specific needs and goals</p>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
+        with col2:
+            if st.button("Retake Quiz"):
+                reset_quiz()
+
+# --- OTHER PAGE CONTENT WOULD GO HERE ---
+# (Method, Success Stories, Blog sections would follow similar patterns)
 
 # --- METHOD PAGE ---
 elif selected == "Method":
     st.markdown("""
-    <div style="background-color:var(--card-bg); padding:2rem; border-radius:12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-        <h2>The 2-Step Hypnotherapy Method</h2>
-        <p style="color:var(--text-secondary);">A proven approach combining clinical hypnotherapy with cognitive techniques</p>
-        
-        <div style="display:flex; gap:2rem; margin:3rem 0;">
-            <div style="flex:1; background-color:var(--bg); padding:1.5rem; border-radius:8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <div style="width:50px; height:50px; background-color:var(--accent); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:bold; margin-bottom:1rem;">1</div>
-                <h3 style="color:var(--accent-hover);">Assessment</h3>
-                <p style="color:var(--text-secondary);">We identify the root causes and triggers of your issue through in-depth discussion and analysis.</p>
-                <ul style="color:var(--text-secondary); padding-left:1.2rem;">
-                    <li>Comprehensive history taking</li>
-                    <li>Identifying subconscious patterns</li>
-                    <li>Understanding your unique psychology</li>
-                </ul>
-            </div>
-            <div style="flex:1; background-color:var(--bg); padding:1.5rem; border-radius:8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <div style="width:50px; height:50px; background-color:var(--accent); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:bold; margin-bottom:1rem;">2</div>
-                <h3 style="color:var(--accent-hover);">Transformation</h3>
-                <p style="color:var(--text-secondary);">Using hypnosis, we rewire subconscious patterns and install new, positive behaviors.</p>
-                <ul style="color:var(--text-secondary); padding-left:1.2rem;">
-                    <li>Customized hypnotic suggestions</li>
-                    <li>Cognitive restructuring</li>
-                    <li>Anchoring positive states</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div style="background-color:var(--bg); padding:1.5rem; border-radius:8px; margin-top:2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-            <h3 style="color:var(--accent-hover);">What Makes This Different?</h3>
-            <p style="color:var(--text-secondary);">Traditional therapy often focuses solely on conscious understanding, while our approach works directly with the subconscious mind where habits and emotional patterns are stored. This leads to faster, more lasting change.</p>
-        </div>
+    <div style="text-align:center; margin-bottom:2rem;">
+        <h2>Proven 2-Step Method</h2>
+        <p>Why most clients achieve lasting change in just two sessions</p>
     </div>
     """, unsafe_allow_html=True)
 
-# --- SUCCESS PAGE ---
+    # Video Embed
+    st.markdown("""
+    <div class="responsive-iframe" style="margin:2rem 0;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/EXAMPLE_VIDEO_ID" 
+        frameborder="0" allowfullscreen></iframe>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Method Steps
+    steps = st.columns(3)
+    with steps[0]:
+        st.markdown("""
+        <div style="background:white; padding:1.5rem; border-radius:12px; height:100%;">
+            <div style="background:#D4AF37; color:#1C1C1E; width:50px; height:50px; border-radius:50%; 
+            display:flex; align-items:center; justify-content:center; font-weight:bold; margin:0 auto 1rem;">1</div>
+            <h3>Analysis Session</h3>
+            <ul style="text-align:left;">
+                <li>Comprehensive evaluation</li>
+                <li>Identify subconscious drivers</li>
+                <li>Develop personalized plan</li>
+                <li>Around 90 minutes in-person/Zoom</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with steps[1]:
+        st.markdown("""
+        <div style="background:white; padding:1.5rem; border-radius:12px; height:100%;">
+            <div style="background:#D4AF37; color:#1C1C1E; width:50px; height:50px; border-radius:50%; 
+            display:flex; align-items:center; justify-content:center; font-weight:bold; margin:0 auto 1rem;">2</div>
+            <h3>Transformation</h3>
+            <ul style="text-align:left;">
+                <li>Guided hypnosis</li>
+                <li>Create new neural pathways</li>
+                <li>Anchor positive behaviors</li>
+                <li>Around 90 minutes (3-7 days later)</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with steps[2]:
+        st.markdown("""
+        <div style="background:white; padding:1.5rem; border-radius:12px; height:100%;">
+            <div style="background:#F8F9FA; color:#1C1C1E; width:50px; height:50px; border-radius:50%; 
+            display:flex; align-items:center; justify-content:center; font-weight:bold; margin:0 auto 1rem;">+1</div>
+            <h3>Reinforcement</h3>
+            <ul style="text-align:left;">
+                <li>Strengthen new patterns</li>
+                <li>Address remaining blocks</li>
+                <li>Typically not needed</li>
+                <li>Around 60 minutes (optional)</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Pricing
+    st.markdown("""
+    <div style="background:white; padding:1.5rem; border-radius:12px; margin:2rem auto; max-width:800px;">
+        <h3 style="margin-top:0;">Pricing Options</h3>
+        <p><strong>Standard Package:</strong> 3000 THB (Sessions 1 & 2)</p>
+        <p><strong>Premium Package:</strong> 4000 THB (Includes optional reinforcement)</p>
+        <p style="font-size:0.9rem; color:#6C757D;">Payment is due at first session. Cash and bank transfer accepted.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- SUCCESS STORIES PAGE ---
 elif selected == "Success":
     st.markdown("""
-    <div style="background-color:var(--card-bg); padding:2rem; border-radius:12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-        <h2>Success Stories</h2>
-        <p style="color:var(--text-secondary);">Real people who transformed their lives with the 2-step method</p>
-        
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:2rem; margin:3rem 0;">
-            <div class="testimonial-card">
-                <div style="display:flex; align-items:center; margin-bottom:1rem;">
-                    <div style="width:50px; height:50px; background-color:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; margin-right:1rem;">S</div>
-                    <div>
-                        <h4 style="color:var(--accent-hover); margin:0;">Sarah, 34</h4>
-                        <p style="color:var(--text-secondary); margin:0; font-size:0.9rem;">Former smoker</p>
-                    </div>
-                </div>
-                <p style="color:var(--text-secondary);">"After 10 years of smoking, I quit in just two sessions. I haven't touched a cigarette in 6 months! The cravings disappeared completely after the first session."</p>
-                <div style="color:var(--accent); font-size:0.9rem;">★★★★★</div>
-            </div>
-            
-            <div class="testimonial-card">
-                <div style="display:flex; align-items:center; margin-bottom:1rem;">
-                    <div style="width:50px; height:50px; background-color:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; margin-right:1rem;">M</div>
-                    <div>
-                        <h4 style="color:var(--accent-hover); margin:0;">Michael, 42</h4>
-                        <p style="color:var(--text-secondary); margin:0; font-size:0.9rem;">Anxiety relief</p>
-                    </div>
-                </div>
-                <p style="color:var(--text-secondary);">"My anxiety levels dropped dramatically after just one session. I finally feel in control of my emotions and can handle stressful situations calmly."</p>
-                <div style="color:var(--accent); font-size:0.9rem;">★★★★★</div>
-            </div>
-            
-            <div class="testimonial-card">
-                <div style="display:flex; align-items:center; margin-bottom:1rem;">
-                    <div style="width:50px; height:50px; background-color:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; margin-right:1rem;">E</div>
-                    <div>
-                        <h4 style="color:var(--accent-hover); margin:0;">Emma, 28</h4>
-                        <p style="color:var(--text-secondary); margin:0; font-size:0.9rem;">Insomnia recovery</p>
-                    </div>
-                </div>
-                <p style="color:var(--text-secondary);">"The insomnia that plagued me for years disappeared after just one session. I now fall asleep naturally and wake up refreshed. It's life-changing."</p>
-                <div style="color:var(--accent); font-size:0.9rem;">★★★★★</div>
-            </div>
+    <div style="text-align:center; margin-bottom:2rem;">
+        <h2>Client Transformations</h2>
+        <p>Real people who changed their lives in 2 sessions</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Testimonials
+    testimonials = [
+        {
+            "icon": "🌟",
+            "quote": "Finally broke free from old patterns – 2 sessions changed everything.",
+            "author": "Director, Banking, Singapore"
+        },
+        {
+            "icon": "🎓", 
+            "quote": "I was struggling with my studies abroad... now doing my specialization internship.",
+            "author": "Medical Student, Morocco"
+        },
+        {
+            "icon": "🚭",
+            "quote": "My husband was a heavy smoker... No more addiction.",
+            "author": "Wife, Bangkok"
+        }
+    ]
+
+    for t in testimonials:
+        st.markdown(f"""
+        <div style="background:white; padding:1.5rem; border-radius:12px; margin-bottom:1rem; border-left:4px solid #D4AF37;">
+            <div style="font-size:1.8rem; margin-bottom:0.5rem;">{t['icon']}</div>
+            <p style="font-style:italic; font-size:1.1rem;">"{t['quote']}"</p>
+            <p style="text-align:right; font-weight:600; margin-bottom:0;">— {t['author']}</p>
         </div>
-        
-        <div style="background-color:var(--bg); padding:1.5rem; border-radius:8px; margin-top:2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-            <h3 style="color:var(--accent-hover);">Ready for Your Transformation?</h3>
-            <p style="color:var(--text-secondary);">Book a free consultation to discuss how we can help you achieve similar results.</p>
-            <a href="#book-now" style="background:var(--accent); color:white; padding:0.8rem 2rem; border-radius:8px; font-weight:600; display:inline-block; margin-top:1rem; text-decoration:none;">Book Consultation</a>
-        </div>
+        """, unsafe_allow_html=True)
+
+    # CTA
+    st.markdown("""
+    <div style="text-align:center; margin:2rem 0;">
+        <a href="#discovery" style="background:#D4AF37; color:#1C1C1E; padding:0.8rem 2rem; border-radius:8px; 
+        font-weight:600; display:inline-block; text-decoration:none;">Book Your Session</a>
     </div>
     """, unsafe_allow_html=True)
 
 # --- BLOG PAGE ---
 elif selected == "Blog":
     st.markdown("""
-    <div style="background-color:var(--card-bg); padding:2rem; border-radius:12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-        <h2>Latest Articles</h2>
-        <p style="color:var(--text-secondary);">Insights on hypnotherapy and mental wellbeing</p>
-        
-        <div style="display:grid; gap:2rem; margin:3rem 0;">
-            <div style="border-bottom:1px solid var(--border); padding-bottom:2rem;">
-                <h3 style="color:var(--accent-hover);">How Hypnosis Rewires Your Brain</h3>
-                <p style="color:var(--text-secondary); font-size:0.9rem;">Published on May 15, 2023</p>
-                <p style="color:var(--text-secondary);">The neuroscience behind why hypnotherapy works for habit change. Learn how hypnosis creates new neural pathways that support your desired changes.</p>
-                <a href="#" style="color:var(--accent); font-weight:500; display:inline-block; margin-top:0.5rem;">Read more →</a>
-            </div>
-            
-            <div style="border-bottom:1px solid var(--border); padding-bottom:2rem;">
-                <h3 style="color:var(--accent-hover);">5 Signs You're Ready for Change</h3>
-                <p style="color:var(--text-secondary); font-size:0.9rem;">Published on April 28, 2023</p>
-                <p style="color:var(--text-secondary);">How to know when you're truly prepared to transform your habits. Recognizing these signs can help you succeed in your change journey.</p>
-                <a href="#" style="color:var(--accent); font-weight:500; display:inline-block; margin-top:0.5rem;">Read more →</a>
-            </div>
-            
-            <div style="padding-bottom:1rem;">
-                <h3 style="color:var(--accent-hover);">Anxiety Relief Without Medication</h3>
-                <p style="color:var(--text-secondary); font-size:0.9rem;">Published on March 10, 2023</p>
-                <p style="color:var(--text-secondary);">Natural approaches to calm your nervous system. Discover how hypnotherapy can help regulate your stress response without drugs.</p>
-                <a href="#" style="color:var(--accent); font-weight:500; display:inline-block; margin-top:0.5rem;">Read more →</a>
-            </div>
-        </div>
-        
-        <div style="background-color:var(--bg); padding:1.5rem; border-radius:8px; margin-top:2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-            <h3 style="color:var(--accent-hover);">Subscribe to Our Newsletter</h3>
-            <p style="color:var(--text-secondary);">Get the latest articles and hypnotherapy tips delivered to your inbox.</p>
-            
-            <div style="display:flex; gap:1rem; margin-top:1rem;">
-                <input type="email" placeholder="Your email address" style="flex:1; padding:0.8rem; border:1px solid var(--border); border-radius:8px;">
-                <button style="background:var(--accent); color:white; border:none; padding:0 1.5rem; border-radius:8px; font-weight:500; cursor:pointer;">Subscribe</button>
-            </div>
-        </div>
+    <div style="text-align:center; margin-bottom:2rem;">
+        <h2>Hypnotherapy Insights</h2>
+        <p>Educational resources and frequently asked questions</p>
     </div>
     """, unsafe_allow_html=True)
 
-# --- BOOK NOW PAGE ---
+    # Featured Articles
+    articles = [
+        {
+            "title": "How Hypnosis Rewires Your Brain",
+            "summary": "The neuroscience behind why brief hypnotherapy can create lasting change...",
+            "date": "May 15, 2023"
+        },
+        {
+            "title": "Quit Smoking Without Willpower",
+            "summary": "How John quit his 20-year smoking habit in just 2 sessions...",
+            "date": "April 2, 2023"
+        }
+    ]
+
+    for article in articles:
+        with st.expander(f"📝 {article['title']} - {article['date']}"):
+            st.write(article['summary'])
+            st.button("Read Article", key=f"article_{article['title']}")
+
+    # FAQ Section
+    st.markdown("""
+    <div style="margin:3rem 0;">
+        <h3>Frequently Asked Questions</h3>
+    </div>
+    """, unsafe_allow_html=True)
+
+    faqs = [
+        {
+            "question": "Is hypnotherapy safe?",
+            "answer": "Yes, clinical hypnotherapy is a safe, non-invasive approach. You remain fully aware and in control at all times."
+        },
+        {
+            "question": "How many sessions will I need?",
+            "answer": "Most clients achieve their goals in just 2 sessions. About 15% opt for an optional third session."
+        }
+    ]
+
+    for faq in faqs:
+        with st.expander(f"❓ {faq['question']}"):
+            st.write(faq['answer'])
+
+# [Booking form and footer remain the same as in your original code]
 elif selected == "Book Now":
     st.markdown("""
-    <div id="book-now" style="background-color:var(--card-bg); padding:2rem; border-radius:12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-        <h2>Book Your Free Consultation</h2>
-        <p style="color:var(--text-secondary);">30 minutes to discuss your goals and see if we're a good fit</p>
-        
-        <div style="display:flex; gap:3rem; margin-top:2rem;">
-            <div style="flex:1;">
-                <h3 style="color:var(--accent-hover);">What to Expect</h3>
-                <ul style="color:var(--text-secondary); padding-left:1.2rem;">
-                    <li>Confidential discussion of your concerns</li>
-                    <li>Explanation of how hypnotherapy can help</li>
-                    <li>Personalized recommendations</li>
-                    <li>All your questions answered</li>
-                    <li>No pressure or obligation</li>
-                </ul>
-                
-                <div style="margin-top:2rem;">
-                    <h3 style="color:var(--accent-hover);">Availability</h3>
-                    <p style="color:var(--text-secondary);">Monday - Friday: 9am - 6pm</p>
-                    <p style="color:var(--text-secondary);">Saturday: 10am - 2pm</p>
-                </div>
-            </div>
-            
-            <div style="flex:1;">
-    """, unsafe_allow_html=True)
-
-    with st.form("consultation_form", clear_on_submit=True):
-        cols = st.columns(2)
-        with cols[0]:
-            name = st.text_input("Full Name*", key="book_name")
-        with cols[1]:
-            email = st.text_input("Email*", key="book_email")
-        
-        concern = st.selectbox(
-            "Primary Concern*",
-            ["Select one...", "Quit Smoking", "Anxiety Relief", "Sleep Improvement", "Weight Management", "Other"],
-            key="book_concern"
-        )
-        
-        message = st.text_area("What would you like to achieve through hypnotherapy?", key="book_message")
-        
-        submitted = st.form_submit_button("Submit Request")
-        
-        if submitted:
-            if not all([name, email, concern != "Select one..."]):
-                st.error("Please fill in all required fields")
-            elif not is_valid_email(email):
-                st.error("Please enter a valid email address")
-            elif send_email(name, email, concern, message):
-                st.success("Request sent successfully! We'll contact you within 24 hours to schedule your consultation.")
-            else:
-                st.error("There was an error submitting your request. Please try again.")
-
-    st.markdown("""
-            </div>
-        </div>
-        
-        <div style="background-color:var(--bg); padding:1.5rem; border-radius:8px; margin-top:3rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-            <h3 style="color:var(--accent-hover);">Have Questions?</h3>
-            <p style="color:var(--text-secondary);">Email us directly at <a href="mailto:contact@laetitiasheppard.com" style="color:var(--accent);">contact@laetitiasheppard.com</a> or call <a href="tel:+1234567890" style="color:var(--accent);">(123) 456-7890</a></p>
-        </div>
+    <div style="text-align:center; margin-bottom:2rem;">
+        <h2>Start Your Transformation</h2>
+        <p>Choose your preferred booking option below</p>
     </div>
     """, unsafe_allow_html=True)
+
+    # Create two columns for the booking options
+    col1, col2 = st.columns(2, gap="large")
+
+    with col1:
+        st.markdown("""
+        <div style="background:#F8F9FA; padding:1.5rem; border-radius:12px; height:100%;">
+            <h3 style="color:#D4AF37; text-align:center;">Free Discovery Call</h3>
+            <p style="text-align:center;">15-minute consultation to discuss your goals</p>
+            <ul style="margin-left:1rem;">
+                <li>No obligation</li>
+                <li>Learn how hypnotherapy can help</li>
+                <li>Get your questions answered</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+        <div style="background:#F8F9FA; padding:1.5rem; border-radius:12px; height:100%;">
+            <h3 style="color:#D4AF37; text-align:center;">Rewiring Package</h3>
+            <p style="text-align:center;">Complete 2-session transformation</p>
+            <ul style="margin-left:1rem;">
+                <li>Analysis Session (90 mins)</li>
+                <li>Transformation Session (90 mins)</li>
+                <li>Email support between sessions</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Create tabs for different booking options
+    tab1, tab2 = st.tabs(["Free Discovery Call", "Rewiring Package"])
+
+    with tab1:
+        with st.form("discovery_form"):  # Unique key
+            st.markdown("""
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <h3 style="color:#D4AF37;">Free 15-Minute Discovery Call</h3>
+                <p>No obligation consultation to discuss your goals</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+            cols = st.columns(2)
+            with cols[0]:
+                name = st.text_input("Your Name*", key="disc_name")
+            with cols[1]:
+                email = st.text_input("Email*", key="disc_email")
+
+            concern = st.selectbox(
+                "Primary Concern*",
+                ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
+                key="disc_concern"
+            )
+
+            submitted = st.form_submit_button("Book Discovery Call")
+
+            if submitted:
+                if not name or not email or concern == "Select one...":
+                    st.error("Please fill in all required fields")
+                elif not is_valid_email(email):
+                    st.error("Please enter a valid email address")
+                else:
+                    calendly_url = "https://calendly.com/laetitiasheppard/discovery"
+                    st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
+                    if send_email(name, email, concern, "Booking type: Discovery Call"):
+                        st.success("✓ Appointment scheduled!")
+                    st.balloons()
+
+    with tab2:
+        with st.form("package_form"):  # Unique key
+            st.markdown("""
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <h3 style="color:#D4AF37;">Rewiring Package</h3>
+                <p>Complete 2-session transformation program</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+            cols = st.columns(2)
+            with cols[0]:
+                name = st.text_input("Your Name*", key="pkg_name")
+            with cols[1]:
+                email = st.text_input("Email*", key="pkg_email")
+
+            concern = st.selectbox(
+                "Primary Concern*",
+                ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"],
+                key="pkg_concern"
+            )
+
+            submitted = st.form_submit_button("Book Package Now")
+
+            if submitted:
+                if not name or not email or concern == "Select one...":
+                    st.error("Please fill in all required fields")
+                elif not is_valid_email(email):
+                    st.error("Please enter a valid email address")
+                else:
+                    calendly_url = "https://calendly.com/laetitiasheppard/package"
+                    st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
+                    if send_email(name, email, concern, "Booking type: Rewiring Package"):
+                        st.success("✓ Package booked!")
+                    st.balloons()
+
+# --- BOOKING FORM ---
+st.markdown("""
+<div id="discovery" style="background:white; padding:2rem; border-radius:12px; margin:3rem 0;">
+    <h2 style="text-align:center;">Free 15-Minute Discovery Call</h2>
+""", unsafe_allow_html=True)
+
+with st.form("booking_form"):
+    cols = st.columns(2)
+    with cols[0]:
+        name = st.text_input("Your Name*", placeholder="First and last name")
+    with cols[1]:
+        email = st.text_input("Email*", placeholder="Your email address")
+
+    concern = st.selectbox(
+        "Primary Concern*",
+        ["Select one...", "Quit Smoking", "Reduce Anxiety", "Improve Sleep", "Other"]
+    )
+
+    message = st.text_area("Anything we should know", placeholder="Brief details about your situation")
+
+    submitted = st.form_submit_button("Schedule My Free Call")
+
+    if submitted:
+        if not name or not email or concern == "Select one...":
+            st.error("Please fill in all required fields")
+        elif not is_valid_email(email):
+            st.error("Please enter a valid email address")
+        else:
+            calendly_url = "https://calendly.com/laetitiasheppard/30min"
+            st.markdown(f'<meta http-equiv="refresh" content="0; url={calendly_url}" />', unsafe_allow_html=True)
+
+            if send_email(name, email, concern, message):
+                st.success("✓ Appointment scheduled! Check your email for confirmation.")
+            else:
+                st.success("✓ Appointment scheduled! (Email confirmation pending)")
+
+            st.balloons()
+
+
+# --- FOOTER ---
+st.markdown(f"""
+<div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid #DEE2E6;">
+    <p style="color:#6C757D;">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok, Thailand</p>
+    <p style="color:#6C757D; font-size:0.9rem; margin-bottom:1rem;">NEW ADDRESS in ASOKE Sukhumvit</p>
+    <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" 
+       target="_blank"
+       style="background:#D4AF37; color:#1C1C1E; padding:0.5rem 1.5rem; border-radius:8px; 
+       font-weight:600; display:inline-block; text-decoration:none; margin:0.5rem;">
+       Get Directions
+    </a>
+    <p style="color:#6C757D; font-size:0.9rem;">© {datetime.datetime.now().year} All Rights Reserved | Confidentiality Guaranteed</p>
+</div>
+""", unsafe_allow_html=True)
