@@ -165,6 +165,66 @@ body {
     color: var(--text-primary) !important;
 }
 
+/* Unified button styles */
+.stButton>button, 
+.stButton>button:focus,
+.stButton>button:hover {
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Primary button styles */
+.stButton>button.primary,
+.stButton>button[type="primary"],
+.st-emotion-cache-1avcm0n.e1f1d6gn3 {
+    background-color: var(--accent) !important;
+    color: white !important;
+    border: none !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1.5rem !important;
+}
+
+.stButton>button.primary:hover,
+.stButton>button[type="primary"]:hover,
+.st-emotion-cache-1avcm0n.e1f1d6gn3:hover {
+    background-color: var(--accent-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(59, 122, 122, 0.2);
+}
+
+/* Secondary button styles */
+.stButton>button.secondary {
+    background-color: white !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border) !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 1.5rem !important;
+}
+
+.stButton>button.secondary:hover {
+    border-color: var(--accent) !important;
+    color: var(--accent-hover) !important;
+}
+
+/* Custom CTA button styles */
+.cta-button {
+    display: inline-block !important;
+    padding: 0.8rem 2rem !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    background-color: var(--accent) !important;
+    color: white !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.cta-button:hover {
+    background-color: var(--accent-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 122, 122, 0.2);
+}
+
 .css-1aumxhk {
     background-color: var(--bg);
 }
@@ -305,7 +365,9 @@ st.markdown("""
     <p style="font-size:1.2rem; color:var(--text-primary); max-width:700px; margin:0 auto 2rem;">
         Clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits
     </p>
-    <a href="#quiz" class="stButton cta-button" style="display:inline-block; margin:0.5rem; text-decoration:none;">Take the 30-Second Quiz</a>
+    <button onclick="document.getElementById('quiz').scrollIntoView()" class="stButton cta-button">
+        Take the 30-Second Quiz
+    </button>
 </div>
 """, unsafe_allow_html=True)
 
@@ -338,7 +400,7 @@ if selected == "Home":
         cols = st.columns(len(options))
         for i, option in enumerate(options):
             with cols[i]:
-                if st.button(option, key=f"q1o{i}"):
+                if st.button(option, key=f"q1o{i}", type="primary" if i == 0 else "secondary"):
                     handle_quiz_answer(1, option)
 
     # Question 2
@@ -348,7 +410,7 @@ if selected == "Home":
         cols = st.columns(len(options))
         for i, option in enumerate(options):
             with cols[i]:
-                if st.button(option, key=f"q2o{i}"):
+                if st.button(option, key=f"q2o{i}", type="primary" if i == 0 else "secondary"):
                     handle_quiz_answer(2, option)
 
     # Question 3
@@ -358,7 +420,7 @@ if selected == "Home":
         cols = st.columns(len(options))
         for i, option in enumerate(options):
             with cols[i]:
-                if st.button(option, key=f"q3o{i}"):
+                if st.button(option, key=f"q3o{i}", type="primary" if i == 0 else "secondary"):
                     handle_quiz_answer(3, option)
 
     # Quiz Results
@@ -618,7 +680,11 @@ elif selected == "Book Now":
                 key="disc_concern"
             )
 
-            submitted = st.form_submit_button("Book Discovery Call", type="primary")
+            submitted = st.form_submit_button(
+                "Book Discovery Call", 
+                type="primary",  # This will now use our teal color
+                help="Schedule your free 15-minute consultation"
+            )
 
             if submitted:
                 if not name or not email or concern == "Select one...":
@@ -653,7 +719,11 @@ elif selected == "Book Now":
                 key="pkg_concern"
             )
 
-            submitted = st.form_submit_button("Book Package Now", type="primary")
+            submitted = st.form_submit_button(
+                "Book Package Now", 
+                type="primary",  # This will now use our teal color
+                help="Schedule your complete transformation package"
+            )
 
             if submitted:
                 if not name or not email or concern == "Select one...":
@@ -695,10 +765,11 @@ with st.form("booking_form"):
                          placeholder="Brief details about your situation",
                          help="Optional - share anything that might help us prepare")
 
-    submitted = st.form_submit_button("Schedule My Free Call", 
-                                    type="primary",
-                                    help="You'll be redirected to our booking calendar")
-
+    submitted = st.form_submit_button(
+        "Schedule My Free Call", 
+        type="primary",  # This will now use our teal color
+        help="You'll be redirected to our booking calendar"
+    )
     if submitted:
         if not name or not email or concern == "Select one...":
             st.error("Please fill in all required fields")
@@ -717,11 +788,11 @@ st.markdown(f"""
 <div style="text-align:center; margin:3rem 0 1rem 0; padding-top:2rem; border-top:1px solid var(--border);">
     <p style="color:var(--text-secondary);">Laetitia Sheppard • Clinical Hypnotherapy • Bangkok, Thailand</p>
     <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:1rem;">NEW ADDRESS in ASOKE Sukhumvit</p>
-    <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" 
-       target="_blank"
-       class="stButton cta-button" style="display:inline-block; text-decoration:none; margin:0.5rem;">
+    <button onclick="window.open('https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw', '_blank')" 
+       class="stButton cta-button">
        Get Directions
-    </a>
+    </button>
     <p style="color:var(--text-secondary); font-size:0.9rem;">© {datetime.datetime.now().year} All Rights Reserved | Confidentiality Guaranteed</p>
 </div>
 """, unsafe_allow_html=True)
+
