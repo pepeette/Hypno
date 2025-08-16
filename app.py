@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 
 # Import page modules
-from pages.home import HomePage
+from pages.home import create_home_page
 from pages.method import MethodPage  
 from pages.success import SuccessPage
 from pages.blog import BlogPage
