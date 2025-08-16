@@ -571,6 +571,7 @@ def show_quiz():
  
 
 # --- METHOD PAGE ---
+# --- ENHANCED METHOD PAGE ---
 def show_method_page():
     """Display the enhanced Method page content"""
     
@@ -617,8 +618,8 @@ def show_method_page():
         </p>
     </div>
     """, unsafe_allow_html=True)
-
-# The 2-Step Process with enhanced descriptions
+    
+    # The 2-Step Process with enhanced descriptions
     st.markdown("""
     <div style="text-align: center; margin: 3rem 0 2rem 0;">
         <h2>The Proven 2-Step Process</h2>
@@ -721,8 +722,8 @@ def show_method_page():
         st.markdown("Most clients report the old desire/urge simply disappears - the craving is gone, not suppressed.")
     
     st.markdown("</div>", unsafe_allow_html=True)
-
-# Optional Session 3
+    
+    # Optional Session 3
     st.markdown("""
     <div style="background: var(--card-bg); border-radius: var(--radius-md); 
                 padding: 2rem; margin: 2rem 0; box-shadow: var(--shadow-sm); 
@@ -829,8 +830,49 @@ def show_method_page():
                     <em>Compare to: Years of traditional therapy (60,000+ THB)</em>
                 </p>
             </div>
-            <div style="flex: 1; min-width: 280px; padding: 1.5rem; bo
-
+            <div style="flex: 1; min-width: 280px; padding: 1.5rem; border: 1px solid var(--border); 
+                        border-radius: var(--radius-sm); text-align: center;">
+                <h3 style="margin-bottom: 1rem;">Premium Package</h3>
+                <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">4,000 THB</div>
+                <p style="margin-bottom: 1.5rem;">All 3 sessions • Maximum assurance</p>
+                <ul style="text-align: left; margin-bottom: 2rem;">
+                    <li>Everything in Complete Package</li>
+                    <li>Plus: 3rd reinforcement session</li>
+                    <li>100% success guarantee</li>
+                    <li>Peace of mind</li>
+                </ul>
+                <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                    <em>Best for: High achievers who want certainty</em>
+                </p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem; padding: 1rem; 
+                    background: #E1F0F0; border-radius: var(--radius-sm);">
+            <p><strong>Payment:</strong> Due at first session • Cash or bank transfer accepted</p>
+            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">
+                <em>No hidden costs • No recurring payments • One-time investment</em>
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Call to action
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown("""
+        <div style="text-align: center; margin: 3rem 0;">
+            <a href="#discovery" 
+               style="display: inline-block; background-color: var(--accent); color: white; 
+                      text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm); 
+                      font-weight: 600; font-size: 1.1rem; transition: var(--transition);
+                      box-shadow: var(--shadow-accent);">
+                🎯 Start Your Transformation
+            </a>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+                Free 15-minute discovery call • No obligation
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
 
 # --- SUCCESS STORIES PAGE ---
@@ -866,7 +908,7 @@ def show_success_page():
         <div class="card testimonial-card">
             <div style="font-size:1.8rem; margin-bottom:0.5rem; color:var(--accent);">{t['icon']}</div>
             <p style="font-style:italic;">"{t['quote']}"</p>
-            <p style="text-align:right; font-weight:600; margin-bottom:0;">— {t['author']}</p>
+            <p style="text-align:right; font-weight:600; margin-bottom:0;">- {t['author']}</p>
         </div>
         """, unsafe_allow_html=True)
 
