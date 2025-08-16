@@ -50,10 +50,10 @@ class HypnotherapyApp:
         """Render content based on selected navigation page"""
         page_map = {
             "Home": HomePage(),
-            "Method": MethodPage(),
+            #"Method": MethodPage(),
             "Success": SuccessPage(), 
             "Blog": BlogPage(),
-            "Book Now": BookingPage()
+            #"Book Now": BookingPage()
         }
         
         if selected_page in page_map:
