@@ -2,341 +2,425 @@ import streamlit as st
 import sys
 import os
 
-# Add the current directory to the Python path
+# Add current directory to Python path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-# Configure the page first
-st.set_page_config(
-    page_title="2-Step Hypnotherapy | Laetitia Sheppard",
-    page_icon="🧠",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-    menu_items={
-        'Get Help': 'https://laetitiasheppard.com/help',
-        'Report a bug': 'https://laetitiasheppard.com/bug-report',
-        'About': "Transform your life with science-backed hypnotherapy"
-    }
-)
-
-# Apply basic styling
-def apply_basic_styles():
-    """Apply essential styling"""
-    st.markdown("""
-    <style>
-    :root {
-        --bg: #F3F6F8;
-        --card-bg: #FFFFFF;
-        --text-primary: #273548;
-        --text-secondary: #556D7A;
-        --accent: #4CA1A3;
-        --accent-hover: #3B7A7A;
-        --border: #CBD5E1;
-        --success: #22c55e;
-        --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
-        --radius-sm: 8px;
-        --radius-md: 12px;
-        --radius-lg: 16px;
-        --transition: all 0.3s ease;
-    }
+class HypnotherapyApp:
+    """Main application class that orchestrates all components"""
     
-    .stApp {
-        background-color: var(--bg) !important;
-        color: var(--text-primary) !important;
-    }
-    
-    h1 {
-        color: var(--text-primary) !important;
-        font-size: 2.2rem !important;
-        font-weight: 700 !important;
-    }
-    
-    h2, h3 {
-        color: var(--text-primary) !important;
-        font-size: 1.8rem !important;
-        font-weight: 600 !important;
-    }
-    
-    .stButton > button {
-        background-color: var(--accent) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: var(--radius-sm) !important;
-        font-weight: 600 !important;
-    }
-    
-    .stButton > button:hover {
-        background-color: var(--accent-hover) !important;
-        transform: translateY(-1px) !important;
-    }
-    
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    </style>
-    """, unsafe_allow_html=True)
-
-def create_navigation():
-    """Create simple navigation"""
-    try:
-        from streamlit_option_menu import option_menu
-        selected = option_menu(
-            menu_title=None,
-            options=["Home", "Method", "Success", "Blog", "Book Now"],
-            icons=["house", "magic", "stars", "book", "calendar"],
-            default_index=0,
-            orientation="horizontal",
-            styles={
-                "container": {"padding": "0", "background-color": "transparent"},
-                "nav-link": {
-                    "font-size": "1rem",
-                    "padding": "12px 20px",
-                    "color": "#556D7A",
-                    "border-radius": "8px"
-                },
-                "nav-link-selected": {
-                    "background": "#4CA1A3",
-                    "color": "white"
+    def __init__(self):
+        """Initialize the application with proper component loading"""
+        self.setup_page_config()
+        self.load_utilities()
+        self.load_components()
+        
+    def setup_page_config(self):
+        """Configure Streamlit page settings"""
+        try:
+            from utils.config import PageConfig
+            PageConfig.setup()
+        except ImportError:
+            # Fallback page config
+            st.set_page_config(
+                page_title="2-Step Hypnotherapy | Laetitia Sheppard",
+                page_icon="🧠",
+                layout="wide",
+                initial_sidebar_state="collapsed",
+                menu_items={
+                    'Get Help': 'https://laetitiasheppard.com/help',
+                    'Report a bug': 'https://laetitiasheppard.com/bug-report',
+                    'About': "Transform your life with science-backed hypnotherapy"
                 }
-            }
-        )
-        return selected
-    except ImportError:
-        # Fallback to selectbox if option_menu not available
-        return st.selectbox("Navigation", ["Home", "Method", "Success", "Blog", "Book Now"], label_visibility="collapsed")
-
-class SimpleHomePage:
-    """Simplified home page that will definitely work"""
+            )
     
-    def render(self):
-        """Render the home page"""
-        # Hero Section
+    def load_utilities(self):
+        """Load utility modules with error handling"""
+        # Load styling
+        try:
+            from utils.styling import apply_global_styles
+            apply_global_styles()
+            self.styling_loaded = True
+        except ImportError:
+            st.warning("⚠️ Styling module not found. Using fallback styles.")
+            self._apply_fallback_styles()
+            self.styling_loaded = False
+        except Exception as e:
+            st.error(f"❌ Error loading styling: {e}")
+            self._apply_fallback_styles()
+            self.styling_loaded = False
+        
+        # Initialize session state
+        try:
+            from utils.session_state import initialize_session_state
+            initialize_session_state()
+            self.session_state_loaded = True
+        except ImportError:
+            st.warning("⚠️ Session state module not found. Using basic initialization.")
+            self._init_basic_session_state()
+            self.session_state_loaded = False
+        except Exception as e:
+            st.error(f"❌ Error initializing session state: {e}")
+            self._init_basic_session_state()
+            self.session_state_loaded = False
+    
+    def _apply_fallback_styles(self):
+        """Apply basic fallback CSS if main styling fails"""
         st.markdown("""
-        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%);
-                    border-radius: 16px; padding: 3rem 2rem; text-align: center; margin: 2rem 0;">
-            <h1 style="color: white; margin-bottom: 1rem;">Transform Your Life in Just 2 Sessions</h1>
-            <p style="color: white; opacity: 0.95; font-size: 1.1rem; margin-bottom: 2rem;">
-                Science-backed clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits
-            </p>
-            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin: 2rem 0;">
-                <div style="text-align: center; color: white;">
-                    <div style="font-size: 2.5rem; font-weight: bold;">500+</div>
-                    <div>Lives Transformed</div>
-                </div>
-                <div style="text-align: center; color: white;">
-                    <div style="font-size: 2.5rem; font-weight: bold;">10+</div>
-                    <div>Years Experience</div>
-                </div>
-            </div>
-        </div>
+        <style>
+        :root {
+            --accent: #4CA1A3;
+            --accent-hover: #3B7A7A;
+            --text-primary: #273548;
+            --text-secondary: #556D7A;
+            --border: #CBD5E1;
+            --bg: #F3F6F8;
+            --card-bg: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --radius-md: 12px;
+        }
+        
+        .stApp {
+            background-color: var(--bg);
+            color: var(--text-primary);
+        }
+        
+        h1, h2, h3 { color: var(--text-primary); }
+        
+        .stButton > button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .stButton > button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        #MainMenu, footer, header { visibility: hidden; }
+        </style>
         """, unsafe_allow_html=True)
+    
+    def _init_basic_session_state(self):
+        """Basic session state initialization fallback"""
+        if 'app_initialized' not in st.session_state:
+            st.session_state.app_initialized = True
+            st.session_state.current_page = "Home"
+    
+    def load_components(self):
+        """Load all components with proper error handling"""
+        # Navigation component
+        try:
+            from components.navigation import Navigation
+            self.navigation = Navigation()
+            self.navigation_loaded = True
+        except ImportError:
+            st.warning("⚠️ Navigation component not found. Using fallback navigation.")
+            self.navigation = None
+            self.navigation_loaded = False
+        except Exception as e:
+            st.error(f"❌ Error loading navigation: {e}")
+            self.navigation = None
+            self.navigation_loaded = False
         
-        # CTA Button
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            if st.button("🎯 Take the 30-Second Assessment", key="hero_cta", type="primary", use_container_width=True):
-                st.success("Assessment coming soon! Book a discovery call instead.")
+        # Footer component
+        try:
+            from components.footer import Footer
+            self.footer = Footer()
+            self.footer_loaded = True
+        except ImportError:
+            st.warning("⚠️ Footer component not found. Using fallback footer.")
+            self.footer = None
+            self.footer_loaded = False
+        except Exception as e:
+            st.error(f"❌ Error loading footer: {e}")
+            self.footer = None
+            self.footer_loaded = False
+    
+    def create_navigation(self):
+        """Create navigation menu with fallback"""
+        if self.navigation_loaded and self.navigation:
+            try:
+                return self.navigation.create_menu()
+            except Exception as e:
+                st.error(f"❌ Error creating navigation menu: {e}")
+                return self._fallback_navigation()
+        else:
+            return self._fallback_navigation()
+    
+    def _fallback_navigation(self):
+        """Fallback navigation menu"""
+        try:
+            from streamlit_option_menu import option_menu
+            return option_menu(
+                menu_title=None,
+                options=["Home", "Method", "Success", "Blog", "Book Now"],
+                icons=["house", "magic", "stars", "book", "calendar"],
+                default_index=0,
+                orientation="horizontal",
+                styles={
+                    "container": {"padding": "0", "background-color": "transparent"},
+                    "nav-link": {"color": "#556D7A", "border-radius": "8px"},
+                    "nav-link-selected": {"background": "#4CA1A3", "color": "white"}
+                }
+            )
+        except ImportError:
+            return st.selectbox(
+                "Navigation", 
+                ["Home", "Method", "Success", "Blog", "Book Now"],
+                label_visibility="collapsed"
+            )
+    
+    def load_page_component(self, page_name):
+        """Dynamically load page components with error handling"""
+        try:
+            if page_name == "Home":
+                from pages.home import HomePage
+                return HomePage()
+            elif page_name == "Method":
+                from pages.method import MethodPage
+                return MethodPage()
+            elif page_name == "Success":
+                from pages.success import SuccessPage
+                return SuccessPage()
+            elif page_name == "Blog":
+                from pages.blog import BlogPage
+                return BlogPage()
+            elif page_name == "Book Now":
+                from pages.booking import BookingPage
+                return BookingPage()
+            else:
+                return None
+        except ImportError as e:
+            st.warning(f"⚠️ {page_name} page component not found: {e}")
+            return None
+        except Exception as e:
+            st.error(f"❌ Error loading {page_name} page: {e}")
+            return None
+    
+    def render_page_content(self, selected_page):
+        """Render the selected page content"""
+        page_component = self.load_page_component(selected_page)
         
-        # Key Differentiator
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #E1F0F0 0%, white 100%);
-                    border-radius: 12px; padding: 2rem; margin: 2rem 0;
-                    border-left: 4px solid #4CA1A3;">
-            <h2 style="color: #4CA1A3;">🧠 Why Our Method Works</h2>
-            <p style="font-size: 1.1rem; line-height: 1.7;">
-                Traditional therapy focuses on <strong>symptoms</strong> using conscious willpower (which fails 95% of the time). 
-                Our method targets the <strong>root cause</strong> in your subconscious mind - where lasting change actually happens.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+        if page_component:
+            try:
+                page_component.render()
+            except Exception as e:
+                st.error(f"❌ Error rendering {selected_page} page: {e}")
+                self._render_fallback_content(selected_page)
+        else:
+            self._render_fallback_content(selected_page)
+    
+    def _render_fallback_content(self, page_name):
+        """Render fallback content if page component fails"""
+        st.title(f"{page_name}")
         
-        # Benefits Section
-        st.markdown("## Why Choose Our 2-Session Method?")
+        if page_name == "Home":
+            st.markdown("""
+            ## Welcome to 2-Step Hypnotherapy
+            
+            Transform your life with our science-backed approach:
+            - **85% success rate** in just 2 sessions
+            - **Professional certification** and 10+ years experience
+            - **Personalized approach** for lasting change
+            
+            🎯 Take our 30-second assessment to see if you're a good fit!
+            """)
+            
+            if st.button("📞 Book Free Discovery Call", type="primary", use_container_width=True):
+                st.success("✅ Great! We'll contact you within 24 hours.")
+                
+        elif page_name == "Method":
+            st.markdown("""
+            ## Our Proven 2-Step Method
+            
+            **Session 1: Deep Analysis** (90 minutes)
+            - Uncover subconscious patterns driving your behavior
+            - Map your unique triggers and responses
+            - Begin positive programming and immediate relief
+            
+            **Session 2: Transformation** (90 minutes) 
+            - Complete neural pathway rewiring
+            - Install new, empowering behaviors
+            - Lock in lasting change at the subconscious level
+            
+            **Results:** 85% of clients achieve their goals in just these 2 sessions.
+            """)
+            
+        elif page_name == "Success":
+            st.markdown("""
+            ## Real Success Stories
+            
+            ### 🌟 "Finally broke free from old patterns"
+            *Director, Banking, Singapore*  
+            **Challenge:** Anxiety patterns affecting work performance  
+            **Result:** Complete transformation in 2 sessions
+            
+            ### 🚭 "No more addiction" 
+            *Wife describing her husband's transformation, Bangkok*  
+            **Challenge:** 20-year smoking habit, 2 packs daily  
+            **Result:** Completely smoke-free after 2 sessions
+            
+            ### 📈 Our Success Metrics
+            - **85%** achieve goals in 2 sessions
+            - **15%** choose optional 3rd session
+            - **500+** lives transformed since 2014
+            """)
+            
+        elif page_name == "Blog":
+            st.markdown("""
+            ## Hypnotherapy Insights & FAQ
+            
+            ### 🧠 How Hypnosis Rewires Your Brain
+            Discover the neuroscience behind rapid transformation and why hypnotherapy succeeds where willpower fails.
+            
+            ### ❓ Frequently Asked Questions
+            
+            **Is hypnotherapy safe?**  
+            Yes, completely safe. You remain aware and in control throughout.
+            
+            **How many sessions will I need?**  
+            85% of clients achieve their goals in just 2 sessions.
+            
+            **What if I can't be hypnotized?**  
+            Everyone can be hypnotized - it's a natural state we enter daily.
+            
+            **Will I lose control?**  
+            Absolutely not. You're an active participant in your transformation.
+            """)
+            
+        elif page_name == "Book Now":
+            st.markdown("""
+            ## Start Your Transformation Today
+            
+            ### 📞 Free 15-Minute Discovery Call
+            Perfect if you want to:
+            - Understand how hypnotherapy works
+            - Assess your suitability
+            - Ask questions about the process
+            
+            ### ⚡ Complete Transformation Package
+            **3,000 THB** - 2 sessions that change everything
+            - Session 1: Deep analysis (90 min)
+            - Session 2: Transformation (90 min)
+            - Email support between sessions
+            - 85% success rate
+            
+            ### 📍 Contact Information
+            **Bangkok Hypnotherapy Clinic**  
+            27 Soi Sukhumvit 10 (Asoke)  
+            Bangkok, Thailand  
+            
+            **Email:** laetitiasheppard@gmail.com  
+            **Sessions:** In-person or online worldwide
+            """)
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("📞 Free Discovery Call", use_container_width=True):
+                    st.success("✅ We'll contact you within 24 hours!")
+            with col2:
+                if st.button("⚡ Book Package Now", use_container_width=True):
+                    st.success("✅ Great choice! Check your email for next steps.")
+    
+    def render_booking_section(self, selected_page):
+        """Render booking form on relevant pages"""
+        if selected_page != "Book Now":
+            try:
+                from components.booking_form import BookingForm
+                booking_form = BookingForm()
+                st.markdown("---")
+                booking_form.render_compact()
+            except ImportError:
+                st.markdown("---")
+                st.markdown("### 📞 Ready to Start?")
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("Free Discovery Call", key=f"compact_discovery_{selected_page}"):
+                        st.success("We'll contact you soon!")
+                with col2:
+                    if st.button("Book Sessions Now", key=f"compact_book_{selected_page}"):
+                        st.success("Great choice!")
+            except Exception as e:
+                st.error(f"Error loading booking form: {e}")
+    
+    def render_footer(self):
+        """Render footer with fallback"""
+        if self.footer_loaded and self.footer:
+            try:
+                self.footer.render()
+            except Exception as e:
+                st.error(f"❌ Error rendering footer: {e}")
+                self._render_fallback_footer()
+        else:
+            self._render_fallback_footer()
+    
+    def _render_fallback_footer(self):
+        """Fallback footer if main footer fails"""
+        st.markdown("---")
         
         col1, col2 = st.columns(2)
         
         with col1:
             st.markdown("""
-            <div style="background: white; border-radius: 12px; padding: 2rem; text-align: center;
-                        box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #CBD5E1; margin-bottom: 1rem;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
-                <h3>Rapid Results</h3>
-                <p>See transformation in just 2 sessions, not months of therapy</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            st.markdown("""
-            <div style="background: white; border-radius: 12px; padding: 2rem; text-align: center;
-                        box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #CBD5E1;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
-                <h3>Targeted Approach</h3>
-                <p>Personalized sessions designed for your specific challenges</p>
-            </div>
-            """, unsafe_allow_html=True)
+            **Laetitia Sheppard**  
+            Certified Clinical Hypnotherapist  
+            10+ Years Experience  
+            Bangkok, Thailand
+            """)
         
         with col2:
             st.markdown("""
-            <div style="background: white; border-radius: 12px; padding: 2rem; text-align: center;
-                        box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #CBD5E1; margin-bottom: 1rem;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">🧠</div>
-                <h3>Science-Backed</h3>
-                <p>Uses proven neuroplasticity principles to rewire your subconscious</p>
-            </div>
-            """, unsafe_allow_html=True)
+            **Contact Information**  
+            📧 laetitiasheppard@gmail.com  
+            📍 Bangkok Hypnotherapy Clinic  
+            27 Soi Sukhumvit 10 (Asoke)
+            """)
+        
+        st.markdown("---")
+        st.markdown("© 2025 Laetitia Sheppard • All Rights Reserved • 🔒 Confidential & Professional")
+    
+    def run(self):
+        """Main application entry point"""
+        try:
+            # Create navigation and get selected page
+            selected_page = self.create_navigation()
             
-            st.markdown("""
-            <div style="background: white; border-radius: 12px; padding: 2rem; text-align: center;
-                        box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #CBD5E1;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">💯</div>
-                <h3>High Success Rate</h3>
-                <p>85% of clients achieve their goals in our 2-session program</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Testimonials
-        st.markdown("## 💬 Client Success Stories")
-        
-        st.markdown("""
-        <div style="background: white; border-radius: 12px; padding: 1.5rem; margin: 1rem 0;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #4CA1A3;">
-            <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                <div style="font-size: 2.5rem; color: #4CA1A3;">🌟</div>
-                <div>
-                    <blockquote style="font-style: italic; font-size: 1.2rem; margin: 0 0 1rem 0;">
-                        "Finally broke free from old patterns – 2 sessions changed everything."
-                    </blockquote>
-                    <div style="font-weight: 600;">— Director, Banking, Singapore</div>
-                    <div style="color: #4CA1A3; font-size: 0.9rem;">🎯 Anxiety patterns • ⏱️ 2 sessions</div>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div style="background: white; border-radius: 12px; padding: 1.5rem; margin: 1rem 0;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #4CA1A3;">
-            <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                <div style="font-size: 2.5rem; color: #4CA1A3;">🚭</div>
-                <div>
-                    <blockquote style="font-style: italic; font-size: 1.2rem; margin: 0 0 1rem 0;">
-                        "My husband was a heavy smoker... No more addiction."
-                    </blockquote>
-                    <div style="font-weight: 600;">— Wife, Bangkok</div>
-                    <div style="color: #4CA1A3; font-size: 0.9rem;">🎯 Smoking cessation • ⏱️ 2 sessions</div>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Final CTA
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
-                    border-radius: 16px; padding: 3rem 2rem; text-align: center; margin: 4rem 0;">
-            <h2 style="color: white;">Ready to Transform Your Life?</h2>
-            <p style="color: white; opacity: 0.9; font-size: 1.1rem;">
-                Join hundreds of people who have transformed their lives with our proven method.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Final buttons
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            if st.button("📞 Free Discovery Call", key="final_discovery", use_container_width=True):
-                st.success("Excellent choice!")
-        with col2:
-            if st.button("🧠 Learn Our Method", key="final_method", use_container_width=True):
-                st.success("Redirecting to Method page...")
-        with col3:
-            if st.button("⚡ Book Sessions Now", key="final_book", use_container_width=True):
-                st.success("Great! Let's get started.")
-
-def render_fallback_page(page_name):
-    """Render fallback content for other pages"""
-    st.title(f"{page_name} - Coming Soon")
-    st.info(f"The {page_name} page is being prepared. Please check back soon!")
-    
-    if page_name == "Method":
-        st.markdown("""
-        ## Our Proven 2-Step Method
-        
-        **Session 1: Deep Analysis** (90 minutes)
-        - Uncover subconscious patterns
-        - Map your unique triggers
-        - Begin positive programming
-        
-        **Session 2: Transformation** (90 minutes)
-        - Neural pathway rewiring
-        - Install new behaviors
-        - Lock in lasting change
-        """)
-    elif page_name == "Book Now":
-        st.markdown("""
-        ## Start Your Transformation
-        
-        **Contact Information:**
-        - **Email:** laetitiasheppard@gmail.com
-        - **Location:** Bangkok, Thailand
-        - **Sessions:** In-person or online worldwide
-        
-        Book your free discovery call to get started!
-        """)
-
-def render_simple_footer():
-    """Render a simple footer"""
-    st.markdown("---")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("""
-        **Laetitia Sheppard**  
-        Certified Clinical Hypnotherapist  
-        Bangkok, Thailand
-        """)
-    
-    with col2:
-        st.markdown("""
-        **Contact**  
-        📧 laetitiasheppard@gmail.com  
-        📍 Bangkok Hypnotherapy Clinic
-        """)
-    
-    st.markdown("---")
-    st.markdown("© 2025 Laetitia Sheppard • All Rights Reserved")
+            # Track page visit if session state is loaded
+            if self.session_state_loaded:
+                try:
+                    from utils.session_state import track_page_visit
+                    track_page_visit(selected_page)
+                except:
+                    pass
+            
+            # Render main page content
+            self.render_page_content(selected_page)
+            
+            # Add booking section (except on booking page)
+            self.render_booking_section(selected_page)
+            
+            # Render footer
+            self.render_footer()
+            
+        except Exception as e:
+            st.error("❌ Application error occurred. Please refresh the page.")
+            st.exception(e)
+            
+            # Show debug info if in development
+            if st.secrets.get("debug_mode", False):
+                with st.expander("🔧 Debug Information"):
+                    st.write("**Component Status:**")
+                    st.write(f"- Styling loaded: {getattr(self, 'styling_loaded', False)}")
+                    st.write(f"- Session state loaded: {getattr(self, 'session_state_loaded', False)}")
+                    st.write(f"- Navigation loaded: {getattr(self, 'navigation_loaded', False)}")
+                    st.write(f"- Footer loaded: {getattr(self, 'footer_loaded', False)}")
 
 def main():
-    """Main application function"""
-    try:
-        # Apply styling
-        apply_basic_styles()
-        
-        # Create navigation
-        selected_page = create_navigation()
-        
-        # Render page content
-        if selected_page == "Home":
-            home_page = SimpleHomePage()
-            home_page.render()
-        else:
-            render_fallback_page(selected_page)
-        
-        # Add some spacing before footer
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        
-        # Render footer
-        render_simple_footer()
-        
-    except Exception as e:
-        st.error(f"Application error: {str(e)}")
-        st.info("Please refresh the page to try again.")
-        
-        # Show error details in development
-        if st.secrets.get("debug_mode", False):
-            st.exception(e)
+    """Application entry point"""
+    app = HypnotherapyApp()
+    app.run()
 
 if __name__ == "__main__":
-    main()85%</div>
-                    <div>Success in 2 Sessions</div>
-                </div>
-                <div style="text-align: center; color: white;">
-                    <div style="font-size: 2.5rem; font-weight: bold;">
+    main()
