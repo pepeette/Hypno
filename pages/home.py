@@ -1,317 +1,474 @@
 """
 Home page component for the Hypnotherapy website
-FIXED: Using working code from old app.py
+Features hero section, quiz, testimonials, and key information
 """
 import streamlit as st
+from components.quiz import Quiz
+from utils.config import AppConstants, TestimonialConfig
+from utils.session_state import SessionStateKeys
 
-class HomePage:
-    """Main home page component using proven working code"""
+class HeroSection:
+    """Hero section component for the home page"""
     
     def __init__(self):
-        # Initialize session state if needed
-        if 'quiz_answers' not in st.session_state:
-            st.session_state.quiz_answers = {}
-            st.session_state.quiz_step = 1
+        self.title = "Transform Your Life in Just 2 Sessions"
+        self.subtitle = "Science-backed clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits"
+        self.cta_text = "Take the 30-Second Assessment"
     
-    def reset_quiz(self):
-        """Reset quiz state"""
-        st.session_state.quiz_answers = {}
-        st.session_state.quiz_step = 1
-
-    def handle_quiz_answer(self, question_id, answer):
-        """Store quiz answer and advance to next question"""
-        st.session_state.quiz_answers[question_id] = answer
-        st.session_state.quiz_step += 1
-
-    def calculate_suitability_score(self, answers):
-        """Calculate suitability percentage based on quiz answers"""
-        score = 0
-        
-        # Question 1: What are you looking to change? (0-40 points)
-        concern_scores = {
-            "Quit smoking": 40,
-            "Reduce anxiety": 35,
-            "Improve sleep": 30,
-            "Break bad habits": 35,
-            "Other": 25
-        }
-        score += concern_scores.get(answers.get(1, ""), 0)
-        
-        # Question 2: How long have you struggled? (0-30 points)
-        duration_scores = {
-            "Less than 6 months": 20,
-            "6 months to 2 years": 25,
-            "More than 2 years": 30,
-            "Many years": 25
-        }
-        score += duration_scores.get(answers.get(2, ""), 0)
-        
-        # Question 3: How ready are you? (0-30 points)
-        readiness_scores = {
-            "Just exploring options": 10,
-            "Somewhat ready": 20,
-            "Very ready - I'm committed": 30,
-            "Desperate for change": 25
-        }
-        score += readiness_scores.get(answers.get(3, ""), 0)
-        
-        return min(score, 100)  # Cap at 100%
-
-    def get_suitability_message(self, score):
-        """Get message and color based on suitability score"""
-        if score >= 85:
-            return "Excellent candidate for hypnotherapy!", "#22c55e", "🌟"
-        elif score >= 70:
-            return "Very good fit for our 2-session method", "#65a30d", "✅"
-        elif score >= 55:
-            return "Good potential with hypnotherapy", "#eab308", "🎯"
-        elif score >= 40:
-            return "May benefit with additional preparation", "#f97316", "⚡"
-        else:
-            return "Consider a discovery call first", "#ef4444", "💬"
-
-    def show_hero(self):
-        """Display the hero section - WORKING CODE from old app"""
-        st.markdown("""
+    def render(self):
+        """Render the hero section with enhanced styling"""
+        hero_html = f"""
         <div class="hero">
-            <h1>Break Free in Just 2 Sessions</h1>
-            <p>Clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits</p>
+            <div class="hero-content">
+                <h1 style="color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                    {self.title}
+                </h1>
+                <p style="font-size: 1.2rem; color: white; opacity: 0.95; 
+                          max-width: 600px; margin: 1.5rem auto; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
+                    {self.subtitle}
+                </p>
+                
+                <div class="hero-stats" style="display: flex; justify-content: center; gap: 3rem; 
+                                                margin: 2rem 0; flex-wrap: wrap;">
+                    <div class="stat-item">
+                        <div class="stat-number">85%</div>
+                        <div class="stat-label">Success in 2 Sessions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Lives Transformed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <a href="#quiz" class="btn btn-primary" 
+                       style="font-size: 1.1rem; padding: 1rem 2rem; 
+                              background: white; color: var(--accent); 
+                              box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                              text-decoration: none; border-radius: var(--radius-sm);
+                              display: inline-block; font-weight: 600;
+                              transition: all 0.3s ease;">
+                        🎯 {self.cta_text}
+                    </a>
+                </div>
+            </div>
         </div>
-        """, unsafe_allow_html=True)
-
-    def show_quiz(self):
-        """Display the enhanced quiz component - WORKING CODE from old app"""
         
-        # Quiz header
+        <style>
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+        
+        .hero a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-stats {
+                gap: 1.5rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .hero a {
+                font-size: 1rem;
+                padding: 0.8rem 1.5rem;
+            }
+        }
+        </style>
+        """
+        
+        st.markdown(hero_html, unsafe_allow_html=True)
+
+class KeyBenefits:
+    """Key benefits section component"""
+    
+    def __init__(self):
+        self.benefits = [
+            {
+                "icon": "⚡",
+                "title": "Rapid Results",
+                "description": "See transformation in just 2 sessions, not months of therapy"
+            },
+            {
+                "icon": "🧠",
+                "title": "Science-Backed",
+                "description": "Uses proven neuroplasticity principles to rewire your subconscious"
+            },
+            {
+                "icon": "🎯",
+                "title": "Targeted Approach",
+                "description": "Personalized sessions designed for your specific challenges"
+            },
+            {
+                "icon": "💯",
+                "title": "High Success Rate",
+                "description": "85% of clients achieve their goals in our 2-session program"
+            }
+        ]
+    
+    def render(self):
+        """Render the key benefits section"""
         st.markdown("""
-        <div style="text-align: center; margin: 2rem 0;">
-            <h1>30-Second Suitability Assessment</h1>
-            <p style="font-size: 1.1rem; color: var(--text-secondary);">
-                Discover your readiness for transformation in 3 quick questions
+        <div style="text-align: center; margin: 4rem 0 3rem 0;">
+            <h2>Why Choose Our 2-Session Method?</h2>
+            <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 1rem auto;">
+                Traditional therapy focuses on symptoms. We target the root cause in your subconscious mind.
             </p>
         </div>
         """, unsafe_allow_html=True)
         
-        # Progress bar
-        current_step = st.session_state.quiz_step
-        progress_percentage = min((current_step - 1) / 3 * 100, 100)
+        # Create benefit cards
+        cols = st.columns(2 if len(self.benefits) == 4 else len(self.benefits))
         
-        st.markdown(f"""
-        <div style="margin: 2rem 0;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                <span style="font-weight: 600;">Question {min(current_step, 3)} of 3</span>
-                <span style="font-weight: 600;">{int(progress_percentage)}% Complete</span>
-            </div>
-            <div style="background-color: var(--border); height: 8px; border-radius: 4px; overflow: hidden;">
-                <div style="background: linear-gradient(90deg, var(--accent) 0%, #22c55e 100%); 
-                            height: 100%; width: {progress_percentage}%; transition: width 0.5s ease;"></div>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
-                <div style="display: flex; align-items: center; gap: 0.3rem;">
-                    <div style="width: 8px; height: 8px; border-radius: 50%; 
-                               background: {'var(--accent)' if current_step >= 1 else 'var(--border)'};"></div>
-                    Goal
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.3rem;">
-                    <div style="width: 8px; height: 8px; border-radius: 50%; 
-                               background: {'var(--accent)' if current_step >= 2 else 'var(--border)'};"></div>
-                    Duration
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.3rem;">
-                    <div style="width: 8px; height: 8px; border-radius: 50%; 
-                               background: {'var(--accent)' if current_step >= 3 else 'var(--border)'};"></div>
-                    Readiness
-                </div>
-            </div>
+        for i, benefit in enumerate(self.benefits):
+            col_index = i % 2 if len(self.benefits) == 4 else i
+            with cols[col_index]:
+                self._render_benefit_card(benefit)
+    
+    def _render_benefit_card(self, benefit: dict):
+        """Render individual benefit card"""
+        card_html = f"""
+        <div class="benefit-card">
+            <div class="benefit-icon">{benefit['icon']}</div>
+            <h3 class="benefit-title">{benefit['title']}</h3>
+            <p class="benefit-description">{benefit['description']}</p>
+        </div>
+        
+        <style>
+        .benefit-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            margin-bottom: 2rem;
+            height: 100%;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent);
+        }
+        
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .benefit-title {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .benefit-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        </style>
+        """
+        
+        st.markdown(card_html, unsafe_allow_html=True)
+
+class SocialProof:
+    """Social proof section with testimonials and trust indicators"""
+    
+    def __init__(self):
+        self.testimonials = TestimonialConfig.TESTIMONIALS
+        self.trust_indicators = [
+            "✓ Certified Clinical Hypnotherapist",
+            "✓ 10+ Years Experience",
+            "✓ 500+ Successful Transformations",
+            "✓ Confidentiality Guaranteed"
+        ]
+    
+    def render(self):
+        """Render the social proof section"""
+        st.markdown("""
+        <div style="text-align: center; margin: 4rem 0 2rem 0;">
+            <h2>Real Transformations from Real People</h2>
+            <p style="font-size: 1.1rem; color: var(--text-secondary);">
+                See what clients say about their life-changing experiences
+            </p>
         </div>
         """, unsafe_allow_html=True)
         
-        # Question content area
+        # Render testimonials
+        self._render_testimonials()
+        
+        # Render trust indicators
+        self._render_trust_indicators()
+    
+    def _render_testimonials(self):
+        """Render testimonial cards"""
+        # Display testimonials in a single column for better readability
+        for testimonial in self.testimonials:
+            self._render_testimonial_card(testimonial)
+    
+    def _render_testimonial_card(self, testimonial: dict):
+        """Render individual testimonial card"""
+        testimonial_html = f"""
+        <div class="testimonial-card card">
+            <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                <div style="font-size: 2rem; color: var(--accent); 
+                           min-width: 50px; text-align: center;">
+                    {testimonial['icon']}
+                </div>
+                <div style="flex: 1;">
+                    <blockquote style="font-style: italic; font-size: 1.1rem; 
+                                       color: var(--text-primary); margin: 0 0 1rem 0;
+                                       line-height: 1.6;">
+                        "{testimonial['quote']}"
+                    </blockquote>
+                    <div style="display: flex; justify-content: space-between; 
+                                align-items: center; flex-wrap: wrap; gap: 1rem;">
+                        <div style="font-weight: 600; color: var(--text-secondary);">
+                            — {testimonial['author']}
+                        </div>
+                        <div style="display: flex; gap: 1rem; font-size: 0.9rem; 
+                                    color: var(--accent);">
+                            <span>🎯 {testimonial.get('concern', 'General')}</span>
+                            <span>⏱️ {testimonial.get('duration', '2 sessions')}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """
+        
+        st.markdown(testimonial_html, unsafe_allow_html=True)
+    
+    def _render_trust_indicators(self):
+        """Render trust indicators"""
+        trust_html = """
+        <div style="background: var(--card-bg); border-radius: var(--radius-md);
+                    padding: 2rem; margin: 3rem 0; text-align: center;
+                    border: 1px solid var(--border);">
+            <h3 style="color: var(--accent); margin-bottom: 2rem;">Why Trust Our Method?</h3>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem;">
+        """
+        
+        for indicator in self.trust_indicators:
+            trust_html += f"""
+                <div style="color: var(--text-secondary); font-weight: 500;">
+                    {indicator}
+                </div>
+            """
+        
+        trust_html += """
+            </div>
+        </div>
+        """
+        
+        st.markdown(trust_html, unsafe_allow_html=True)
+
+class ProcessPreview:
+    """Quick preview of the 2-step process"""
+    
+    def __init__(self):
+        self.steps = [
+            {
+                "number": "1",
+                "title": "Deep Analysis",
+                "description": "Uncover your unique subconscious patterns",
+                "duration": "90 minutes"
+            },
+            {
+                "number": "2", 
+                "title": "Transformation",
+                "description": "Rewire your mind for lasting change",
+                "duration": "90 minutes"
+            }
+        ]
+    
+    def render(self):
+        """Render the process preview"""
         st.markdown("""
-        <div style="background: var(--card-bg); border-radius: var(--radius-md); 
-                    padding: 2rem; margin: 2rem 0; box-shadow: var(--shadow-sm); 
-                    border: 1px solid var(--border); min-height: 300px;">
+        <div style="text-align: center; margin: 4rem 0 2rem 0;">
+            <h2>How It Works</h2>
+            <p style="font-size: 1.1rem; color: var(--text-secondary);">
+                Our proven 2-step process that creates lasting transformation
+            </p>
+        </div>
         """, unsafe_allow_html=True)
         
-        # Question 1
-        if current_step == 1:
-            st.markdown("### 🎯 What would you most like to change or improve?")
-            st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
-            
-            options = [
-                ("🚭", "Quit smoking", "Break free from tobacco addiction"),
-                ("😌", "Reduce anxiety", "Find calm and peace of mind"), 
-                ("😴", "Improve sleep", "Get better, deeper rest"),
-                ("🔄", "Break bad habits", "Change unwanted behaviors"),
-                ("❓", "Other", "Something else I'd like to change")
-            ]
-            
-            cols = st.columns(2)
-            for i, (icon, option, desc) in enumerate(options):
-                col = cols[i % 2]
-                with col:
-                    if st.button(
-                        f"{icon} **{option}**\n\n{desc}",
-                        key=f"q1o{i}",
-                        use_container_width=True,
-                        help=f"Select if you want to {option.lower()}"
-                    ):
-                        self.handle_quiz_answer(1, option)
-                        st.rerun()
-
-        # Question 2  
-        elif current_step == 2:
-            st.markdown("### ⏰ How long have you been dealing with this challenge?")
-            st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
-            
-            options = [
-                ("🆕", "Less than 6 months", "Relatively new challenge"),
-                ("📅", "6 months to 2 years", "Moderate duration"),
-                ("⏳", "More than 2 years", "Long-standing issue"),
-                ("🔄", "Many years", "Deeply ingrained pattern")
-            ]
-            
-            cols = st.columns(2)
-            for i, (icon, option, desc) in enumerate(options):
-                col = cols[i % 2]
-                with col:
-                    if st.button(
-                        f"{icon} **{option}**\n\n{desc}",
-                        key=f"q2o{i}",
-                        use_container_width=True
-                    ):
-                        self.handle_quiz_answer(2, option)
-                        st.rerun()
-
-        # Question 3
-        elif current_step == 3:
-            st.markdown("### 🚀 How ready are you to make this change happen?")
-            st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
-            
-            options = [
-                ("🤔", "Just exploring options", "Learning about possibilities"),
-                ("👍", "Somewhat ready", "Interested and considering"),
-                ("💪", "Very ready - I'm committed", "Fully motivated to change"),
-                ("🔥", "Desperate for change", "Need transformation now")
-            ]
-            
-            for i, (icon, option, desc) in enumerate(options):
-                if st.button(
-                    f"{icon} **{option}**\n\n{desc}",
-                    key=f"q3o{i}",
-                    use_container_width=True
-                ):
-                    self.handle_quiz_answer(3, option)
-                    st.rerun()
+        cols = st.columns(len(self.steps))
         
-        st.markdown("</div>", unsafe_allow_html=True)
+        for i, step in enumerate(self.steps):
+            with cols[i]:
+                self._render_step_card(step)
+        
+        # Call-to-action
+        st.markdown("""
+        <div style="text-align: center; margin: 3rem 0;">
+            <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem;">
+                Ready to start your transformation?
+            </p>
+            <a href="#method" class="btn btn-secondary" 
+               style="text-decoration: none; margin-right: 1rem;">
+                Learn More About Our Method
+            </a>
+            <a href="#discovery" class="btn btn-primary" style="text-decoration: none;">
+                Book Your Free Discovery Call
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    def _render_step_card(self, step: dict):
+        """Render individual step card"""
+        step_html = f"""
+        <div class="process-step-card">
+            <div class="step-number">{step['number']}</div>
+            <h3 class="step-title">{step['title']}</h3>
+            <p class="step-description">{step['description']}</p>
+            <div class="step-duration">{step['duration']}</div>
+        </div>
+        
+        <style>
+        .process-step-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .process-step-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem auto;
+        }
+        
+        .step-title {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .step-duration {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        </style>
+        """
+        
+        st.markdown(step_html, unsafe_allow_html=True)
 
-        # Show results if quiz is complete
-        if len(st.session_state.quiz_answers) == 3:
-            score = self.calculate_suitability_score(st.session_state.quiz_answers)
-            message, color, icon = self.get_suitability_message(score)
-            
-            st.markdown(f"""
-            <div style="background: var(--card-bg); border-radius: var(--radius-md); 
-                        padding: 2rem; margin: 2rem 0; box-shadow: var(--shadow-md); 
-                        border: 2px solid {color}; text-align: center;">
-                <div style="font-size: 4rem; margin-bottom: 1rem;">{icon}</div>
-                <h2 style="color: {color}; margin-bottom: 1rem;">
-                    {score}% Suitability Match
-                </h2>
-                <p style="font-size: 1.2rem; color: var(--text-primary); margin-bottom: 2rem;">
-                    {message}
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Results breakdown
-            with st.expander("📊 See Your Assessment Breakdown", expanded=False):
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    st.markdown("**Your Answers:**")
-                    st.write(f"🎯 **Goal:** {st.session_state.quiz_answers.get(1, 'Not answered')}")
-                    st.write(f"⏰ **Duration:** {st.session_state.quiz_answers.get(2, 'Not answered')}")  
-                    st.write(f"🚀 **Readiness:** {st.session_state.quiz_answers.get(3, 'Not answered')}")
-                
-                with col2:
-                    st.markdown("**What This Means:**")
-                    if score >= 70:
-                        st.success("✅ Excellent fit for our 2-session method")
-                        st.info("You show strong indicators for successful hypnotherapy outcomes")
-                    elif score >= 55:
-                        st.warning("⚡ Good potential with proper approach")
-                        st.info("Hypnotherapy can help, may need tailored session planning")
-                    else:
-                        st.info("💬 A discovery call would be beneficial")
-                        st.info("Let's discuss the best approach for your specific situation")
-            
-            # Action buttons
-            col1, col2, col3 = st.columns([1, 1, 1])
-            
-            with col1:
-                if st.button("🔄 Retake Assessment", use_container_width=True):
-                    self.reset_quiz()
-                    st.rerun()
-            
-            with col2:
-                st.markdown("""
-                <a href="https://calendly.com/laetitiasheppard/discovery" target="_blank"
-                   style="display: block; background-color: var(--accent); color: white; 
-                          text-decoration: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); 
-                          font-weight: 600; text-align: center; transition: var(--transition);">
+class HomePage:
+    """Main home page component that orchestrates all sections"""
+    
+    def __init__(self):
+        self.hero = HeroSection()
+        self.benefits = KeyBenefits()
+        self.social_proof = SocialProof()
+        self.process = ProcessPreview()
+        self.quiz = Quiz()
+    
+    def render(self):
+        """Render the complete home page"""
+        # Hero section
+        self.hero.render()
+        
+        # Quiz section (main focal point)
+        st.markdown('<div id="quiz"></div>', unsafe_allow_html=True)
+        self.quiz.render()
+        
+        # Key benefits
+        self.benefits.render()
+        
+        # Process preview
+        self.process.render()
+        
+        # Social proof
+        self.social_proof.render()
+        
+        # Final call-to-action
+        self._render_final_cta()
+    
+    def _render_final_cta(self):
+        """Render final call-to-action section"""
+        cta_html = """
+        <div style="background: linear-gradient(135deg, var(--accent) 0%, #3B7A7A 100%);
+                    border-radius: var(--radius-lg); padding: 3rem 2rem; 
+                    text-align: center; margin: 4rem 0;">
+            <h2 style="color: white; margin-bottom: 1rem;">
+                Ready to Transform Your Life?
+            </h2>
+            <p style="color: white; opacity: 0.9; font-size: 1.1rem; 
+                      max-width: 500px; margin: 0 auto 2rem auto;">
+                Join hundreds of people who have already transformed their lives 
+                with our proven 2-session method.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                <a href="#discovery" class="btn" 
+                   style="background: white; color: var(--accent); text-decoration: none;
+                          padding: 1rem 2rem; border-radius: var(--radius-sm);
+                          font-weight: 600; transition: all 0.3s ease;">
                     📞 Free Discovery Call
                 </a>
-                """, unsafe_allow_html=True)
-            
-            with col3:
-                if score >= 70:
-                    st.markdown("""
-                    <a href="https://calendly.com/laetitiasheppard/package" target="_blank"
-                       style="display: block; background-color: #22c55e; color: white; 
-                              text-decoration: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); 
-                              font-weight: 600; text-align: center; transition: var(--transition);">
-                        🎯 Book Sessions Now
-                    </a>
-                    """, unsafe_allow_html=True)
-                else:
-                    st.markdown("""
-                    <a href="https://calendly.com/laetitiasheppard/discovery" target="_blank"
-                       style="display: block; background-color: var(--accent); color: white; 
-                              text-decoration: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); 
-                              font-weight: 600; text-align: center; transition: var(--transition);">
-                        💬 Book Discovery Call
-                    </a>
-                    """, unsafe_allow_html=True)
+                <a href="#method" class="btn" 
+                   style="background: transparent; color: white; text-decoration: none;
+                          padding: 1rem 2rem; border-radius: var(--radius-sm);
+                          font-weight: 600; border: 2px solid white;
+                          transition: all 0.3s ease;">
+                    🧠 Learn Our Method
+                </a>
+            </div>
+        </div>
+        """
+        
+        st.markdown(cta_html, unsafe_allow_html=True)
 
-        # Back button for non-completed quiz
-        elif current_step > 1:
-            if st.button("← Back to Previous Question", key="quiz_back"):
-                st.session_state.quiz_step -= 1
-                # Remove the last answer
-                if current_step - 1 in st.session_state.quiz_answers:
-                    del st.session_state.quiz_answers[current_step - 1]
-                st.rerun()
-
-    def render(self):
-        """Render complete home page using working components"""
-        try:
-            # Hero section
-            self.show_hero()
-            
-            # Main quiz component - the centerpiece
-            self.show_quiz()
-            
-        except Exception as e:
-            st.error(f"Error rendering home page: {e}")
-            # Minimal fallback only if there's an actual error
-            st.title("Transform Your Life in Just 2 Sessions")
-            st.markdown("Science-backed clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits")
-            
-            if st.button("📞 Book Free Discovery Call", type="primary"):
-                st.success("We'll contact you within 24 hours!")
-
+# Factory function for easy import
 def create_home_page():
     """Factory function to create HomePage instance"""
     return HomePage()
