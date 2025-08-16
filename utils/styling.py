@@ -1,18 +1,21 @@
 """
-Styling module for the Hypnotherapy website
-Centralizes all CSS styling and design system
+Simplified styling module for the Hypnotherapy website
+Ensures all CSS loads properly without conflicts
 """
 import streamlit as st
 
 def apply_global_styles():
-    """Apply all global styles to the Streamlit app"""
+    """Apply essential global styles in a single, comprehensive block"""
     
-    # FIXED: Apply CSS in a single block to ensure it loads
-    st.markdown("""
+    css_styles = """
     <style>
-    /* CSS Variables - FIXED VERSION */
+    /* Reset and base styles */
+    * {
+        box-sizing: border-box;
+    }
+    
+    /* CSS Variables */
     :root {
-        /* Colors */
         --bg: #F3F6F8;
         --card-bg: #FFFFFF;
         --text-primary: #273548;
@@ -23,74 +26,91 @@ def apply_global_styles():
         --success: #22c55e;
         --warning: #eab308;
         --error: #ef4444;
-        
-        /* Shadows */
         --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
         --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
         --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
-        --shadow-accent: 0 2px 8px rgba(59, 122, 122, 0.2);
-        
-        /* Border radius */
         --radius-sm: 8px;
         --radius-md: 12px;
         --radius-lg: 16px;
-        
-        /* Typography - EXACTLY 3 SIZES */
-        --font-size-large: 2.2rem;    /* Only for main titles */
-        --font-size-medium: 1.8rem;   /* For headers */
-        --font-size-normal: 1rem;     /* For all body text */
-        
-        --line-height-tight: 1.3;
-        --line-height-normal: 1.6;
-        
-        /* Transitions */
         --transition: all 0.3s ease;
     }
     
     /* Force light mode */
-    html, body, [class*="st"] {
-        color-scheme: light !important;
-    }
-    
     .stApp {
         background-color: var(--bg) !important;
         color: var(--text-primary) !important;
     }
     
-    /* STRICT TYPOGRAPHY - ONLY 3 SIZES, NO TEXT SHADOWS */
+    /* Typography */
     h1 {
-        font-size: var(--font-size-large) !important;
-        line-height: var(--line-height-tight) !important;
-        margin-bottom: 1.5rem !important;
         color: var(--text-primary) !important;
+        font-size: 2.2rem !important;
         font-weight: 700 !important;
-        text-shadow: none !important;
+        line-height: 1.3 !important;
+        margin-bottom: 1.5rem !important;
     }
     
     h2, h3, h4, h5, h6 {
-        font-size: var(--font-size-medium) !important;
-        line-height: var(--line-height-tight) !important;
-        margin-bottom: 1.2rem !important;
         color: var(--text-primary) !important;
+        font-size: 1.8rem !important;
         font-weight: 600 !important;
-        text-shadow: none !important;
+        line-height: 1.3 !important;
+        margin-bottom: 1.2rem !important;
     }
     
-    p, li, span, div, a, button, input, textarea, select, label, .stMarkdown, .stText {
-        font-size: var(--font-size-normal) !important;
-        line-height: var(--line-height-normal) !important;
+    p, li, span, div {
         color: var(--text-secondary) !important;
-        text-shadow: none !important;
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
     }
     
-    /* Card Components */
+    /* Buttons */
+    .stButton > button {
+        background-color: var(--accent) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: var(--radius-sm) !important;
+        padding: 0.5rem 1.5rem !important;
+        font-weight: 600 !important;
+        transition: var(--transition) !important;
+        cursor: pointer !important;
+    }
+    
+    .stButton > button:hover {
+        background-color: var(--accent-hover) !important;
+        transform: translateY(-1px) !important;
+    }
+    
+    /* Form elements */
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div > select,
+    .stTextArea > div > div > textarea {
+        background-color: white !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius-sm) !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stSelectbox > div > div > select:focus,
+    .stTextArea > div > div > textarea:focus {
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.1) !important;
+    }
+    
+    /* Hide Streamlit branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    .stDeployButton {display: none;}
+    
+    /* Card components */
     .card {
         background: var(--card-bg);
         border-radius: var(--radius-md);
         padding: 2rem;
         box-shadow: var(--shadow-sm);
         border: 1px solid var(--border);
-        transition: var(--transition);
         margin-bottom: 2rem;
     }
     
@@ -99,72 +119,7 @@ def apply_global_styles():
         box-shadow: var(--shadow-md);
     }
     
-    /* Hero Section */
-    .hero {
-        background: linear-gradient(135deg, var(--accent) 0%, #E1F0F0 100%);
-        padding: 3rem 2rem;
-        border-radius: var(--radius-lg);
-        text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: var(--shadow-sm);
-    }
-    
-    /* Button System */
-    .stButton>button {
-        border-radius: var(--radius-sm) !important;
-        transition: var(--transition) !important;
-        font-weight: 600 !important;
-        padding: 0.5rem 1.5rem !important;
-        cursor: pointer !important;
-        border: none !important;
-        font-size: var(--font-size-normal) !important;
-    }
-    
-    .stButton>button[kind="primary"] {
-        background-color: var(--accent) !important;
-        color: white !important;
-    }
-    
-    .stButton>button[kind="primary"]:hover {
-        background-color: var(--accent-hover) !important;
-        transform: translateY(-1px);
-    }
-    
-    /* Form Elements */
-    .stTextInput>div>div>input, 
-    .stSelectbox>div>div>select,
-    .stTextArea>div>textarea {
-        background-color: white !important;
-        border: 1px solid var(--border) !important;
-        border-radius: var(--radius-sm) !important;
-        padding: 0.5rem 1rem !important;
-        transition: var(--transition) !important;
-        font-size: var(--font-size-normal) !important;
-    }
-    
-    .stTextInput>div>div>input:focus, 
-    .stSelectbox>div>div>select:focus,
-    .stTextArea>div>textarea:focus {
-        border-color: var(--accent) !important;
-        box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.1) !important;
-    }
-    
-    /* Testimonial Cards */
-    .testimonial-card {
-        border-left: 4px solid var(--accent);
-        background: var(--card-bg);
-        padding: 1.5rem;
-        border-radius: var(--radius-md);
-        margin: 1rem 0;
-        box-shadow: var(--shadow-sm);
-    }
-    
-    /* Hide Streamlit Elements */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    
-    /* Mobile Typography */
+    /* Mobile responsiveness */
     @media (max-width: 768px) {
         h1 {
             font-size: 1.8rem !important;
@@ -174,9 +129,75 @@ def apply_global_styles():
             font-size: 1.5rem !important;
         }
         
-        .hero {
-            padding: 2rem 1rem;
+        .stColumns {
+            flex-direction: column !important;
         }
+    }
+    </style>
+    """
+    
+    st.markdown(css_styles, unsafe_allow_html=True)
+
+def inject_custom_css():
+    """Inject additional custom CSS for specific components"""
+    st.markdown("""
+    <style>
+    /* Progress bars and animations */
+    .progress-container {
+        background: #e5e7eb;
+        border-radius: 10px;
+        height: 8px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.5s ease;
+    }
+    
+    /* Testimonial specific styles */
+    .testimonial-card {
+        background: var(--card-bg);
+        border-left: 4px solid var(--accent);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    /* Button variations */
+    .btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+        cursor: pointer;
+        border: none;
+    }
+    
+    .btn-primary {
+        background-color: var(--accent);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--accent-hover);
+        transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+        background-color: transparent;
+        color: var(--accent);
+        border: 2px solid var(--accent);
+    }
+    
+    .btn-secondary:hover {
+        background-color: var(--accent);
+        color: white;
     }
     </style>
     """, unsafe_allow_html=True)
