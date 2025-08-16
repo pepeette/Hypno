@@ -21,6 +21,7 @@ class HeroSection:
         except ImportError:
             success_rate = 85
             
+        # Create the HTML with proper escaping for CSS
         hero_html = f"""
         <div class="hero">
             <div class="hero-content">
@@ -61,7 +62,10 @@ class HeroSection:
                 </div>
             </div>
         </div>
+        """
         
+        # Add the CSS separately to avoid f-string conflicts
+        hero_css = """
         <style>
         .stat-item {
             text-align: center;
@@ -103,6 +107,7 @@ class HeroSection:
         """
         
         st.markdown(hero_html, unsafe_allow_html=True)
+        st.markdown(hero_css, unsafe_allow_html=True)
 
 class KeyBenefits:
     """Key benefits section component"""
