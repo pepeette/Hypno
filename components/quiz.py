@@ -47,33 +47,33 @@ class QuizProgress:
         # Separate CSS from HTML to avoid f-string conflicts
         css_styles = """
         <style>
-        .progress-container {
+        .progress-container {{
             background: #e5e7eb;
             border-radius: 10px;
             height: 8px;
             overflow: hidden;
             margin: 1rem 0;
-        }
+        }}
         
-        .progress-bar {
+        .progress-bar {{
             background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
             height: 100%;
             border-radius: 10px;
             transition: width 0.5s ease;
-        }
+        }}
         
-        .progress-dot {
+        .progress-dot {{
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: var(--border);
             transition: all 0.3s ease;
-        }
+        }}
         
-        .progress-dot.active {
+        .progress-dot.active {{
             background: var(--accent);
             transform: scale(1.2);
-        }
+        }}
         </style>
         """
         
@@ -96,15 +96,15 @@ class QuizProgress:
             <div style="display: flex; justify-content: space-between; margin-top: 1rem; 
                         font-size: 0.9rem; color: var(--text-secondary);">
                 <div style="display: flex; align-items: center; gap: 0.3rem;">
-                    <div class="progress-dot {'active' if current_step >= 1 else ''}"></div>
+                    <div class="progress-dot {{'active' if current_step >= 1 else ''}}"></div>
                     Goal
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.3rem;">
-                    <div class="progress-dot {'active' if current_step >= 2 else ''}"></div>
+                    <div class="progress-dot {{'active' if current_step >= 2 else ''}}"></div>
                     Duration
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.3rem;">
-                    <div class="progress-dot {'active' if current_step >= 3 else ''}"></div>
+                    <div class="progress-dot {{'active' if current_step >= 3 else ''}}"></div>
                     Readiness
                 </div>
             </div>
