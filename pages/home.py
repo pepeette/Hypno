@@ -20,53 +20,19 @@ class HeroSection:
             success_rate = AppConstants.SUCCESS_RATES.get("two_sessions", 85)
         except ImportError:
             success_rate = 85
-            
-        # Create the HTML with proper escaping for CSS
-        hero_html = f"""
-        <div class="hero">
-            <div class="hero-content">
-                <h1 style="color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                    {self.title}
-                </h1>
-                <p style="font-size: 1.2rem; color: white; opacity: 0.95; 
-                          max-width: 600px; margin: 1.5rem auto; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
-                    {self.subtitle}
-                </p>
-                
-                <div class="hero-stats" style="display: flex; justify-content: center; gap: 3rem; 
-                                                margin: 2rem 0; flex-wrap: wrap;">
-                    <div class="stat-item">
-                        <div class="stat-number">{success_rate}%</div>
-                        <div class="stat-label">Success in 2 Sessions</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">Lives Transformed</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">10+</div>
-                        <div class="stat-label">Years Experience</div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 2rem;">
-                    <a href="#quiz" class="btn btn-primary" 
-                       style="font-size: 1.1rem; padding: 1rem 2rem; 
-                              background: white; color: var(--accent); 
-                              box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                              text-decoration: none; border-radius: var(--radius-sm);
-                              display: inline-block; font-weight: 600;
-                              transition: all 0.3s ease;">
-                        🎯 {self.cta_text}
-                    </a>
-                </div>
-            </div>
-        </div>
-        """
         
-        # Add the CSS separately to avoid f-string conflicts
+        # First apply the CSS
         hero_css = """
         <style>
+        .hero {
+            background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%);
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
         .stat-item {
             text-align: center;
             color: white;
@@ -106,8 +72,52 @@ class HeroSection:
         </style>
         """
         
-        st.markdown(hero_html, unsafe_allow_html=True)
         st.markdown(hero_css, unsafe_allow_html=True)
+        
+        # Then render the HTML content
+        hero_html = f"""
+        <div class="hero">
+            <div class="hero-content">
+                <h1 style="color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); font-size: 2.2rem; margin-bottom: 1.5rem;">
+                    {self.title}
+                </h1>
+                <p style="font-size: 1.2rem; color: white; opacity: 0.95; 
+                          max-width: 600px; margin: 1.5rem auto; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
+                    {self.subtitle}
+                </p>
+                
+                <div class="hero-stats" style="display: flex; justify-content: center; gap: 3rem; 
+                                                margin: 2rem 0; flex-wrap: wrap;">
+                    <div class="stat-item">
+                        <div class="stat-number">{success_rate}%</div>
+                        <div class="stat-label">Success in 2 Sessions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Lives Transformed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <a href="#quiz" 
+                       style="font-size: 1.1rem; padding: 1rem 2rem; 
+                              background: white; color: #4CA1A3; 
+                              box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                              text-decoration: none; border-radius: 8px;
+                              display: inline-block; font-weight: 600;
+                              transition: all 0.3s ease;">
+                        🎯 {self.cta_text}
+                    </a>
+                </div>
+            </div>
+        </div>
+        """
+        
+        st.markdown(hero_html, unsafe_allow_html=True)
 
 class KeyBenefits:
     """Key benefits section component"""
