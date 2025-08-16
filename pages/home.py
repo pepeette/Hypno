@@ -464,24 +464,31 @@ class HomePage:
     
     def render(self):
         """Render the complete home page"""
-        # Hero section
-        self.hero.render()
-        
-        # Quiz section (main focal point) - import locally to avoid circular imports
-        st.markdown('<div id="quiz"></div>', unsafe_allow_html=True)
-        self._render_quiz()
-        
-        # Key benefits
-        self.benefits.render()
-        
-        # Process preview
-        self.process.render()
-        
-        # Social proof
-        self.social_proof.render()
-        
-        # Final call-to-action
-        self._render_final_cta()
+        try:
+            # Hero section
+            self.hero.render()
+            
+            # Quiz section (main focal point) - import locally to avoid circular imports
+            st.markdown('<div id="quiz"></div>', unsafe_allow_html=True)
+            self._render_quiz()
+            
+            # Key benefits
+            self.benefits.render()
+            
+            # Process preview
+            self.process.render()
+            
+            # Social proof
+            self.social_proof.render()
+            
+            # Final call-to-action
+            self._render_final_cta()
+            
+        except Exception as e:
+            st.error("Error loading home page content. Please refresh the page.")
+            # Fallback content
+            st.markdown("## Welcome to 2-Step Hypnotherapy")
+            st.markdown("Transform your life with science-backed hypnotherapy in just 2 sessions.")
     
     def _render_quiz(self):
         """Render quiz with fallback if component not available"""
@@ -492,52 +499,69 @@ class HomePage:
         except ImportError:
             # Fallback quiz placeholder
             st.markdown("""
-            <div style="background: var(--card-bg); border-radius: var(--radius-md);
+            <div style="background: #FFFFFF; border-radius: 12px;
                         padding: 3rem 2rem; text-align: center; margin: 2rem 0;
-                        border: 1px solid var(--border);">
-                <h2>30-Second Suitability Assessment</h2>
-                <p style="font-size: 1.1rem; color: var(--text-secondary); margin: 1rem 0;">
+                        border: 1px solid #CBD5E1; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <h2 style="color: #273548; margin-bottom: 1rem;">30-Second Suitability Assessment</h2>
+                <p style="font-size: 1.1rem; color: #556D7A; margin: 1rem 0;">
                     Interactive quiz coming soon! For now, book a free discovery call to assess your suitability.
                 </p>
-                <a href="#discovery" class="btn btn-primary" style="text-decoration: none;">
+                <a href="#discovery" 
+                   style="display: inline-block; background-color: #4CA1A3; color: white;
+                          text-decoration: none; padding: 1rem 2rem; border-radius: 8px;
+                          font-weight: 600; transition: all 0.3s ease;">
                     📞 Book Free Discovery Call
                 </a>
             </div>
             """, unsafe_allow_html=True)
+        except Exception as e:
+            st.info("Assessment tool is loading. Please try again in a moment.")
     
     def _render_final_cta(self):
         """Render final call-to-action section"""
-        cta_html = """
-        <div style="background: linear-gradient(135deg, var(--accent) 0%, #3B7A7A 100%);
-                    border-radius: var(--radius-lg); padding: 3rem 2rem; 
-                    text-align: center; margin: 4rem 0;">
-            <h2 style="color: white; margin-bottom: 1rem;">
-                Ready to Transform Your Life?
-            </h2>
-            <p style="color: white; opacity: 0.9; font-size: 1.1rem; 
-                      max-width: 500px; margin: 0 auto 2rem auto;">
-                Join hundreds of people who have already transformed their lives 
-                with our proven 2-session method.
-            </p>
-            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                <a href="#discovery" class="btn" 
-                   style="background: white; color: var(--accent); text-decoration: none;
-                          padding: 1rem 2rem; border-radius: var(--radius-sm);
-                          font-weight: 600; transition: all 0.3s ease;">
-                    📞 Free Discovery Call
-                </a>
-                <a href="#method" class="btn" 
-                   style="background: transparent; color: white; text-decoration: none;
-                          padding: 1rem 2rem; border-radius: var(--radius-sm);
-                          font-weight: 600; border: 2px solid white;
-                          transition: all 0.3s ease;">
-                    🧠 Learn Our Method
-                </a>
+        try:
+            cta_html = """
+            <div style="background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
+                        border-radius: 16px; padding: 3rem 2rem; 
+                        text-align: center; margin: 4rem 0;">
+                <h2 style="color: white; margin-bottom: 1rem;">
+                    Ready to Transform Your Life?
+                </h2>
+                <p style="color: white; opacity: 0.9; font-size: 1.1rem; 
+                          max-width: 500px; margin: 0 auto 2rem auto;">
+                    Join hundreds of people who have already transformed their lives 
+                    with our proven 2-session method.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <a href="#discovery" 
+                       style="background: white; color: #4CA1A3; text-decoration: none;
+                              padding: 1rem 2rem; border-radius: 8px;
+                              font-weight: 600; transition: all 0.3s ease;">
+                        📞 Free Discovery Call
+                    </a>
+                    <a href="#method" 
+                       style="background: transparent; color: white; text-decoration: none;
+                              padding: 1rem 2rem; border-radius: 8px;
+                              font-weight: 600; border: 2px solid white;
+                              transition: all 0.3s ease;">
+                        🧠 Learn Our Method
+                    </a>
+                </div>
             </div>
-        </div>
-        """
-        
-        st.markdown(cta_html, unsafe_allow_html=True)
+            """
+            
+            st.markdown(cta_html, unsafe_allow_html=True)
+        except Exception:
+            # Simple fallback CTA
+            st.markdown("---")
+            st.markdown("### Ready to Get Started?")
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("📞 **Free Discovery Call**")
+                st.markdown("15-minute consultation")
+            with col2:
+                st.markdown("⚡ **Book Sessions**")
+                st.markdown("2-session transformation")
 
 # Factory function for easy import
 def create_home_page():
