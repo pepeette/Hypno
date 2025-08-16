@@ -200,17 +200,18 @@ class HypnotherapyApp:
             return None
     
     def render_page_content(self, selected_page):
-        """Render the selected page content"""
-        page_component = self.load_page_component(selected_page)
-        
-        if page_component:
-            try:
-                page_component.render()
-            except Exception as e:
-                st.error(f"❌ Error rendering {selected_page} page: {e}")
+            """Render the selected page content"""
+            page_component = self.load_page_component(selected_page)
+            
+            if page_component:
+                try:
+                    page_component.render()
+                    return  # ← ADD THIS LINE - STOPS FALLBACK FROM SHOWING
+                except Exception as e:
+                    st.error(f"❌ Error rendering {selected_page} page: {e}")
+                    self._render_fallback_content(selected_page)
+            else:
                 self._render_fallback_content(selected_page)
-        else:
-            self._render_fallback_content(selected_page)
     
     def _render_fallback_content(self, page_name):
         """Render fallback content if page component fails"""
