@@ -40,7 +40,7 @@ class QuizProgress:
     """Handles quiz progress visualization and tracking"""
     
     @staticmethod
-    def render_progress_bar(self, current_step: int, total_steps: int = 3):
+    def render_progress_bar(self, current_step=1, total_steps=3):
         """Render animated progress bar - FIXED f-string syntax"""
         progress_percentage = min((current_step - 1) / total_steps * 100, 100)
         
