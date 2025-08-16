@@ -106,6 +106,23 @@ class HeroSection:
         # Close hero container
         st.markdown('</div>', unsafe_allow_html=True)
 
+class KeyDifferentiator:
+    """Section explaining the key differentiator"""
+    
+    def render(self):
+        """Render the breakthrough difference section"""
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #E1F0F0 0%, #FFFFFF 100%); 
+                    border-radius: 12px; padding: 2rem; margin: 2rem 0; 
+                    border-left: 4px solid #4CA1A3;">
+            <h2 style="color: #4CA1A3; margin-bottom: 1rem;">🧠 The Breakthrough Difference</h2>
+            <p style="font-size: 1.1rem; line-height: 1.7; color: #273548;">
+                Traditional methods rely on <strong>conscious willpower</strong> (which fails 95% of the time). 
+                Our method works directly with your <strong>subconscious programming</strong> - where lasting change actually happens.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
 class KeyBenefits:
     """Key benefits section component"""
     
@@ -140,26 +157,79 @@ class SocialProof:
         st.markdown("## Real Transformations from Real People")
         
         # Testimonial 1
-        with st.container():
-            st.markdown("### 🌟 Director, Banking, Singapore")
-            st.markdown("*\"Finally broke free from old patterns – 2 sessions changed everything.\"*")
-            st.caption("Concern: Anxiety patterns • Duration: 2 sessions")
-        
-        st.markdown("")
+        st.markdown("""
+        <div style="background: #FFFFFF; border-radius: 12px; padding: 1.5rem; margin: 1rem 0; 
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #CBD5E1;
+                    border-left: 4px solid #4CA1A3;">
+            <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                <div style="font-size: 2rem; color: #4CA1A3; min-width: 50px; text-align: center;">
+                    🌟
+                </div>
+                <div style="flex: 1;">
+                    <blockquote style="font-style: italic; font-size: 1.1rem; 
+                                       color: #273548; margin: 0 0 1rem 0; line-height: 1.6;">
+                        "Finally broke free from old patterns – 2 sessions changed everything."
+                    </blockquote>
+                    <div style="font-weight: 600; color: #556D7A;">
+                        — Director, Banking, Singapore
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 0.9rem; margin-top: 0.5rem;">
+                        🎯 Anxiety patterns • ⏱️ 2 sessions
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
         # Testimonial 2
-        with st.container():
-            st.markdown("### 🎓 Medical Student, Morocco")
-            st.markdown("*\"I was struggling with my studies abroad... now doing my specialization internship.\"*")
-            st.caption("Concern: Study anxiety & focus • Duration: 2 sessions")
-        
-        st.markdown("")
+        st.markdown("""
+        <div style="background: #FFFFFF; border-radius: 12px; padding: 1.5rem; margin: 1rem 0; 
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #CBD5E1;
+                    border-left: 4px solid #4CA1A3;">
+            <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                <div style="font-size: 2rem; color: #4CA1A3; min-width: 50px; text-align: center;">
+                    🎓
+                </div>
+                <div style="flex: 1;">
+                    <blockquote style="font-style: italic; font-size: 1.1rem; 
+                                       color: #273548; margin: 0 0 1rem 0; line-height: 1.6;">
+                        "I was struggling with my studies abroad... now doing my specialization internship."
+                    </blockquote>
+                    <div style="font-weight: 600; color: #556D7A;">
+                        — Medical Student, Morocco
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 0.9rem; margin-top: 0.5rem;">
+                        🎯 Study anxiety & focus • ⏱️ 2 sessions
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
         # Testimonial 3
-        with st.container():
-            st.markdown("### 🚭 Wife, Bangkok")
-            st.markdown("*\"My husband was a heavy smoker... No more addiction.\"*")
-            st.caption("Concern: Smoking cessation • Duration: 2 sessions")
+        st.markdown("""
+        <div style="background: #FFFFFF; border-radius: 12px; padding: 1.5rem; margin: 1rem 0; 
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #CBD5E1;
+                    border-left: 4px solid #4CA1A3;">
+            <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                <div style="font-size: 2rem; color: #4CA1A3; min-width: 50px; text-align: center;">
+                    🚭
+                </div>
+                <div style="flex: 1;">
+                    <blockquote style="font-style: italic; font-size: 1.1rem; 
+                                       color: #273548; margin: 0 0 1rem 0; line-height: 1.6;">
+                        "My husband was a heavy smoker... No more addiction."
+                    </blockquote>
+                    <div style="font-weight: 600; color: #556D7A;">
+                        — Wife, Bangkok
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 0.9rem; margin-top: 0.5rem;">
+                        🎯 Smoking cessation • ⏱️ 2 sessions
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 class ProcessPreview:
     """Quick preview of the 2-step process"""
@@ -173,20 +243,44 @@ class ProcessPreview:
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("### 1️⃣ Deep Analysis")
-            st.markdown("**90 minutes**")
-            st.write("Uncover your unique subconscious patterns")
-            st.write("• Map personal behavior patterns")
-            st.write("• Identify root causes vs symptoms")
-            st.write("• Install initial positive programming")
+            st.markdown("""
+            <div style="background: #FFFFFF; border-radius: 12px; padding: 2rem 1.5rem; 
+                        text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+                        border: 1px solid #CBD5E1; margin-bottom: 2rem;">
+                <div style="width: 60px; height: 60px; background: #4CA1A3; color: white; 
+                           border-radius: 50%; display: flex; align-items: center; 
+                           justify-content: center; font-size: 1.8rem; font-weight: bold; 
+                           margin: 0 auto 1.5rem auto;">1</div>
+                <h3 style="color: #273548; margin-bottom: 1rem;">Deep Analysis</h3>
+                <p style="font-weight: 600; color: #4CA1A3; margin-bottom: 1rem;">90 minutes</p>
+                <p style="color: #556D7A; line-height: 1.6;">Uncover your unique subconscious patterns</p>
+                <ul style="text-align: left; color: #556D7A; margin-top: 1rem;">
+                    <li>Map personal behavior patterns</li>
+                    <li>Identify root causes vs symptoms</li>
+                    <li>Install initial positive programming</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
         
         with col2:
-            st.markdown("### 2️⃣ Transformation")
-            st.markdown("**90 minutes • 3-7 days later**")
-            st.write("Rewire your mind for lasting change")
-            st.write("• Deep hypnotic state for rewiring")
-            st.write("• Replace old patterns with new ones")
-            st.write("• Lock in your new identity")
+            st.markdown("""
+            <div style="background: #FFFFFF; border-radius: 12px; padding: 2rem 1.5rem; 
+                        text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+                        border: 1px solid #CBD5E1; margin-bottom: 2rem;">
+                <div style="width: 60px; height: 60px; background: #4CA1A3; color: white; 
+                           border-radius: 50%; display: flex; align-items: center; 
+                           justify-content: center; font-size: 1.8rem; font-weight: bold; 
+                           margin: 0 auto 1.5rem auto;">2</div>
+                <h3 style="color: #273548; margin-bottom: 1rem;">Transformation</h3>
+                <p style="font-weight: 600; color: #4CA1A3; margin-bottom: 1rem;">90 minutes • 3-7 days later</p>
+                <p style="color: #556D7A; line-height: 1.6;">Rewire your mind for lasting change</p>
+                <ul style="text-align: left; color: #556D7A; margin-top: 1rem;">
+                    <li>Deep hypnotic state for rewiring</li>
+                    <li>Replace old patterns with new ones</li>
+                    <li>Lock in your new identity</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
         
         st.markdown("")
         st.markdown("**Ready to start your transformation?**")
@@ -203,6 +297,7 @@ class HomePage:
     
     def __init__(self):
         self.hero = HeroSection()
+        self.differentiator = KeyDifferentiator()
         self.benefits = KeyBenefits()
         self.social_proof = SocialProof()
         self.process = ProcessPreview()
@@ -212,6 +307,9 @@ class HomePage:
         try:
             # Hero section
             self.hero.render()
+            
+            # Key differentiator (like method page)
+            self.differentiator.render()
             
             # Quiz section placeholder
             self._render_quiz_placeholder()
@@ -240,7 +338,16 @@ class HomePage:
         st.markdown("---")
         st.markdown("## 30-Second Suitability Assessment")
         
-        st.info("📝 Interactive quiz coming soon! For now, book a free discovery call to assess your suitability.")
+        st.markdown("""
+        <div style="background: #FFFFFF; border-radius: 12px;
+                    padding: 3rem 2rem; text-align: center; margin: 2rem 0;
+                    border: 1px solid #CBD5E1; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <h2 style="color: #273548; margin-bottom: 1rem;">Interactive Assessment Coming Soon!</h2>
+            <p style="font-size: 1.1rem; color: #556D7A; margin: 1rem 0;">
+                For now, book a free discovery call to assess your suitability for our 2-session method.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
         
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
@@ -251,34 +358,18 @@ class HomePage:
         """Render final call-to-action section"""
         st.markdown("---")
         
-        # Create a colored container using Streamlit
+        # Create a colored container using direct colors
         st.markdown("""
-        <style>
-        .cta-container {
-            background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
-            padding: 3rem 2rem;
-            border-radius: 16px;
-            text-align: center;
-            margin: 2rem 0;
-        }
-        .cta-title {
-            color: white;
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-        .cta-text {
-            color: white;
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        </style>
+        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
+                    padding: 3rem 2rem; border-radius: 16px; text-align: center; margin: 2rem 0;">
+            <h2 style="color: white; font-size: 2rem; font-weight: bold; margin-bottom: 1rem;">
+                Ready to Transform Your Life?
+            </h2>
+            <p style="color: white; font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.9;">
+                Join hundreds of people who have already transformed their lives with our proven 2-session method.
+            </p>
+        </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown('<div class="cta-container">', unsafe_allow_html=True)
-        st.markdown('<h2 class="cta-title">Ready to Transform Your Life?</h2>', unsafe_allow_html=True)
-        st.markdown('<p class="cta-text">Join hundreds of people who have already transformed their lives with our proven 2-session method.</p>', unsafe_allow_html=True)
         
         col1, col2, col3 = st.columns([1, 1, 1])
         with col1:
@@ -290,8 +381,6 @@ class HomePage:
         with col3:
             if st.button("⚡ Book Sessions Now", key="final_book"):
                 st.success("Great! Let's get started.")
-        
-        st.markdown('</div>', unsafe_allow_html=True)
 
 # Factory function for easy import
 def create_home_page():
