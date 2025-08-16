@@ -1,9 +1,7 @@
-streamlit
-streamlit-option-menu
-
-
-
-
-
-
-
+streamlit>=1.28.0
+streamlit-option-menu>=0.3.6
+pandas>=1.5.0
+smtplib-python>=1.0.0
+re>=2.2.1
+datetime>=5.2
+os-python>=1.0.0
