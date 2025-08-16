@@ -3,9 +3,6 @@ Home page component for the Hypnotherapy website
 Features hero section, quiz, testimonials, and key information
 """
 import streamlit as st
-from components.quiz import Quiz
-from utils.config import AppConstants, TestimonialConfig
-from utils.session_state import SessionStateKeys
 
 class HeroSection:
     """Hero section component for the home page"""
@@ -17,6 +14,13 @@ class HeroSection:
     
     def render(self):
         """Render the hero section with enhanced styling"""
+        # Get success rates from constants (with fallback)
+        try:
+            from utils.config import AppConstants
+            success_rate = AppConstants.SUCCESS_RATES.get("two_sessions", 85)
+        except ImportError:
+            success_rate = 85
+            
         hero_html = f"""
         <div class="hero">
             <div class="hero-content">
@@ -31,7 +35,7 @@ class HeroSection:
                 <div class="hero-stats" style="display: flex; justify-content: center; gap: 3rem; 
                                                 margin: 2rem 0; flex-wrap: wrap;">
                     <div class="stat-item">
-                        <div class="stat-number">85%</div>
+                        <div class="stat-number">{success_rate}%</div>
                         <div class="stat-label">Success in 2 Sessions</div>
                     </div>
                     <div class="stat-item">
@@ -198,7 +202,38 @@ class SocialProof:
     """Social proof section with testimonials and trust indicators"""
     
     def __init__(self):
-        self.testimonials = TestimonialConfig.TESTIMONIALS
+        # Fallback testimonials if config not available
+        self.testimonials = [
+            {
+                "icon": "🌟",
+                "quote": "Finally broke free from old patterns – 2 sessions changed everything.",
+                "author": "Director, Banking, Singapore",
+                "concern": "Anxiety",
+                "duration": "2 sessions"
+            },
+            {
+                "icon": "🎓", 
+                "quote": "I was struggling with my studies abroad... now doing my specialization internship.",
+                "author": "Medical Student, Morocco",
+                "concern": "Study anxiety",
+                "duration": "2 sessions"
+            },
+            {
+                "icon": "🚭",
+                "quote": "My husband was a heavy smoker... No more addiction.",
+                "author": "Wife, Bangkok",
+                "concern": "Smoking cessation",
+                "duration": "2 sessions"
+            }
+        ]
+        
+        # Try to import from config if available
+        try:
+            from utils.config import TestimonialConfig
+            self.testimonials = TestimonialConfig.TESTIMONIALS
+        except ImportError:
+            pass  # Use fallback testimonials above
+            
         self.trust_indicators = [
             "✓ Certified Clinical Hypnotherapist",
             "✓ 10+ Years Experience",
@@ -411,16 +446,15 @@ class HomePage:
         self.benefits = KeyBenefits()
         self.social_proof = SocialProof()
         self.process = ProcessPreview()
-        self.quiz = Quiz()
     
     def render(self):
         """Render the complete home page"""
         # Hero section
         self.hero.render()
         
-        # Quiz section (main focal point)
+        # Quiz section (main focal point) - import locally to avoid circular imports
         st.markdown('<div id="quiz"></div>', unsafe_allow_html=True)
-        self.quiz.render()
+        self._render_quiz()
         
         # Key benefits
         self.benefits.render()
@@ -433,6 +467,28 @@ class HomePage:
         
         # Final call-to-action
         self._render_final_cta()
+    
+    def _render_quiz(self):
+        """Render quiz with fallback if component not available"""
+        try:
+            from components.quiz import Quiz
+            quiz = Quiz()
+            quiz.render()
+        except ImportError:
+            # Fallback quiz placeholder
+            st.markdown("""
+            <div style="background: var(--card-bg); border-radius: var(--radius-md);
+                        padding: 3rem 2rem; text-align: center; margin: 2rem 0;
+                        border: 1px solid var(--border);">
+                <h2>30-Second Suitability Assessment</h2>
+                <p style="font-size: 1.1rem; color: var(--text-secondary); margin: 1rem 0;">
+                    Interactive quiz coming soon! For now, book a free discovery call to assess your suitability.
+                </p>
+                <a href="#discovery" class="btn btn-primary" style="text-decoration: none;">
+                    📞 Book Free Discovery Call
+                </a>
+            </div>
+            """, unsafe_allow_html=True)
     
     def _render_final_cta(self):
         """Render final call-to-action section"""
