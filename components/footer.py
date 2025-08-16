@@ -143,4 +143,145 @@ class Footer:
             </div>
             <div style="margin-top: 1rem;">
                 <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">
-                    🔒 All sessions are
+                    🔒 All sessions are strictly confidential • Licensed & Insured • Professional Standards Guaranteed
+                </p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+class QuickContact:
+    """Quick contact widget for floating or sidebar use"""
+    
+    def __init__(self):
+        try:
+            from utils.config import AppConstants
+            self.discovery_url = AppConstants.CONTACT_INFO.get("discovery_call_url", "#")
+            self.package_url = AppConstants.CONTACT_INFO.get("package_booking_url", "#")
+        except ImportError:
+            self.discovery_url = "#"
+            self.package_url = "#"
+    
+    def render_floating_cta(self):
+        """Render floating call-to-action button"""
+        cta_html = f"""
+        <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+            <a href="{self.discovery_url}" 
+               target="_blank"
+               style="display: flex; align-items: center; gap: 8px;
+                      background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
+                      color: white; text-decoration: none; padding: 12px 16px;
+                      border-radius: 25px; font-weight: 600; font-size: 0.9rem;
+                      box-shadow: 0 4px 20px rgba(76, 161, 163, 0.4);
+                      transition: all 0.3s ease; animation: pulse 2s infinite;">
+                <span>📞</span>
+                <span>Free Call</span>
+            </a>
+        </div>
+        
+        <style>
+        @keyframes pulse {{
+            0% {{ box-shadow: 0 4px 20px rgba(76, 161, 163, 0.4); }}
+            50% {{ box-shadow: 0 4px 25px rgba(76, 161, 163, 0.6); }}
+            100% {{ box-shadow: 0 4px 20px rgba(76, 161, 163, 0.4); }}
+        }}
+        
+        @media (max-width: 768px) {{
+            .floating-cta {{
+                bottom: 10px;
+                right: 10px;
+                padding: 10px 14px;
+                font-size: 0.8rem;
+            }}
+        }}
+        </style>
+        """
+        
+        st.markdown(cta_html, unsafe_allow_html=True)
+    
+    def render_quick_actions(self):
+        """Render quick action buttons"""
+        st.markdown("### Quick Actions")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown(f"""
+            <a href="{self.discovery_url}" target="_blank" 
+               style="display: block; background-color: var(--accent); color: white;
+                      text-decoration: none; padding: 0.8rem; border-radius: var(--radius-sm);
+                      font-weight: 600; text-align: center; margin-bottom: 0.5rem;">
+                📞 Free Call
+            </a>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown(f"""
+            <a href="{self.package_url}" target="_blank" 
+               style="display: block; background-color: var(--success); color: white;
+                      text-decoration: none; padding: 0.8rem; border-radius: var(--radius-sm);
+                      font-weight: 600; text-align: center; margin-bottom: 0.5rem;">
+                ⚡ Book Sessions
+            </a>
+            """, unsafe_allow_html=True)
+
+class SocialProofFooter:
+    """Social proof elements for footer"""
+    
+    def render_trust_badges(self):
+        """Render trust and certification badges"""
+        badges_html = """
+        <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; 
+                    margin: 2rem 0; padding: 1.5rem; background: var(--card-bg); 
+                    border-radius: var(--radius-md); border: 1px solid var(--border);">
+            <div style="text-align: center; color: var(--text-secondary);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🏆</div>
+                <div style="font-size: 0.8rem; font-weight: 600;">Certified</div>
+                <div style="font-size: 0.7rem;">Clinical Hypnotherapist</div>
+            </div>
+            <div style="text-align: center; color: var(--text-secondary);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔒</div>
+                <div style="font-size: 0.8rem; font-weight: 600;">Licensed</div>
+                <div style="font-size: 0.7rem;">& Insured</div>
+            </div>
+            <div style="text-align: center; color: var(--text-secondary);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⭐</div>
+                <div style="font-size: 0.8rem; font-weight: 600;">10+ Years</div>
+                <div style="font-size: 0.7rem;">Experience</div>
+            </div>
+            <div style="text-align: center; color: var(--text-secondary);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🤝</div>
+                <div style="font-size: 0.8rem; font-weight: 600;">500+</div>
+                <div style="font-size: 0.7rem;">Success Stories</div>
+            </div>
+        </div>
+        """
+        
+        st.markdown(badges_html, unsafe_allow_html=True)
+    
+    def render_guarantee(self):
+        """Render satisfaction guarantee"""
+        guarantee_html = """
+        <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid var(--success);
+                    border-radius: var(--radius-md); padding: 1.5rem; text-align: center; margin: 2rem 0;">
+            <h3 style="color: var(--success); margin-bottom: 1rem;">💯 Satisfaction Guarantee</h3>
+            <p style="margin: 0; color: var(--text-secondary);">
+                If you're not completely satisfied after 2 sessions, 
+                your 3rd session is complimentary. Your transformation is our commitment.
+            </p>
+        </div>
+        """
+        
+        st.markdown(guarantee_html, unsafe_allow_html=True)
+
+# Factory functions for easy import
+def create_footer():
+    """Factory function to create Footer instance"""
+    return Footer()
+
+def create_quick_contact():
+    """Factory function to create QuickContact instance"""
+    return QuickContact()
+
+def create_social_proof_footer():
+    """Factory function to create SocialProofFooter instance"""
+    return SocialProofFooter()
