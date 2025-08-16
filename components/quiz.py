@@ -96,15 +96,15 @@ class QuizProgress:
             <div style="display: flex; justify-content: space-between; margin-top: 1rem; 
                         font-size: 0.9rem; color: var(--text-secondary);">
                 <div style="display: flex; align-items: center; gap: 0.3rem;">
-                    <div class="progress-dot {{'active' if current_step >= 1 else ''}}"></div>
+                    <div class="progress-dot {'active' if current_step >= 1 else ''}"></div>
                     Goal
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.3rem;">
-                    <div class="progress-dot {{'active' if current_step >= 2 else ''}}"></div>
+                    <div class="progress-dot {'active' if current_step >= 2 else ''}"></div>
                     Duration
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.3rem;">
-                    <div class="progress-dot {{'active' if current_step >= 3 else ''}}"></div>
+                    <div class="progress-dot {'active' if current_step >= 3 else ''}"></div>
                     Readiness
                 </div>
             </div>
