@@ -13,7 +13,7 @@ class PageConfig:
     def setup():
         """Configure Streamlit page settings"""
         st.set_page_config(
-            page_title="2-Step Hypnotherapy | Laetitia Sheppard",
+            page_title="Hypnotherapy & Behvioural transformation| Laetitia Sheppard",
             page_icon="🧠",
             layout="wide",
             initial_sidebar_state="collapsed",
