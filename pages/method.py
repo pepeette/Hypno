@@ -294,7 +294,7 @@ class PricingSection:
     
     def render(self):
         """Render pricing section"""
-        st.markdown(f"""
+        pricing_html = f"""
         <div style="background: var(--card-bg); border-radius: var(--radius-md); 
                     padding: 2rem; margin: 3rem 0; box-shadow: var(--shadow-sm); 
                     border: 1px solid var(--border);">
@@ -318,3 +318,93 @@ class PricingSection:
                 <div style="flex: 1; min-width: 280px; padding: 1.5rem; border: 1px solid var(--border); 
                             border-radius: var(--radius-sm); text-align: center;">
                     <h3 style="margin-bottom: 1rem;">Premium Package</h3>
+                    <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">{self.premium_package:,} {self.currency}</div>
+                    <p style="margin-bottom: 1.5rem;">All 3 sessions • Maximum assurance</p>
+                    <ul style="text-align: left; margin-bottom: 2rem;">
+                        <li>Everything in Complete Package</li>
+                        <li>Plus: 3rd reinforcement session</li>
+                        <li>100% success guarantee</li>
+                        <li>Peace of mind</li>
+                    </ul>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                        <em>Best for: High achievers who want certainty</em>
+                    </p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem; padding: 1rem; 
+                        background: #E1F0F0; border-radius: var(--radius-sm);">
+                <p><strong>Payment:</strong> Due at first session • Cash or bank transfer accepted</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">
+                    <em>No hidden costs • No recurring payments • One-time investment</em>
+                </p>
+            </div>
+        </div>
+        """
+        
+        st.markdown(pricing_html, unsafe_allow_html=True)
+
+class CallToAction:
+    """Call to action section for method page"""
+    
+    def render(self):
+        """Render call to action"""
+        cta_html = """
+        <div style="text-align: center; margin: 3rem 0;">
+            <a href="#discovery" 
+               style="display: inline-block; background-color: var(--accent); color: white; 
+                      text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm); 
+                      font-weight: 600; font-size: 1.1rem; transition: var(--transition);
+                      box-shadow: var(--shadow-accent);">
+                🎯 Start Your Transformation
+            </a>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+                Free 15-minute discovery call • No obligation
+            </p>
+        </div>
+        """
+        
+        st.markdown(cta_html, unsafe_allow_html=True)
+
+class MethodPage:
+    """Method page component that orchestrates all sections"""
+    
+    def __init__(self):
+        self.hero = MethodHero()
+        self.differentiator = KeyDifferentiator()
+        self.video = VideoSection()
+        self.process = TwoStepProcess()
+        self.statistics = SuccessStatistics()
+        self.science = ScienceSection()
+        self.pricing = PricingSection()
+        self.cta = CallToAction()
+    
+    def render(self):
+        """Render the complete method page"""
+        # Hero section
+        self.hero.render()
+        
+        # Key differentiator
+        self.differentiator.render()
+        
+        # Video section
+        self.video.render()
+        
+        # 2-step process
+        self.process.render()
+        
+        # Success statistics
+        self.statistics.render()
+        
+        # Science explanation
+        self.science.render()
+        
+        # Pricing section
+        self.pricing.render()
+        
+        # Call to action
+        self.cta.render()
+
+# Factory function for easy import
+def create_method_page():
+    """Factory function to create MethodPage instance"""
+    return MethodPage()
