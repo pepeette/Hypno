@@ -307,77 +307,126 @@ def show_hero():
 show_hero()
 
 # --- QUIZ COMPONENT ---
+def calculate_suitability_score(answers):
+    """Calculate suitability percentage based on quiz answers"""
+    score = 0
+    
+    # Question 1: What are you looking to change? (0-40 points)
+    concern_scores = {
+        "Quit smoking": 40,
+        "Reduce anxiety": 35,
+        "Improve sleep": 30,
+        "Break bad habits": 35,
+        "Other": 25
+    }
+    score += concern_scores.get(answers.get(1, ""), 0)
+    
+    # Question 2: How long have you struggled? (0-30 points)
+    duration_scores = {
+        "Less than 6 months": 20,
+        "6 months to 2 years": 25,
+        "More than 2 years": 30,
+        "Many years": 25
+    }
+    score += duration_scores.get(answers.get(2, ""), 0)
+    
+    # Question 3: How ready are you? (0-30 points)
+    readiness_scores = {
+        "Just exploring options": 10,
+        "Somewhat ready": 20,
+        "Very ready - I'm committed": 30,
+        "Desperate for change": 25
+    }
+    score += readiness_scores.get(answers.get(3, ""), 0)
+    
+    return min(score, 100)  # Cap at 100%
+
+def get_suitability_message(score):
+    """Get message and color based on suitability score"""
+    if score >= 85:
+        return "Excellent candidate for hypnotherapy!", "#22c55e", "🌟"
+    elif score >= 70:
+        return "Very good fit for our 2-session method", "#65a30d", "✅"
+    elif score >= 55:
+        return "Good potential with hypnotherapy", "#eab308", "🎯"
+    elif score >= 40:
+        return "May benefit with additional preparation", "#f97316", "⚡"
+    else:
+        return "Consider a discovery call first", "#ef4444", "💬"
+
 def show_quiz():
-    """Display the quiz component"""
+    """Display the enhanced quiz component"""
+    
+    # Quiz header
     st.markdown("""
-    <div id="quiz" class="text-center mb-2">
-        <h2>30-Second Suitability Quiz</h2>
-        <p>Answer 3 questions to see if the method is right for you</p>
+    <div style="text-align: center; margin: 2rem 0;">
+        <h1>30-Second Suitability Assessment</h1>
+        <p style="font-size: 1.1rem; color: var(--text-secondary);">
+            Discover your readiness for transformation in 3 quick questions
+        </p>
     </div>
     """, unsafe_allow_html=True)
-
-    # Progress indicator
+    
+    # Progress bar
+    current_step = st.session_state.quiz_step
+    progress_percentage = min((current_step - 1) / 3 * 100, 100)
+    
     st.markdown(f"""
-    <div style="display:flex; justify-content:center; gap:1rem; margin:2rem 0;">
-        <div class="step {'active' if st.session_state.quiz_step == 1 else ''}">1</div>
-        <div class="step {'active' if st.session_state.quiz_step == 2 else ''}">2</div>
-        <div class="step {'active' if st.session_state.quiz_step == 3 else ''}">3</div>
+    <div style="margin: 2rem 0;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span style="font-weight: 600;">Question {min(current_step, 3)} of 3</span>
+            <span style="font-weight: 600;">{int(progress_percentage)}% Complete</span>
+        </div>
+        <div style="background-color: var(--border); height: 8px; border-radius: 4px; overflow: hidden;">
+            <div style="background: linear-gradient(90deg, var(--accent) 0%, #22c55e 100%); 
+                        height: 100%; width: {progress_percentage}%; transition: width 0.5s ease;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+            <div style="display: flex; align-items: center; gap: 0.3rem;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; 
+                           background: {'var(--accent)' if current_step >= 1 else 'var(--border)'};"></div>
+                Goal
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.3rem;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; 
+                           background: {'var(--accent)' if current_step >= 2 else 'var(--border)'};"></div>
+                Duration
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.3rem;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; 
+                           background: {'var(--accent)' if current_step >= 3 else 'var(--border)'};"></div>
+                Readiness
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
-
+    
+    # Question content area
+    st.markdown("""
+    <div style="background: var(--card-bg); border-radius: var(--radius-md); 
+                padding: 2rem; margin: 2rem 0; box-shadow: var(--shadow-sm); 
+                border: 1px solid var(--border); min-height: 300px;">
+    """, unsafe_allow_html=True)
+    
     # Question 1
-    if st.session_state.quiz_step == 1:
-        st.markdown("## Q1: What are you looking to change?")
-        options = ["Quit smoking", "Reduce anxiety", "Improve sleep", "Other"]
-        cols = st.columns(len(options))
-        for i, option in enumerate(options):
-            with cols[i]:
-                if st.button(option, key=f"q1o{i}", type="primary" if i == 0 else "secondary"):
-                    handle_quiz_answer(1, option)
-
-    # Question 2
-    elif st.session_state.quiz_step == 2:
-        st.markdown("## Q2: How long have you struggled with this?")
-        options = ["Less than 6 months", "6 months to 2 years", "More than 2 years"]
-        cols = st.columns(len(options))
-        for i, option in enumerate(options):
-            with cols[i]:
-                if st.button(option, key=f"q2o{i}", type="primary" if i == 0 else "secondary"):
-                    handle_quiz_answer(2, option)
-
-    # Question 3
-    elif st.session_state.quiz_step == 3:
-        st.markdown("## Q3: How ready are you to make a change?")
-        options = ["Just exploring options", "Somewhat ready", "Very ready - I'm committed"]
-        cols = st.columns(len(options))
-        for i, option in enumerate(options):
-            with cols[i]:
-                if st.button(option, key=f"q3o{i}", type="primary" if i == 0 else "secondary"):
-                    handle_quiz_answer(3, option)
-
-    # Quiz Results
-    if len(st.session_state.quiz_answers) == 3:
-        st.markdown("""
-        <div class="card text-center">
-            <h2>Based on your answers, our 2-session method would likely work well for you!</h2>
-        </div>
-        """, unsafe_allow_html=True)
-
-        with st.expander("See your answers", expanded=False):
-            st.write(f"1. Goal: {st.session_state.quiz_answers.get(1, 'Not answered')}")
-            st.write(f"2. Duration: {st.session_state.quiz_answers.get(2, 'Not answered')}")
-            st.write(f"3. Readiness: {st.session_state.quiz_answers.get(3, 'Not answered')}")
-
-        col1, col2 = st.columns([1,1])
-        with col1:
-            st.markdown("""
-            <div class="text-center">
-                <a href="#discovery" class="stButton primary">Book Consultation</a>
-            </div>
-            """, unsafe_allow_html=True)
-        with col2:
-            if st.button("Retake Quiz", key="retake_quiz"):
-                reset_quiz()
+    if current_step == 1:
+        st.markdown("### 🎯 What would you most like to change or improve?")
+        st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
+        
+        options = [
+            ("🚭", "Quit smoking", "Break free from tobacco addiction"),
+            ("😌", "Reduce anxiety", "Find calm and peace of mind"), 
+            ("😴", "Improve sleep", "Get better, deeper rest"),
+            ("🔄", "Break bad habits", "Change unwanted behaviors"),
+            ("❓", "Other", "Something else I'd like to change")
+        ]
+        
+        cols = st.columns(2)
+        for i, (icon, option, desc) in enumerate(options):
+            col = cols[i % 2]
+            with col:
+                if st.button(
+ 
 
 # --- METHOD PAGE ---
 def show_method_page():
