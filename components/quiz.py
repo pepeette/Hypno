@@ -40,10 +40,44 @@ class QuizProgress:
     """Handles quiz progress visualization and tracking"""
     
     @staticmethod
-    def render_progress_bar(current_step: int, total_steps: int = 3):
-        """Render animated progress bar"""
+    def render_progress_bar(self, current_step: int, total_steps: int = 3):
+        """Render animated progress bar - FIXED f-string syntax"""
         progress_percentage = min((current_step - 1) / total_steps * 100, 100)
         
+        # Separate CSS from HTML to avoid f-string conflicts
+        css_styles = """
+        <style>
+        .progress-container {
+            background: #e5e7eb;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background: var(--accent);
+            transform: scale(1.2);
+        }
+        </style>
+        """
+        
+        # HTML with f-string (no CSS braces to conflict)
         progress_html = f"""
         <div style="margin: 2rem 0;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
@@ -56,9 +90,7 @@ class QuizProgress:
             </div>
             
             <div class="progress-container">
-                <div class="progress-bar" 
-                     style="width: {progress_percentage}%; 
-                            transition: width 0.5s ease;"></div>
+                <div class="progress-bar" style="width: {progress_percentage}%;"></div>
             </div>
             
             <div style="display: flex; justify-content: space-between; margin-top: 1rem; 
@@ -77,24 +109,12 @@ class QuizProgress:
                 </div>
             </div>
         </div>
-        
-        <style>
-        .progress-dot {{
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--border);
-            transition: all 0.3s ease;
-        }}
-        .progress-dot.active {{
-            background: var(--accent);
-            transform: scale(1.2);
-        }}
-        </style>
         """
         
+        # Render both CSS and HTML
+        st.markdown(css_styles, unsafe_allow_html=True)
         st.markdown(progress_html, unsafe_allow_html=True)
-    
+        
     @staticmethod
     def render_step_indicator(steps: list, current_step: int):
         """Render step-by-step indicator"""
