@@ -408,7 +408,7 @@ def show_quiz():
                 border: 1px solid var(--border); min-height: 300px;">
     """, unsafe_allow_html=True)
     
-    # Question 1
+    #Question 1
     if current_step == 1:
         st.markdown("### 🎯 What would you most like to change or improve?")
         st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
@@ -426,6 +426,148 @@ def show_quiz():
             col = cols[i % 2]
             with col:
                 if st.button(
+                    f"{icon} **{option}**\n\n{desc}",
+                    key=f"q1o{i}",
+                    use_container_width=True,
+                    help=f"Select if you want to {option.lower()}"
+                ):
+                    handle_quiz_answer(1, option)
+                    st.rerun()
+
+# Question 2  
+    elif current_step == 2:
+        st.markdown("### ⏰ How long have you been dealing with this challenge?")
+        st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
+        
+        options = [
+            ("🆕", "Less than 6 months", "Relatively new challenge"),
+            ("📅", "6 months to 2 years", "Moderate duration"),
+            ("⏳", "More than 2 years", "Long-standing issue"),
+            ("🔄", "Many years", "Deeply ingrained pattern")
+        ]
+        
+        cols = st.columns(2)
+        for i, (icon, option, desc) in enumerate(options):
+            col = cols[i % 2]
+            with col:
+                if st.button(
+                    f"{icon} **{option}**\n\n{desc}",
+                    key=f"q2o{i}",
+                    use_container_width=True
+                ):
+                    handle_quiz_answer(2, option)
+                    st.rerun()
+
+    # Question 3
+    elif current_step == 3:
+        st.markdown("### 🚀 How ready are you to make this change happen?")
+        st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
+        
+        options = [
+            ("🤔", "Just exploring options", "Learning about possibilities"),
+            ("👍", "Somewhat ready", "Interested and considering"),
+            ("💪", "Very ready - I'm committed", "Fully motivated to change"),
+            ("🔥", "Desperate for change", "Need transformation now")
+        ]
+        
+        for i, (icon, option, desc) in enumerate(options):
+            if st.button(
+                f"{icon} **{option}**\n\n{desc}",
+                key=f"q3o{i}",
+                use_container_width=True
+            ):
+                handle_quiz_answer(3, option)
+                st.rerun()
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# Show results if quiz is complete
+    if len(st.session_state.quiz_answers) == 3:
+        score = calculate_suitability_score(st.session_state.quiz_answers)
+        message, color, icon = get_suitability_message(score)
+        
+        st.markdown(f"""
+        <div style="background: var(--card-bg); border-radius: var(--radius-md); 
+                    padding: 2rem; margin: 2rem 0; box-shadow: var(--shadow-md); 
+                    border: 2px solid {color}; text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">{icon}</div>
+            <h2 style="color: {color}; margin-bottom: 1rem;">
+                {score}% Suitability Match
+            </h2>
+            <p style="font-size: 1.2rem; color: var(--text-primary); margin-bottom: 2rem;">
+                {message}
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Results breakdown
+        with st.expander("📊 See Your Assessment Breakdown", expanded=False):
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.markdown("**Your Answers:**")
+                st.write(f"🎯 **Goal:** {st.session_state.quiz_answers.get(1, 'Not answered')}")
+                st.write(f"⏰ **Duration:** {st.session_state.quiz_answers.get(2, 'Not answered')}")  
+                st.write(f"🚀 **Readiness:** {st.session_state.quiz_answers.get(3, 'Not answered')}")
+            
+            with col2:
+                st.markdown("**What This Means:**")
+                if score >= 70:
+                    st.success("✅ Excellent fit for our 2-session method")
+                    st.info("You show strong indicators for successful hypnotherapy outcomes")
+                elif score >= 55:
+                    st.warning("⚡ Good potential with proper approach")
+                    st.info("Hypnotherapy can help, may need tailored session planning")
+                else:
+                    st.info("💬 A discovery call would be beneficial")
+                    st.info("Let's discuss the best approach for your specific situation")
+        
+        # Action buttons
+        col1, col2, col3 = st.columns([1, 1, 1])
+        
+        with col1:
+            if st.button("🔄 Retake Assessment", use_container_width=True):
+                reset_quiz()
+                st.rerun()
+        
+        with col2:
+            st.markdown("""
+            <a href="#discovery" 
+               style="display: block; background-color: var(--accent); color: white; 
+                      text-decoration: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); 
+                      font-weight: 600; text-align: center; transition: var(--transition);">
+                📞 Free Discovery Call
+            </a>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            if score >= 70:
+                st.markdown("""
+                <a href="https://calendly.com/laetitiasheppard/package" target="_blank"
+                   style="display: block; background-color: #22c55e; color: white; 
+                          text-decoration: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); 
+                          font-weight: 600; text-align: center; transition: var(--transition);">
+                    🎯 Book Sessions Now
+                </a>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown("""
+                <a href="https://calendly.com/laetitiasheppard/discovery" target="_blank"
+                   style="display: block; background-color: var(--accent); color: white; 
+                          text-decoration: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); 
+                          font-weight: 600; text-align: center; transition: var(--transition);">
+                    💬 Book Discovery Call
+                </a>
+                """, unsafe_allow_html=True)
+
+# Back button for non-completed quiz
+    elif current_step > 1:
+        if st.button("← Back to Previous Question", key="quiz_back"):
+            st.session_state.quiz_step -= 1
+            # Remove the last answer
+            if current_step - 1 in st.session_state.quiz_answers:
+                del st.session_state.quiz_answers[current_step - 1]
+            st.rerun()
  
 
 # --- METHOD PAGE ---
