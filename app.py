@@ -248,58 +248,6 @@ h3, h4, h5, h6 {
     background-color: var(--bg) !important;
 }
 
-/* Footer */
-.footer {
-    margin: 4rem 0 2rem 0;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.footer-founder {
-    flex: 1 1 300px;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.footer-founder img {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--accent);
-}
-
-.footer-contact {
-    flex: 1 1 260px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    text-align: right;
-}
-
-.footer-button {
-    margin-top: 0.5rem;
-    background-color: var(--accent) !important;
-    color: white !important;
-    border: none !important;
-    padding: 0.5rem 1.2rem !important;
-    border-radius: var(--radius-sm) !important;
-    font-weight: 600 !important;
-    cursor: pointer !important;
-}
-
-.footer-copy {
-    flex-basis: 100%;
-    text-align: center;
-    margin-top: 1.5rem;
-}
-
 /* Mobile responsiveness */
 @media (max-width: 768px) {
     h1 {
@@ -314,20 +262,7 @@ h3, h4, h5, h6 {
         padding: 2rem 1rem;
     }
     
-    .footer {
-        flex-direction: column;
-        gap: 1rem;
-    }
     
-    .footer-founder {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .footer-contact {
-        text-align: center;
-        align-items: center;
-    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -764,41 +699,73 @@ def show_booking_form():
 
 # --- FOOTER ---
 def show_footer():
-    """Display the responsive footer section"""
+    """Display the responsive footer section using Streamlit native components"""
+    # Add spacing before footer
+    st.markdown("<div style='margin-top: 4rem;'></div>", unsafe_allow_html=True)
+    
+    # Horizontal line separator
     st.markdown(f"""
-    <div class="footer">
-        <div class="footer-founder">
+    <div style="border-top: 1px solid var(--border); margin: 2rem 0;"></div>
+    """, unsafe_allow_html=True)
+    
+    # Use Streamlit columns for responsive layout
+    col1, col2 = st.columns([2, 1], gap="large")
+    
+    with col1:
+        # Founder section with image and info
+        subcol1, subcol2 = st.columns([1, 3], gap="medium")
+        
+        with subcol1:
+            st.markdown(f"""
             <img src="https://github.com/pepeette/Hypno/blob/main/img/ID.jpg?raw=true" 
-                 alt="Laetitia Sheppard">
-            <div>
-                <h2>Laetitia Sheppard</h2>
-                <p>Certified Clinical Hypnotherapist with over 10 years of experience in behavioral change and mental wellness.</p>
-            </div>
-        </div>
+                 alt="Laetitia Sheppard"
+                 style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; 
+                        border: 2px solid var(--accent); display: block;">
+            """, unsafe_allow_html=True)
         
-        <div class="footer-contact">
-            <p><strong>Bangkok Hypnotherapy Clinic</strong></p>
-            <p>27 Soi Sukhumvit 10 (Asoke)</p>
-            <p>Bangkok, Thailand</p>
-            
-            <div style="display: flex; gap: 0.8rem; margin-top: 1rem;">
-                <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" 
-                   target="_blank" 
-                   style="background-color: var(--accent) !important; color: white !important; text-decoration: none; padding: 0.5rem 1.2rem; border-radius: var(--radius-sm); font-weight: 600; transition: var(--transition);">
-                    Get Directions
-                </a>
-                <a href="https://calendly.com/laetitiasheppard/new-meeting" 
-                   target="_blank" 
-                   style="background-color: var(--accent) !important; color: white !important; text-decoration: none; padding: 0.5rem 1.2rem; border-radius: var(--radius-sm); font-weight: 600; transition: var(--transition);">
-                    Book Now
-                </a>
-            </div>
-        </div>
+        with subcol2:
+            st.markdown("## Laetitia Sheppard")
+            st.markdown("Certified Clinical Hypnotherapist with over 10 years of experience in behavioral change and mental wellness.")
+    
+    with col2:
+        st.markdown("## Contact")
+        st.markdown("**Bangkok Hypnotherapy Clinic**")
+        st.markdown("27 Soi Sukhumvit 10 (Asoke)")
+        st.markdown("Bangkok, Thailand")
         
-        <div class="footer-copy">
-            <p>© {datetime.datetime.now().year} Laetitia Sheppard • All Rights Reserved</p>
-            <p>Confidentiality Guaranteed</p>
-        </div>
+        # Buttons using Streamlit columns for mobile responsiveness
+        btn_col1, btn_col2 = st.columns(2, gap="small")
+        
+        with btn_col1:
+            st.markdown("""
+            <a href="https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw" 
+               target="_blank" 
+               style="display: inline-block; background-color: var(--accent); color: white; 
+                      text-decoration: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); 
+                      font-weight: 600; font-size: 1rem; text-align: center; width: 100%;
+                      box-sizing: border-box; transition: var(--transition);">
+                Directions
+            </a>
+            """, unsafe_allow_html=True)
+        
+        with btn_col2:
+            st.markdown("""
+            <a href="https://calendly.com/laetitiasheppard/new-meeting" 
+               target="_blank" 
+               style="display: inline-block; background-color: var(--accent); color: white; 
+                      text-decoration: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); 
+                      font-weight: 600; font-size: 1rem; text-align: center; width: 100%;
+                      box-sizing: border-box; transition: var(--transition);">
+                Book Now
+            </a>
+            """, unsafe_allow_html=True)
+    
+    # Copyright section - full width
+    st.markdown("<div style='margin-top: 2rem;'></div>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style="border-top: 1px solid var(--border); padding-top: 2rem; text-align: center;">
+        <p>© {datetime.datetime.now().year} Laetitia Sheppard • All Rights Reserved</p>
+        <p>Confidentiality Guaranteed</p>
     </div>
     """, unsafe_allow_html=True)
 
