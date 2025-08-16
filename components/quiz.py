@@ -79,17 +79,17 @@ class QuizProgress:
         </div>
         
         <style>
-        .progress-dot {
+        .progress-dot {{
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: var(--border);
             transition: all 0.3s ease;
-        }
-        .progress-dot.active {
+        }}
+        .progress-dot.active {{
             background: var(--accent);
             transform: scale(1.2);
-        }
+        }}
         </style>
         """
         
@@ -119,7 +119,7 @@ class QuizProgress:
         
         step_styles = """
         <style>
-        .step-circle {
+        .step-circle {{
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -130,16 +130,16 @@ class QuizProgress:
             font-weight: 600;
             color: var(--text-secondary);
             transition: all 0.3s ease;
-        }
-        .step-circle.active {
+        }}
+        .step-circle.active {{
             background: var(--accent);
             color: white;
             transform: scale(1.1);
-        }
-        .step-circle.completed {
+        }}
+        .step-circle.completed {{
             background: var(--success);
             color: white;
-        }
+        }}
         </style>
         """
         
@@ -194,7 +194,7 @@ class QuizQuestion:
         </div>
         
         <style>
-        .quiz-option {
+        .quiz-option {{
             background: var(--card-bg);
             border: 2px solid var(--border);
             border-radius: var(--radius-md);
@@ -205,48 +205,48 @@ class QuizQuestion:
             align-items: center;
             gap: 1rem;
             min-height: 80px;
-        }
+        }}
         
-        .quiz-option:hover {
+        .quiz-option:hover {{
             border-color: var(--accent);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
-        }
+        }}
         
-        .option-icon {
+        .option-icon {{
             font-size: 2rem;
             min-width: 50px;
             text-align: center;
-        }
+        }}
         
-        .option-content {
+        .option-content {{
             flex: 1;
-        }
+        }}
         
-        .option-title {
+        .option-title {{
             font-weight: 600;
             color: var(--text-primary);
             font-size: 1.1rem;
             margin-bottom: 0.3rem;
-        }
+        }}
         
-        .option-description {
+        .option-description {{
             color: var(--text-secondary);
             font-size: 0.9rem;
-        }
+        }}
         
-        .option-arrow {
+        .option-arrow {{
             color: var(--accent);
             font-weight: bold;
             font-size: 1.2rem;
             opacity: 0;
             transition: all 0.3s ease;
-        }
+        }}
         
-        .quiz-option:hover .option-arrow {
+        .quiz-option:hover .option-arrow {{
             opacity: 1;
             transform: translateX(5px);
-        }
+        }}
         </style>
         """
         
@@ -288,7 +288,7 @@ class QuizResults:
         </div>
         
         <style>
-        .quiz-results-container {
+        .quiz-results-container {{
             background: var(--card-bg);
             border-radius: var(--radius-md);
             padding: 3rem 2rem;
@@ -297,9 +297,9 @@ class QuizResults:
             border: 2px solid {self.color};
             position: relative;
             overflow: hidden;
-        }
+        }}
         
-        .quiz-results-container::before {
+        .quiz-results-container::before {{
             content: '';
             position: absolute;
             top: 0;
@@ -307,40 +307,40 @@ class QuizResults:
             right: 0;
             height: 4px;
             background: linear-gradient(90deg, {self.color} 0%, {self.color}88 100%);
-        }
+        }}
         
-        .result-icon {
+        .result-icon {{
             font-size: 4rem;
             margin-bottom: 1rem;
             animation: bounce 2s infinite;
-        }
+        }}
         
-        .result-score {
+        .result-score {{
             font-size: 3rem;
             font-weight: bold;
             color: {self.color};
             margin-bottom: 0.5rem;
-        }
+        }}
         
-        .result-title {
+        .result-title {{
             font-size: 1.5rem;
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 1rem;
-        }
+        }}
         
-        .result-message {
+        .result-message {{
             font-size: 1.2rem;
             color: var(--text-secondary);
             max-width: 500px;
             margin: 0 auto;
-        }
+        }}
         
-        @keyframes bounce {
+        @keyframes bounce {{
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
-        }
+        }}
         </style>
         """
         
