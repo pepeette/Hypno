@@ -114,7 +114,37 @@ class QuizProgress:
         # Render both CSS and HTML
         st.markdown(css_styles, unsafe_allow_html=True)
         st.markdown(progress_html, unsafe_allow_html=True)
+
+    ## ALTERNATIVE: If the above doesn't work, use this simpler version:
+    
+    # def render_progress_bar_simple(self, current_step: int, total_steps: int = 3):
+    #     """Simple progress bar without complex CSS"""
+    #     progress_percentage = min((current_step - 1) / total_steps * 100, 100)
         
+    #     # Simple progress display
+    #     st.markdown(f"**Question {min(current_step, total_steps)} of {total_steps}** ({int(progress_percentage)}% Complete)")
+        
+    #     # Streamlit's built-in progress bar
+    #     st.progress(progress_percentage / 100)
+        
+    #     # Step indicators
+    #     col1, col2, col3 = st.columns(3)
+    #     with col1:
+    #         if current_step >= 1:
+    #             st.markdown("✅ **Goal**")
+    #         else:
+    #             st.markdown("⭕ Goal")
+    #     with col2:
+    #         if current_step >= 2:
+    #             st.markdown("✅ **Duration**")
+    #         else:
+    #             st.markdown("⭕ Duration")
+    #     with col3:
+    #         if current_step >= 3:
+    #             st.markdown("✅ **Readiness**")
+    #         else:
+    #             st.markdown("⭕ Readiness")
+            
     @staticmethod
     def render_step_indicator(steps: list, current_step: int):
         """Render step-by-step indicator"""
