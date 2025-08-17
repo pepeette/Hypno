@@ -1,13 +1,107 @@
 """
 Enhanced Quiz component with better engagement and animations
 30-second suitability assessment with improved UX and visual feedback
+Compatible with existing file structure
 """
 import streamlit as st
-from utils.config import QuizConfig, AppConstants
-from utils.session_state import (
-    SessionStateKeys, update_quiz_answer, reset_quiz, 
-    set_quiz_score, SessionStateManager
-)
+
+# Try to import from config, use fallbacks if not available
+try:
+    from utils.config import QuizConfig, AppConstants
+except ImportError:
+    # Fallback configuration
+    class QuizConfig:
+        QUESTIONS = {
+            1: {
+                "title": "🎯 What would you most like to change or improve?",
+                "options": [
+                    ("🚭", "Quit smoking", "Break free from tobacco addiction"),
+                    ("😌", "Reduce anxiety", "Find calm and peace of mind"), 
+                    ("😴", "Improve sleep", "Get better, deeper rest"),
+                    ("🔄", "Break bad habits", "Change unwanted behaviors"),
+                    ("❓", "Other", "Something else I'd like to change")
+                ]
+            },
+            2: {
+                "title": "⏰ How long have you been dealing with this challenge?",
+                "options": [
+                    ("🆕", "Less than 6 months", "Relatively new challenge"),
+                    ("📅", "6 months to 2 years", "Moderate duration"),
+                    ("⏳", "More than 2 years", "Long-standing issue"),
+                    ("🔄", "Many years", "Deeply ingrained pattern")
+                ]
+            },
+            3: {
+                "title": "🚀 How ready are you to make this change happen?",
+                "options": [
+                    ("🤔", "Just exploring options", "Learning about possibilities"),
+                    ("👍", "Somewhat ready", "Interested and considering"),
+                    ("💪", "Very ready - I'm committed", "Fully motivated to change"),
+                    ("🔥", "Desperate for change", "Need transformation now")
+                ]
+            }
+        }
+        
+        SCORING = {
+            1: {
+                "Quit smoking": 40,
+                "Reduce anxiety": 35,
+                "Improve sleep": 30,
+                "Break bad habits": 35,
+                "Other": 25
+            },
+            2: {
+                "Less than 6 months": 20,
+                "6 months to 2 years": 25,
+                "More than 2 years": 30,
+                "Many years": 25
+            },
+            3: {
+                "Just exploring options": 10,
+                "Somewhat ready": 20,
+                "Very ready - I'm committed": 30,
+                "Desperate for change": 25
+            }
+        }
+    
+    class AppConstants:
+        CONTACT_INFO = {
+            "discovery_call_url": "https://calendly.com/laetitiasheppard/discovery",
+            "package_booking_url": "https://calendly.com/laetitiasheppard/package"
+        }
+
+try:
+    from utils.session_state import (
+        SessionStateKeys, update_quiz_answer, reset_quiz, 
+        set_quiz_score, SessionStateManager
+    )
+except ImportError:
+    # Fallback session management
+    class SessionStateKeys:
+        QUIZ_ANSWERS = "quiz_answers"
+        QUIZ_STEP = "quiz_step"
+        QUIZ_COMPLETED = "quiz_completed"
+        QUIZ_SCORE = "quiz_score"
+        QUIZ_STARTED = "quiz_started"
+    
+    def update_quiz_answer(question_id: int, answer: str):
+        if SessionStateKeys.QUIZ_ANSWERS not in st.session_state:
+            st.session_state[SessionStateKeys.QUIZ_ANSWERS] = {}
+        st.session_state[SessionStateKeys.QUIZ_ANSWERS][question_id] = answer
+        st.session_state[SessionStateKeys.QUIZ_STEP] = st.session_state.get(SessionStateKeys.QUIZ_STEP, 1) + 1
+        st.session_state[SessionStateKeys.QUIZ_STARTED] = True
+        if len(st.session_state[SessionStateKeys.QUIZ_ANSWERS]) >= 3:
+            st.session_state[SessionStateKeys.QUIZ_COMPLETED] = True
+    
+    def reset_quiz():
+        st.session_state[SessionStateKeys.QUIZ_ANSWERS] = {}
+        st.session_state[SessionStateKeys.QUIZ_STEP] = 1
+        st.session_state[SessionStateKeys.QUIZ_COMPLETED] = False
+        st.session_state[SessionStateKeys.QUIZ_SCORE] = 0
+        st.session_state[SessionStateKeys.QUIZ_STARTED] = False
+    
+    def set_quiz_score(score: int):
+        st.session_state[SessionStateKeys.QUIZ_SCORE] = score
 
 class EnhancedQuizProgress:
     """Enhanced progress visualization with animations"""
