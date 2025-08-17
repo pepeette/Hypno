@@ -2,8 +2,52 @@
 Home page component for the Hypnotherapy website
 Features hero section, quiz, testimonials, and key information
 """
+
 import streamlit as st
-from components.quiz import create_enhanced_quiz
+
+# Try to import enhanced quiz, use fallback if not available
+try:
+    from components.quiz import create_enhanced_quiz
+except ImportError:
+    def create_enhanced_quiz():
+        return SimpleQuiz()
+
+class SimpleQuiz:
+    """Simple fallback quiz if enhanced version not available"""
+    
+    def render(self):
+        """Render simple quiz"""
+        st.markdown("### 🎯 Quick Assessment")
+        st.markdown("Take our 30-second assessment to see how we can help you:")
+        
+        with st.form("simple_quiz"):
+            goal = st.selectbox(
+                "What would you like to change?",
+                ["Quit smoking", "Reduce anxiety", "Improve sleep", "Break habits", "Other"]
+            )
+            
+            duration = st.selectbox(
+                "How long have you struggled with this?",
+                ["Less than 6 months", "6 months to 2 years", "More than 2 years", "Many years"]
+            )
+            
+            readiness = st.selectbox(
+                "How ready are you for change?",
+                ["Just exploring", "Somewhat ready", "Very ready", "Desperate for change"]
+            )
+            
+            submitted = st.form_submit_button("Get My Results", type="primary")
+            
+            if submitted:
+                score = 75  # Simple scoring
+                st.success(f"🎯 Your suitability score: {score}%")
+                st.markdown("**You're a great candidate for our 2-session method!**")
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown("📞 [Book Free Discovery Call](https://calendly.com/laetitiasheppard/discovery)")
+                with col2:
+                    st.markdown("⚡ [Book Sessions Now](https://calendly.com/laetitiasheppard/package)")
 
 class DynamicHeroSection:
     """Enhanced hero section with dynamic elements"""
