@@ -20,8 +20,9 @@ class HomePage:
         track_page_view("Home")
         
         self._render_hero_card()
-        self._render_why_hypnotherapy()
         self._render_quiz_section()
+        self._render_why_hypnotherapy()
+        
     
     def _render_hero_card(self):
         """Render focused hero card with clear value proposition"""
