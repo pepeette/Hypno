@@ -2,7 +2,11 @@
 Sleek, responsive navigation component
 Maintains active state and clean design
 """
-from utils import config
+from utils.config import (
+    bg_color, card_bg, text_primary,
+    text_secondary, accent_color, border,
+    radius_sm, transition
+)
 import streamlit as st
 
 def show_navigation():
