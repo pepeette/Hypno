@@ -100,38 +100,37 @@
 #     """Create HomePage instance"""
 #     return HomePage()
 
-
 """
-Improved Home page component - More compelling and clear content
+Home page component using Streamlit components instead of nested divs
 """
 import streamlit as st
 
 class HeroSection:
-    """Compelling hero section with clear value proposition"""
+    """Hero section using Streamlit components"""
     
     def render(self):
-        """Render hero section with better messaging"""
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
-                    border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
-            <h1 style="color: white;">Stop Fighting Your Mind.<br>Start Working With It.</h1>
-            <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto 2rem auto; font-size: 1.1rem;">
-                Most people try to change using willpower. That's why 95% fail. 
-                We bypass your conscious resistance and reprogram your subconscious patterns directly.
-            </p>
-            <div style="background: rgba(255,255,255,0.2); border-radius: 12px; padding: 1.5rem; margin: 2rem auto; max-width: 500px;">
-                <p style="color: white; margin: 0; font-weight: 600; font-size: 1.1rem;">
-                    Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.
+        """Render hero section with Streamlit components"""
+        # Hero container using Streamlit container
+        with st.container():
+            st.markdown("""
+            <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
+                        border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
+                <h1 style="color: white;">Stop Fighting Your Mind.<br>Start Working With It.</h1>
+                <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
+                    Most people try to change using willpower. That's why 95% fail. 
+                    We bypass your conscious resistance and reprogram your subconscious patterns directly.
                 </p>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
+            
+            # Add compelling message using Streamlit info box
+            st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
 
 class QuizSection:
-    """Improved quiz with clear question numbers and better flow"""
+    """Quiz section using Streamlit components"""
     
     def __init__(self):
-        # Initialize session state
+        # Initialize session state using Streamlit
         if 'quiz_answers' not in st.session_state:
             st.session_state.quiz_answers = {}
         if 'quiz_step' not in st.session_state:
@@ -142,8 +141,9 @@ class QuizSection:
             st.session_state.quiz_score = 0
     
     def render(self):
-        """Render the complete quiz section"""
-        st.markdown("## Find Out If You're Ready for Rapid Change")
+        """Render quiz using Streamlit components"""
+        # Section header
+        st.subheader("Find Out If You're Ready for Rapid Change")
         st.write("Three quick questions to assess your potential for transformation:")
         
         if not st.session_state.quiz_completed:
@@ -152,97 +152,60 @@ class QuizSection:
             self._render_results()
     
     def _render_all_questions(self):
-        """Show all 3 questions with clear numbering"""
+        """Show all questions using Streamlit components"""
         current_step = st.session_state.quiz_step
         
-        # Question 1
-        self._render_question_container(
-            1, 
-            "What would you most like to change?",
-            [
-                ("Quit Smoking", "Break free from tobacco addiction"),
-                ("Reduce Anxiety", "Find calm and peace of mind"), 
-                ("Improve Sleep", "Get better, deeper rest"),
-                ("Break Bad Habits", "Change unwanted behaviors")
-            ],
-            current_step == 1
-        )
+        # Question 1 using Streamlit expander and columns
+        with st.expander("Question 1: What would you most like to change?", expanded=(current_step == 1)):
+            if current_step == 1:
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("🚭 Quit Smoking", key="q1_smoking", use_container_width=True):
+                        self._answer_question(1, "Quit Smoking")
+                    if st.button("😴 Improve Sleep", key="q1_sleep", use_container_width=True):
+                        self._answer_question(1, "Improve Sleep")
+                with col2:
+                    if st.button("😌 Reduce Anxiety", key="q1_anxiety", use_container_width=True):
+                        self._answer_question(1, "Reduce Anxiety")
+                    if st.button("🔄 Break Bad Habits", key="q1_habits", use_container_width=True):
+                        self._answer_question(1, "Break Bad Habits")
+            elif 1 in st.session_state.quiz_answers:
+                st.success(f"✅ Selected: {st.session_state.quiz_answers[1]}")
         
         # Question 2 (show only if Q1 answered)
         if len(st.session_state.quiz_answers) >= 1:
-            self._render_question_container(
-                2,
-                "How long have you been dealing with this?",
-                [
-                    ("Less than 6 months", "Relatively new challenge"),
-                    ("6 months to 2 years", "Moderate duration"),
-                    ("More than 2 years", "Long-standing pattern")
-                ],
-                current_step == 2
-            )
+            with st.expander("Question 2: How long have you been dealing with this?", expanded=(current_step == 2)):
+                if current_step == 2:
+                    if st.button("🆕 Less than 6 months", key="q2_new", use_container_width=True):
+                        self._answer_question(2, "Less than 6 months")
+                    if st.button("📅 6 months to 2 years", key="q2_mod", use_container_width=True):
+                        self._answer_question(2, "6 months to 2 years")
+                    if st.button("⏳ More than 2 years", key="q2_long", use_container_width=True):
+                        self._answer_question(2, "More than 2 years")
+                elif 2 in st.session_state.quiz_answers:
+                    st.success(f"✅ Selected: {st.session_state.quiz_answers[2]}")
         
         # Question 3 (show only if Q2 answered)
         if len(st.session_state.quiz_answers) >= 2:
-            self._render_question_container(
-                3,
-                "How ready are you to make this change?",
-                [
-                    ("Just exploring options", "Learning about possibilities"),
-                    ("Very ready - I'm committed", "Fully motivated to change"),
-                    ("Desperate for change", "Need transformation now")
-                ],
-                current_step == 3
-            )
+            with st.expander("Question 3: How ready are you to make this change?", expanded=(current_step == 3)):
+                if current_step == 3:
+                    if st.button("🤔 Just exploring options", key="q3_explore", use_container_width=True):
+                        self._answer_question(3, "Just exploring options")
+                    if st.button("💪 Very ready - I'm committed", key="q3_ready", use_container_width=True):
+                        self._answer_question(3, "Very ready - I'm committed")
+                    if st.button("🔥 Desperate for change", key="q3_determined", use_container_width=True):
+                        self._answer_question(3, "Desperate for change")
+                elif 3 in st.session_state.quiz_answers:
+                    st.success(f"✅ Selected: {st.session_state.quiz_answers[3]}")
         
-        # Progress indicator
-        progress = len(st.session_state.quiz_answers) / 3 * 100
+        # Progress using Streamlit progress bar
+        progress = len(st.session_state.quiz_answers) / 3
         if progress > 0:
-            st.progress(progress / 100)
-            st.write(f"Question {len(st.session_state.quiz_answers) + 1} of 3" if len(st.session_state.quiz_answers) < 3 else "Complete!")
-    
-    def _render_question_container(self, question_num, title, options, is_active):
-        """Render individual question container"""
-        # Determine container style based on state
-        if is_active:
-            container_style = "background: var(--card-bg); border: 2px solid var(--accent); border-radius: 12px; padding: 2rem; margin: 1.5rem 0;"
-        elif question_num in st.session_state.quiz_answers:
-            container_style = "background: rgba(76, 161, 163, 0.05); border: 1px solid var(--accent); border-radius: 12px; padding: 2rem; margin: 1.5rem 0; opacity: 0.7;"
-        else:
-            container_style = "background: #f8f9fa; border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin: 1.5rem 0; opacity: 0.5;"
-        
-        st.markdown(f"""
-        <div style="{container_style}">
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                <div style="background: var(--accent); color: white; width: 40px; height: 40px; 
-                            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-                            font-weight: bold; font-size: 1.2rem;">
-                    {question_num}
-                </div>
-                <h2 style="margin: 0; color: var(--text-primary);">{title}</h2>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Show options only for active question
-        if is_active:
-            if question_num <= 2:
-                # 2-column layout for first two questions
-                col1, col2 = st.columns(2)
-                for i, (option, description) in enumerate(options):
-                    col = col1 if i % 2 == 0 else col2
-                    with col:
-                        if st.button(f"{option}", key=f"q{question_num}_{i}", use_container_width=True):
-                            self._answer_question(question_num, option)
+            st.progress(progress)
+            if progress < 1:
+                st.caption(f"Question {len(st.session_state.quiz_answers) + 1} of 3")
             else:
-                # Single column for last question
-                for i, (option, description) in enumerate(options):
-                    if st.button(f"{option}", key=f"q{question_num}_{i}", use_container_width=True):
-                        self._answer_question(question_num, option)
-        
-        # Show selected answer if answered
-        elif question_num in st.session_state.quiz_answers:
-            selected = st.session_state.quiz_answers[question_num]
-            st.success(f"✅ Selected: {selected}")
+                st.caption("Complete!")
     
     def _answer_question(self, question_id, answer):
         """Handle question answer"""
@@ -270,44 +233,26 @@ class QuizSection:
         return min(total_score, 100)
     
     def _render_results(self):
-        """Render quiz results"""
+        """Render quiz results using Streamlit components"""
         score = st.session_state.quiz_score
         
         # Determine message based on score
         if score >= 70:
-            message = "Excellent candidate! You have strong indicators for rapid transformation."
-            color = "#22c55e"
-            icon = "🌟"
-            recommendation = "You're ready to book your transformation package or start with a discovery call."
+            st.success("🌟 Excellent candidate! You have strong indicators for rapid transformation.")
+            st.info("You're ready to book your transformation package or start with a discovery call.")
         elif score >= 55:
-            message = "Good potential! Hypnotherapy can definitely help with the right approach."
-            color = "#eab308"
-            icon = "🎯"
-            recommendation = "A discovery call would help us create the perfect strategy for your situation."
+            st.warning("🎯 Good potential! Hypnotherapy can definitely help with the right approach.")
+            st.info("A discovery call would help us create the perfect strategy for your situation.")
         else:
-            message = "Let's talk! Every situation is unique, and a conversation will help us determine the best path forward."
-            color = "#4CA1A3"
-            icon = "💬"
-            recommendation = "A free discovery call will help us understand how to best support your goals."
+            st.info("💬 Let's talk! Every situation is unique, and a conversation will help us determine the best path forward.")
+            st.info("A free discovery call will help us understand how to best support your goals.")
         
-        st.markdown(f"""
-        <div style="background: var(--card-bg); border-radius: 12px; padding: 3rem 2rem; 
-                    text-align: center; border: 2px solid {color}; margin: 2rem 0;">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">{icon}</div>
-            <div style="font-size: 3rem; font-weight: bold; color: {color}; margin-bottom: 0.5rem;">
-                {score}%
-            </div>
-            <h2 style="margin-bottom: 1rem;">Transformation Readiness</h2>
-            <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-                {message}
-            </p>
-            <p style="color: var(--text-primary); font-weight: 600;">
-                {recommendation}
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+        # Display score using Streamlit metric
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.metric("Transformation Readiness", f"{score}%", "Suitability Match")
         
-        # Action buttons
+        # Action buttons using Streamlit columns
         col1, col2 = st.columns(2)
         with col1:
             if st.button("🔄 Retake Assessment", use_container_width=True):
@@ -325,131 +270,91 @@ class QuizSection:
         st.rerun()
 
 class PatternChangeMethod:
-    """Why pattern change hypnotherapy works"""
+    """Pattern change method explanation using Streamlit components"""
     
     def render(self):
-        """Render method explanation with compelling content"""
-        st.markdown("## Pattern Change Hypnotherapy: Why It Works")
+        """Render method explanation using Streamlit components"""
+        st.subheader("Pattern Change Hypnotherapy: Why It Works")
         
-        # Opening explanation
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #E1F0F0 0%, var(--card-bg) 100%); 
-                    border-radius: 12px; padding: 2rem; margin: 2rem 0; border-left: 4px solid var(--accent);">
-            <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem;">
-                Every unwanted behavior is driven by subconscious patterns you learned years ago. 
-                Traditional therapy tries to override these patterns with willpower. We change the patterns themselves.
-            </p>
-            <p style="font-size: 1.1rem; line-height: 1.7; margin: 0;">
-                When your subconscious programming supports your goals instead of fighting them, 
-                change becomes effortless and permanent.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+        # Opening explanation using Streamlit info box
+        st.info("""
+        Every unwanted behavior is driven by subconscious patterns you learned years ago. 
+        Traditional therapy tries to override these patterns with willpower. We change the patterns themselves.
+        When your subconscious programming supports your goals instead of fighting them, 
+        change becomes effortless and permanent.
+        """)
         
-        # Success rate callout
-        st.markdown("""
-        <div style="background: var(--card-bg); border-radius: 12px; padding: 2rem; 
-                    text-align: center; border: 2px solid var(--success); margin: 2rem 0;">
-            <h2 style="color: var(--success); margin-bottom: 1rem;">85% Success Rate in Just 2 Sessions</h2>
-            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
-                Most clients achieve complete transformation in two 90-minute sessions. 
-                About 15% choose an optional reinforcement session a few weeks later for additional confidence.
-            </p>
-            <p style="color: var(--text-secondary); margin: 0;">
-                Compare this to traditional therapy, which typically requires months or years of ongoing sessions.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+        # Success rate using Streamlit success box and metric
+        with st.container():
+            st.success("✅ 85% Success Rate in Just 2 Sessions")
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Success Rate", "85%", "in 2 sessions")
+            with col2:
+                st.metric("Need 3rd Session", "15%", "reinforcement")
+            with col3:
+                st.metric("vs Traditional", "Months", "to years")
+            
+            st.write("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
         
-        # Method comparison
-        st.markdown("### The Difference Is in the Approach")
+        # Method comparison using Streamlit columns and containers
+        st.write("### The Difference Is in the Approach")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("""
-            <div style="background: #fee2e2; border-radius: 12px; padding: 2rem; border-left: 4px solid #ef4444;">
-                <h2 style="color: #dc2626; margin-bottom: 1rem;">Traditional Methods</h2>
-                <p><strong>Talk therapy:</strong> Analyzes problems but rarely creates lasting change</p>
-                <p><strong>Willpower:</strong> Requires constant effort and usually fails within weeks</p>
-                <p><strong>Medications:</strong> Manage symptoms but don't address root causes</p>
-                <p><strong>Self-help:</strong> Gives you tools but can't change deep programming</p>
-                <p style="margin: 0; font-weight: 600; color: #dc2626;">
-                    Result: You know what to do but can't consistently do it
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
+            with st.container():
+                st.error("❌ Traditional Methods")
+                st.write("**Talk therapy:** Analyzes problems but rarely creates lasting change")
+                st.write("**Willpower:** Requires constant effort and usually fails within weeks")
+                st.write("**Medications:** Manage symptoms but don't address root causes")
+                st.write("**Self-help:** Gives you tools but can't change deep programming")
+                st.warning("**Result:** You know what to do but can't consistently do it")
         
         with col2:
-            st.markdown("""
-            <div style="background: #ecfdf5; border-radius: 12px; padding: 2rem; border-left: 4px solid #22c55e;">
-                <h2 style="color: #16a34a; margin-bottom: 1rem;">Pattern Change Hypnotherapy</h2>
-                <p><strong>Session 1:</strong> Map your unique subconscious triggers and patterns</p>
-                <p><strong>Session 2:</strong> Rewire those patterns at the subconscious level</p>
-                <p><strong>Session 3:</strong> Optional reinforcement if needed (15% of clients)</p>
-                <p><strong>Follow-up:</strong> Permanent change that feels natural and effortless</p>
-                <p style="margin: 0; font-weight: 600; color: #16a34a;">
-                    Result: Your subconscious now supports your goals automatically
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
+            with st.container():
+                st.success("✅ Pattern Change Hypnotherapy")
+                st.write("**Session 1:** Map your unique subconscious triggers and patterns")
+                st.write("**Session 2:** Rewire those patterns at the subconscious level")
+                st.write("**Session 3:** Optional reinforcement if needed (15% of clients)")
+                st.write("**Follow-up:** Permanent change that feels natural and effortless")
+                st.success("**Result:** Your subconscious now supports your goals automatically")
         
-        # How it works
-        st.markdown("### How Pattern Change Actually Works")
+        # How it works using Streamlit tabs
+        with st.container():
+            st.write("### How Pattern Change Actually Works")
+            
+            tab1, tab2, tab3 = st.tabs(["1️⃣ Identify Patterns", "2️⃣ Reprogram Directly", "3️⃣ Live the Change"])
+            
+            with tab1:
+                st.write("**Identify Your Patterns**")
+                st.write("We map exactly what triggers your unwanted behavior at the subconscious level - often patterns you learned in childhood that no longer serve you.")
+            
+            with tab2:
+                st.write("**Reprogram Directly**")
+                st.write("Using clinical hypnosis, we access your subconscious mind and install new, empowering patterns that automatically support your goals.")
+            
+            with tab3:
+                st.write("**Live the Change**")
+                st.write("The old urges and compulsions simply disappear. You naturally make choices that align with your goals without effort or struggle.")
         
-        st.markdown("""
-        <div style="background: var(--card-bg); border-radius: 12px; padding: 2rem; margin: 2rem 0; border: 1px solid var(--border);">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-                <div style="text-align: center;">
-                    <div style="background: var(--accent); color: white; width: 60px; height: 60px; 
-                                border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-                                font-weight: bold; font-size: 1.5rem; margin: 0 auto 1rem;">1</div>
-                    <h2>Identify Your Patterns</h2>
-                    <p>We map exactly what triggers your unwanted behavior at the subconscious level - 
-                    often patterns you learned in childhood that no longer serve you.</p>
-                </div>
-                <div style="text-align: center;">
-                    <div style="background: var(--accent); color: white; width: 60px; height: 60px; 
-                                border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-                                font-weight: bold; font-size: 1.5rem; margin: 0 auto 1rem;">2</div>
-                    <h2>Reprogram Directly</h2>
-                    <p>Using clinical hypnosis, we access your subconscious mind and install new, 
-                    empowering patterns that automatically support your goals.</p>
-                </div>
-                <div style="text-align: center;">
-                    <div style="background: var(--accent); color: white; width: 60px; height: 60px; 
-                                border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-                                font-weight: bold; font-size: 1.5rem; margin: 0 auto 1rem;">3</div>
-                    <h2>Live the Change</h2>
-                    <p>The old urges and compulsions simply disappear. You naturally make choices 
-                    that align with your goals without effort or struggle.</p>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Real example
-        st.markdown("### Why This Works: A Real Example")
-        st.markdown("""
-        <div style="background: rgba(76, 161, 163, 0.05); border-radius: 12px; padding: 2rem; margin: 2rem 0;">
-            <p style="font-style: italic; font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem;">
-                "I tried to quit smoking for 15 years. Patches, gum, medications, willpower - nothing worked. 
-                After session 1, I understood that I wasn't addicted to nicotine, I was addicted to the feeling 
-                of 'taking a break' and 'having 5 minutes for myself.'
-            </p>
-            <p style="font-style: italic; font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem;">
-                Session 2 rewired that pattern. Now when I need a break, I naturally want to step outside 
-                and take deep breaths instead of reaching for a cigarette. The craving is completely gone - 
-                not suppressed, gone."
-            </p>
-            <p style="font-weight: 600; color: var(--accent); margin: 0;">
-                — Banking Executive, Singapore (2 sessions, 6 months smoke-free)
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+        # Real example using Streamlit quote
+        with st.container():
+            st.write("### Why This Works: A Real Example")
+            st.quote("""
+            I tried to quit smoking for 15 years. Patches, gum, medications, willpower - nothing worked. 
+            After session 1, I understood that I wasn't addicted to nicotine, I was addicted to the feeling 
+            of 'taking a break' and 'having 5 minutes for myself.'
+            
+            Session 2 rewired that pattern. Now when I need a break, I naturally want to step outside 
+            and take deep breaths instead of reaching for a cigarette. The craving is completely gone - 
+            not suppressed, gone.
+            
+            — Banking Executive, Singapore (2 sessions, 6 months smoke-free)
+            """)
 
 class HomePage:
-    """Complete home page with improved content"""
+    """Complete home page using Streamlit components"""
     
     def __init__(self):
         self.hero = HeroSection()
@@ -457,16 +362,17 @@ class HomePage:
         self.method = PatternChangeMethod()
     
     def render(self):
-        """Render complete home page"""
-        # Hero section
-        self.hero.render()
+        """Render complete home page using Streamlit layout"""
+        # Use Streamlit containers for clean layout
+        with st.container():
+            self.hero.render()
         
-        # Quiz section
-        self.quiz.render()
+        with st.container():
+            self.quiz.render()
         
-        # Method explanation
-        self.method.render()
+        with st.container():
+            self.method.render()
 
-# Factory function
+# Factory function for clean import
 def create_home_page():
     return HomePage()
