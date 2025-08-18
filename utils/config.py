@@ -7,7 +7,7 @@ class AppConfig:
     """Application configuration constants"""
     
     # Practice Information
-    PRACTICE_NAME = "Bangkok Hypnotherapy Clinic"
+    PRACTICE_NAME = "Hypnotherapy Clinic >> NEW ADDRESS"
     PRACTITIONER_NAME = "Laetitia Sheppard"
     PRACTICE_ESTABLISHED = 2017
     
@@ -129,7 +129,7 @@ class ContentConfig:
     SESSION_3 = {
         "name": "Reinforcement (Optional)",
         "duration": "60 minutes",
-        "description": "Optional reinforcement for 15% of clients",
+        "description": "Optional reinforcement, not needed for 85% of cases",
         "features": [
             "Fine-tune remaining patterns",
             "Address unexpected triggers",
@@ -150,7 +150,7 @@ class ContentConfig:
         },
         {
             "icon": "🚭",
-            "quote": "My husband smoked 2 packs a day for 20 years. Nothing worked until hypnotherapy. He hasn't touched a cigarette since session 2.",
+            "quote": "My husband smoked 2 packs a day for 20 years. I was smelling his heavy breathe smell Nothing worked until hypnotherapy. He hasn't touched a cigarette since session 2.",
             "author": "Client's Wife, Bangkok",
             "challenge": "Heavy smoking (40 cigarettes/day)",
             "result": "Completely smoke-free",
@@ -158,7 +158,7 @@ class ContentConfig:
         },
         {
             "icon": "🎓",
-            "quote": "I was failing medical school due to overwhelming stress. Now I'm excelling in my specialization and loving every moment.",
+            "quote": "I was failing my second year of medical school abroad due to overwhelming stress and lack of family support. Now I'm excelling in my specialization and being a doctor has become a conscious vocational career.",
             "author": "Medical Student, Morocco",
             "challenge": "Study anxiety and focus",
             "result": "Improved academic performance",
