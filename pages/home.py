@@ -30,7 +30,29 @@ class HomePage:
             title="Transform Your Life in Just 2 Sessions",
             subtitle=f"Science-backed hypnotherapy with {AppConfig.SUCCESS_RATE_2_SESSIONS}% success rate"
         )
+        # Simple, focused explanation
+        col1, col2 = st.columns([1, 1])
         
+        with col1:
+            st.markdown("### Traditional Methods")
+            st.write("Work with your conscious mind")
+            st.write("Only 5% of your decisions")
+            st.write("Require constant willpower")
+            st.write("High failure rates")
+            
+        with col2:
+            st.markdown("### Our Hypnotherapy")
+            st.write("Works with your subconscious")
+            st.write("Controls 95% of decisions")
+            st.write("Natural, lasting change")
+            st.write("Proven results")
+        
+        # Key insight without overwhelming detail
+        st.info("""
+        The breakthrough: Instead of fighting your programming with willpower, 
+        we rewire the subconscious patterns that drive your behavior. 
+        This creates effortless, permanent transformation.
+        """)
         # # Key credentials in a subtle way
         # col1, col2, col3 = st.columns(3)
         
@@ -61,29 +83,7 @@ class HomePage:
         
         st.markdown("## Why Hypnotherapy Succeeds Where Willpower Fails")
         
-        # Simple, focused explanation
-        col1, col2 = st.columns([1, 1])
-        
-        with col1:
-            st.markdown("### Traditional Methods")
-            st.write("Work with your conscious mind")
-            st.write("Only 5% of your decisions")
-            st.write("Require constant willpower")
-            st.write("High failure rates")
-            
-        with col2:
-            st.markdown("### Our Hypnotherapy")
-            st.write("Works with your subconscious")
-            st.write("Controls 95% of decisions")
-            st.write("Natural, lasting change")
-            st.write("Proven results")
-        
-        # Key insight without overwhelming detail
-        st.info("""
-        The breakthrough: Instead of fighting your programming with willpower, 
-        we rewire the subconscious patterns that drive your behavior. 
-        This creates effortless, permanent transformation.
-        """)
+
     
     def _render_quiz_section(self):
         """Render quiz section with clear call-to-action"""
