@@ -77,11 +77,11 @@ class HomePage:
         #         f"{AppConfig.LCCH_CERTIFICATION} & {AppConfig.DBT_CERTIFICATION}"
         #     )
     
-    def _render_why_hypnotherapy(self):
-        """Explain why hypnotherapy works - focused and clear"""
-        render_section_divider()
+    # def _render_why_hypnotherapy(self):
+    #     """Explain why hypnotherapy works - focused and clear"""
+    #     render_section_divider()
         
-        st.markdown("## Why Hypnotherapy Succeeds Where Willpower Fails")
+    #     st.markdown("## Why Hypnotherapy Succeeds Where Willpower Fails")
         
 
     
