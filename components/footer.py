@@ -55,8 +55,8 @@ class Footer:
             
             # Credentials
             st.markdown("**Certifications:**")
-            st.write(f"• LCCH Certified {AppConfig.LCCH_CERTIFICATION}")
-            st.write(f"• DBT Certified {AppConfig.DBT_CERTIFICATION}")
+            st.write(f"• London College of Clinical Hypnotherapy Certified {AppConfig.LCCH_CERTIFICATION}")
+            st.write(f"• Dialectical Behavioral Therapy Certified {AppConfig.DBT_CERTIFICATION}")
             st.write(f"• {get_years_of_experience()}+ years experience")
     
     def _render_contact_section(self):
