@@ -1,66 +1,49 @@
-"""
-Main application entry point - Streamlit Hypnotherapy Website
-Professional, robust, and maintainable architecture
-"""
-from utils import styling, config
+from utils.styling import apply_design_system
 from components.navigation import show_navigation
 from components.footer import show_footer
-from pages.home import create_home_page
-from pages.method import create_method_page
-from pages.success import create_success_page
-from pages.blog import create_blog_page
-from pages.booking import create_booking_page
 import streamlit as st
 
-# Initialize app-wide styling
-styling.apply_design_system()
+# Import all page classes
+from pages.home import HomePage
+from pages.method import MethodPage
+from pages.success import SuccessPage
+from pages.blog import BlogPage
+from pages.booking import BookingPage
 
 def main():
-    """Main application controller"""
-    # Initialize session state
-    if 'page' not in st.session_state:
-        st.session_state.page = 'home'
+    # Apply design system first
+    apply_design_system()
+    
+    # Initialize navigation
+    show_navigation()
     
     # Get current page from query params
     query_params = st.experimental_get_query_params()
-    current_page = query_params.get('page', ['home'])[0]
+    current_page = query_params.get("page", ["home"])[0]
     
-    # Render navigation and page content
-    show_navigation()
-    _render_page_content(current_page)
+    # Render the appropriate page
+    if current_page == "home":
+        HomePage().render()
+    elif current_page == "method":
+        MethodPage().render()
+    elif current_page == "success":
+        SuccessPage().render()
+    elif current_page == "blog":
+        BlogPage().render()
+    elif current_page == "booking":
+        BookingPage().render()
+    else:
+        st.error("Page not found")
+        HomePage().render()
+    
+    # Show footer on all pages
     show_footer()
 
-def _render_page_content(page):
-    """Render the appropriate page based on route"""
-    page_components = {
-        'home': create_home_page(),
-        'method': create_method_page(),
-        'success': create_success_page(),
-        'blog': create_blog_page(),
-        'booking': create_booking_page()
-    }
-    
-    # Error handling for invalid routes
-    if page not in page_components:
-        st.error("Page not found")
-        page = 'home'
-    
-    try:
-        with st.spinner(f"Loading {page}..."):
-            page_components[page].render()
-    except Exception as e:
-        st.error(f"Error loading page: {str(e)}")
-        st.session_state.page = 'home'
-        st.rerun()
-
 if __name__ == "__main__":
-    # Configure Streamlit settings
     st.set_page_config(
         page_title="Clinical Hypnotherapy Bangkok",
         page_icon="🧠",
         layout="centered",
         initial_sidebar_state="collapsed"
     )
-    
-    # Run main app
     main()
