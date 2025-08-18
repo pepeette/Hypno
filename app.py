@@ -1,72 +1,66 @@
 """
-Main Application Entry Point
-Clean architecture with modular imports using Streamlit components
+Main application entry point - Streamlit Hypnotherapy Website
+Professional, robust, and maintainable architecture
 """
+from utils import styling, config
+from components.navigation import show_navigation
+from components.footer import show_footer
+from pages.home import create_home_page
+from pages.method import create_method_page
+from pages.success import create_success_page
+from pages.blog import create_blog_page
+from pages.booking import create_booking_page
 import streamlit as st
 
-# Page configuration
-st.set_page_config(
-    page_title="Transform Your Life in 2 Sessions | Clinical Hypnotherapy Bangkok",
-    page_icon="🧠",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
-
-# Import modules with error handling
-try:
-    from utils.styling import apply_styles
-    from utils.session_state import initialize_session_state
-    from components.navigation import Navigation
-    from components.footer import Footer
-    from components.booking_form import UnifiedBookingForm
-    from pages.home import HomePage
-    from pages.method import MethodPage
-    from pages.success import SuccessPage
-    from pages.blog import BlogPage
-    from pages.booking import BookingPage
-except ImportError as e:
-    st.error(f"Module import error: {e}")
-    st.stop()
+# Initialize app-wide styling
+styling.apply_design_system()
 
 def main():
-    """Main application entry point"""
-    
-    # Apply styling
-    apply_styles()
-    
+    """Main application controller"""
     # Initialize session state
-    initialize_session_state()
+    if 'page' not in st.session_state:
+        st.session_state.page = 'home'
     
-    # Create navigation
-    navigation = Navigation()
-    selected_page = navigation.render()
+    # Get current page from query params
+    query_params = st.experimental_get_query_params()
+    current_page = query_params.get('page', ['home'])[0]
     
-    # Route to appropriate page
-    if selected_page == "Home":
-        page = HomePage()
-        page.render()
-    elif selected_page == "Method":
-        page = MethodPage()
-        page.render()
-    elif selected_page == "Success Stories":
-        page = SuccessPage()
-        page.render()
-    elif selected_page == "FAQ & Blog":
-        page = BlogPage()
-        page.render()
-    elif selected_page == "Book Now":
-        page = BookingPage()
-        page.render()
+    # Render navigation and page content
+    show_navigation()
+    _render_page_content(current_page)
+    show_footer()
+
+def _render_page_content(page):
+    """Render the appropriate page based on route"""
+    page_components = {
+        'home': create_home_page(),
+        'method': create_method_page(),
+        'success': create_success_page(),
+        'blog': create_blog_page(),
+        'booking': create_booking_page()
+    }
     
-    # Always show booking form and footer (except on booking page)
-    if selected_page != "Book Now":
-        st.markdown("---")
-        booking_form = UnifiedBookingForm()
-        booking_form.render_compact()
+    # Error handling for invalid routes
+    if page not in page_components:
+        st.error("Page not found")
+        page = 'home'
     
-    # Footer on every page
-    footer = Footer()
-    footer.render()
+    try:
+        with st.spinner(f"Loading {page}..."):
+            page_components[page].render()
+    except Exception as e:
+        st.error(f"Error loading page: {str(e)}")
+        st.session_state.page = 'home'
+        st.rerun()
 
 if __name__ == "__main__":
+    # Configure Streamlit settings
+    st.set_page_config(
+        page_title="Clinical Hypnotherapy Bangkok",
+        page_icon="🧠",
+        layout="centered",
+        initial_sidebar_state="collapsed"
+    )
+    
+    # Run main app
     main()
