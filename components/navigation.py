@@ -1,92 +1,93 @@
 """
-Navigation Component
-Sleek, responsive navigation using streamlit-option-menu
+Navigation component using streamlit-option-menu
+Clean, responsive navigation for the Hypnotherapy website
 """
 import streamlit as st
 from streamlit_option_menu import option_menu
-from utils.session_state import track_page_view
 
 class Navigation:
-    """Clean navigation component using Streamlit components"""
+    """Main navigation component using Streamlit components"""
     
     def __init__(self):
-        self.pages = ["Home", "Method", "Success Stories", "FAQ & Blog", "Book Now"]
-        self.icons = ["house-fill", "gear-fill", "star-fill", "question-circle-fill", "calendar-check-fill"]
+        self.options = ["Home", "Method", "Success", "Blog", "Book Now"]
+        self.icons = ["house", "gear", "star", "book", "calendar"]
+        
+    def create_menu(self):
+        """Create and return the main navigation menu using option_menu"""
+        try:
+            selected = option_menu(
+                menu_title=None,
+                options=self.options,
+                icons=self.icons,
+                default_index=0,
+                orientation="horizontal",
+                styles=self._get_navigation_styles()
+            )
+            
+            # Track page visit for analytics
+            self._track_page_visit(selected)
+            
+            return selected
+            
+        except Exception as e:
+            # Fallback to Streamlit selectbox if option_menu fails
+            st.warning("Navigation component failed, using fallback")
+            return st.selectbox(
+                "Navigation",
+                self.options,
+                index=0,
+                label_visibility="collapsed"
+            )
     
-    def render(self) -> str:
-        """Render the main navigation menu"""
-        
-        selected = option_menu(
-            menu_title=None,
-            options=self.pages,
-            icons=self.icons,
-            default_index=0,
-            orientation="horizontal",
-            styles=self._get_navigation_styles()
-        )
-        
-        # Track page view
-        track_page_view(selected)
-        
-        return selected
-    
-    def _get_navigation_styles(self) -> dict:
-        """Get navigation styling that matches our design system"""
+    def _get_navigation_styles(self):
+        """Get navigation styling configuration"""
         return {
             "container": {
-                "padding": "0.75rem 0",
-                "background": "linear-gradient(90deg, #FFFFFF 0%, #F0FDFA 100%)",
+                "padding": "0",
+                "margin": "0 0 2rem 0",
+                "background-color": "#F0FDFA",
                 "border-radius": "12px",
-                "box-shadow": "0 2px 8px rgba(0,0,0,0.05)",
-                "margin-bottom": "2rem",
-                "border": "1px solid #CBD5E1"
+                "box-shadow": "0 2px 8px rgba(0,0,0,0.05)"
             },
             "nav-link": {
                 "font-size": "1rem",
-                "padding": "0.75rem 1.5rem",
-                "color": "#556D7A",
-                "font-weight": "500",
+                "padding": "12px 20px",
                 "transition": "all 0.3s ease",
                 "border-radius": "8px",
-                "margin": "0 0.25rem"
+                "margin": "0 4px",
+                "color": "#556D7A",
+                "font-weight": "500",
+                "--hover-color": "#4CA1A3"
             },
             "nav-link-selected": {
                 "background": "#4CA1A3",
-                "color": "white",
                 "font-weight": "600",
+                "color": "white",
+                "border-bottom": "none",
                 "transform": "translateY(-1px)",
-                "box-shadow": "0 2px 8px rgba(76, 161, 163, 0.2)"
-            },
-            "icon": {
-                "color": "inherit",
-                "font-size": "1.1rem"
+                "box-shadow": "0 4px 12px rgba(76, 161, 163, 0.3)"
             }
         }
     
-    def render_breadcrumb(self, current_page: str, parent_page: str = None):
-        """Render breadcrumb using Streamlit components"""
+    def _track_page_visit(self, selected_page):
+        """Track page visit for analytics"""
+        try:
+            from utils.session_state import track_page_visit
+            track_page_visit(selected_page)
+        except ImportError:
+            # Simple fallback tracking
+            if 'page_visits' not in st.session_state:
+                st.session_state.page_visits = []
+            st.session_state.page_visits.append(selected_page)
+    
+    def create_breadcrumb(self, current_page, parent_page=None):
+        """Create breadcrumb navigation for sub-pages using Streamlit"""
         if parent_page:
-            st.caption(f"{parent_page} → {current_page}")
+            st.caption(f"{parent_page} / **{current_page}**")
         else:
-            st.caption(current_page)
-    
-    def render_page_header(self, title: str, subtitle: str = None):
-        """Render consistent page headers"""
-        st.title(title)
-        if subtitle:
-            st.write(subtitle)
-        st.markdown("---")
+            st.caption(f"**{current_page}**")
 
-class MobileNavigation:
-    """Mobile-optimized navigation fallback"""
-    
-    def __init__(self):
-        self.pages = ["Home", "Method", "Success", "FAQ", "Book"]
-    
-    def render(self) -> str:
-        """Render mobile-friendly navigation"""
-        return st.selectbox(
-            "Navigate to:",
-            self.pages,
-            label_visibility="collapsed"
-        )
+# Factory function for clean import
+def create_navigation():
+    """Factory function to create Navigation instance"""
+    return Navigation()
