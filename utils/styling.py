@@ -1,11 +1,11 @@
 """
-Clean styling module for the Hypnotherapy website
-STRICT: Only 3 font sizes, no text shadows, minimal bold, light mode only
+Styling module for the Hypnotherapy website
+Clean CSS with only 3 font sizes, no text shadows, light mode only
 """
 import streamlit as st
 
 def apply_global_styles():
-    """Apply clean, consistent styling - 3 font sizes only"""
+    """Apply clean global styles - 3 font sizes only, no shadows"""
     
     st.markdown("""
     <style>
@@ -25,6 +25,7 @@ def apply_global_styles():
     
     /* CSS VARIABLES */
     :root {
+        /* Colors */
         --bg: #F3F6F8;
         --card-bg: #FFFFFF;
         --text-primary: #273548;
@@ -36,14 +37,17 @@ def apply_global_styles():
         --warning: #eab308;
         --error: #ef4444;
         
+        /* Shadows */
         --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
         --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
         --shadow-accent: 0 2px 8px rgba(59, 122, 122, 0.2);
         
+        /* Border radius */
         --radius-sm: 8px;
         --radius-md: 12px;
         --radius-lg: 16px;
         
+        /* Transitions */
         --transition: all 0.3s ease;
     }
     
@@ -79,22 +83,6 @@ def apply_global_styles():
     strong, b {
         font-weight: 600 !important;
         color: var(--text-primary) !important;
-    }
-    
-    /* CARD COMPONENTS */
-    .card {
-        background: var(--card-bg);
-        border-radius: var(--radius-md);
-        padding: 2rem;
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--border);
-        transition: var(--transition);
-        margin-bottom: 2rem;
-    }
-    
-    .card:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
     }
     
     /* STREAMLIT BUTTON STYLING */
@@ -148,7 +136,7 @@ def apply_global_styles():
         box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.1) !important;
     }
     
-    /* METRIC STYLING */
+    /* STREAMLIT METRIC STYLING */
     .stMetric {
         background: var(--card-bg);
         border-radius: var(--radius-sm);
@@ -169,19 +157,64 @@ def apply_global_styles():
         font-weight: 600 !important;
     }
     
-    /* PROGRESS BAR */
+    /* STREAMLIT PROGRESS BAR */
     .stProgress .st-bo {
         background-color: var(--accent) !important;
     }
     
-    /* TESTIMONIAL CARDS */
-    .testimonial-card {
-        border-left: 4px solid var(--accent);
+    /* STREAMLIT CONTAINERS */
+    .stContainer {
         background: var(--card-bg);
-        padding: 1.5rem;
         border-radius: var(--radius-md);
+        padding: 1rem;
         margin: 1rem 0;
-        box-shadow: var(--shadow-sm);
+    }
+    
+    /* STREAMLIT EXPANDER */
+    .streamlit-expanderHeader {
+        background-color: var(--card-bg) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius-sm) !important;
+    }
+    
+    /* STREAMLIT SUCCESS/ERROR/WARNING/INFO */
+    .stSuccess, .stError, .stWarning, .stInfo {
+        border-radius: var(--radius-sm) !important;
+        border: none !important;
+        padding: 1rem !important;
+    }
+    
+    /* STREAMLIT TABS */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: var(--card-bg);
+        border-radius: var(--radius-sm);
+        padding: 0.5rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
+        padding: 0px 24px;
+        background-color: transparent;
+        border-radius: var(--radius-sm);
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: var(--accent) !important;
+        color: white !important;
+        font-weight: 600 !important;
+    }
+    
+    /* STREAMLIT QUOTE */
+    .stMarkdown blockquote {
+        border-left: 4px solid var(--accent);
+        padding: 1rem;
+        margin: 1rem 0;
+        background-color: rgba(76, 161, 163, 0.05);
+        border-radius: var(--radius-sm);
+        font-style: italic;
     }
     
     /* HIDE STREAMLIT ELEMENTS */
@@ -199,12 +232,12 @@ def apply_global_styles():
             font-size: 1.25rem !important;
         }
         
-        .card {
-            padding: 1.5rem;
-        }
-        
         .stButton>button {
             padding: 0.6rem 1.5rem !important;
+        }
+        
+        .stMetric {
+            padding: 0.75rem;
         }
     }
     </style>
