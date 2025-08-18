@@ -14,7 +14,7 @@ st.set_page_config(
 
 # Import modules with error handling
 try:
-    from utils.styling import apply_styles
+    from utils.styling import apply_global_styles
     from utils.session_state import initialize_session_state
     from components.navigation import Navigation
     from components.footer import Footer
