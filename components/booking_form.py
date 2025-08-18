@@ -1,146 +1,107 @@
 """
 Booking form component for the Hypnotherapy website
 Reusable booking form for discovery calls and consultations
+Uses native Streamlit form components for better compatibility
 """
 import streamlit as st
 import re
 
-class BookingForm:
-    """Reusable booking form component"""
+class StreamlitOptimizedBookingForm:
+    """Booking form using Streamlit native components"""
     
     def __init__(self):
-        # Try to get config values
-        try:
-            from utils.config import AppConstants
-            self.concern_options = AppConstants.CONCERN_OPTIONS
-            self.discovery_url = AppConstants.CONTACT_INFO.get("discovery_call_url", "https://calendly.com/laetitiasheppard/30min")
-        except ImportError:
-            self.concern_options = [
-                "Select one...", 
-                "Quit Smoking", 
-                "Reduce Anxiety", 
-                "Improve Sleep", 
-                "Break Bad Habits",
-                "Other"
-            ]
-            self.discovery_url = "https://calendly.com/laetitiasheppard/30min"
+        self.concern_options = [
+            "Select one...", 
+            "Quit Smoking", 
+            "Reduce Anxiety", 
+            "Improve Sleep", 
+            "Break Bad Habits",
+            "Weight Management",
+            "Boost Confidence",
+            "Other"
+        ]
+        
+        self.discovery_url = "https://calendly.com/laetitiasheppard/discovery"
+        self.package_url = "https://calendly.com/laetitiasheppard/package"
     
-    def render(self, form_title="Free 15-Minute Discovery Call", form_description=None):
-        """Render the booking form"""
-        # Default description if none provided
-        if form_description is None:
-            form_description = "Begin your journey to transformation with a complimentary consultation"
+    def render(self, form_title="Start Your Transformation Journey"):
+        """Render booking form using Streamlit components"""
+        st.markdown(f"## {form_title}")
         
-        st.markdown('<div id="discovery"></div>', unsafe_allow_html=True)
+        # Show booking options
+        self._render_booking_options()
         
-        form_html = f"""
-        <div class="card">
-            <h1 style="text-align: center; color: var(--accent); margin-bottom: 1rem;">
-                {form_title}
-            </h1>
-            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
-                {form_description}
-            </p>
-        </div>
-        """
+        # Main form using tabs
+        tab1, tab2 = st.tabs(["📞 Free Discovery Call", "⚡ Book Transformation Package"])
         
-        st.markdown(form_html, unsafe_allow_html=True)
+        with tab1:
+            self._render_discovery_form()
         
-        # Benefits of discovery call
-        self._render_benefits()
-        
-        # Main form
-        self._render_form()
+        with tab2:
+            self._render_package_form()
     
-    def _render_benefits(self):
-        """Render benefits of the discovery call"""
-        benefits_html = """
-        <div style="background: rgba(76, 161, 163, 0.05); border-radius: var(--radius-md);
-                    padding: 1.5rem; margin: 2rem 0; border-left: 4px solid var(--accent);">
-            <h3 style="color: var(--accent); margin-bottom: 1rem;">What You'll Get in Your Discovery Call:</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>Personalized assessment of your situation</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>Clear explanation of how hypnotherapy works</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>Honest assessment of your success probability</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>Answers to all your questions</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>No pressure, no obligation</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>Next steps if you decide to proceed</span>
-                </div>
-            </div>
-        </div>
-        """
+    def _render_booking_options(self):
+        """Render booking options using Streamlit"""
+        st.write("Choose the option that feels right for you:")
         
-        st.markdown(benefits_html, unsafe_allow_html=True)
-    
-    def _render_form(self):
-        """Render the main booking form"""
-        with st.form("discovery_booking_form", clear_on_submit=False):
-            # Form fields
-            cols = st.columns(2)
-            with cols[0]:
-                name = st.text_input(
-                    "Your Name*", 
-                    placeholder="First and last name",
-                    help="We'll use this to personalize your session"
-                )
-            with cols[1]:
-                email = st.text_input(
-                    "Email Address*", 
-                    placeholder="your@email.com",
-                    help="For session confirmations and resources"
-                )
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("### 📞 Free Discovery Call")
+            st.write("**Perfect if you:**")
+            st.write("- Want to understand how hypnotherapy works")
+            st.write("- Have questions about the process")
+            st.write("- Want to assess your suitability")
+            st.write("- Prefer to talk before committing")
             
-            concern = st.selectbox(
-                "What would you most like to change?*",
-                self.concern_options,
-                help="This helps us prepare for your call"
-            )
+            st.success("**100% FREE • No Commitment**")
+        
+        with col2:
+            st.markdown("### ⚡ Transformation Package")
+            st.write("**Perfect if you:**")
+            st.write("- Are ready to commit to transformation")
+            st.write("- Want to start immediately")
+            st.write("- Have taken our assessment (70%+ score)")
+            st.write("- Prefer direct action")
             
-            # Additional context
-            cols2 = st.columns(2)
-            with cols2[0]:
+            st.info("**3,000 THB • 85% Success Rate**")
+    
+    def _render_discovery_form(self):
+        """Render discovery call form"""
+        st.markdown("### Book Your Free 15-Minute Discovery Call")
+        st.write("No pressure, no sales pitch - just helpful information about your transformation journey")
+        
+        with st.form("discovery_form", clear_on_submit=False):
+            # Personal information
+            col1, col2 = st.columns(2)
+            with col1:
+                name = st.text_input("Your Name*", placeholder="First and last name")
+            with col2:
+                email = st.text_input("Email Address*", placeholder="your@email.com")
+            
+            # Primary concern
+            concern = st.selectbox("What would you most like to change?*", self.concern_options)
+            
+            # Additional details
+            col1, col2 = st.columns(2)
+            with col1:
                 urgency = st.selectbox(
                     "How urgent is this for you?",
-                    ["Select one...", "Very urgent - need help now", "Somewhat urgent - within a month", 
-                     "Not urgent - just exploring", "Flexible timing"],
-                    help="Helps us prioritize scheduling"
+                    ["Select one...", "Very urgent - need help ASAP", 
+                     "Moderately urgent - within a month", 
+                     "Not urgent - just exploring", "Flexible timing"]
+                )
+            with col2:
+                preferred_time = st.selectbox(
+                    "Preferred call time:",
+                    ["No preference", "Morning (9-12)", "Afternoon (12-17)", 
+                     "Evening (17-20)", "Weekend"]
                 )
             
-            with cols2[1]:
-                experience = st.selectbox(
-                    "Previous experience with hypnotherapy?",
-                    ["No previous experience", "Some experience", "Experienced", "Prefer not to say"],
-                    help="Helps us tailor our explanation"
-                )
-            
+            # Optional message
             message = st.text_area(
-                "Anything specific you'd like to discuss?", 
-                placeholder="Optional: Any questions, concerns, or background information you'd like to share",
-                help="This helps us make the most of your 15 minutes"
-            )
-            
-            # Preferred contact method
-            contact_method = st.radio(
-                "Preferred session format:",
-                ["Video call (Zoom)", "Phone call", "In-person (Bangkok)", "No preference"],
-                horizontal=True
+                "Questions or concerns you'd like to discuss?", 
+                placeholder="Optional: Anything specific you'd like us to know"
             )
             
             # Submit button
@@ -152,31 +113,122 @@ class BookingForm:
             
             if submitted:
                 if self._validate_form(name, email, concern, urgency):
-                    self._handle_form_submission(name, email, concern, urgency, experience, message, contact_method)
+                    self._handle_discovery_submission(name, email, concern, urgency, preferred_time, message)
+    
+    def _render_package_form(self):
+        """Render package booking form"""
+        # Check quiz score
+        quiz_score = st.session_state.get('quiz_score', 0)
+        quiz_completed = st.session_state.get('quiz_completed', False)
+        
+        if quiz_completed:
+            if quiz_score >= 70:
+                st.success(f"✅ Excellent! Your assessment score of {quiz_score}% indicates you're ready for transformation.")
+            else:
+                st.warning(f"⚠️ Your assessment score of {quiz_score}% suggests a discovery call might be beneficial first.")
+        else:
+            st.info("💡 Consider taking our 30-second assessment first to confirm you're ready for the full program.")
+        
+        st.markdown("### Book Your Transformation Package")
+        st.write("Ready to commit to your transformation journey")
+        
+        with st.form("package_form", clear_on_submit=False):
+            # Personal information
+            col1, col2 = st.columns(2)
+            with col1:
+                name = st.text_input("Your Name*", placeholder="First and last name")
+            with col2:
+                email = st.text_input("Email Address*", placeholder="your@email.com")
+            
+            # Primary concern and experience
+            col1, col2 = st.columns(2)
+            with col1:
+                concern = st.selectbox("Primary Concern*", self.concern_options)
+            with col2:
+                experience = st.selectbox(
+                    "Previous hypnotherapy experience?",
+                    ["No previous experience", "Some experience", 
+                     "Experienced", "Prefer not to say"]
+                )
+            
+            # Package selection
+            st.markdown("**Choose your package:**")
+            package_type = st.radio(
+                "Package Options",
+                [
+                    "Complete Package (3,000 THB) - 2 sessions with email support",
+                    "Premium Package (4,000 THB) - 3 sessions with satisfaction guarantee"
+                ],
+                help="Most clients succeed with the Complete Package"
+            )
+            
+            # Session preferences
+            session_format = st.radio(
+                "Preferred session format:",
+                ["In-person (Bangkok clinic)", "Online (Zoom)", "No preference"],
+                horizontal=True
+            )
+            
+            # Additional details
+            message = st.text_area(
+                "Tell us about your situation*", 
+                placeholder="Brief description of what you'd like to change and any relevant background"
+            )
+            
+            # Submit button
+            submitted = st.form_submit_button(
+                "⚡ Book My Transformation Package", 
+                type="primary", 
+                use_container_width=True
+            )
+            
+            if submitted:
+                if self._validate_package_form(name, email, concern, message):
+                    self._handle_package_submission(
+                        name, email, concern, experience, 
+                        package_type, session_format, message
+                    )
     
     def _validate_form(self, name, email, concern, urgency):
-        """Validate form inputs"""
+        """Validate basic form fields"""
         errors = []
         
         if not name.strip():
             errors.append("Name is required")
-        
         if not email.strip():
             errors.append("Email is required")
         elif not self._is_valid_email(email):
             errors.append("Please enter a valid email address")
-        
         if concern == "Select one...":
-            errors.append("Please select what you'd like to change")
-        
+            errors.append("Please select your primary concern")
         if urgency == "Select one...":
-            errors.append("Please indicate how urgent this is for you")
+            errors.append("Please indicate urgency level")
         
         if errors:
             for error in errors:
                 st.error(f"❌ {error}")
             return False
+        return True
+    
+    def _validate_package_form(self, name, email, concern, message):
+        """Validate package form fields"""
+        errors = []
         
+        if not name.strip():
+            errors.append("Name is required")
+        if not email.strip():
+            errors.append("Email is required")
+        elif not self._is_valid_email(email):
+            errors.append("Please enter a valid email address")
+        if concern == "Select one...":
+            errors.append("Please select your primary concern")
+        if not message.strip():
+            errors.append("Please tell us about your situation")
+        
+        if errors:
+            for error in errors:
+                st.error(f"❌ {error}")
+            return False
         return True
     
     def _is_valid_email(self, email):
@@ -184,109 +236,68 @@ class BookingForm:
         pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
         return re.match(pattern, email) is not None
     
-    def _handle_form_submission(self, name, email, concern, urgency, experience, message, contact_method):
-        """Handle successful form submission"""
-        # Try to send email
-        if self._send_booking_email(name, email, concern, urgency, experience, message, contact_method):
-            # Success state
-            self._render_success_state(name)
-        else:
-            # Error state
-            st.error("❌ There was an issue submitting your request. Please try again or contact us directly.")
-    
-    def _send_booking_email(self, name, email, concern, urgency, experience, message, contact_method):
-        """Send booking notification email"""
-        try:
-            # Try to import email handler
-            from utils.email_handler import send_discovery_call_email
-            
-            booking_data = {
-                'name': name,
-                'email': email,
-                'concern': concern,
-                'urgency': urgency,
-                'experience': experience,
-                'message': message,
-                'contact_method': contact_method
-            }
-            
-            return send_discovery_call_email(booking_data)
-            
-        except ImportError:
-            # Fallback - log to console (in production, implement proper email)
-            print(f"Discovery Call Booking: {name} ({email}) - {concern} - {urgency}")
-            return True  # Simulate success
-    
-    def _render_success_state(self, name):
-        """Render success state after form submission"""
-        success_html = f"""
-        <div style="background: rgba(34, 197, 94, 0.1); border: 2px solid var(--success);
-                    border-radius: var(--radius-md); padding: 2rem; text-align: center; margin: 2rem 0;">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
-            <h2 style="color: var(--success); margin-bottom: 1rem;">Discovery Call Scheduled!</h2>
-            <p style="font-size: 1.1rem; margin-bottom: 2rem;">
-                Thank you, {name}! We've received your request and will contact you within 24 hours 
-                to schedule your free discovery call.
-            </p>
-            <div style="background: white; border-radius: var(--radius-sm); padding: 1.5rem; margin: 1rem 0;">
-                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">What Happens Next:</h3>
-                <div style="text-align: left; max-width: 400px; margin: 0 auto;">
-                    <div style="margin-bottom: 0.8rem;">📧 <strong>Step 1:</strong> Check your email for confirmation</div>
-                    <div style="margin-bottom: 0.8rem;">📞 <strong>Step 2:</strong> We'll contact you to schedule</div>
-                    <div style="margin-bottom: 0.8rem;">🎯 <strong>Step 3:</strong> Your 15-minute discovery call</div>
-                    <div style="margin-bottom: 0.8rem;">⚡ <strong>Step 4:</strong> Decide on next steps together</div>
-                </div>
-            </div>
-        </div>
-        """
+    def _handle_discovery_submission(self, name, email, concern, urgency, preferred_time, message):
+        """Handle discovery call form submission"""
+        st.success("🎉 Discovery Call Requested!")
+        st.write(f"Thank you, {name}! We'll contact you within 24 hours to schedule your free consultation.")
         
-        st.markdown(success_html, unsafe_allow_html=True)
+        # Show next steps
+        st.markdown("### What Happens Next:")
+        st.write("1. ✅ Check your email for confirmation")
+        st.write("2. 📞 We'll contact you to schedule")
+        st.write("3. 🎯 Your 15-minute discovery call")
+        st.write("4. ⚡ Decide on next steps together")
         
-        # Calendar link
+        # Direct scheduling link
         st.markdown(f"""
-        <div style="text-align: center; margin: 2rem 0;">
-            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                Or schedule directly using our calendar:
-            </p>
-            <a href="{self.discovery_url}" target="_blank" 
-               style="display: inline-block; background-color: var(--accent); color: white;
-                      text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
-                      font-weight: 600; font-size: 1.1rem; transition: var(--transition);">
-                📅 Choose Your Time Slot
-            </a>
-        </div>
-        """, unsafe_allow_html=True)
+        **Or schedule directly:** [Choose Your Time Slot]({self.discovery_url})
+        """)
         
-        # Show balloons animation
+        st.balloons()
+    
+    def _handle_package_submission(self, name, email, concern, experience, package_type, session_format, message):
+        """Handle package booking form submission"""
+        st.success("🎉 Transformation Package Booked!")
+        st.write(f"Thank you, {name}! Check your email for next steps and session scheduling information.")
+        
+        # Show next steps
+        st.markdown("### What Happens Next:")
+        st.write("1. ✅ Check your email for confirmation")
+        st.write("2. 📅 We'll send calendar links for your sessions")
+        st.write("3. 💳 Payment details will be provided")
+        st.write("4. 🚀 Your transformation begins!")
+        
+        # Direct scheduling link
+        st.markdown(f"""
+        **Schedule your sessions now:** [Book Your Sessions]({self.package_url})
+        """)
+        
         st.balloons()
     
     def render_compact(self):
-        """Render a compact version of the booking form"""
-        st.markdown("### 📞 Book Your Free Discovery Call")
+        """Render compact version using Streamlit"""
+        st.markdown("### 📞 Quick Start")
         
-        with st.form("compact_booking_form"):
+        with st.form("compact_booking"):
             name = st.text_input("Name*", placeholder="Your name")
             email = st.text_input("Email*", placeholder="your@email.com")
-            concern = st.selectbox("Primary Concern*", self.concern_options)
+            concern = st.selectbox("Primary concern*", self.concern_options)
             
-            submitted = st.form_submit_button("Schedule Call", type="primary", use_container_width=True)
+            col1, col2 = st.columns(2)
+            with col1:
+                discovery_submitted = st.form_submit_button("📞 Free Call", use_container_width=True)
+            with col2:
+                package_submitted = st.form_submit_button("⚡ Book Package", type="primary", use_container_width=True)
             
-            if submitted:
+            if discovery_submitted or package_submitted:
                 if name and email and concern != "Select one..." and self._is_valid_email(email):
-                    if self._send_booking_email(name, email, concern, "Not specified", "Not specified", "", "No preference"):
-                        st.success("✅ Request submitted! We'll contact you within 24 hours.")
-                        st.markdown(f"""
-                        <a href="{self.discovery_url}" target="_blank" 
-                           style="display: block; background-color: var(--accent); color: white;
-                                  text-decoration: none; padding: 0.8rem; border-radius: var(--radius-sm);
-                                  font-weight: 600; text-align: center; margin-top: 1rem;">
-                            📅 Or Schedule Directly
-                        </a>
-                        """, unsafe_allow_html=True)
+                    if discovery_submitted:
+                        st.success("✅ Discovery call requested! We'll contact you within 24 hours.")
+                    else:
+                        st.success("✅ Package booking received! Check your email for next steps.")
                 else:
-                    st.error("Please fill in all required fields with valid information.")
+                    st.error("Please fill all fields correctly")
 
-# Factory function for easy import
-def create_booking_form():
-    """Factory function to create BookingForm instance"""
-    return BookingForm()
+def create_streamlit_booking_form():
+    """Factory function"""
+    return StreamlitOptimizedBookingForm()
