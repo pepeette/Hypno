@@ -35,23 +35,23 @@ def apply_styles():
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     }
     
-    /* Typography System - ONLY 3 Sizes, No Text Shadows */
+    /* Typography System - UPDATED: h1->h2, h2->h3, No Text Shadows */
     h1 {
-        font-size: 2.5rem !important;
-        color: var(--text-primary) !important;
-        font-weight: 700 !important;
-        text-shadow: none !important;
-        line-height: 1.2 !important;
-        margin-bottom: 1.5rem !important;
-    }
-    
-    h2, h3, h4, h5, h6 {
         font-size: 1.875rem !important;
         color: var(--text-primary) !important;
         font-weight: 600 !important;
         text-shadow: none !important;
         line-height: 1.3 !important;
         margin-bottom: 1.2rem !important;
+    }
+    
+    h2, h3, h4, h5, h6 {
+        font-size: 1.5rem !important;
+        color: var(--text-primary) !important;
+        font-weight: 600 !important;
+        text-shadow: none !important;
+        line-height: 1.3 !important;
+        margin-bottom: 1rem !important;
     }
     
     p, li, span, div, a, button, input, textarea, select, label {
@@ -210,6 +210,17 @@ def render_hero_section(title, subtitle):
     <div class="hero-section">
         <h1>{title}</h1>
         <p>{subtitle}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+def render_hero_card(title, subtitle):
+    """Render smaller hero card for focused messaging"""
+    st.markdown(f"""
+    <div style="background: linear-gradient(135deg, var(--accent) 0%, #F0FDFA 100%); 
+                padding: 2rem; border-radius: var(--radius-md); text-align: center; 
+                margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+        <h1 style="color: white; margin-bottom: 0.75rem;">{title}</h1>
+        <p style="color: white; opacity: 0.95; font-size: 1.1rem;">{subtitle}</p>
     </div>
     """, unsafe_allow_html=True)
 
