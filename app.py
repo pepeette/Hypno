@@ -486,6 +486,8 @@ Main application entry point for the Hypnotherapy website
 Clean architecture using proper imports and Streamlit components
 """
 import streamlit as st
+import time
+st.write(f"Cache buster: {time.time()}")
 
 # Import page modules with error handling
 try:
