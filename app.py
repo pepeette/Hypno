@@ -594,6 +594,8 @@
 # render_booking_form()
 # render_footer()
 
+
+
 """
 Streamlit-Focused Hypnotherapy Website
 Clean architecture using Streamlit components, not complex HTML
@@ -621,10 +623,13 @@ def apply_clean_styles():
         background-color: #F8FAFC !important;
     }
     
-    /* Simple typography - only 3 sizes, no shadows */
-    h1 { font-size: 2.5rem !important; color: #1E293B !important; font-weight: 700 !important; }
-    h2, h3 { font-size: 1.875rem !important; color: #1E293B !important; font-weight: 600 !important; }
-    p, li, span { font-size: 1rem !important; color: #475569 !important; line-height: 1.6 !important; }
+    /* Simple typography - only 3 sizes, no shadows, minimal bold */
+    h1 { font-size: 2.5rem !important; color: #1E293B !important; font-weight: 700 !important; text-shadow: none !important; }
+    h2, h3 { font-size: 1.875rem !important; color: #1E293B !important; font-weight: 600 !important; text-shadow: none !important; }
+    p, li, span { font-size: 1rem !important; color: #475569 !important; line-height: 1.6 !important; text-shadow: none !important; }
+    
+    /* Minimal use of bold */
+    strong { font-weight: 600 !important; }
     
     /* Streamlit button styling */
     .stButton>button {
@@ -678,7 +683,7 @@ if selected == "Home":
                 padding: 4rem 2rem; border-radius: 16px; text-align: center; margin-bottom: 3rem;">
         <h1 style="color: white;">Transform Your Life in Just 2 Sessions</h1>
         <p style="color: white; font-size: 1.2rem; opacity: 0.95;">
-            Science-backed clinical hypnotherapy with <strong>85% success rate</strong>
+            Science-backed clinical hypnotherapy with 85% success rate
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -688,9 +693,9 @@ if selected == "Home":
     with col1:
         st.metric("Success Rate", "85%", "in 2 sessions")
     with col2:
-        st.metric("Lives Changed", "500+", "since 2014")
+        st.metric("Experience", "8+ years", "since 2017")
     with col3:
-        st.metric("Experience", "10+ years", "certified expert")
+        st.metric("Certified", "LCCH 2017", "DBT 2023")
     
     st.markdown("---")
     
@@ -709,7 +714,7 @@ if selected == "Home":
         st.markdown("### ✅ Our Hypnotherapy")
         st.write("• Rewires your programming")
         st.write("• Works with natural patterns")
-        st.write("• 95% long-term success")
+        st.write("• Long-term success")
         st.write("• Results in just 2 sessions")
     
     st.markdown("---")
@@ -793,27 +798,6 @@ if selected == "Home":
                 st.session_state.quiz_step = 1
                 st.session_state.quiz_completed = False
                 st.rerun()
-    
-    st.markdown("---")
-    
-    # Testimonials
-    st.markdown("## 💬 Client Success Stories")
-    
-    # Using Streamlit columns instead of complex HTML
-    testimonials = [
-        ("🌟", "Finally broke free from old patterns – 2 sessions changed everything.", "Director, Banking, Singapore"),
-        ("🚭", "My husband was a heavy smoker... No more addiction.", "Wife, Bangkok"),
-        ("🎓", "I was struggling with my studies... now excelling in internship.", "Medical Student, Morocco")
-    ]
-    
-    for icon, quote, author in testimonials:
-        with st.container():
-            col1, col2 = st.columns([1, 8])
-            with col1:
-                st.markdown(f"<div style='font-size: 2rem; text-align: center;'>{icon}</div>", unsafe_allow_html=True)
-            with col2:
-                st.markdown(f"*\"{quote}\"*")
-                st.caption(f"— {author}")
 
 elif selected == "Method":
     st.title("Our Proven 2-Session Method")
@@ -824,19 +808,35 @@ elif selected == "Method":
     
     with col1:
         st.markdown("### 🔍 Session 1: Analysis")
-        st.write("**90 minutes • In-person or online**")
+        st.write("90 minutes • In-person or online")
         st.write("• Uncover subconscious triggers")
         st.write("• Map behavior patterns")
         st.write("• Identify root causes")
         st.write("• Begin positive programming")
     
     with col2:
-        st.markdown("### ⚡ Session 2: Transformation")
-        st.write("**90 minutes • 3-7 days later**")
+        st.markdown("### ⚡ Session 2: Hypnosis")
+        st.write("90 minutes • 3-7 days later")
         st.write("• Deep hypnotic state")
         st.write("• Rewire neural pathways")
         st.write("• Install new patterns")
         st.write("• Lock in transformation")
+    
+    # Optional 3rd session
+    st.markdown("---")
+    st.markdown("### 🎯 Session 3: Reinforcement (Optional)")
+    st.write("60 minutes • Only needed by 15% of clients")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.write("When beneficial:")
+        st.write("• Fine-tune remaining patterns")
+        st.write("• Address unexpected triggers")
+        st.write("• Strengthen new behaviors")
+        st.write("• Complete peace of mind")
+    
+    with col2:
+        st.info("Guarantee: Not satisfied after 2 sessions? 3rd session is complimentary.")
     
     st.markdown("---")
     
@@ -848,9 +848,9 @@ elif selected == "Method":
     with col2:
         st.metric("Need 3rd Session", "15%", "for reinforcement")
     with col3:
-        st.metric("Ongoing Therapy", "0%", "vs 95% traditional")
+        st.metric("Practice Since", "2017", "8 years experience")
     with col4:
-        st.metric("Long-term Success", "95%", "after 1 year")
+        st.metric("Certifications", "LCCH", "DBT 2023")
     
     # Pricing
     st.markdown("## 💰 Investment Options")
@@ -860,7 +860,7 @@ elif selected == "Method":
         st.markdown("### Complete Package")
         st.metric("Price", "3,000 THB", "Sessions 1 & 2")
         st.write("✓ Analysis Session (90 min)")
-        st.write("✓ Transformation Session (90 min)")
+        st.write("✓ Hypnosis Session (90 min)")
         st.write("✓ Email support")
         st.write("✓ 85% success rate")
     
@@ -868,8 +868,8 @@ elif selected == "Method":
         st.markdown("### Premium Package")
         st.metric("Price", "4,000 THB", "All 3 sessions")
         st.write("✓ Everything in Complete")
-        st.write("✓ Plus: 3rd reinforcement")
-        st.write("✓ 100% success guarantee")
+        st.write("✓ Plus: 3rd reinforcement session")
+        st.write("✓ Satisfaction guarantee")
         st.write("✓ Peace of mind")
 
 elif selected == "Success Stories":
@@ -881,11 +881,11 @@ elif selected == "Success Stories":
     with col1:
         st.metric("Success Rate", "85%", "in 2 sessions")
     with col2:
-        st.metric("Lives Changed", "500+", "since 2014")
+        st.metric("Practice Since", "2017", "8 years experience")
     with col3:
-        st.metric("Average Rating", "4.9/5", "client satisfaction")
+        st.metric("Certifications", "LCCH", "DBT 2023")
     with col4:
-        st.metric("Long-term Success", "95%", "after 1 year")
+        st.metric("Client Satisfaction", "High", "positive feedback")
     
     st.markdown("---")
     
@@ -902,14 +902,14 @@ elif selected == "Success Stories":
             "title": "🚭 Heavy Smoker - Bangkok", 
             "challenge": "2 packs per day for 20 years",
             "solution": "2 sessions over 1 week",
-            "result": "Completely smoke-free, saved 30,000 THB",
+            "result": "Completely smoke-free, saved money",
             "quote": "My husband smoked 2 packs a day for 20 years. Nothing worked until hypnotherapy. He hasn't touched a cigarette since session 2."
         },
         {
             "title": "🎓 Medical Student - Morocco",
             "challenge": "Failing due to study anxiety",
             "solution": "2 online sessions over 2 weeks", 
-            "result": "Top 10% performance, loving studies",
+            "result": "Improved performance, loving studies",
             "quote": "I was failing medical school due to overwhelming stress. Now I'm excelling in my specialization and loving every moment."
         }
     ]
@@ -928,10 +928,11 @@ elif selected == "FAQ & Blog":
     
     faqs = [
         ("Is hypnotherapy safe?", "Yes, clinical hypnotherapy is completely safe. You remain fully aware and in control throughout the session."),
-        ("How many sessions will I need?", "85% of clients achieve their goals in just 2 sessions. About 15% opt for an optional 3rd session."),
+        ("How many sessions will I need?", "85% of clients achieve their goals in just 2 sessions. About 15% opt for an optional 3rd session for reinforcement."),
         ("What if I can't be hypnotized?", "This is a myth. Everyone can be hypnotized because hypnosis is a natural state we enter daily."),
         ("Will I lose control?", "Absolutely not. You remain fully aware and can open your eyes or speak at any time."),
-        ("How much does it cost?", "Our complete 2-session package is 3,000 THB. Compare this to years of traditional therapy.")
+        ("How much does it cost?", "Our complete 2-session package is 3,000 THB. Compare this to years of traditional therapy."),
+        ("What are your qualifications?", "Certified by London College of Clinical Hypnotherapy (2017) and Dialectical Behavioral Therapy certified (2023). Practice established in 2017.")
     ]
     
     for question, answer in faqs:
@@ -961,7 +962,7 @@ elif selected == "Book Now":
         st.markdown("### ⚡ Transformation Package")
         st.write("Complete 2-session program")
         st.write("• Analysis Session (90 min)")
-        st.write("• Transformation Session (90 min)")
+        st.write("• Hypnosis Session (90 min)")
         st.write("• Email support")
         st.write("• 85% success rate")
 
@@ -1009,7 +1010,8 @@ with col1:
     with col_text:
         st.markdown("### Laetitia Sheppard")
         st.write("Certified Clinical Hypnotherapist")
-        st.write("10+ years experience • 500+ transformations")
+        st.write("LCCH Certified 2017 • DBT Certified 2023")
+        st.write("Practice established 2017")
 
 with col2:
     st.markdown("### Contact")
