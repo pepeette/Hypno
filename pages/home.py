@@ -1,112 +1,128 @@
 """
-Home page component for the Hypnotherapy website
-Features hero section, quiz, testimonials, and key information
-Complete Home page component - Streamlit-native, no complex divs
-Uses Streamlit components properly for better compatibility
+Home Page
+Main landing page using Streamlit components
+Features hero, value proposition, and quiz
 """
-
 import streamlit as st
+from utils.styling import render_hero_section, render_section_divider
+from utils.config import AppConfig, get_years_of_experience
+from utils.session_state import track_page_view
+from components.quiz import Quiz
 
 class HomePage:
-    """Simple, reliable home page"""
+    """Home page using native Streamlit components"""
+    
+    def __init__(self):
+        self.config = AppConfig()
     
     def render(self):
-        """Render home page with Streamlit native components"""
-        # Hero section
-        st.markdown("# Transform Your Life in Just 2 Sessions")
-        st.write("Science-backed clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits")
+        """Render the complete home page"""
+        track_page_view("Home")
         
-        # Stats
-        st.markdown("### Our Track Record")
+        self._render_hero_section()
+        self._render_stats_section()
+        self._render_value_proposition()
+        self._render_quiz_section()
+    
+    def _render_hero_section(self):
+        """Render hero section using styling utility"""
+        render_hero_section(
+            title="Transform Your Life in Just 2 Sessions",
+            subtitle=f"Science-backed clinical hypnotherapy with {AppConfig.SUCCESS_RATE_2_SESSIONS}% success rate"
+        )
+    
+    def _render_stats_section(self):
+        """Render key statistics using Streamlit metrics"""
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.metric("Success Rate", "85%", "in 2 sessions")
+            st.metric(
+                "Success Rate",
+                f"{AppConfig.SUCCESS_RATE_2_SESSIONS}%",
+                "in 2 sessions",
+                help="85% of clients achieve their goals in just 2 sessions"
+            )
         
         with col2:
-            st.metric("Lives Changed", "500+", "transformations")
+            st.metric(
+                "Experience",
+                f"{get_years_of_experience()}+ years",
+                f"since {AppConfig.PRACTICE_ESTABLISHED}",
+                help=f"Professional practice established in {AppConfig.PRACTICE_ESTABLISHED}"
+            )
         
         with col3:
-            st.metric("Experience", "10+", "years")
+            st.metric(
+                "Certified",
+                "LCCH & DBT",
+                f"{AppConfig.LCCH_CERTIFICATION} & {AppConfig.DBT_CERTIFICATION}",
+                help="London College of Clinical Hypnotherapy & Dialectical Behavioral Therapy"
+            )
+    
+    def _render_value_proposition(self):
+        """Render value proposition using Streamlit components"""
+        render_section_divider()
         
-        # Key message
-        st.markdown("---")
-        st.markdown("## Why Our Method Works When Others Don't")
+        st.markdown("## 🧠 Why Our Method Works")
+        st.write("Compare traditional approaches with our proven hypnotherapy method:")
         
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("### ❌ Traditional Methods")
+            st.write("• Fight against your programming")
+            st.write("• Require constant willpower")
+            st.write("• High relapse rates")
+            st.write("• Take months or years")
+        
+        with col2:
+            st.markdown("### ✅ Our Hypnotherapy")
+            st.write("• Rewires your programming")
+            st.write("• Works with natural patterns")
+            st.write("• Long-term success")
+            st.write("• Results in just 2 sessions")
+        
+        # Key insight
         st.info("""
-        **Traditional therapy** targets symptoms using willpower (5% success rate).  
-        **Our method** rewires the subconscious patterns that create the behavior (85% success rate).
+        💡 **The Key Difference**: Traditional methods rely on conscious willpower (5% of your mind). 
+        Our method works with your subconscious programming (95% of your mind) where lasting change happens.
         """)
+    
+    def _render_quiz_section(self):
+        """Render quiz section using Quiz component"""
+        render_section_divider()
         
-        # Quiz placeholder
-        st.markdown("---")
-        st.markdown("## 30-Second Suitability Assessment")
-        st.info("Interactive assessment coming soon! For now, book a free discovery call to assess your suitability.")
+        # Quiz component
+        quiz = Quiz()
+        quiz.render()
+    
+    def _render_final_cta(self):
+        """Render final call-to-action using Streamlit components"""
+        render_section_divider()
         
-        if st.button("📞 Book Free Discovery Call", type="primary", use_container_width=True):
-            st.success("Excellent choice! Contact us at: laetitiasheppard@gmail.com")
-        
-        # Value proposition
-        st.markdown("---")
-        st.markdown("## Why Choose Our 2-Session Method?")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("### ⚡ Rapid Results")
-            st.write("See transformation in just 2 sessions, not months of therapy")
-            
-            st.markdown("### 🧠 Science-Backed")
-            st.write("Uses proven neuroplasticity principles to rewire your subconscious")
-        
-        with col2:
-            st.markdown("### 🎯 Personalized")
-            st.write("Customized sessions designed for your specific challenges")
-            
-            st.markdown("### 💯 High Success")
-            st.write("85% of clients achieve their goals in our 2-session program")
-        
-        # Testimonials
-        st.markdown("---")
-        st.markdown("## What Our Clients Say")
+        st.markdown("## 🚀 Ready to Begin Your Transformation?")
+        st.write("Choose your preferred next step:")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("### 🌟 Banking Director, Singapore")
-            st.write("""
-            *"Finally broke free from anxiety patterns that controlled my life for years. 
-            2 sessions changed everything."*
-            """)
-            st.caption("🎯 Anxiety • ⏱️ 2 sessions")
+            if st.button(
+                "📞 Free Discovery Call",
+                type="primary",
+                use_container_width=True,
+                help="15-minute consultation to discuss your goals"
+            ):
+                st.success("Excellent choice! Scroll down to book your call.")
         
         with col2:
-            st.markdown("### 🚭 Wife, Bangkok")
-            st.write("""
-            *"My husband smoked 2 packs daily for 20 years. After 2 sessions, 
-            he doesn't even think about cigarettes."*
-            """)
-            st.caption("🚭 Smoking • ⏱️ 2 sessions")
-        
-        # Final CTA
-        st.markdown("---")
-        st.markdown("## Ready to Transform Your Life?")
-        st.write("Join hundreds who have transformed their lives with our proven method.")
-        
-        col1, col2, col3 = st.columns(3)
-        
-        with col1:
-            if st.button("📞 Free Discovery Call", key="final_discovery", use_container_width=True):
-                st.success("Perfect! Email: laetitiasheppard@gmail.com")
-        
-        with col2:
-            if st.button("🧠 Learn Our Method", key="final_method", use_container_width=True):
-                st.success("See our Method page for details!")
-        
-        with col3:
-            if st.button("⚡ Book Sessions Now", key="final_book", use_container_width=True):
-                st.success("Great! Contact us to get started.")
+            if st.button(
+                "📖 Learn About Method",
+                use_container_width=True,
+                help="Understand our proven 2-session approach"
+            ):
+                st.success("Great! Navigate to Method page to learn more.")
 
+# Factory function for easy import
 def create_home_page():
-    """Factory function"""
+    """Create HomePage instance"""
     return HomePage()
