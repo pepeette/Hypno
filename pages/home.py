@@ -2,9 +2,12 @@
 Professional Home Page - Streamlit-native with all original features
 Maintains quiz integration, testimonials, and CTAs with improved design
 """
-from utils import styling, config
-from components.footer import show_footer
-from components.navigation import show_navigation
+from utils.styling import apply_design_system
+from utils.config import (
+    bg_color, card_bg, text_primary,
+    accent_color, radius_lg, shadow_sm
+)
+from components.quiz import show_quiz
 import streamlit as st
 
 class HomePage:
