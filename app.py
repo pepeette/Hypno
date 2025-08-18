@@ -1,49 +1,72 @@
-from utils.styling import apply_design_system
-from components.navigation import show_navigation
-from components.footer import show_footer
+"""
+Main Application Entry Point
+Clean architecture with modular imports using Streamlit components
+"""
 import streamlit as st
 
-# Import all page classes
-from pages.home import HomePage
-from pages.method import MethodPage
-from pages.success import SuccessPage
-from pages.blog import BlogPage
-from pages.booking import BookingPage
+# Page configuration
+st.set_page_config(
+    page_title="Transform Your Life in 2 Sessions | Clinical Hypnotherapy Bangkok",
+    page_icon="🧠",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
+# Import modules with error handling
+try:
+    from utils.styling import apply_styles
+    from utils.session_state import initialize_session_state
+    from components.navigation import Navigation
+    from components.footer import Footer
+    from components.booking_form import BookingForm
+    from pages.home import HomePage
+    from pages.method import MethodPage
+    from pages.success import SuccessPage
+    from pages.blog import BlogPage
+    from pages.booking import BookingPage
+except ImportError as e:
+    st.error(f"Module import error: {e}")
+    st.stop()
 
 def main():
-    # Apply design system first
-    apply_design_system()
+    """Main application entry point"""
     
-    # Initialize navigation
-    show_navigation()
+    # Apply styling
+    apply_styles()
     
-    # Get current page from query params
-    query_params = st.experimental_get_query_params()
-    current_page = query_params.get("page", ["home"])[0]
+    # Initialize session state
+    initialize_session_state()
     
-    # Render the appropriate page
-    if current_page == "home":
-        HomePage().render()
-    elif current_page == "method":
-        MethodPage().render()
-    elif current_page == "success":
-        SuccessPage().render()
-    elif current_page == "blog":
-        BlogPage().render()
-    elif current_page == "booking":
-        BookingPage().render()
-    else:
-        st.error("Page not found")
-        HomePage().render()
+    # Create navigation
+    navigation = Navigation()
+    selected_page = navigation.render()
     
-    # Show footer on all pages
-    show_footer()
+    # Route to appropriate page
+    if selected_page == "Home":
+        page = HomePage()
+        page.render()
+    elif selected_page == "Method":
+        page = MethodPage()
+        page.render()
+    elif selected_page == "Success Stories":
+        page = SuccessPage()
+        page.render()
+    elif selected_page == "FAQ & Blog":
+        page = BlogPage()
+        page.render()
+    elif selected_page == "Book Now":
+        page = BookingPage()
+        page.render()
+    
+    # Always show booking form and footer (except on booking page)
+    if selected_page != "Book Now":
+        st.markdown("---")
+        booking_form = BookingForm()
+        booking_form.render_compact()
+    
+    # Footer on every page
+    footer = Footer()
+    footer.render()
 
 if __name__ == "__main__":
-    st.set_page_config(
-        page_title="Clinical Hypnotherapy Bangkok",
-        page_icon="🧠",
-        layout="centered",
-        initial_sidebar_state="collapsed"
-    )
     main()
