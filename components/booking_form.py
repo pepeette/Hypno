@@ -17,7 +17,7 @@ class BookingForm:
     
     def render(self):
         """Render the main booking form"""
-        st.markdown("## 📞 Book Your Free Discovery Call")
+        st.markdown("## Book Your Free Discovery Call")
         st.write("Begin your transformation with a complimentary 15-minute consultation")
         
         # Benefits section using Streamlit components
@@ -28,7 +28,7 @@ class BookingForm:
     
     def render_compact(self):
         """Render compact version for footer/sidebar"""
-        st.markdown("### 📞 Ready to Transform Your Life?")
+        st.markdown("### Ready to Transform Your Life?")
         st.write("Start with a free 15-minute discovery call")
         
         with st.form("compact_booking_form"):
@@ -42,7 +42,7 @@ class BookingForm:
             concern = st.selectbox("Primary Concern*", self.concern_options)
             
             submitted = st.form_submit_button(
-                "📞 Request Free Discovery Call",
+                "Request Free Discovery Call",
                 type="primary",
                 use_container_width=True
             )
@@ -53,7 +53,7 @@ class BookingForm:
     
     def _render_benefits(self):
         """Render benefits using Streamlit components"""
-        st.markdown("### 🎯 What You'll Get in Your Discovery Call")
+        st.markdown("### What You'll Get in Your Discovery Call")
         
         # Benefits using columns
         col1, col2 = st.columns(2)
