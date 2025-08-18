@@ -18,7 +18,7 @@ try:
     from utils.session_state import initialize_session_state
     from components.navigation import Navigation
     from components.footer import Footer
-    from components.booking_form import BookingForm
+    from components.booking_form import UnifiedBookingForm
     from pages.home import HomePage
     from pages.method import MethodPage
     from pages.success import SuccessPage
@@ -61,7 +61,7 @@ def main():
     # Always show booking form and footer (except on booking page)
     if selected_page != "Book Now":
         st.markdown("---")
-        booking_form = BookingForm()
+        booking_form = UnifiedBookingForm()
         booking_form.render_compact()
     
     # Footer on every page
