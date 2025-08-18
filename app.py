@@ -32,7 +32,7 @@ def main():
     """Main application entry point"""
     
     # Apply styling
-    apply_styles()
+    apply_global_styles()
     
     # Initialize session state
     initialize_session_state()
