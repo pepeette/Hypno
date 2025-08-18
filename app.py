@@ -3,320 +3,193 @@ Enhanced main application file for the Hypnotherapy website
 Uses native Streamlit components instead of complex HTML
 Improved error handling, component integration, and user experience
 """
+
 import streamlit as st
-from streamlit_option_menu import option_menu
+import sys
+import os
 
-# Import enhanced page modules with proper error handling
-try:
-    from pages.home import EnhancedHomePage as HomePage
-except ImportError:
+# Add current directory to Python path for imports
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Configure page FIRST before any other Streamlit commands
+st.set_page_config(
+    page_title="Transform Your Life in 2 Sessions | Laetitia Sheppard",
+    page_icon="🧠",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
+# Import modules with proper error handling
+def safe_import(module_name, class_name=None):
+    """Safely import modules with fallback"""
     try:
-        from pages.home import HomePage
-    except ImportError:
-        HomePage = None
+        module = __import__(module_name, fromlist=[class_name] if class_name else [])
+        return getattr(module, class_name) if class_name else module
+    except ImportError as e:
+        st.error(f"Import error: {module_name}.{class_name if class_name else ''} - {e}")
+        return None
+    except Exception as e:
+        st.error(f"Unexpected error importing {module_name}: {e}")
+        return None
 
-try:
-    from pages.method import MethodPage  
-except ImportError:
-    MethodPage = None
+# Import page components
+HomePage = safe_import('pages.home', 'HomePage')
+MethodPage = safe_import('pages.method', 'MethodPage')
+SuccessPage = safe_import('pages.success', 'SuccessPage')
+BlogPage = safe_import('pages.blog', 'BlogPage')
+BookingPage = safe_import('pages.booking', 'BookingPage')
 
-try:
-    from pages.success import SuccessPage
-except ImportError:
-    SuccessPage = None
-
-try:
-    from pages.blog import BlogPage
-except ImportError:
-    BlogPage = None
-
-try:
-    from pages.booking import BookingPage
-except ImportError:
-    BookingPage = None
-
-# Import enhanced shared components
-try:
-    from components.navigation import EnhancedNavigation as Navigation, create_quick_action_bar, create_floating_cta
-except ImportError:
-    try:
-        from components.navigation import Navigation
-        create_quick_action_bar = None
-        create_floating_cta = None
-    except ImportError:
-        Navigation = None
-        create_quick_action_bar = None
-        create_floating_cta = None
-
-try:
-    from components.footer import EnhancedFooter as Footer
-except ImportError:
-    try:
-        from components.footer import Footer
-    except ImportError:
-        Footer = None
-
-try:
-    from components.booking_form import EnhancedBookingForm as BookingForm
-except ImportError:
-    try:
-        from components.booking_form import BookingForm
-    except ImportError:
-        BookingForm = None
-
-try:
-    from components.quiz import EnhancedQuiz as Quiz, create_quiz_launcher
-except ImportError:
-    try:
-        from components.quiz import Quiz
-        create_quiz_launcher = None
-    except ImportError:
-        Quiz = None
-        create_quiz_launcher = None
+# Import shared components
+Navigation = safe_import('components.navigation', 'Navigation')
+Footer = safe_import('components.footer', 'Footer')
+BookingForm = safe_import('components.booking_form', 'BookingForm')
 
 # Import utilities
-try:
-    from utils.styling import apply_global_styles
-except ImportError:
-    def apply_global_styles():
-        # Fallback basic styling
-        st.markdown("""
-        <style>
-        .stApp {
-            background-color: #F3F6F8 !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+apply_global_styles = safe_import('utils.styling', 'apply_global_styles')
+initialize_session_state = safe_import('utils.session_state', 'initialize_session_state')
 
-try:
-    from utils.session_state import initialize_session_state, track_page_visit
-except ImportError:
-    def initialize_session_state():
-        pass
-    def track_page_visit(page):
-        pass
-
-class EnhancedHypnotherapyApp:
-    """Enhanced main application class with improved UX and error handling"""
+class HypnotherapyApp:
+    """Main application class - SIMPLIFIED"""
     
     def __init__(self):
-        """Initialize the application with enhanced configuration"""
-        self.setup_page_config()
-        self.setup_styling()
+        """Initialize with minimal setup to avoid errors"""
+        self.setup_basic_styling()
         self.setup_session_state()
         
-        # Initialize enhanced components
-        self.navigation = Navigation() if Navigation else None
-        self.footer = Footer() if Footer else None
-        self.booking_form = BookingForm() if BookingForm else None
-        self.quiz = Quiz() if Quiz else None
-        
-        # Initialize helper components
-        self.quick_action_bar = create_quick_action_bar() if create_quick_action_bar else None
-        self.floating_cta = create_floating_cta() if create_floating_cta else None
-        self.quiz_launcher = create_quiz_launcher() if create_quiz_launcher else None
+    def setup_basic_styling(self):
+        """Apply basic styling with error handling"""
+        try:
+            if apply_global_styles:
+                apply_global_styles()
+            else:
+                # Fallback basic styling
+                st.markdown("""
+                <style>
+                .stApp {
+                    background-color: #F3F6F8 !important;
+                    font-family: -apple-system, BlinkMacSystemFont, sans-serif !important;
+                }
+                h1 { font-size: 2.2rem !important; color: #273548 !important; }
+                h2 { font-size: 1.8rem !important; color: #273548 !important; }
+                p { font-size: 1rem !important; color: #556D7A !important; }
+                </style>
+                """, unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"Styling error: {e}")
     
-    def setup_page_config(self):
-        """Configure Streamlit page settings with enhanced options"""
-        st.set_page_config(
-            page_title="Transform Your Life in 2 Sessions | Laetitia Sheppard",
-            page_icon="🧠",
-            layout="wide",
-            initial_sidebar_state="collapsed",
-            menu_items={
-                'Get Help': 'https://calendly.com/laetitiasheppard/discovery',
-                'Report a bug': None,  # Disable to keep clean
-                'About': "Science-backed hypnotherapy for rapid, lasting transformation"
-            }
-        )
-        
-    def setup_styling(self):
-        """Apply enhanced global CSS styling"""
-        apply_global_styles()
-        
-        # Additional app-specific styling
-        st.markdown("""
-        <style>
-        /* Hide Streamlit branding and menu */
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Enhanced button styling */
-        .stButton > button {
-            transition: all 0.3s ease !important;
-        }
-        
-        .stButton > button:hover {
-            transform: translateY(-1px) !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-        }
-        
-        /* Form styling improvements */
-        .stTextInput > div > div > input:focus,
-        .stSelectbox > div > div > select:focus {
-            border-color: #4CA1A3 !important;
-            box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.2) !important;
-        }
-        
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            .stContainer {
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-            }
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
     def setup_session_state(self):
-        """Initialize session state with enhanced tracking"""
-        initialize_session_state()
-        
-        # Track app initialization
-        if 'app_initialized' not in st.session_state:
-            st.session_state.app_initialized = True
-            st.session_state.session_start_time = st.session_state.get('current_time', 'unknown')
+        """Initialize session state with error handling"""
+        try:
+            if initialize_session_state:
+                initialize_session_state()
+            else:
+                # Fallback session state initialization
+                if 'page_initialized' not in st.session_state:
+                    st.session_state.page_initialized = True
+        except Exception as e:
+            st.error(f"Session state error: {e}")
     
     def render_navigation(self):
-        """Render enhanced navigation with quick actions"""
-        if self.navigation:
-            selected = self.navigation.create_menu()
-        else:
-            # Enhanced fallback navigation
-            selected = st.selectbox(
-                "🧭 Navigate to:",
-                ["Home", "Method", "Success", "Blog", "Book Now"],
-                index=0,
-                label_visibility="collapsed"
-            )
-        
-        # Add quick action bar below navigation
-        if self.quick_action_bar:
-            self.quick_action_bar.render()
-        
-        return selected
+        """Render navigation with fallback"""
+        try:
+            if Navigation:
+                nav = Navigation()
+                return nav.create_menu()
+            else:
+                # Fallback navigation using selectbox
+                return st.selectbox(
+                    "Navigate to:",
+                    ["Home", "Method", "Success", "Blog", "Book Now"],
+                    index=0,
+                    key="main_nav"
+                )
+        except Exception as e:
+            st.error(f"Navigation error: {e}")
+            return "Home"
     
     def render_page_content(self, selected_page):
-        """Render enhanced page content with integrated components"""
-        # Track page visit
-        track_page_visit(selected_page)
-        
-        # Render main page content
-        if selected_page == "Home":
-            self._render_home_page()
-        elif selected_page == "Method" and MethodPage:
-            page = MethodPage()
-            page.render()
-        elif selected_page == "Success" and SuccessPage:
-            page = SuccessPage()
-            page.render()
-        elif selected_page == "Blog" and BlogPage:
-            page = BlogPage()
-            page.render()
-        elif selected_page == "Book Now":
-            self._render_booking_page()
-        else:
-            self._render_fallback_content(selected_page)
+        """Render page content with comprehensive error handling"""
+        try:
+            if selected_page == "Home":
+                self.render_home_page()
+            elif selected_page == "Method":
+                self.render_method_page()
+            elif selected_page == "Success":
+                self.render_success_page()
+            elif selected_page == "Blog":
+                self.render_blog_page()
+            elif selected_page == "Book Now":
+                self.render_booking_page()
+            else:
+                self.render_fallback_page(selected_page)
+        except Exception as e:
+            st.error(f"Page rendering error: {e}")
+            self.render_emergency_fallback()
     
-    def _render_home_page(self):
-        """Render enhanced home page with integrated quiz"""
+    def render_home_page(self):
+        """Render home page with fallback"""
         if HomePage:
-            # Create home page instance
-            home_page = HomePage()
-            
-            # Render hero and key sections
-            home_page.hero.render()
-            home_page.key_message.render()
-            
-            # Integrated quiz section
-            if self.quiz:
-                st.markdown('<div id="quiz-section"></div>', unsafe_allow_html=True)
-                st.markdown("---")
-                self.quiz.render()
-            elif self.quiz_launcher:
-                self.quiz_launcher.render_quiz_teaser()
-            
-            # Continue with other home page sections
-            home_page.value_prop.render()
-            home_page.testimonials.render()
-            home_page._render_final_cta()
+            try:
+                page = HomePage()
+                page.render()
+            except Exception as e:
+                st.error(f"Home page error: {e}")
+                self.render_fallback_home()
         else:
-            self._render_fallback_home()
+            self.render_fallback_home()
     
-    def _render_booking_page(self):
-        """Render dedicated booking page"""
+    def render_method_page(self):
+        """Render method page with fallback"""
+        if MethodPage:
+            try:
+                page = MethodPage()
+                page.render()
+            except Exception as e:
+                st.error(f"Method page error: {e}")
+                self.render_fallback_method()
+        else:
+            self.render_fallback_method()
+    
+    def render_success_page(self):
+        """Render success page with fallback"""
+        if SuccessPage:
+            try:
+                page = SuccessPage()
+                page.render()
+            except Exception as e:
+                st.error(f"Success page error: {e}")
+                self.render_fallback_success()
+        else:
+            self.render_fallback_success()
+    
+    def render_blog_page(self):
+        """Render blog page with fallback"""
+        if BlogPage:
+            try:
+                page = BlogPage()
+                page.render()
+            except Exception as e:
+                st.error(f"Blog page error: {e}")
+                self.render_fallback_blog()
+        else:
+            self.render_fallback_blog()
+    
+    def render_booking_page(self):
+        """Render booking page with fallback"""
         if BookingPage:
-            page = BookingPage()
-            page.render()
-        elif self.booking_form:
-            # Use enhanced booking form as fallback
-            self.booking_form.render("Complete Your Booking", show_options=True)
+            try:
+                page = BookingPage()
+                page.render()
+            except Exception as e:
+                st.error(f"Booking page error: {e}")
+                self.render_fallback_booking()
         else:
-            self._render_fallback_booking()
+            self.render_fallback_booking()
     
-    def _render_fallback_content(self, page_name):
-        """Enhanced fallback content with better UX"""
-        st.markdown(f"""
-        <div style="text-align: center; padding: 4rem 2rem; 
-                    background: var(--card-bg); border-radius: 16px; 
-                    margin: 2rem 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <h1 style="color: var(--accent); margin-bottom: 1rem;">
-                {page_name} - Coming Soon
-            </h1>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
-                This page is being enhanced with new features. Please check back soon!
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Show relevant content based on page
-        if page_name == "Method":
-            st.markdown("""
-            ## Our Proven 2-Step Method
-            
-            **Session 1: Deep Analysis** (90 minutes)
-            - Uncover subconscious patterns that drive your behavior
-            - Map your unique psychological landscape
-            - Begin positive programming for immediate relief
-            
-            **Session 2: Transformation** (90 minutes)  
-            - Neural pathway rewiring in deep hypnotic state
-            - Install new, empowering behavior patterns
-            - Lock in lasting change at the subconscious level
-            
-            **Result: 85% success rate in just 2 sessions**
-            """)
-        elif page_name == "Success":
-            st.markdown("""
-            ## Real Client Transformations
-            
-            - **Banking Director, Singapore**: "Finally broke free from anxiety patterns"
-            - **Medical Student, Morocco**: "Overcame study anxiety and now excelling"  
-            - **Bangkok Resident**: "Husband quit 20-year smoking habit in 2 sessions"
-            
-            **Success Rate: 85% achieve goals in 2 sessions**
-            """)
-    
-    def _render_fallback_home(self):
-        """Enhanced fallback home page"""
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
-                    border-radius: 16px; padding: 3rem 2rem; text-align: center; 
-                    margin: 2rem 0; color: white;">
-            <h1 style="color: white; margin-bottom: 1rem;">
-                Transform Your Life in Just 2 Sessions
-            </h1>
-            <p style="color: white; opacity: 0.9; margin-bottom: 2rem;">
-                Science-backed clinical hypnotherapy for rapid, lasting change
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+    def render_fallback_home(self):
+        """Emergency fallback home page"""
+        st.markdown("# Transform Your Life in Just 2 Sessions")
+        st.write("Science-backed clinical hypnotherapy for rapid, lasting change")
         
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -325,143 +198,150 @@ class EnhancedHypnotherapyApp:
             st.metric("Experience", "10+ years", "proven results")
         with col3:
             st.metric("Clients Helped", "500+", "transformations")
-    
-    def _render_fallback_booking(self):
-        """Enhanced fallback booking"""
-        st.markdown("""
-        ### 📞 Start Your Transformation
         
-        **Ready to begin?** Contact us directly:
+        st.markdown("## Why Our Method Works")
+        st.write("Traditional therapy targets symptoms using willpower (5% success rate). Our method rewires the subconscious patterns that create the behavior (85% success rate).")
         
-        - **Email**: laetitiasheppard@gmail.com
-        - **Discovery Call**: [Schedule Free 15-min Call](https://calendly.com/laetitiasheppard/discovery)
-        - **Book Package**: [Start Your 2-Session Program](https://calendly.com/laetitiasheppard/package)
-        """)
+        if st.button("📞 Book Free Discovery Call", type="primary"):
+            st.success("Contact us at: laetitiasheppard@gmail.com")
     
-    def render_booking_section(self, selected_page):
-        """Render booking section based on page context"""
-        # Only show booking form on non-booking pages
-        if selected_page != "Book Now":
-            if self.booking_form:
-                st.markdown("---")
-                self.booking_form.render_compact()
-            else:
-                # Simple booking CTA
-                st.markdown("---")
-                st.markdown("### 🚀 Ready to Start Your Transformation?")
-                
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.markdown("""
-                    <a href="https://calendly.com/laetitiasheppard/discovery" target="_blank" 
-                       style="display: block; background-color: var(--accent); color: white;
-                              text-decoration: none; padding: 1rem; border-radius: 8px;
-                              font-weight: 600; text-align: center; margin: 0.5rem 0;">
-                        📞 Free Discovery Call
-                    </a>
-                    """, unsafe_allow_html=True)
-                
-                with col2:
-                    st.markdown("""
-                    <a href="https://calendly.com/laetitiasheppard/package" target="_blank" 
-                       style="display: block; background-color: var(--success); color: white;
-                              text-decoration: none; padding: 1rem; border-radius: 8px;
-                              font-weight: 600; text-align: center; margin: 0.5rem 0;">
-                        ⚡ Book Transformation Package
-                    </a>
-                    """, unsafe_allow_html=True)
+    def render_fallback_method(self):
+        """Emergency fallback method page"""
+        st.markdown("# Our Proven 2-Step Method")
+        
+        st.markdown("## Session 1: Deep Analysis (90 minutes)")
+        st.write("- Uncover subconscious patterns that drive your behavior")
+        st.write("- Map your unique psychological landscape")
+        st.write("- Begin positive programming for immediate relief")
+        
+        st.markdown("## Session 2: Transformation (90 minutes)")
+        st.write("- Neural pathway rewiring in deep hypnotic state")
+        st.write("- Install new, empowering behavior patterns")
+        st.write("- Lock in lasting change at the subconscious level")
+        
+        st.success("**Result: 85% success rate in just 2 sessions**")
     
-    def render_footer(self):
-        """Render enhanced footer"""
-        if self.footer:
-            self.footer.render()
-        else:
-            # Enhanced fallback footer
-            st.markdown("---")
-            
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.markdown("""
-                **Laetitia Sheppard**  
-                Certified Clinical Hypnotherapist  
-                10+ Years Experience  
-                500+ Successful Transformations
-                """)
-            
-            with col2:
-                st.markdown("""
-                **Contact Information**  
-                📧 laetitiasheppard@gmail.com  
-                📍 Bangkok Hypnotherapy Clinic  
-                27 Soi Sukhumvit 10 (Asoke)  
-                Bangkok, Thailand
-                """)
-            
-            with col3:
-                st.markdown("""
-                **Quick Links**  
-                🎯 [Take Assessment](#quiz-section)  
-                📞 [Free Discovery Call](https://calendly.com/laetitiasheppard/discovery)  
-                ⚡ [Book Sessions](https://calendly.com/laetitiasheppard/package)  
-                📍 [Directions](https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw)
-                """)
-            
-            st.markdown("---")
-            st.markdown(
-                f"© {datetime.datetime.now().year} Laetitia Sheppard • All Rights Reserved • "
-                "Licensed & Insured • Confidential Sessions Guaranteed"
-            )
+    def render_fallback_success(self):
+        """Emergency fallback success page"""
+        st.markdown("# Real Client Transformations")
+        
+        st.markdown("### 🌟 Banking Director, Singapore")
+        st.write("*'Finally broke free from anxiety patterns that controlled my life for years. 2 sessions changed everything.'*")
+        
+        st.markdown("### 🚭 Wife, Bangkok")
+        st.write("*'My husband smoked 2 packs daily for 20 years. After 2 sessions, he doesn't even think about cigarettes.'*")
+        
+        st.metric("Success Rate", "85%", "achieve goals in 2 sessions")
     
-    def render_floating_elements(self):
-        """Render floating UI elements"""
-        if self.floating_cta:
-            self.floating_cta.render()
+    def render_fallback_blog(self):
+        """Emergency fallback blog page"""
+        st.markdown("# Hypnotherapy Insights & FAQ")
+        
+        st.markdown("## Frequently Asked Questions")
+        
+        with st.expander("Is hypnotherapy safe?"):
+            st.write("Yes, clinical hypnotherapy is completely safe. You remain fully aware and in control throughout the session.")
+        
+        with st.expander("How many sessions will I really need?"):
+            st.write("85% of our clients achieve their goals in just 2 sessions. About 15% choose an optional 3rd session for reinforcement.")
+        
+        with st.expander("What if I can't be hypnotized?"):
+            st.write("This is a common myth. Everyone can be hypnotized because hypnosis is a natural state we enter daily.")
+    
+    def render_fallback_booking(self):
+        """Emergency fallback booking page"""
+        st.markdown("# Start Your Transformation Today")
+        
+        st.markdown("## Contact Information")
+        st.write("**Email:** laetitiasheppard@gmail.com")
+        st.write("**Location:** Bangkok Hypnotherapy Clinic")
+        st.write("**Address:** 27 Soi Sukhumvit 10 (Asoke), Bangkok, Thailand")
+        
+        st.markdown("## Booking Options")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("### 📞 Free Discovery Call")
+            st.write("15-minute consultation to explore your goals")
+            st.markdown("[Schedule Discovery Call](https://calendly.com/laetitiasheppard/discovery)")
+        
+        with col2:
+            st.markdown("### ⚡ Transformation Package")
+            st.write("Complete 2-session program (3,000 THB)")
+            st.markdown("[Book Sessions](https://calendly.com/laetitiasheppard/package)")
+    
+    def render_fallback_page(self, page_name):
+        """Generic fallback for any page"""
+        st.markdown(f"# {page_name}")
+        st.write(f"The {page_name} page is being prepared. Please check back soon!")
+        
+        if st.button("📞 Contact Us", type="primary"):
+            st.success("Email: laetitiasheppard@gmail.com")
+    
+    def render_emergency_fallback(self):
+        """Emergency fallback when everything fails"""
+        st.markdown("# Bangkok Hypnotherapy Clinic")
+        st.write("Transform your life with science-backed hypnotherapy")
+        
+        st.error("Technical issue detected. Please contact us directly:")
+        st.write("📧 **Email:** laetitiasheppard@gmail.com")
+        st.write("📞 **Book Discovery Call:** https://calendly.com/laetitiasheppard/discovery")
+        st.write("📍 **Location:** Bangkok, Thailand")
+    
+    def render_simple_footer(self):
+        """Simple footer that always works"""
+        st.markdown("---")
+        
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.write("**Laetitia Sheppard**")
+            st.write("Certified Clinical Hypnotherapist")
+            st.write("10+ Years Experience")
+        
+        with col2:
+            st.write("**Contact**")
+            st.write("📧 laetitiasheppard@gmail.com")
+            st.write("📍 Bangkok, Thailand")
+        
+        with col3:
+            st.write("**Quick Links**")
+            st.markdown("[Free Discovery Call](https://calendly.com/laetitiasheppard/discovery)")
+            st.markdown("[Book Sessions](https://calendly.com/laetitiasheppard/package)")
+        
+        st.markdown("---")
+        st.write("© 2025 Laetitia Sheppard • All Rights Reserved")
     
     def run(self):
-        """Enhanced main application entry point"""
+        """Main application runner with comprehensive error handling"""
         try:
-            # Render navigation and get selected page
+            # Navigation
             selected_page = self.render_navigation()
             
-            # Render main page content
+            # Main content
             self.render_page_content(selected_page)
             
-            # Render contextual booking section
-            self.render_booking_section(selected_page)
-            
-            # Render footer
-            self.render_footer()
-            
-            # Render floating elements
-            self.render_floating_elements()
+            # Simple footer
+            self.render_simple_footer()
             
         except Exception as e:
-            # Enhanced error handling
-            st.error("🚨 Something went wrong. Please refresh the page.")
-            
-            # Show user-friendly error in development
-            if st.secrets.get("debug_mode", False):
-                st.exception(e)
-                st.info("Debug mode is enabled. Disable in production.")
-            
-            # Fallback content
-            st.markdown("""
-            ### 📞 Need Help?
-            If you're experiencing issues, please contact us directly:
-            - **Email**: laetitiasheppard@gmail.com
-            - **Phone**: Available for urgent matters
-            """)
+            st.error(f"Application error: {e}")
+            self.render_emergency_fallback()
 
 def main():
-    """Application entry point with error handling"""
+    """Application entry point with ultimate error handling"""
     try:
-        app = EnhancedHypnotherapyApp()
+        app = HypnotherapyApp()
         app.run()
     except Exception as e:
-        # Ultimate fallback
-        st.error("Application failed to start. Please contact support.")
-        if st.secrets.get("debug_mode", False):
+        st.error("Critical application error")
+        st.write("**Contact Information:**")
+        st.write("📧 Email: laetitiasheppard@gmail.com")
+        st.write("📞 Book Call: https://calendly.com/laetitiasheppard/discovery")
+        
+        # Show error in development
+        if st.checkbox("Show technical details"):
             st.exception(e)
 
 if __name__ == "__main__":
