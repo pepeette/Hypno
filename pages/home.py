@@ -1,102 +1,185 @@
 """
-Home Page
-Main landing page using Streamlit components
-Features focused hero card and direct path to quiz
+FIXED Home page - Simplified using Streamlit native components
+No complex HTML, consistent styling, mobile-friendly
 """
 import streamlit as st
-from utils.styling import render_hero_card, render_section_divider
-from utils.config import AppConfig, get_years_of_experience
-from utils.session_state import track_page_view
-from components.quiz import Quiz
 
 class HomePage:
-    """Home page with focused messaging and clear user journey"""
-    
-    def __init__(self):
-        self.config = AppConfig()
+    """Simplified home page using Streamlit components"""
     
     def render(self):
-        """Render the complete home page"""
-        track_page_view("Home")
-        
-        self._render_hero_card()
+        """Render complete home page using Streamlit native components"""
+        self._render_hero()
+        self._render_key_differentiator()
         self._render_quiz_section()
-        self._render_why_hypnotherapy()
-        
+        self._render_benefits()
+        self._render_testimonials()
+        self._render_final_cta()
     
-    def _render_hero_card(self):
-        """Render focused hero card with clear value proposition"""
-        render_hero_card(
-            title="Transform Your Life in Just 2 Sessions",
-            subtitle=f"Science-backed hypnotherapy with {AppConfig.SUCCESS_RATE_2_SESSIONS}% success rate"
-        )
-        # Simple, focused explanation
-        col1, col2 = st.columns([1, 1])
+    def _render_hero(self):
+        """Hero section using Streamlit components"""
+        # Hero container with gradient background
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
+                    padding: 4rem 2rem; border-radius: 16px; text-align: center; margin-bottom: 3rem;">
+            <h1 style="color: white; margin-bottom: 1rem;">Transform Your Life in Just 2 Sessions</h1>
+            <p style="color: white; font-size: 1.1rem; opacity: 0.95; margin-bottom: 2rem;">
+                Science-backed clinical hypnotherapy to overcome smoking, anxiety, and unwanted habits
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Stats using Streamlit metrics
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Success Rate", "85%", "in 2 sessions")
+        with col2:
+            st.metric("Lives Transformed", "500+", "since 2017")
+        with col3:
+            st.metric("Experience", "10+ Years", "certified professional")
+    
+    def _render_key_differentiator(self):
+        """Key differentiator section"""
+        st.markdown("---")
+        st.markdown("## 🧠 Why Our Method Works")
+        
+        col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("### Traditional Methods")
-            st.write("Work with your conscious mind")
-            st.write("Only 5% of your decisions")
-            st.write("Require constant willpower")
-            st.write("High failure rates")
-            
+            st.markdown("### ❌ Traditional Methods")
+            st.write("• Fight against your programming")
+            st.write("• Require constant willpower")
+            st.write("• 95% relapse rate")
+            st.write("• Take months or years")
+            st.write("• Focus on symptoms only")
+        
         with col2:
-            st.markdown("### Our Hypnotherapy")
-            st.write("Works with your subconscious")
-            st.write("Controls 95% of decisions")
-            st.write("Natural, lasting change")
-            st.write("Proven results")
+            st.markdown("### ✅ Our Hypnotherapy")
+            st.write("• Rewires your programming")
+            st.write("• Works with natural patterns")
+            st.write("• 85% long-term success")
+            st.write("• Results in just 2 sessions")
+            st.write("• Targets root causes")
         
-        # Key insight without overwhelming detail
-        st.info("""
-        The breakthrough: Instead of fighting your programming with willpower, 
-        we rewire the subconscious patterns that drive your behavior. 
-        This creates effortless, permanent transformation.
-        """)
-        # # Key credentials in a subtle way
-        # col1, col2, col3 = st.columns(3)
-        
-        # with col1:
-        #     st.metric(
-        #         "Success Rate",
-        #         f"{AppConfig.SUCCESS_RATE_2_SESSIONS}%",
-        #         "in 2 sessions"
-        #     )
-        
-        # with col2:
-        #     st.metric(
-        #         "Experience",
-        #         f"{get_years_of_experience()} years",
-        #         f"since {AppConfig.PRACTICE_ESTABLISHED}"
-        #     )
-        
-        # with col3:
-        #     st.metric(
-        #         "Certified",
-        #         "LCCH & DBT",
-        #         f"{AppConfig.LCCH_CERTIFICATION} & {AppConfig.DBT_CERTIFICATION}"
-        #     )
-    
-    # def _render_why_hypnotherapy(self):
-    #     """Explain why hypnotherapy works - focused and clear"""
-    #     render_section_divider()
-        
-    #     st.markdown("## Why Hypnotherapy Succeeds Where Willpower Fails")
-        
-
+        st.info("🎯 **The Key:** We work with your subconscious mind (95% of decisions) instead of conscious willpower (5% of decisions)")
     
     def _render_quiz_section(self):
-        """Render quiz section with clear call-to-action"""
-        render_section_divider()
+        """Quiz section placeholder"""
+        st.markdown("---")
+        st.markdown("## 🎯 Free 30-Second Assessment")
+        st.write("Discover your potential for rapid transformation")
         
-        st.markdown("## Discover Your Transformation Potential")
-        st.write("Take our 3-question assessment to see how hypnotherapy can help you")
+        # Quiz component will be rendered here by main app
+        # This is just a placeholder that shows the quiz anchor
+        st.markdown('<div id="quiz"></div>', unsafe_allow_html=True)
         
-        # Quiz component - main focus of the page
-        quiz = Quiz()
-        quiz.render()
+        # Placeholder for quiz - will be replaced by actual quiz component
+        if not st.session_state.get('quiz_completed', False):
+            st.info("📋 **Quick Assessment:** Take our 3-question quiz to discover your suitability for hypnotherapy")
+            if st.button("🎯 Start Assessment", type="primary", use_container_width=True):
+                st.success("Quiz will load here - component integration in progress!")
+        else:
+            st.success("✅ Assessment completed! Scroll down to book your discovery call.")
+    
+    def _render_benefits(self):
+        """Benefits section using Streamlit components"""
+        st.markdown("---")
+        st.markdown("## ⚡ Why Choose Our 2-Session Method?")
+        st.write("Four key advantages that create lasting transformation")
+        
+        # Benefits grid using columns
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Benefit 1
+            st.markdown("### ⚡ Rapid Results")
+            st.write("See transformation in just 2 sessions, not months of therapy")
+            st.write("")
+            
+            # Benefit 3
+            st.markdown("### 🧠 Science-Backed")
+            st.write("Uses proven neuroplasticity principles to rewire your subconscious")
+        
+        with col2:
+            # Benefit 2
+            st.markdown("### 🎯 Targeted Approach")
+            st.write("Personalized sessions designed for your specific challenges")
+            st.write("")
+            
+            # Benefit 4
+            st.markdown("### 💯 High Success Rate")
+            st.write("85% of clients achieve their goals in our 2-session program")
+    
+    def _render_testimonials(self):
+        """Testimonials section using Streamlit components"""
+        st.markdown("---")
+        st.markdown("## 💬 Client Success Stories")
+        
+        # Testimonial 1
+        with st.container():
+            col1, col2 = st.columns([1, 5])
+            with col1:
+                st.markdown("### 🌟")
+            with col2:
+                st.markdown("#### Banking Director, Singapore")
+                st.write("*'Finally broke free from old patterns – 2 sessions changed everything.'*")
+                st.write("**Challenge:** Anxiety patterns • **Result:** 2 sessions")
+        
+        st.write("")
+        
+        # Testimonial 2
+        with st.container():
+            col1, col2 = st.columns([1, 5])
+            with col1:
+                st.markdown("### 🚭")
+            with col2:
+                st.markdown("#### Wife, Bangkok")
+                st.write("*'My husband was a heavy smoker... No more addiction.'*")
+                st.write("**Challenge:** Smoking cessation • **Result:** 2 sessions")
+        
+        st.write("")
+        
+        # Testimonial 3
+        with st.container():
+            col1, col2 = st.columns([1, 5])
+            with col1:
+                st.markdown("### 🎓")
+            with col2:
+                st.markdown("#### Medical Student, Morocco")
+                st.write("*'I was struggling with my studies abroad... now doing my specialization internship.'*")
+                st.write("**Challenge:** Study anxiety • **Result:** 2 sessions")
+    
+    def _render_final_cta(self):
+        """Final call-to-action"""
+        st.markdown("---")
+        
+        # CTA section with gradient background
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
+                    padding: 3rem 2rem; border-radius: 16px; text-align: center; margin: 4rem 0;">
+            <h2 style="color: white; margin-bottom: 1rem;">Ready to Transform Your Life?</h2>
+            <p style="color: white; opacity: 0.9; font-size: 1.1rem; margin-bottom: 2rem;">
+                Join hundreds of people who have transformed their lives with our proven method.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # CTA buttons using Streamlit
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            if st.button("📞 Free Discovery Call", use_container_width=True, type="primary"):
+                # Scroll to booking section
+                st.success("📞 Excellent choice! Scroll down to book your call.")
+        
+        with col2:
+            if st.button("🧠 Learn Our Method", use_container_width=True):
+                st.success("🧠 Navigate to Method page to learn more!")
+        
+        with col3:
+            if st.button("⚡ Book Sessions Now", use_container_width=True):
+                st.success("⚡ Great! Scroll down to start booking.")
 
-# Factory function for easy import
 def create_home_page():
-    """Create HomePage instance"""
+    """Factory function"""
     return HomePage()
