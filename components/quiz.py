@@ -28,7 +28,7 @@ class Quiz:
     
     def _render_quiz_header(self):
         """Render quiz introduction using Streamlit components"""
-        st.markdown("## 🎯 Free 30-Second Assessment")
+        st.markdown("## Free 30-Second Assessment")
         st.write("Discover your potential for rapid transformation in 3 quick questions")
         
         # Show progress if quiz started
@@ -83,7 +83,7 @@ class Quiz:
         recommendation = get_quiz_recommendation(score)
         
         # Results header
-        st.success("🎉 Assessment Complete!")
+        st.success("Assessment Complete!")
         
         # Score display using metrics
         col1, col2, col3 = st.columns(3)
@@ -95,25 +95,25 @@ class Quiz:
             st.metric("Recommendation", recommendation['level'].title())
         
         # Recommendation message
-        st.info(f"💡 {recommendation['message']}")
+        st.info(f"{recommendation['message']}")
         
         # Action buttons
         col1, col2 = st.columns(2)
         with col1:
             if score >= 65:
-                if st.button("📞 Book Discovery Call", type="primary", use_container_width=True):
+                if st.button("Book Discovery Call", type="primary", use_container_width=True):
                     st.success("Great choice! Scroll down to book.")
             else:
-                if st.button("💬 Schedule Consultation", type="primary", use_container_width=True):
+                if st.button("Schedule Consultation", type="primary", use_container_width=True):
                     st.success("Perfect! Scroll down to book.")
         
         with col2:
-            if st.button("🔄 Retake Assessment", use_container_width=True):
+            if st.button("Retake Assessment", use_container_width=True):
                 reset_quiz()
                 st.rerun()
         
         # Show quiz summary
-        with st.expander("📊 View Your Responses"):
+        with st.expander("View Your Responses"):
             st.write("Your answers:")
             for q_id, answer in st.session_state.quiz_answers.items():
                 question_title = self.questions[q_id]['title']
@@ -121,7 +121,7 @@ class Quiz:
     
     def render_compact(self):
         """Render a compact version for sidebars or small spaces"""
-        st.markdown("### 🎯 Quick Assessment")
+        st.markdown("### Quick Assessment")
         
         if not st.session_state.quiz_completed:
             if st.button("Start 30-Second Assessment", type="primary", use_container_width=True):
