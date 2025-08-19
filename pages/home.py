@@ -351,8 +351,6 @@
 #     return HomePage()
 
 
-
-
 """
 Fixed Home page component with better styling and readability
 """
