@@ -1,11 +1,10 @@
 """
-Styling module for the Hypnotherapy website
-Clean CSS with only 3 font sizes, no text shadows, light mode only
+Fixed styling module with better button colors and readability
 """
 import streamlit as st
 
 def apply_global_styles():
-    """Apply clean global styles - 3 font sizes only, no shadows"""
+    """Apply clean global styles with better button colors"""
     
     st.markdown("""
     <style>
@@ -85,36 +84,54 @@ def apply_global_styles():
         color: var(--text-primary) !important;
     }
     
-    /* STREAMLIT BUTTON STYLING */
+    /* FIXED STREAMLIT BUTTON STYLING - Better contrast */
     .stButton>button {
         border-radius: var(--radius-sm) !important;
         transition: var(--transition) !important;
         font-weight: 600 !important;
         padding: 0.75rem 2rem !important;
         cursor: pointer !important;
-        border: none !important;
         font-size: 1rem !important;
+        border: 2px solid var(--border) !important;
     }
     
+    /* PRIMARY BUTTONS - Dark background with white text */
     .stButton>button[kind="primary"] {
         background-color: var(--accent) !important;
         color: white !important;
+        border: 2px solid var(--accent) !important;
     }
     
     .stButton>button[kind="primary"]:hover {
         background-color: var(--accent-hover) !important;
+        border-color: var(--accent-hover) !important;
         transform: translateY(-1px);
     }
     
+    /* SECONDARY BUTTONS - White background with dark text */
     .stButton>button[kind="secondary"] {
-        background-color: transparent !important;
-        color: var(--accent) !important;
-        border: 2px solid var(--accent) !important;
+        background-color: white !important;
+        color: var(--text-primary) !important;
+        border: 2px solid var(--border) !important;
     }
     
     .stButton>button[kind="secondary"]:hover {
-        background-color: var(--accent) !important;
-        color: white !important;
+        background-color: var(--bg) !important;
+        border-color: var(--accent) !important;
+        color: var(--accent) !important;
+    }
+    
+    /* DEFAULT BUTTONS - White background with dark text and border */
+    .stButton>button:not([kind]) {
+        background-color: white !important;
+        color: var(--text-primary) !important;
+        border: 2px solid var(--border) !important;
+    }
+    
+    .stButton>button:not([kind]):hover {
+        background-color: var(--bg) !important;
+        border-color: var(--accent) !important;
+        color: var(--accent) !important;
     }
     
     /* FORM ELEMENTS */
@@ -127,6 +144,7 @@ def apply_global_styles():
         padding: 0.75rem 1rem !important;
         transition: var(--transition) !important;
         font-size: 1rem !important;
+        color: var(--text-primary) !important;
     }
     
     .stTextInput>div>div>input:focus, 
@@ -136,13 +154,13 @@ def apply_global_styles():
         box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.1) !important;
     }
     
-    /* STREAMLIT METRIC STYLING */
+    /* STREAMLIT METRIC STYLING - Custom override */
     .stMetric {
-        background: var(--card-bg);
-        border-radius: var(--radius-sm);
-        padding: 1rem;
-        border: 1px solid var(--border);
-        text-align: center;
+        background: white !important;
+        border-radius: var(--radius-sm) !important;
+        padding: 1rem !important;
+        border: 1px solid var(--border) !important;
+        text-align: center !important;
     }
     
     .stMetric [data-testid="metric-value"] {
@@ -157,57 +175,89 @@ def apply_global_styles():
         font-weight: 600 !important;
     }
     
+    .stMetric [data-testid="metric-delta"] {
+        font-size: 1rem !important;
+        color: var(--text-secondary) !important;
+        font-weight: 500 !important;
+    }
+    
     /* STREAMLIT PROGRESS BAR */
     .stProgress .st-bo {
         background-color: var(--accent) !important;
     }
     
-    /* STREAMLIT CONTAINERS */
-    .stContainer {
-        background: var(--card-bg);
-        border-radius: var(--radius-md);
-        padding: 1rem;
-        margin: 1rem 0;
-    }
-    
-    /* STREAMLIT EXPANDER */
+    /* STREAMLIT EXPANDER - Better styling */
     .streamlit-expanderHeader {
-        background-color: var(--card-bg) !important;
+        background-color: white !important;
         border: 1px solid var(--border) !important;
         border-radius: var(--radius-sm) !important;
-    }
-    
-    /* STREAMLIT SUCCESS/ERROR/WARNING/INFO */
-    .stSuccess, .stError, .stWarning, .stInfo {
-        border-radius: var(--radius-sm) !important;
-        border: none !important;
         padding: 1rem !important;
     }
     
-    /* STREAMLIT TABS */
+    .streamlit-expanderHeader:hover {
+        border-color: var(--accent) !important;
+    }
+    
+    /* STREAMLIT SUCCESS/ERROR/WARNING/INFO - Better readability */
+    .stSuccess {
+        background-color: rgba(34, 197, 94, 0.1) !important;
+        border: 1px solid var(--success) !important;
+        border-radius: var(--radius-sm) !important;
+        padding: 1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stError {
+        background-color: rgba(239, 68, 68, 0.1) !important;
+        border: 1px solid var(--error) !important;
+        border-radius: var(--radius-sm) !important;
+        padding: 1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stWarning {
+        background-color: rgba(234, 179, 8, 0.1) !important;
+        border: 1px solid var(--warning) !important;
+        border-radius: var(--radius-sm) !important;
+        padding: 1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .stInfo {
+        background-color: rgba(76, 161, 163, 0.1) !important;
+        border: 1px solid var(--accent) !important;
+        border-radius: var(--radius-sm) !important;
+        padding: 1rem !important;
+        color: var(--text-primary) !important;
+    }
+    
+    /* STREAMLIT TABS - Remove background colors for readability */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-        background-color: var(--card-bg);
-        border-radius: var(--radius-sm);
-        padding: 0.5rem;
+        background-color: transparent !important;
+        border-bottom: 1px solid var(--border);
+        padding: 0.5rem 0;
     }
     
     .stTabs [data-baseweb="tab"] {
         height: 50px;
         padding: 0px 24px;
-        background-color: transparent;
-        border-radius: var(--radius-sm);
-        color: var(--text-secondary);
-        font-weight: 500;
+        background-color: transparent !important;
+        border-radius: var(--radius-sm) !important;
+        color: var(--text-secondary) !important;
+        font-weight: 500 !important;
+        border: 1px solid var(--border) !important;
+        margin-right: 8px;
     }
     
     .stTabs [aria-selected="true"] {
-        background-color: var(--accent) !important;
-        color: white !important;
+        background-color: white !important;
+        color: var(--accent) !important;
         font-weight: 600 !important;
+        border-color: var(--accent) !important;
     }
     
-    /* STREAMLIT QUOTE */
+    /* STREAMLIT QUOTE - Better styling */
     .stMarkdown blockquote {
         border-left: 4px solid var(--accent);
         padding: 1rem;
@@ -215,6 +265,7 @@ def apply_global_styles():
         background-color: rgba(76, 161, 163, 0.05);
         border-radius: var(--radius-sm);
         font-style: italic;
+        color: var(--text-primary) !important;
     }
     
     /* HIDE STREAMLIT ELEMENTS */
@@ -238,6 +289,11 @@ def apply_global_styles():
         
         .stMetric {
             padding: 0.75rem;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            padding: 8px 12px;
+            margin-right: 4px;
         }
     }
     </style>
