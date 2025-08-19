@@ -1,6 +1,6 @@
 """
 Fixed Booking form component for the Hypnotherapy website
-Corrected syntax and indentation issues
+Final version with all requested changes
 """
 import streamlit as st
 import re
@@ -44,7 +44,7 @@ class BookingForm:
         st.write("### Ready to Start Your Transformation?")
         st.markdown('<div id="discovery"></div>', unsafe_allow_html=True)
         
-        # Text message - changed from info to regular text
+        # Simple text message (not info box)
         st.write("Book your free discovery call to see if the method is right for you.")
                
         # Benefits of discovery call
@@ -54,10 +54,10 @@ class BookingForm:
         self._render_form()
     
     def _render_benefits(self):
-        """Render benefits of the discovery call"""
+        """Render benefits of the discovery call with minimized spacing"""
         benefits_html = """
         <div style="background: rgba(76, 161, 163, 0.05); border-radius: var(--radius-md);
-                    padding: 1.5rem; margin: 1rem 0; border-left: 4px solid var(--accent);">
+                    padding: 1.5rem; margin: 0.5rem 0; border-left: 4px solid var(--accent);">
             <h3 style="color: var(--accent); margin-bottom: 1rem;">What You'll Get in Your Discovery Call:</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -91,16 +91,16 @@ class BookingForm:
         st.markdown(benefits_html, unsafe_allow_html=True)
     
     def _render_form(self):
-        """Render the main booking form with white background"""        
+        """Render the main booking form with white background and minimized spacing"""        
         with st.form("discovery_booking_form", clear_on_submit=False):
-            # Start white background container for form only
+            # Form styling with minimized margins
             st.markdown("""
             <style>
             div[data-testid="stForm"] {
                 background: white !important;
                 border-radius: var(--radius-md) !important;
                 padding: 2rem !important;
-                margin: 0.5rem 0 !important;
+                margin: 0.5rem 0 0.5rem 0 !important;
                 box-shadow: var(--shadow-sm) !important;
                 border: 1px solid var(--border) !important;
             }
@@ -136,7 +136,7 @@ class BookingForm:
                 key="form_description"
             )
             
-            # Form submit button that triggers calendar opening
+            # Form submit button - white with border (no type="primary")
             form_submitted = st.form_submit_button(
                 "📞 Schedule My Free Discovery Call",
                 use_container_width=True
@@ -159,7 +159,7 @@ class BookingForm:
                     st.success("✅ Request submitted successfully! Opening calendar...")
                     st.rerun()
         
-        # Always visible action buttons below the form
+        # Always visible action buttons below the form with minimized spacing
         self._render_action_buttons()
         
         # JavaScript to open calendar when triggered
@@ -173,7 +173,7 @@ class BookingForm:
             st.session_state.trigger_calendar = False
     
     def _render_action_buttons(self):
-        """Render action buttons that are always visible"""
+        """Render action buttons with minimized spacing"""
         # Get current form data (if any)
         form_data = st.session_state.get('form_data', {})
         current_name = st.session_state.get('form_name', '')
@@ -191,7 +191,7 @@ class BookingForm:
         encoded_message = urllib.parse.quote(whatsapp_message)
         whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
         
-        # Action buttons side by side - always visible, responsive for mobile
+        # Action buttons side by side with minimized spacing
         col1, col2 = st.columns(2)
         
         with col1:
@@ -202,7 +202,7 @@ class BookingForm:
                       text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
                       font-weight: 500; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 0.5rem; border: none;">
+                      box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
                 📞 Schedule Call Directly
             </a>
             """, unsafe_allow_html=True)
@@ -215,7 +215,7 @@ class BookingForm:
                       text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
                       font-weight: 500; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 0.5rem; border: 2px solid var(--border);">
+                      box-sizing: border-box; margin-bottom: 0.25rem; border: 2px solid var(--border);">
                 💬 Message on WhatsApp
             </a>
             """, unsafe_allow_html=True)
@@ -299,14 +299,14 @@ class BookingForm:
         st.markdown("### 📞 Book Your Free Discovery Call")
         
         with st.form("compact_booking_form"):
-            # White background styling for the form
+            # White background styling for the form with minimized spacing
             st.markdown("""
             <style>
             div[data-testid="stForm"] {
                 background: white !important;
                 border-radius: var(--radius-md) !important;
                 padding: 1.5rem !important;
-                margin: 1rem 0 !important;
+                margin: 0.5rem 0 0.5rem 0 !important;
                 box-shadow: var(--shadow-sm) !important;
                 border: 1px solid var(--border) !important;
             }
@@ -322,7 +322,7 @@ class BookingForm:
                 key="compact_description"
             )
             
-            # Form submit button that triggers calendar
+            # Form submit button - white with border (no type="primary")
             compact_submitted = st.form_submit_button(
                 "📞 Schedule Call", 
                 use_container_width=True
@@ -338,7 +338,7 @@ class BookingForm:
                 else:
                     st.error("Please enter a valid email address.")
         
-        # Always visible action buttons for compact version
+        # Always visible action buttons for compact version with minimized spacing
         self._render_compact_action_buttons()
         
         # JavaScript to open calendar when triggered
@@ -352,7 +352,7 @@ class BookingForm:
             st.session_state.trigger_compact_calendar = False
     
     def _render_compact_action_buttons(self):
-        """Render compact action buttons that are always visible"""
+        """Render compact action buttons with minimized spacing"""
         # Get current form data
         current_email = st.session_state.get('compact_email', '')
         current_concern = st.session_state.get('compact_concern', '')
@@ -378,7 +378,7 @@ class BookingForm:
                       text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
                       font-weight: 500; font-size: 0.9rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 0.5rem; border: none;">
+                      box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
                 📞 Direct Booking
             </a>
             """, unsafe_allow_html=True)
@@ -391,7 +391,7 @@ class BookingForm:
                       text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
                       font-weight: 500; font-size: 0.9rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 0.5rem; border: 2px solid var(--border);">
+                      box-sizing: border-box; margin-bottom: 0.25rem; border: 2px solid var(--border);">
                 💬 WhatsApp
             </a>
             """, unsafe_allow_html=True)
