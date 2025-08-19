@@ -361,9 +361,6 @@ class PatternChangeMethod:
                                     </div>
                 """, unsafe_allow_html=True)
         
-        # Ready to start section
-        st.write("### Ready to Start Your Transformation?")
-        st.info("Book your free discovery call to see if the method is right for you.")
 
 class HomePage:
     """Complete home page using Streamlit components"""
