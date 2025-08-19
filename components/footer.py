@@ -31,8 +31,8 @@ class Footer:
         # Add spacing before footer
         st.markdown("<div style='margin-top: 4rem;'></div>", unsafe_allow_html=True)
         
-        # Horizontal separator
-        st.markdown("---")
+        # # Horizontal separator
+        # st.markdown("---")
               
         # Main footer content
         self._render_main_footer()
@@ -95,15 +95,15 @@ class Footer:
         """Render copyright and legal information"""
         current_year = datetime.datetime.now().year
         
-        # Legal links using columns
-        col1, col2, col3 = st.columns(3)
+        # # Legal links using columns
+        # col1, col2, col3 = st.columns(3)
         
-        with col1:
-            st.caption("[Privacy Policy](#privacy)")
-        with col2:
-            st.caption("[Terms of Service](#terms)")
-        with col3:
-            st.caption("[Confidentiality](#confidentiality)")
+        # with col1:
+        #     st.caption("[Privacy Policy](#privacy)")
+        # with col2:
+        #     st.caption("[Terms of Service](#terms)")
+        # with col3:
+        #     st.caption("[Confidentiality](#confidentiality)")
         
         # Copyright notice with clean styling
         st.markdown(f"""
@@ -145,15 +145,15 @@ class QuickContact:
                 st.markdown(f'<meta http-equiv="refresh" content="0; url={self.package_url}">', 
                           unsafe_allow_html=True)
 
-class SocialProofFooter:
-    """Social proof elements for footer"""
+# class SocialProofFooter:
+#     """Social proof elements for footer"""
     
-    def render_guarantee(self):
-        """Render satisfaction guarantee"""
-        st.info("""
-        💯 **Satisfaction Guarantee**: If you're not completely satisfied after 2 sessions, 
-        your 3rd session is complimentary. Your transformation is our commitment.
-        """)
+#     def render_guarantee(self):
+#         """Render satisfaction guarantee"""
+#         st.info("""
+#         💯 **Satisfaction Guarantee**: If you're not completely satisfied after 2 sessions, 
+#         your 3rd session is complimentary. Your transformation is our commitment.
+#         """)
 
 # Factory functions for easy import
 def create_footer():
@@ -164,6 +164,6 @@ def create_quick_contact():
     """Factory function to create QuickContact instance"""
     return QuickContact()
 
-def create_social_proof_footer():
-    """Factory function to create SocialProofFooter instance"""
-    return SocialProofFooter()
+# def create_social_proof_footer():
+#     """Factory function to create SocialProofFooter instance"""
+#     return SocialProofFooter()
