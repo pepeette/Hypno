@@ -34,8 +34,8 @@ class Footer:
         # Main footer content
         self._render_main_footer()
         
-        # Trust indicators
-        self._render_trust_indicators()
+        # # Trust indicators
+        # self._render_trust_indicators()
         
         # Copyright section
         self._render_copyright()
