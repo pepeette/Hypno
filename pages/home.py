@@ -24,23 +24,44 @@ class HeroSection:
             # # Add compelling message using Streamlit info box
             # st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
 
-            # Logo and Info message on same row with responsive design
-            col1, col2 = st.columns([1, 2], gap="medium")
+            # # Logo and Info message on same row with responsive design
+            # col1, col2 = st.columns([1, 2], gap="medium")
             
-            with col1:
-                # Logo with same height as info box
-                st.markdown("""
-                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+            # with col1:
+            #     # Logo with same height as info box
+            #     st.markdown("""
+            #     <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+            #         <img src="https://github.com/pepeette/Hypno/blob/main/img/logo.jpg?raw=true" 
+            #              alt="Hypnotherapy Logo" 
+            #              style="max-width: 100%; height: auto; border-radius: 8px; 
+            #                     max-height: 80px; object-fit: contain;">
+            #     </div>
+            #     """, unsafe_allow_html=True)
+            
+            # with col2:
+            #     # Info box - will automatically size to content
+            #     st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
+
+
+            # Logo and Info message forced to stay on same row even on mobile
+            st.markdown("""
+            <div style="display: flex; gap: 1rem; margin: 1rem 0; align-items: stretch; flex-wrap: nowrap;">
+                <div style="flex: 0 0 auto; display: flex; align-items: center; justify-content: center; min-width: 120px;">
                     <img src="https://github.com/pepeette/Hypno/blob/main/img/logo.jpg?raw=true" 
                          alt="Hypnotherapy Logo" 
                          style="max-width: 100%; height: auto; border-radius: 8px; 
                                 max-height: 80px; object-fit: contain;">
                 </div>
-                """, unsafe_allow_html=True)
-            
-            with col2:
-                # Info box - will automatically size to content
-                st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
+                <div style="flex: 1; display: flex; align-items: center;">
+                    <div style="background: rgba(76, 161, 163, 0.1); border: 1px solid #4CA1A3; 
+                                border-radius: 8px; padding: 1rem; width: 100%;">
+                        <p style="margin: 0; color: #273548; font-size: 1rem; line-height: 1.6;">
+                            💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
                 
 class QuizSection:
     """Quiz section using Streamlit components with better UX"""
