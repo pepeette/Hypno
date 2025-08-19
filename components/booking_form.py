@@ -43,6 +43,23 @@ class BookingForm:
         """Render the booking form"""
         st.write("### Ready to Start Your Transformation?")
         st.markdown('<div id="discovery"></div>', unsafe_allow_html=True)
+         # Logo and Info message on same row with responsive design
+            col1, col2 = st.columns([1, 5], gap="medium")
+            
+            with col1:
+                # Logo with same height as info box
+                st.markdown("""
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                    <img src="https://github.com/pepeette/Hypno/blob/main/img/logo.jpg?raw=true" 
+                         alt="Hypnotherapy Logo" 
+                         style="max-width: 100%; height: auto; border-radius: 8px; 
+                                max-height: 80px; object-fit: contain;">
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with col2:
+                # Info box - will automatically size to content
+                st.info("Book your free discovery call to see if the method is right for you.")
                
         # Benefits of discovery call
         self._render_benefits()
