@@ -504,28 +504,19 @@ class BookingForm:
                 horizontal=True
             )
             
-            # Submit buttons side by side
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                submitted = st.form_submit_button(
-                    "📞 Schedule My Free Discovery Call", 
-                    type="primary", 
-                    use_container_width=True
-                )
-            
-            with col2:
-                whatsapp_clicked = st.form_submit_button(
-                    "💬 Message on WhatsApp", 
-                    use_container_width=True
-                )
+            # Submit button for email form
+            submitted = st.form_submit_button(
+                "📞 Schedule My Free Discovery Call", 
+                type="primary", 
+                use_container_width=True
+            )
             
             if submitted:
                 if self._validate_form(email):
                     self._handle_form_submission(name, email, concern, concern_description, urgency, experience, message, contact_method)
-            
-            if whatsapp_clicked:
-                self._handle_whatsapp_contact(name, email, concern, concern_description, message)
+        
+        # WhatsApp button outside form for direct action
+        self._render_whatsapp_button(name, email, concern, concern_description, message)
     
     def _validate_form(self, email):
         """Validate form inputs - only email is required"""
@@ -599,10 +590,10 @@ class BookingForm:
             print(f"Email sending error: {e}")
             return False
     
-    def _handle_whatsapp_contact(self, name, email, concern, concern_description, message):
-        """Handle WhatsApp contact"""
+    def _render_whatsapp_button(self, name, email, concern, concern_description, message):
+        """Render WhatsApp button that opens directly"""
         # Create WhatsApp message
-        whatsapp_message = f"Hi! I'm interested in booking a discovery call for hypnotherapy."
+        whatsapp_message = "Hi! I'm interested in booking a discovery call for hypnotherapy."
         
         if name:
             whatsapp_message += f" My name is {name}."
@@ -625,18 +616,22 @@ class BookingForm:
         # Create WhatsApp URL
         whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
         
-        # Display success message with WhatsApp link
-        st.success("✅ Opening WhatsApp...")
+        # Render WhatsApp button with direct link
         st.markdown(f"""
         <div style="text-align: center; margin: 1rem 0;">
             <a href="{whatsapp_url}" target="_blank" 
                style="display: inline-block; background-color: #25D366; color: white;
                       text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
-                      font-weight: 600; font-size: 1.1rem; transition: var(--transition);">
-                💬 Continue to WhatsApp
+                      font-weight: 600; font-size: 1rem; transition: var(--transition);
+                      box-shadow: var(--shadow-sm); text-align: center; min-width: 200px;">
+                💬 Message on WhatsApp
             </a>
         </div>
         """, unsafe_allow_html=True)
+    
+    def _handle_whatsapp_contact(self, name, email, concern, concern_description, message):
+        """Handle WhatsApp contact - now unused, keeping for compatibility"""
+        pass
     
     def _render_success_state(self, name):
         """Render success state after form submission"""
@@ -697,13 +692,7 @@ class BookingForm:
                 height=80
             )
             
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                submitted = st.form_submit_button("Schedule Call", type="primary", use_container_width=True)
-            
-            with col2:
-                whatsapp_clicked = st.form_submit_button("WhatsApp", use_container_width=True)
+            submitted = st.form_submit_button("Schedule Call", type="primary", use_container_width=True)
             
             if submitted:
                 if email and self._is_valid_email(email):
@@ -719,26 +708,27 @@ class BookingForm:
                         """, unsafe_allow_html=True)
                 else:
                     st.error("Please enter a valid email address.")
-            
-            if whatsapp_clicked:
-                if email:
-                    self._handle_whatsapp_contact("", email, concern, concern_description, "")
-                else:
-                    # Open WhatsApp with generic message
-                    whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text=Hi! I'm interested in booking a discovery call for hypnotherapy."
-                    st.markdown(f"""
-                    <div style="text-align: center; margin: 1rem 0;">
-                        <a href="{whatsapp_url}" target="_blank" 
-                           style="display: inline-block; background-color: #25D366; color: white;
-                                  text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
-                                  font-weight: 600; font-size: 1.1rem;">
-                            💬 Continue to WhatsApp
-                        </a>
-                    </div>
-                    """, unsafe_allow_html=True)
+        
+        # Direct WhatsApp button for compact form
+        self._render_compact_whatsapp_button()
+    
+    def _render_compact_whatsapp_button(self):
+        """Render compact WhatsApp button with direct action"""
+        whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text=Hi! I'm interested in booking a discovery call for hypnotherapy."
+        
+        st.markdown(f"""
+        <div style="text-align: center; margin: 1rem 0;">
+            <a href="{whatsapp_url}" target="_blank" 
+               style="display: inline-block; background-color: #25D366; color: white;
+                      text-decoration: none; padding: 0.8rem 1.5rem; border-radius: var(--radius-sm);
+                      font-weight: 600; font-size: 1rem; transition: var(--transition);
+                      box-shadow: var(--shadow-sm);">
+                💬 WhatsApp
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
 
 # Factory function for easy import
 def create_booking_form():
     """Factory function to create BookingForm instance"""
     return BookingForm()
-
