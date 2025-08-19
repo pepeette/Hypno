@@ -60,7 +60,7 @@ class Footer:
         
         with col_text:
             st.markdown("## Laetitia Sheppard")
-            st.write("Certified Clinical Hypnotherapist with over 10 years of experience in behavioral change and mental wellness.")
+            st.write("Certified Clinical Hypnotherapist with over 8 years of experience in behavioral change and mental wellness.")
 
         # Contact and credentials section
         col1, col2 = st.columns(2, gap="large")
