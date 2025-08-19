@@ -75,27 +75,27 @@ class BookingForm:
                     padding: 1.5rem; margin: 2rem 0; border-left: 4px solid var(--accent);">
             <h3 style="color: var(--accent); margin-bottom: 1rem;">What You'll Get in Your Discovery Call:</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.25rem;">
                     <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
                     <span>Personalized assessment of your situation</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.25rem;">
                     <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
                     <span>Clear explanation of how hypnotherapy works</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.25rem;">
                     <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
                     <span>Honest assessment of your success probability</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.25rem;">
                     <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
                     <span>Answers to all your questions</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.25rem;">
                     <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
                     <span>No pressure, no obligation</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.25rem;">
                     <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
                     <span>Next steps if you decide to proceed</span>
                 </div>
