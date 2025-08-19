@@ -81,7 +81,7 @@ class QuizSection:
         """Render quiz using Streamlit components"""
         # Section header
         st.subheader("Find Out If You're Ready for Rapid Change")
-        st.write("3 questions to assess your potential for transformation:")
+        st.write("3 questions to assess your potential for transformation: (click on the most suited option)")
         
         if not st.session_state.quiz_completed:
             self._render_all_questions()
