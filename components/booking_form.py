@@ -39,28 +39,11 @@ class BookingForm:
         self.sender_email = "laetitiasheppard@gmail.com"
         self.recipient_email = "laetitiasheppard@gmail.com"
     
-    def render(self, form_title="Free 15-Minute Discovery Call", form_description=None):
+    def render(self, form_title=None, form_description=None):
         """Render the booking form"""
-        # Default description if none provided
-        if form_description is None:
-            form_description = "Begin your journey to transformation with a complimentary consultation"
-        
+        st.write("### Ready to Start Your Transformation?")
         st.markdown('<div id="discovery"></div>', unsafe_allow_html=True)
-        
-        # Header section (no white background)
-        header_html = f"""
-        <div style="text-align: center; margin: 2rem 0;">
-            <h1 style="color: var(--accent); margin-bottom: 1rem;">
-                {form_title}
-            </h1>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
-                {form_description}
-            </p>
-        </div>
-        """
-        
-        st.markdown(header_html, unsafe_allow_html=True)
-        
+               
         # Benefits of discovery call
         self._render_benefits()
         
