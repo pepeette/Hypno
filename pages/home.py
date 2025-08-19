@@ -148,20 +148,10 @@ class QuizSection:
             st.info("💬 Let's talk! Every situation is unique, and a conversation will help us determine the best path forward.")
             st.info("A free discovery call will help us understand how to best support your goals.")
         
-        # Display score using custom metric with value and delta together
+        # Display score using st.metric with combined value/delta
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            st.markdown(f"""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
-                        padding: 1rem; text-align: center; margin: 1rem 0;">
-                <div style="color: #556D7A; font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">
-                    Transformation Readiness
-                </div>
-                <div style="color: #4CA1A3; font-size: 2rem; font-weight: 700;">
-                    {score}% Suitability Match
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.metric("", f"{score}% Suitability Match", "Transformation Readiness")
         
         # Action buttons using Streamlit columns
         col1, col2 = st.columns(2)
@@ -200,38 +190,19 @@ class PatternChangeMethod:
             st.success("✅ 85% Success Rate in Just 2 Sessions")
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.markdown("""
-                <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
-                            padding: 1rem; text-align: center;">
-                    <div style="color: #556D7A; font-size: 1rem; font-weight: 600;">Success Rate</div>
-                    <div style="color: #4CA1A3; font-size: 2rem; font-weight: 700;">85% in 2 sessions</div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.metric("", "85% in 2 sessions", "Success Rate")
             with col2:
-                st.markdown("""
-                <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
-                            padding: 1rem; text-align: center;">
-                    <div style="color: #556D7A; font-size: 1rem; font-weight: 600;">Need 3rd Session</div>
-                    <div style="color: #4CA1A3; font-size: 2rem; font-weight: 700;">15% reinforcement</div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.metric("", "15% reinforcement", "Need 3rd Session")
             with col3:
-                st.markdown("""
-                <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
-                            padding: 1rem; text-align: center;">
-                    <div style="color: #556D7A; font-size: 1rem; font-weight: 600;">vs Traditional</div>
-                    <div style="color: #4CA1A3; font-size: 2rem; font-weight: 700;">Months to years</div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.metric("", "Months to years", "vs Traditional")
             
             st.write("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
         
-        # Method comparison using white background cards
+        # Method comparison using container cards instead of columns
         st.write("### The Difference Is in the Approach")
         
-        col1, col2 = st.columns(2)
-        
-        with col1:
+        # Traditional Methods Card
+        with st.container():
             st.markdown("""
             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
                         padding: 2rem; margin: 1rem 0; border-left: 4px solid #ef4444;">
@@ -246,7 +217,8 @@ class PatternChangeMethod:
             </div>
             """, unsafe_allow_html=True)
         
-        with col2:
+        # Pattern Change Hypnotherapy Card  
+        with st.container():
             st.markdown("""
             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
                         padding: 2rem; margin: 1rem 0; border-left: 4px solid #22c55e;">
@@ -306,30 +278,7 @@ class PatternChangeMethod:
                 </div>
                 """, unsafe_allow_html=True)
         
-        # Real example using Streamlit quote - ENSURE IT RENDERS
-        st.write("### Why This Works: A Real Example")
-        
-        # Use a simple container instead of quote to ensure it displays
-        st.markdown("""
-        <div style="background: rgba(76, 161, 163, 0.05); border-left: 4px solid #4CA1A3; 
-                    border-radius: 12px; padding: 2rem; margin: 2rem 0;">
-            <p style="font-style: italic; font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem; color: #273548;">
-                "I tried to quit smoking for 15 years. Patches, gum, medications, willpower - nothing worked. 
-                After session 1, I understood that I wasn't addicted to nicotine, I was addicted to the feeling 
-                of 'taking a break' and 'having 5 minutes for myself.'
-            </p>
-            <p style="font-style: italic; font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem; color: #273548;">
-                Session 2 rewired that pattern. Now when I need a break, I naturally want to step outside 
-                and take deep breaths instead of reaching for a cigarette. The craving is completely gone - 
-                not suppressed, gone."
-            </p>
-            <p style="font-weight: 600; color: #4CA1A3; margin: 0;">
-                — Banking Executive, Singapore (2 sessions, 6 months smoke-free)
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Add additional content to ensure everything renders
+        # Ready to start section
         st.write("### Ready to Start Your Transformation?")
         st.info("Book your free discovery call to see if our method is right for you.")
 
