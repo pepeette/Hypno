@@ -619,7 +619,7 @@ class PatternChangeMethod:
             st.markdown("""
             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
                         padding: 2rem; margin: 1rem 0; border-left: 4px solid #22c55e; height: 100%;">
-                <h2 style="color: #16a34a; margin-bottom: 1rem; text-align: center;">✅ Pattern Change Hypnotherapy</h2>
+                <h2 style="color: #16a34a; margin-bottom: 1rem; text-align: center;">✅ Hypnotherapy</h2>
                 <p><strong>Session 1:</strong> Map your unique subconscious triggers and patterns</p>
                 <p><strong>Session 2:</strong> Rewire those patterns at the subconscious level</p>
                 <p><strong>Session 3:</strong> Optional reinforcement if needed (15% of clients)</p>
