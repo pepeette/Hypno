@@ -158,7 +158,6 @@
 #     return BookingForm()
 
 
-
 """
 Footer component for the Hypnotherapy website
 Displays contact information, credentials, and links
@@ -179,11 +178,11 @@ class Footer:
         except ImportError:
             # Fallback values
             self.contact_info = {
-                "clinic_name": "NEW ADDRESS in BANGKOK",
+                "clinic_name": "Bangkok Hypnotherapy Clinic",
                 "address": "27 Soi Sukhumvit 10 (Asoke)",
                 "city": "Bangkok, Thailand",
                 "maps_url": "https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw",
-                "calendly_url": "https://calendly.com/laetitiasheppard/"
+                "calendly_url": "https://calendly.com/laetitiasheppard/new-meeting"
             }
             self.founder_image = "https://github.com/pepeette/Hypno/blob/main/img/ID.jpg?raw=true"
     
@@ -193,7 +192,7 @@ class Footer:
         st.markdown("<div style='margin-top: 4rem;'></div>", unsafe_allow_html=True)
         
         # Horizontal separator
-        st.markdown("   ")
+        st.markdown("---")
         
         # Main footer content
         self._render_main_footer()
@@ -237,7 +236,7 @@ class Footer:
             st.write("• Certified Clinical Hypnotherapist")
             st.write("• Advanced Neuro-Linguistic Programming")
             st.write("• Specialized in Rapid Transformation Therapy")
-            st.write("• Member, British Society of Clinical Hypnosis")
+            st.write("• Member, International Association of Hypnotherapists")
     
     def _render_contact_section(self):
         """Render contact information using Streamlit components"""
@@ -245,7 +244,12 @@ class Footer:
         st.write(f"**{self.contact_info['clinic_name']}**")
         st.write(f"{self.contact_info['address']}")
         st.write(f"{self.contact_info['city']}")
-                
+        
+        st.markdown("**Session Options:**")
+        st.write("• In-person (Bangkok clinic)")
+        st.write("• Online (worldwide)")
+        st.write("• Home visits (Bangkok area)")
+        
         # Action buttons using styled markdown links for better compatibility
         st.markdown("""
         <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
