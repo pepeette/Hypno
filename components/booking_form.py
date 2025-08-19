@@ -77,27 +77,27 @@ class BookingForm:
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                     <span style="color: var(--accent); font-size: 1rem;">✓</span>
-                    <span style="font-size: 1rem; line-height: 1.6;">Personalized assessment of your situation</span>
+                    <span style="font-size: 1rem; line-height: 1.5;">Personalized assessment of your situation</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                     <span style="color: var(--accent); font-size: 1rem;">✓</span>
-                    <span style="font-size: 1rem; line-height: 1.6;">Clear explanation of how hypnotherapy works</span>
+                    <span style="font-size: 1rem; line-height: 1.5;">Clear explanation of how hypnotherapy works</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                     <span style="color: var(--accent); font-size: 1rem;">✓</span>
-                    <span style="font-size: 1rem; line-height: 1.6;">Honest assessment of your success probability</span>
+                    <span style="font-size: 1rem; line-height: 1.5;">Honest assessment of your success probability</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                     <span style="color: var(--accent); font-size: 1rem;">✓</span>
-                    <span style="font-size: 1rem; line-height: 1.6;">Answers to all your questions</span>
+                    <span style="font-size: 1rem; line-height: 1.5;">Answers to all your questions</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                     <span style="color: var(--accent); font-size: 1rem;">✓</span>
-                    <span style="font-size: 1rem; line-height: 1.6;">No pressure, no obligation</span>
+                    <span style="font-size: 1rem; line-height: 1.5;">No pressure, no obligation</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                     <span style="color: var(--accent); font-size: 1rem;">✓</span>
-                    <span style="font-size: 1rem; line-height: 1.6;">Next steps if you decide to proceed</span>
+                    <span style="font-size: 1rem; line-height: 1.5;">Next steps if you decide to proceed</span>
                 </div>
             </div>
         </div>
@@ -154,7 +154,6 @@ class BookingForm:
             # Form submit button that triggers calendar opening
             form_submitted = st.form_submit_button(
                 "📞 Schedule My Free Discovery Call",
-                type="primary",
                 use_container_width=True
             )
             
@@ -172,7 +171,7 @@ class BookingForm:
                     self._send_booking_email(name, email, concern, concern_description)
                     # Set flag to trigger calendar opening
                     st.session_state.trigger_calendar = True
-                    st.success("✅ Request submitted! Opening calendar...")
+                    st.success("✅ Request submitted successfully! Opening calendar...")
                     st.rerun()
         
         # Always visible action buttons below the form
@@ -216,7 +215,7 @@ class BookingForm:
             <a href="{self.discovery_url}" target="_blank" 
                style="display: inline-block; background-color: var(--accent); color: white;
                       text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
-                      font-weight: 600; font-size: 1rem; transition: var(--transition);
+                      font-weight: 500; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                       box-sizing: border-box; margin-bottom: 1rem; border: none;">
                 📞 Schedule Call Directly
@@ -229,7 +228,7 @@ class BookingForm:
             <a href="{whatsapp_url}" target="_blank" 
                style="display: inline-block; background-color: white; color: var(--text-primary);
                       text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
-                      font-weight: 600; font-size: 1rem; transition: var(--transition);
+                      font-weight: 500; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                       box-sizing: border-box; margin-bottom: 1rem; border: 2px solid var(--border);">
                 💬 Message on WhatsApp
@@ -341,7 +340,6 @@ class BookingForm:
             # Form submit button that triggers calendar
             compact_submitted = st.form_submit_button(
                 "📞 Schedule Call", 
-                type="primary", 
                 use_container_width=True
             )
             
@@ -350,7 +348,7 @@ class BookingForm:
                     # Send email and trigger calendar
                     self._send_booking_email("", email, concern, concern_description)
                     st.session_state.trigger_compact_calendar = True
-                    st.success("✅ Request submitted! Opening calendar...")
+                    st.success("✅ Request submitted successfully! Opening calendar...")
                     st.rerun()
                 else:
                     st.error("Please enter a valid email address.")
@@ -393,7 +391,7 @@ class BookingForm:
             <a href="{self.discovery_url}" target="_blank" 
                style="display: inline-block; background-color: var(--accent); color: white;
                       text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
-                      font-weight: 600; font-size: 0.9rem; transition: var(--transition);
+                      font-weight: 500; font-size: 0.9rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                       box-sizing: border-box; margin-bottom: 0.5rem; border: none;">
                 📞 Direct Booking
@@ -406,7 +404,7 @@ class BookingForm:
             <a href="{whatsapp_url}" target="_blank" 
                style="display: inline-block; background-color: white; color: var(--text-primary);
                       text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
-                      font-weight: 600; font-size: 0.9rem; transition: var(--transition);
+                      font-weight: 500; font-size: 0.9rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                       box-sizing: border-box; margin-bottom: 0.5rem; border: 2px solid var(--border);">
                 💬 WhatsApp
