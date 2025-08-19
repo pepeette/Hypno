@@ -207,9 +207,7 @@ class BookingForm:
         encoded_message = urllib.parse.quote(whatsapp_message)
         whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
         
-        st.markdown("### Or choose your preferred contact method:")
-        
-        # Action buttons side by side - always visible
+        # Action buttons side by side - always visible, responsive for mobile
         col1, col2 = st.columns(2)
         
         with col1:
@@ -217,7 +215,7 @@ class BookingForm:
             st.markdown(f"""
             <a href="{self.discovery_url}" target="_blank" 
                style="display: inline-block; background-color: var(--accent); color: white;
-                      text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
+                      text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
                       font-weight: 600; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                       box-sizing: border-box; margin-bottom: 1rem;">
@@ -226,11 +224,11 @@ class BookingForm:
             """, unsafe_allow_html=True)
         
         with col2:
-            # Direct WhatsApp link button
+            # Direct WhatsApp link button - using accent color instead of green
             st.markdown(f"""
             <a href="{whatsapp_url}" target="_blank" 
-               style="display: inline-block; background-color: #25D366; color: white;
-                      text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
+               style="display: inline-block; background-color: var(--accent); color: white;
+                      text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
                       font-weight: 600; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                       box-sizing: border-box; margin-bottom: 1rem;">
@@ -394,8 +392,8 @@ class BookingForm:
             st.markdown(f"""
             <a href="{self.discovery_url}" target="_blank" 
                style="display: inline-block; background-color: var(--accent); color: white;
-                      text-decoration: none; padding: 0.8rem 1rem; border-radius: var(--radius-sm);
-                      font-weight: 600; font-size: 1rem; transition: var(--transition);
+                      text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
+                      font-weight: 600; font-size: 0.9rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                       box-sizing: border-box; margin-bottom: 0.5rem;">
                 📞 Direct Booking
@@ -403,12 +401,12 @@ class BookingForm:
             """, unsafe_allow_html=True)
         
         with col2:
-            # Direct WhatsApp link
+            # Direct WhatsApp link - using accent color instead of green
             st.markdown(f"""
             <a href="{whatsapp_url}" target="_blank" 
-               style="display: inline-block; background-color: #25D366; color: white;
-                      text-decoration: none; padding: 0.8rem 1rem; border-radius: var(--radius-sm);
-                      font-weight: 600; font-size: 1rem; transition: var(--transition);
+               style="display: inline-block; background-color: var(--accent); color: white;
+                      text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
+                      font-weight: 600; font-size: 0.9rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                       box-sizing: border-box; margin-bottom: 0.5rem;">
                 💬 WhatsApp
