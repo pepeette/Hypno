@@ -42,7 +42,6 @@ class BookingForm:
     def render(self, form_title=None, form_description=None):
         """Render the booking form"""
         st.write("### Ready to Start Your Transformation?")
-        st.markdown('<div id="discovery"></div>', unsafe_allow_html=True)
         
         # Simple text message (not info box)
         st.write("Book your free discovery call to see if the method is right for you.")
