@@ -342,9 +342,9 @@ class HeroSection:
             st.markdown("""
             <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
                         border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
-                <h1 style="color: white;">Stop Fighting Your Mind.<br>Start Working With It.</h1>
+                <h1 style="color: white;">Stop Fighting Your Mind.<br><br>Start Working With It.</h1>
                 <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
-                    Most people try to change using willpower. That's why 95% fail. 
+                    Most people try to change using willpower. That's why 95% fail. <br>
                     We bypass your conscious resistance and reprogram your subconscious patterns directly.
                 </p>
             </div>
@@ -521,11 +521,11 @@ class PatternChangeMethod:
             with col1:
                 st.metric("", "Success Rate", "85% in 2 sessions")
             with col2:
-                st.metric("", "3rd Session", "15% need Reinforcement")
+                st.metric("", "3rd Session Optional", "15% need Reinforcement")
             with col3:
-                st.metric("", "Rapid rewiring", "for Lasting change")
+                st.metric("", "Rapid pattern rewiring", "for Lasting change")
             
-            st.success("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
+            st.success("Most clients achieve complete transformation in two 90-minute sessions. <br> About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
         
         # Method comparison using 3-column layout with image in center
         st.write("### The Difference Is in the Approach")
