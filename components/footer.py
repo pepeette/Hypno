@@ -77,7 +77,7 @@ class Footer:
     
     def _render_contact_section(self):
         """Render contact information using Streamlit components"""
-        st.markdown("**Credentials:**")
+        st.markdown("**Contact:**")
         st.write(f"{self.contact_info['clinic_name']}")
         st.write(f"{self.contact_info['address']}")
         st.write(f"{self.contact_info['city']}")
