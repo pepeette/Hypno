@@ -106,14 +106,22 @@ class BookingForm:
         st.markdown(benefits_html, unsafe_allow_html=True)
     
     def _render_form(self):
-        """Render the main booking form with white background"""
-        # Start white background container for form only
-        st.markdown("""
-        <div style="background: white; border-radius: var(--radius-md); padding: 2rem; 
-                    margin: 2rem 0; box-shadow: var(--shadow-sm); border: 1px solid var(--border);">
-        """, unsafe_allow_html=True)
-        
+        """Render the main booking form with white background"""        
         with st.form("discovery_booking_form", clear_on_submit=False):
+            # Start white background container for form only
+            st.markdown("""
+            <style>
+            div[data-testid="stForm"] {
+                background: white !important;
+                border-radius: var(--radius-md) !important;
+                padding: 2rem !important;
+                margin: 2rem 0 !important;
+                box-shadow: var(--shadow-sm) !important;
+                border: 1px solid var(--border) !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
             # Form fields
             cols = st.columns(2)
             with cols[0]:
@@ -150,7 +158,6 @@ class BookingForm:
                 )
             
             with col2:
-                # WhatsApp button using standard Streamlit button styling
                 whatsapp_clicked = st.form_submit_button(
                     "💬 Message on WhatsApp",
                     use_container_width=True
@@ -158,51 +165,54 @@ class BookingForm:
             
             if submitted:
                 if self._validate_form(email):
-                    # Send email and redirect to calendar
-                    if self._send_booking_email(name, email, concern, concern_description):
-                        # Show success and redirect to calendar
-                        st.success("✅ Request submitted! Opening calendar...")
+                    # Send email first
+                    email_sent = self._send_booking_email(name, email, concern, concern_description)
+                    
+                    if email_sent:
+                        # Show success message
+                        st.success("✅ Request submitted successfully!")
+                        
+                        # Open calendar directly using JavaScript
                         st.markdown(f"""
                         <script>
-                        window.open('{self.discovery_url}', '_blank');
+                        setTimeout(function() {{
+                            window.open('{self.discovery_url}', '_blank');
+                        }}, 1000);
                         </script>
                         <div style="text-align: center; margin: 1rem 0;">
-                            <a href="{self.discovery_url}" target="_blank" 
-                               style="display: inline-block; background-color: var(--accent); color: white;
-                                      text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
-                                      font-weight: 600; font-size: 1.1rem; transition: var(--transition);
-                                      box-shadow: var(--shadow-accent);">
-                                📅 Click here if calendar didn't open
-                            </a>
+                            <p>Opening calendar... <a href="{self.discovery_url}" target="_blank" 
+                               style="color: var(--accent); text-decoration: underline;">
+                                Click here if it doesn't open automatically
+                            </a></p>
                         </div>
                         """, unsafe_allow_html=True)
                         st.balloons()
                     else:
-                        st.error("❌ There was an issue. Please try again or contact us directly.")
+                        st.error("❌ There was an issue sending your request. Please try again or contact us directly.")
             
             if whatsapp_clicked:
-                # Handle WhatsApp redirect
-                whatsapp_message = self._create_whatsapp_message(name, email, concern, concern_description)
-                encoded_message = urllib.parse.quote(whatsapp_message)
-                whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
-                
-                st.success("✅ Opening WhatsApp...")
-                st.markdown(f"""
-                <script>
-                window.open('{whatsapp_url}', '_blank');
-                </script>
-                <div style="text-align: center; margin: 1rem 0;">
-                    <a href="{whatsapp_url}" target="_blank" 
-                       style="display: inline-block; background-color: #25D366; color: white;
-                              text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
-                              font-weight: 600; font-size: 1.1rem; transition: var(--transition);">
-                        💬 Click here if WhatsApp didn't open
-                    </a>
-                </div>
-                """, unsafe_allow_html=True)
-        
-        # Close white background container
-        st.markdown("</div>", unsafe_allow_html=True)
+                if self._validate_form(email):
+                    # Create WhatsApp message and open directly
+                    whatsapp_message = self._create_whatsapp_message(name, email, concern, concern_description)
+                    encoded_message = urllib.parse.quote(whatsapp_message)
+                    whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
+                    
+                    st.success("✅ Opening WhatsApp...")
+                    
+                    # Open WhatsApp directly using JavaScript
+                    st.markdown(f"""
+                    <script>
+                    setTimeout(function() {{
+                        window.open('{whatsapp_url}', '_blank');
+                    }}, 1000);
+                    </script>
+                    <div style="text-align: center; margin: 1rem 0;">
+                        <p>Opening WhatsApp... <a href="{whatsapp_url}" target="_blank" 
+                           style="color: #25D366; text-decoration: underline;">
+                            Click here if it doesn't open automatically
+                        </a></p>
+                    </div>
+                    """, unsafe_allow_html=True)
     
     def _create_whatsapp_message(self, name, email, concern, concern_description):
         """Create WhatsApp message from form data"""
@@ -282,13 +292,21 @@ class BookingForm:
         """Render a compact version of the booking form"""
         st.markdown("### 📞 Book Your Free Discovery Call")
         
-        # White background only for the form
-        st.markdown("""
-        <div style="background: white; border-radius: var(--radius-md); padding: 1.5rem; 
-                    margin: 1rem 0; box-shadow: var(--shadow-sm); border: 1px solid var(--border);">
-        """, unsafe_allow_html=True)
-        
         with st.form("compact_booking_form"):
+            # White background styling for the form
+            st.markdown("""
+            <style>
+            div[data-testid="stForm"] {
+                background: white !important;
+                border-radius: var(--radius-md) !important;
+                padding: 1.5rem !important;
+                margin: 1rem 0 !important;
+                box-shadow: var(--shadow-sm) !important;
+                border: 1px solid var(--border) !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
             email = st.text_input("Email*", placeholder="your@email.com")
             concern = st.selectbox("What would you like to change?", [""] + self.concern_options)
             concern_description = st.text_area(
@@ -307,45 +325,56 @@ class BookingForm:
             
             if submitted:
                 if email and self._is_valid_email(email):
-                    if self._send_booking_email("", email, concern, concern_description):
-                        st.success("✅ Request submitted! Opening calendar...")
+                    # Send email first
+                    email_sent = self._send_booking_email("", email, concern, concern_description)
+                    
+                    if email_sent:
+                        st.success("✅ Request submitted successfully!")
+                        
+                        # Open calendar directly
                         st.markdown(f"""
                         <script>
-                        window.open('{self.discovery_url}', '_blank');
+                        setTimeout(function() {{
+                            window.open('{self.discovery_url}', '_blank');
+                        }}, 1000);
                         </script>
                         <div style="text-align: center; margin: 1rem 0;">
-                            <a href="{self.discovery_url}" target="_blank" 
-                               style="display: inline-block; background-color: var(--accent); color: white;
-                                      text-decoration: none; padding: 0.8rem; border-radius: var(--radius-sm);
-                                      font-weight: 600; text-align: center;">
-                                📅 Click if calendar didn't open
-                            </a>
+                            <p>Opening calendar... <a href="{self.discovery_url}" target="_blank" 
+                               style="color: var(--accent); text-decoration: underline;">
+                                Click here if it doesn't open automatically
+                            </a></p>
                         </div>
                         """, unsafe_allow_html=True)
+                    else:
+                        st.error("❌ There was an issue sending your request. Please try again.")
                 else:
                     st.error("Please enter a valid email address.")
             
             if whatsapp_clicked:
-                whatsapp_message = self._create_whatsapp_message("", email, concern, concern_description)
-                encoded_message = urllib.parse.quote(whatsapp_message)
-                whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
-                
-                st.success("✅ Opening WhatsApp...")
-                st.markdown(f"""
-                <script>
-                window.open('{whatsapp_url}', '_blank');
-                </script>
-                <div style="text-align: center; margin: 1rem 0;">
-                    <a href="{whatsapp_url}" target="_blank" 
-                       style="display: inline-block; background-color: #25D366; color: white;
-                              text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
-                              font-weight: 600; font-size: 1.1rem; transition: var(--transition);">
-                        💬 Click if WhatsApp didn't open
-                    </a>
-                </div>
-                """, unsafe_allow_html=True)
-        
-        st.markdown("</div>", unsafe_allow_html=True)
+                if email and self._is_valid_email(email):
+                    # Create WhatsApp message and open directly
+                    whatsapp_message = self._create_whatsapp_message("", email, concern, concern_description)
+                    encoded_message = urllib.parse.quote(whatsapp_message)
+                    whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
+                    
+                    st.success("✅ Opening WhatsApp...")
+                    
+                    # Open WhatsApp directly
+                    st.markdown(f"""
+                    <script>
+                    setTimeout(function() {{
+                        window.open('{whatsapp_url}', '_blank');
+                    }}, 1000);
+                    </script>
+                    <div style="text-align: center; margin: 1rem 0;">
+                        <p>Opening WhatsApp... <a href="{whatsapp_url}" target="_blank" 
+                           style="color: #25D366; text-decoration: underline;">
+                            Click here if it doesn't open automatically
+                        </a></p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.error("Please enter a valid email address.")
 
 # Factory function for easy import
 def create_booking_form():
