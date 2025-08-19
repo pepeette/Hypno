@@ -547,9 +547,7 @@ class PatternChangeMethod:
         """)
         
         # Success rate using custom metrics - forced 3 columns even on mobile
-        with st.container():
-            st.success("✅ 85% Success Rate in Just 2 Sessions")
-            
+        with st.container():         
             # Force 3 columns to stay in one row even on mobile
             st.markdown("""
             <div style="display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: nowrap; 
@@ -584,7 +582,7 @@ class PatternChangeMethod:
             </div>
             """, unsafe_allow_html=True)
             
-            st.write("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
+            st.success("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
         
         # Method comparison using 3-column layout with image in center
         st.write("### The Difference Is in the Approach")
