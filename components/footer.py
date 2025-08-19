@@ -42,13 +42,13 @@ class Footer:
     
     def _render_main_footer(self):
         """Render main footer content using Streamlit columns"""
-        col1, col2 = st.columns([2, 1], gap="large")
+        # col1, col2 = st.columns([2, 1], gap="large")
         
-        with col1:
-            self._render_founder_section()
+        # with col1:
+             self._render_founder_section()
         
-        with col2:
-            self._render_contact_section()
+        # with col2:
+        #     self._render_contact_section()
     
     def _render_founder_section(self):
         """Render founder information using Streamlit components"""
@@ -67,34 +67,25 @@ class Footer:
         with col_text:
             st.markdown("## Laetitia Sheppard")
             st.write("Certified Clinical Hypnotherapist with over 10 years of experience in behavioral change and mental wellness.")
-            
+
+        st.markdown("""
+        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2, gap="small")
+        with col1:
             # Credentials using simple text
             st.markdown("**Credentials:**")
             st.write("• Certified Clinical Hypnotherapist since 2017")
             st.write("• Advanced Neuro-Linguistic Programming")
             st.write("• Specialized in Borderline Personality DBT")
             st.write("• Member, International Association of Hypnotherapists")
-    
-    def _render_contact_section(self):
-        """Render contact information using Streamlit components"""
-        st.markdown("**Contact:**")
-        st.write(f"{self.contact_info['clinic_name']}")
-        st.write(f"{self.contact_info['address']}")
-        st.write(f"{self.contact_info['city']}")
-        
-        # st.markdown("**Session Options:**")
-        # st.write("• In-person (Bangkok clinic)")
-        # st.write("• Online (worldwide)")
-        # st.write("• Home visits (Bangkok area)")
-        
-        # Action buttons using styled markdown links for better compatibility
-        st.markdown("""
-        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-        """, unsafe_allow_html=True)
-        
-        col1, col2 = st.columns(2, gap="small")
-        
-        with col1:
+
+        with col2:
+            st.markdown("**Contact:**")
+            st.write(f"{self.contact_info['clinic_name']}")
+            st.write(f"{self.contact_info['address']}")
+            st.write(f"{self.contact_info['city']}")
             st.markdown(f"""
             <a href="{self.contact_info['maps_url']}" 
                target="_blank" 
@@ -103,20 +94,49 @@ class Footer:
                       font-weight: 600; text-align: center; transition: all 0.3s ease;">
                 📍 Directions to NEW ADDRESS
             </a>
-            """, unsafe_allow_html=True)
+            
+    # def _render_contact_section(self):
+    #     """Render contact information using Streamlit components"""
+    #     st.markdown("**Contact:**")
+    #     st.write(f"{self.contact_info['clinic_name']}")
+    #     st.write(f"{self.contact_info['address']}")
+    #     st.write(f"{self.contact_info['city']}")
         
-        # with col2:
-        #     st.markdown(f"""
-        #     <a href="{self.contact_info['calendly_url']}" 
-        #        target="_blank" 
-        #        style="display: block; background-color: var(--accent); color: white; 
-        #               text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
-        #               font-weight: 600; text-align: center; transition: all 0.3s ease;">
-        #         📅 Book Now
-        #     </a>
-        #     """, unsafe_allow_html=True)
+    #     # st.markdown("**Session Options:**")
+    #     # st.write("• In-person (Bangkok clinic)")
+    #     # st.write("• Online (worldwide)")
+    #     # st.write("• Home visits (Bangkok area)")
         
-        st.markdown("</div>", unsafe_allow_html=True)
+    #     # Action buttons using styled markdown links for better compatibility
+    #     st.markdown("""
+    #     <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+    #     """, unsafe_allow_html=True)
+        
+    #     col1, col2 = st.columns(2, gap="small")
+        
+    #     with col1:
+    #         st.markdown(f"""
+    #         <a href="{self.contact_info['maps_url']}" 
+    #            target="_blank" 
+    #            style="display: block; background-color: var(--border); color: var(--text-primary); 
+    #                   text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
+    #                   font-weight: 600; text-align: center; transition: all 0.3s ease;">
+    #             📍 Directions to NEW ADDRESS
+    #         </a>
+    #         """, unsafe_allow_html=True)
+        
+    #     # with col2:
+    #     #     st.markdown(f"""
+    #     #     <a href="{self.contact_info['calendly_url']}" 
+    #     #        target="_blank" 
+    #     #        style="display: block; background-color: var(--accent); color: white; 
+    #     #               text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
+    #     #               font-weight: 600; text-align: center; transition: all 0.3s ease;">
+    #     #         📅 Book Now
+    #     #     </a>
+    #     #     """, unsafe_allow_html=True)
+        
+    #     st.markdown("</div>", unsafe_allow_html=True)
     
     # def _render_trust_indicators(self):
     #     """Render trust badges using Streamlit metrics and simple layout"""
