@@ -224,7 +224,7 @@ def apply_global_styles():
     }
     
     .stInfo {
-        background-color: rgba(76, 161, 163, 0.1) !important;
+        background-color: white !important;
         border: 1px solid var(--accent) !important;
         border-radius: var(--radius-sm) !important;
         padding: 1rem !important;
