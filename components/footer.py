@@ -18,7 +18,7 @@ class Footer:
         except ImportError:
             # Fallback values
             self.contact_info = {
-                "clinic_name": "Bangkok Hypnotherapy Clinic",
+                "clinic_name": "NEW Bangkok ADDRESS",
                 "address": "27 Soi Sukhumvit 10 (Asoke)",
                 "city": "Bangkok, Thailand",
                 "maps_url": "https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw",
