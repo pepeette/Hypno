@@ -21,9 +21,27 @@ class HeroSection:
             </div>
             """, unsafe_allow_html=True)
             
-            # Add compelling message using Streamlit info box
-            st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
+            # # Add compelling message using Streamlit info box
+            # st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
 
+            # Logo and Info message on same row with responsive design
+            col1, col2 = st.columns([1, 5], gap="medium")
+            
+            with col1:
+                # Logo with same height as info box
+                st.markdown("""
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                    <img src="https://github.com/pepeette/Hypno/blob/main/img/logo.jpg?raw=true" 
+                         alt="Hypnotherapy Logo" 
+                         style="max-width: 100%; height: auto; border-radius: 8px; 
+                                max-height: 80px; object-fit: contain;">
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with col2:
+                # Info box - will automatically size to content
+                st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
+                
 class QuizSection:
     """Quiz section using Streamlit components with better UX"""
     
