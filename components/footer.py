@@ -101,7 +101,7 @@ class Footer:
                style="display: block; background-color: var(--border); color: var(--text-primary); 
                       text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
                       font-weight: 600; text-align: center; transition: all 0.3s ease;">
-                📍 Directions
+                📍 Directions to NEW ADDRESS
             </a>
             """, unsafe_allow_html=True)
         
