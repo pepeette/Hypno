@@ -3,7 +3,7 @@ Method Page
 Detailed explanation of the 2-session method using Streamlit components
 """
 import streamlit as st
-from utils.styling import render_section_divider
+#from utils.styling import render_section_divider
 from utils.config import AppConfig, ContentConfig, get_years_of_experience
 from utils.session_state import track_page_view
 
@@ -38,7 +38,7 @@ class MethodPage:
     
     def _render_key_differentiator(self):
         """Render the key differentiator using Streamlit components"""
-        render_section_divider()
+        
         
         st.markdown("## 🔬 The Breakthrough Difference")
         
@@ -65,7 +65,7 @@ class MethodPage:
     
     def _render_session_breakdown(self):
         """Render detailed session breakdown using Streamlit components"""
-        render_section_divider()
+        
         
         st.markdown("## 🎯 The 2-Session Process")
         st.write("Each session builds strategically for maximum transformation impact")
@@ -126,7 +126,7 @@ class MethodPage:
     
     def _render_success_statistics(self):
         """Render success statistics using Streamlit metrics"""
-        render_section_divider()
+        
         
         st.markdown("## 📊 Proven Results")
         st.write("Our method delivers consistent, measurable outcomes:")
@@ -167,7 +167,7 @@ class MethodPage:
     
     def _render_pricing_section(self):
         """Render pricing using Streamlit components"""
-        render_section_divider()
+        
         
         st.markdown("## 💰 Investment in Your Transformation")
         st.write("One-time investment compared to years of traditional therapy:")
@@ -217,7 +217,7 @@ class MethodPage:
     
     def _render_guarantee(self):
         """Render satisfaction guarantee using Streamlit components"""
-        render_section_divider()
+        
         
         st.markdown("## 💯 Our Satisfaction Guarantee")
         
