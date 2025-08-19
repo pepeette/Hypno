@@ -30,25 +30,19 @@ class Footer:
         """Render the complete footer using Streamlit components"""
         # Add spacing before footer
         st.markdown("<div style='margin-top: 4rem;'></div>", unsafe_allow_html=True)
+        
+        # Horizontal separator
+        st.markdown("---")
               
         # Main footer content
         self._render_main_footer()
-        
-        # # Trust indicators
-        # self._render_trust_indicators()
         
         # Copyright section
         self._render_copyright()
     
     def _render_main_footer(self):
         """Render main footer content using Streamlit columns"""
-        # col1, col2 = st.columns([2, 1], gap="large")
-        
-        # with col1:
-             self._render_founder_section()
-        
-        # with col2:
-        #     self._render_contact_section()
+        self._render_founder_section()
     
     def _render_founder_section(self):
         """Render founder information using Streamlit components"""
@@ -61,18 +55,16 @@ class Footer:
             <img src="{self.founder_image}" 
                  alt="Laetitia Sheppard"
                  style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; 
-                        border: 2px solid var(--accent); display: block;">
+                        border: 2px solid #4CA1A3; display: block;">
             """, unsafe_allow_html=True)
         
         with col_text:
             st.markdown("## Laetitia Sheppard")
             st.write("Certified Clinical Hypnotherapist with over 10 years of experience in behavioral change and mental wellness.")
 
-        st.markdown("""
-        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-        """, unsafe_allow_html=True)
+        # Contact and credentials section
+        col1, col2 = st.columns(2, gap="large")
         
-        col1, col2 = st.columns(2, gap="small")
         with col1:
             # Credentials using simple text
             st.markdown("**Credentials:**")
@@ -86,87 +78,18 @@ class Footer:
             st.write(f"{self.contact_info['clinic_name']}")
             st.write(f"{self.contact_info['address']}")
             st.write(f"{self.contact_info['city']}")
+            
+            # Direction button
             st.markdown(f"""
             <a href="{self.contact_info['maps_url']}" 
                target="_blank" 
-               style="display: block; background-color: var(--border); color: var(--text-primary); 
+               style="display: inline-block; background-color: #4CA1A3; color: white; 
                       text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
-                      font-weight: 600; text-align: center; transition: all 0.3s ease;">
+                      font-weight: 600; text-align: center; transition: all 0.3s ease;
+                      margin-top: 1rem;">
                 📍 Directions to NEW ADDRESS
             </a>
-            
-    # def _render_contact_section(self):
-    #     """Render contact information using Streamlit components"""
-    #     st.markdown("**Contact:**")
-    #     st.write(f"{self.contact_info['clinic_name']}")
-    #     st.write(f"{self.contact_info['address']}")
-    #     st.write(f"{self.contact_info['city']}")
-        
-    #     # st.markdown("**Session Options:**")
-    #     # st.write("• In-person (Bangkok clinic)")
-    #     # st.write("• Online (worldwide)")
-    #     # st.write("• Home visits (Bangkok area)")
-        
-    #     # Action buttons using styled markdown links for better compatibility
-    #     st.markdown("""
-    #     <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-    #     """, unsafe_allow_html=True)
-        
-    #     col1, col2 = st.columns(2, gap="small")
-        
-    #     with col1:
-    #         st.markdown(f"""
-    #         <a href="{self.contact_info['maps_url']}" 
-    #            target="_blank" 
-    #            style="display: block; background-color: var(--border); color: var(--text-primary); 
-    #                   text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
-    #                   font-weight: 600; text-align: center; transition: all 0.3s ease;">
-    #             📍 Directions to NEW ADDRESS
-    #         </a>
-    #         """, unsafe_allow_html=True)
-        
-    #     # with col2:
-    #     #     st.markdown(f"""
-    #     #     <a href="{self.contact_info['calendly_url']}" 
-    #     #        target="_blank" 
-    #     #        style="display: block; background-color: var(--accent); color: white; 
-    #     #               text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
-    #     #               font-weight: 600; text-align: center; transition: all 0.3s ease;">
-    #     #         📅 Book Now
-    #     #     </a>
-    #     #     """, unsafe_allow_html=True)
-        
-    #     st.markdown("</div>", unsafe_allow_html=True)
-    
-    # def _render_trust_indicators(self):
-    #     """Render trust badges using Streamlit metrics and simple layout"""
-    #     st.markdown("### 🏆 Professional Standards")
-        
-    #     # Use columns for trust indicators
-    #     col1, col2, col3, col4 = st.columns(4)
-        
-    #     with col1:
-    #         st.markdown("**🏆 Certified**")
-    #         st.write("Clinical Hypnotherapist")
-    #         st.caption("Professional qualification")
-        
-    #     with col2:
-    #         st.markdown("**🔒 Licensed**")
-    #         st.write("& Insured")
-    #         st.caption("Professional standards")
-        
-    #     with col3:
-    #         st.markdown("**⭐ 10+ Years**")
-    #         st.write("Experience")
-    #         st.caption("Established practice")
-        
-    #     with col4:
-    #         st.markdown("**🤝 500+**")
-    #         st.write("Success Stories")
-    #         st.caption("Proven results")
-        
-    #     # Satisfaction guarantee
-    #     st.success("💯 Satisfaction Guarantee: If you're not completely satisfied after 2 sessions, your 3rd session is complimentary.")
+            """, unsafe_allow_html=True)
     
     def _render_copyright(self):
         """Render copyright and legal information"""
@@ -185,7 +108,7 @@ class Footer:
         # Copyright notice with clean styling
         st.markdown(f"""
         <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; 
-                    border-top: 1px solid var(--border); color: var(--text-secondary);">
+                    border-top: 1px solid #CBD5E1; color: #556D7A;">
             <p style="margin: 0;">© {current_year} Laetitia Sheppard • All Rights Reserved</p>
             <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
                 🔒 All sessions are strictly confidential • Licensed & Insured • Professional Standards Guaranteed
