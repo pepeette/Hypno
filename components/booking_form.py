@@ -75,29 +75,29 @@ class BookingForm:
                     padding: 1.5rem; margin: 2rem 0; border-left: 4px solid var(--accent);">
             <h3 style="color: var(--accent); margin-bottom: 1rem;">What You'll Get in Your Discovery Call:</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-                <div style="display: flex; align-items: center; gap: 0.25rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>Personalized assessment of your situation</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: var(--accent); font-size: 1rem;">✓</span>
+                    <span style="font-size: 1rem; line-height: 1.6;">Personalized assessment of your situation</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.25rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>Clear explanation of how hypnotherapy works</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: var(--accent); font-size: 1rem;">✓</span>
+                    <span style="font-size: 1rem; line-height: 1.6;">Clear explanation of how hypnotherapy works</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.25rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>Honest assessment of your success probability</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: var(--accent); font-size: 1rem;">✓</span>
+                    <span style="font-size: 1rem; line-height: 1.6;">Honest assessment of your success probability</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.25rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>Answers to all your questions</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: var(--accent); font-size: 1rem;">✓</span>
+                    <span style="font-size: 1rem; line-height: 1.6;">Answers to all your questions</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.25rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>No pressure, no obligation</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: var(--accent); font-size: 1rem;">✓</span>
+                    <span style="font-size: 1rem; line-height: 1.6;">No pressure, no obligation</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.25rem;">
-                    <span style="color: var(--accent); font-size: 1.2rem;">✓</span>
-                    <span>Next steps if you decide to proceed</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: var(--accent); font-size: 1rem;">✓</span>
+                    <span style="font-size: 1rem; line-height: 1.6;">Next steps if you decide to proceed</span>
                 </div>
             </div>
         </div>
@@ -218,20 +218,20 @@ class BookingForm:
                       text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
                       font-weight: 600; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 1rem;">
+                      box-sizing: border-box; margin-bottom: 1rem; border: none;">
                 📞 Schedule Call Directly
             </a>
             """, unsafe_allow_html=True)
         
         with col2:
-            # Direct WhatsApp link button - using accent color instead of green
+            # Direct WhatsApp link button - white background with border
             st.markdown(f"""
             <a href="{whatsapp_url}" target="_blank" 
-               style="display: inline-block; background-color: var(--accent); color: white;
+               style="display: inline-block; background-color: white; color: var(--text-primary);
                       text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
                       font-weight: 600; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 1rem;">
+                      box-sizing: border-box; margin-bottom: 1rem; border: 2px solid var(--border);">
                 💬 Message on WhatsApp
             </a>
             """, unsafe_allow_html=True)
@@ -395,20 +395,20 @@ class BookingForm:
                       text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
                       font-weight: 600; font-size: 0.9rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 0.5rem;">
+                      box-sizing: border-box; margin-bottom: 0.5rem; border: none;">
                 📞 Direct Booking
             </a>
             """, unsafe_allow_html=True)
         
         with col2:
-            # Direct WhatsApp link - using accent color instead of green
+            # Direct WhatsApp link - white background with border
             st.markdown(f"""
             <a href="{whatsapp_url}" target="_blank" 
-               style="display: inline-block; background-color: var(--accent); color: white;
+               style="display: inline-block; background-color: white; color: var(--text-primary);
                       text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
                       font-weight: 600; font-size: 0.9rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 0.5rem;">
+                      box-sizing: border-box; margin-bottom: 0.5rem; border: 2px solid var(--border);">
                 💬 WhatsApp
             </a>
             """, unsafe_allow_html=True)
