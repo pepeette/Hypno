@@ -371,7 +371,7 @@ class QuizSection:
         """Render quiz using Streamlit components"""
         # Section header
         st.subheader("Find Out If You're Ready for Rapid Change")
-        st.write("Three quick questions to assess your potential for transformation:")
+        st.write("3 questions to assess your potential for transformation:")
         
         if not st.session_state.quiz_completed:
             self._render_all_questions()
@@ -516,16 +516,16 @@ class PatternChangeMethod:
         
         # Success rate using custom metrics with combined value/delta
         with st.container():
-            st.success("✅ 85% Success Rate in Just 2 Sessions")
+            #st.success("✅ 85% Success Rate in Just 2 Sessions")
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("", "85% in 2 sessions", "Success Rate")
+                st.metric("", "Success Rate", "85% in 2 sessions")
             with col2:
-                st.metric("", "15% reinforcement", "Need 3rd Session")
+                st.metric("", "3rd Session", "15% need Reinforcement")
             with col3:
-                st.metric("", "Months to years", "vs Traditional")
+                st.metric("", "Rapid rewiring", "for Lasting change")
             
-            st.write("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
+            st.success("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
         
         # Method comparison using 3-column layout with image in center
         st.write("### The Difference Is in the Approach")
