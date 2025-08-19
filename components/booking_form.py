@@ -28,7 +28,7 @@ class BookingForm:
                 "Confidence Building",
                 "Other"
             ]
-            self.discovery_url = "https://calendly.com/laetitiasheppard/30min"
+            self.discovery_url = "https://calendly.com/laetitiasheppard/new-meeting"
         
         # WhatsApp number
         self.whatsapp_number = "+66642439944"
@@ -203,7 +203,7 @@ class BookingForm:
                       font-weight: 500; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                       box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
-                📞 Schedule Call Directly
+                📞 Schedule your Session
             </a>
             """, unsafe_allow_html=True)
         
