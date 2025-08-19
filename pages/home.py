@@ -25,7 +25,7 @@ class HeroSection:
             # st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
 
             # Logo and Info message on same row with responsive design
-            col1, col2 = st.columns([1, 5], gap="medium")
+            col1, col2 = st.columns([1, 2], gap="medium")
             
             with col1:
                 # Logo with same height as info box
