@@ -151,106 +151,92 @@ class BookingForm:
                 key="form_description"
             )
             
-            # Form submit button (just to validate and store data)
+            # Form submit button that triggers calendar opening
             form_submitted = st.form_submit_button(
-                "Validate Information",
+                "📞 Schedule My Free Discovery Call",
+                type="primary",
                 use_container_width=True
             )
             
-            # Store form data in session state when form is submitted
+            # Handle form submission
             if form_submitted:
                 if self._validate_form(email):
+                    # Store form data in session state
                     st.session_state.form_data = {
                         'name': name,
                         'email': email,
                         'concern': concern,
                         'description': concern_description
                     }
-                    st.session_state.form_validated = True
-                    st.success("✅ Information validated! Choose your preferred booking method below:")
-                else:
-                    st.session_state.form_validated = False
+                    # Send email
+                    self._send_booking_email(name, email, concern, concern_description)
+                    # Set flag to trigger calendar opening
+                    st.session_state.trigger_calendar = True
+                    st.success("✅ Request submitted! Opening calendar...")
+                    st.rerun()
         
-        # Action buttons OUTSIDE the form (so they can open external links)
-        if st.session_state.get('form_validated', False):
-            self._render_action_buttons()
+        # Always visible action buttons below the form
+        self._render_action_buttons()
+        
+        # JavaScript to open calendar when triggered
+        if st.session_state.get('trigger_calendar', False):
+            st.markdown(f"""
+            <script>
+            window.open('{self.discovery_url}', '_blank');
+            </script>
+            """, unsafe_allow_html=True)
+            # Clear the trigger
+            st.session_state.trigger_calendar = False
     
     def _render_action_buttons(self):
-        """Render action buttons outside the form for direct external links"""
-        # Get form data from session state
+        """Render action buttons that are always visible"""
+        # Get current form data (if any)
         form_data = st.session_state.get('form_data', {})
+        current_name = st.session_state.get('form_name', '')
+        current_email = st.session_state.get('form_email', '')
+        current_concern = st.session_state.get('form_concern', '')
+        current_description = st.session_state.get('form_description', '')
         
-        st.markdown("### Choose Your Booking Method:")
+        # Create WhatsApp message with current form data
+        whatsapp_message = self._create_whatsapp_message(
+            current_name or form_data.get('name', ''),
+            current_email or form_data.get('email', ''),
+            current_concern or form_data.get('concern', ''),
+            current_description or form_data.get('description', '')
+        )
+        encoded_message = urllib.parse.quote(whatsapp_message)
+        whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
         
-        # Action buttons side by side
+        st.markdown("### Or choose your preferred contact method:")
+        
+        # Action buttons side by side - always visible
         col1, col2 = st.columns(2)
         
         with col1:
-            # Schedule button with direct Calendly link
-            whatsapp_message = self._create_whatsapp_message(
-                form_data.get('name', ''),
-                form_data.get('email', ''),
-                form_data.get('concern', ''),
-                form_data.get('description', '')
-            )
-            encoded_message = urllib.parse.quote(whatsapp_message)
-            whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
-            
-            # Direct link button for calendar
+            # Direct calendar link button
             st.markdown(f"""
-            <div style="margin-bottom: 1rem;">
-                <a href="{self.discovery_url}" target="_blank" 
-                   onclick="sendEmailAndOpen('{form_data.get('email', '')}', '{form_data.get('name', '')}', '{form_data.get('concern', '')}', '{form_data.get('description', '')}', 'calendar')"
-                   style="display: inline-block; background-color: var(--accent); color: white;
-                          text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
-                          font-weight: 600; font-size: 1rem; transition: var(--transition);
-                          box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                          box-sizing: border-box;">
-                    📞 Schedule My Free Discovery Call
-                </a>
-            </div>
+            <a href="{self.discovery_url}" target="_blank" 
+               style="display: inline-block; background-color: var(--accent); color: white;
+                      text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
+                      font-weight: 600; font-size: 1rem; transition: var(--transition);
+                      box-shadow: var(--shadow-sm); text-align: center; width: 100%;
+                      box-sizing: border-box; margin-bottom: 1rem;">
+                📞 Schedule Call Directly
+            </a>
             """, unsafe_allow_html=True)
         
         with col2:
-            # Direct link button for WhatsApp
+            # Direct WhatsApp link button
             st.markdown(f"""
-            <div style="margin-bottom: 1rem;">
-                <a href="{whatsapp_url}" target="_blank" 
-                   onclick="sendEmailAndOpen('{form_data.get('email', '')}', '{form_data.get('name', '')}', '{form_data.get('concern', '')}', '{form_data.get('description', '')}', 'whatsapp')"
-                   style="display: inline-block; background-color: #25D366; color: white;
-                          text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
-                          font-weight: 600; font-size: 1rem; transition: var(--transition);
-                          box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                          box-sizing: border-box;">
-                    💬 Message on WhatsApp
-                </a>
-            </div>
+            <a href="{whatsapp_url}" target="_blank" 
+               style="display: inline-block; background-color: #25D366; color: white;
+                      text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
+                      font-weight: 600; font-size: 1rem; transition: var(--transition);
+                      box-shadow: var(--shadow-sm); text-align: center; width: 100%;
+                      box-sizing: border-box; margin-bottom: 1rem;">
+                💬 Message on WhatsApp
+            </a>
             """, unsafe_allow_html=True)
-        
-        # JavaScript function to send email (you can implement this server-side)
-        st.markdown("""
-        <script>
-        function sendEmailAndOpen(email, name, concern, description, type) {
-            // Here you could make an AJAX call to send the email
-            console.log('Booking request:', {
-                email: email,
-                name: name,
-                concern: concern,
-                description: description,
-                type: type
-            });
-            
-            // The link will open automatically due to href attribute
-            // You can add server-side email sending logic here
-        }
-        </script>
-        """, unsafe_allow_html=True)
-        
-        # Option to reset form
-        if st.button("↩️ Edit Information", use_container_width=True):
-            st.session_state.form_validated = False
-            st.session_state.form_data = {}
-            st.rerun()
     
     def _create_whatsapp_message(self, name, email, concern, concern_description):
         """Create WhatsApp message from form data"""
@@ -354,29 +340,52 @@ class BookingForm:
                 key="compact_description"
             )
             
-            # Form validation button
-            compact_submitted = st.form_submit_button("Validate Information", use_container_width=True)
+            # Form submit button that triggers calendar
+            compact_submitted = st.form_submit_button(
+                "📞 Schedule Call", 
+                type="primary", 
+                use_container_width=True
+            )
             
             if compact_submitted:
                 if email and self._is_valid_email(email):
-                    st.session_state.compact_form_data = {
-                        'email': email,
-                        'concern': concern,
-                        'description': concern_description
-                    }
-                    st.session_state.compact_form_validated = True
-                    st.success("✅ Information validated! Choose your booking method below:")
+                    # Send email and trigger calendar
+                    self._send_booking_email("", email, concern, concern_description)
+                    st.session_state.trigger_compact_calendar = True
+                    st.success("✅ Request submitted! Opening calendar...")
+                    st.rerun()
                 else:
                     st.error("Please enter a valid email address.")
-                    st.session_state.compact_form_validated = False
         
-        # Action buttons outside form for compact version
-        if st.session_state.get('compact_form_validated', False):
-            self._render_compact_action_buttons()
+        # Always visible action buttons for compact version
+        self._render_compact_action_buttons()
+        
+        # JavaScript to open calendar when triggered
+        if st.session_state.get('trigger_compact_calendar', False):
+            st.markdown(f"""
+            <script>
+            window.open('{self.discovery_url}', '_blank');
+            </script>
+            """, unsafe_allow_html=True)
+            # Clear the trigger
+            st.session_state.trigger_compact_calendar = False
     
     def _render_compact_action_buttons(self):
-        """Render compact action buttons outside the form"""
-        form_data = st.session_state.get('compact_form_data', {})
+        """Render compact action buttons that are always visible"""
+        # Get current form data
+        current_email = st.session_state.get('compact_email', '')
+        current_concern = st.session_state.get('compact_concern', '')
+        current_description = st.session_state.get('compact_description', '')
+        
+        # Create WhatsApp message with current form data
+        whatsapp_message = self._create_whatsapp_message(
+            "",
+            current_email,
+            current_concern,
+            current_description
+        )
+        encoded_message = urllib.parse.quote(whatsapp_message)
+        whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
         
         col1, col2 = st.columns(2)
         
@@ -389,21 +398,12 @@ class BookingForm:
                       font-weight: 600; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                       box-sizing: border-box; margin-bottom: 0.5rem;">
-                📞 Schedule Call
+                📞 Direct Booking
             </a>
             """, unsafe_allow_html=True)
         
         with col2:
             # Direct WhatsApp link
-            whatsapp_message = self._create_whatsapp_message(
-                "",
-                form_data.get('email', ''),
-                form_data.get('concern', ''),
-                form_data.get('description', '')
-            )
-            encoded_message = urllib.parse.quote(whatsapp_message)
-            whatsapp_url = f"https://wa.me/{self.whatsapp_number.replace('+', '')}?text={encoded_message}"
-            
             st.markdown(f"""
             <a href="{whatsapp_url}" target="_blank" 
                style="display: inline-block; background-color: #25D366; color: white;
@@ -414,12 +414,6 @@ class BookingForm:
                 💬 WhatsApp
             </a>
             """, unsafe_allow_html=True)
-        
-        # Reset option
-        if st.button("↩️ Edit Information", key="compact_reset", use_container_width=True):
-            st.session_state.compact_form_validated = False
-            st.session_state.compact_form_data = {}
-            st.rerun()
 
 # Factory function for easy import
 def create_booking_form():
