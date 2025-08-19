@@ -17,7 +17,7 @@ class BookingForm:
         try:
             from utils.config import AppConstants
             self.concern_options = AppConstants.CONCERN_OPTIONS
-            self.discovery_url = AppConstants.CONTACT_INFO.get("discovery_call_url", "https://calendly.com/laetitiasheppard/30min")
+            self.discovery_url = AppConstants.CONTACT_INFO.get("discovery_call_url", "https://calendly.com/laetitiasheppard/new-meeting")
         except ImportError:
             self.concern_options = [
                 "Quit Smoking", 
@@ -28,7 +28,7 @@ class BookingForm:
                 "Confidence Building",
                 "Other"
             ]
-            self.discovery_url = "https://calendly.com/laetitiasheppard/30min"
+            self.discovery_url = "https://calendly.com/laetitiasheppard/new-meeting"
         
         # WhatsApp number
         self.whatsapp_number = "+66642439944"
