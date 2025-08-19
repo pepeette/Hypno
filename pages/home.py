@@ -357,7 +357,7 @@ Fixed Home page component with better styling and readability
 import streamlit as st
 
 class HeroSection:
-    """Hero section using Streamlit components"""
+    """Hero section using Streamlit components with logo and two-tone headline"""
     
     def render(self):
         """Render hero section with Streamlit components"""
@@ -366,9 +366,17 @@ class HeroSection:
             st.markdown("""
             <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
                         border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
-                <h1 style="color: white;">Stop Fighting Your Mind.<br>Start Working With It.</h1>
-                <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
-                    Most people try to change using willpower. That's why 95% fail. 
+                <div style="margin-bottom: 2rem;">
+                    <img src="https://github.com/pepeette/Hypno/blob/main/img/logo.jpg?raw=true" 
+                         alt="Hypnotherapy Logo" 
+                         style="max-width: 200px; height: auto; border-radius: 8px; margin-bottom: 1rem;">
+                </div>
+                <h1 style="margin-bottom: 1.5rem; line-height: 1.3;">
+                    <span style="color: #556D7A; display: block; margin-bottom: 0.5rem;">Stop Fighting Your Mind.</span>
+                    <span style="color: #273548; display: block;">Start Working With It.</span>
+                </h1>
+                <p style="color: #273548; opacity: 0.8; max-width: 700px; margin: 0 auto; font-size: 1.1rem; font-weight: 500;">
+                    Most people try to change using willpower. That's why 95% fail. <br>
                     We bypass your conscious resistance and reprogram your subconscious patterns directly.
                 </p>
             </div>
@@ -376,7 +384,7 @@ class HeroSection:
             
             # Add compelling message using Streamlit info box
             st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
-
+            
 class QuizSection:
     """Quiz section using Streamlit components with better UX"""
     
