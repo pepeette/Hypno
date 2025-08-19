@@ -82,10 +82,10 @@ class Footer:
         st.write(f"{self.contact_info['address']}")
         st.write(f"{self.contact_info['city']}")
         
-        st.markdown("**Session Options:**")
-        st.write("• In-person (Bangkok clinic)")
-        st.write("• Online (worldwide)")
-        st.write("• Home visits (Bangkok area)")
+        # st.markdown("**Session Options:**")
+        # st.write("• In-person (Bangkok clinic)")
+        # st.write("• Online (worldwide)")
+        # st.write("• Home visits (Bangkok area)")
         
         # Action buttons using styled markdown links for better compatibility
         st.markdown("""
@@ -105,16 +105,16 @@ class Footer:
             </a>
             """, unsafe_allow_html=True)
         
-        with col2:
-            st.markdown(f"""
-            <a href="{self.contact_info['calendly_url']}" 
-               target="_blank" 
-               style="display: block; background-color: var(--accent); color: white; 
-                      text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
-                      font-weight: 600; text-align: center; transition: all 0.3s ease;">
-                📅 Book Now
-            </a>
-            """, unsafe_allow_html=True)
+        # with col2:
+        #     st.markdown(f"""
+        #     <a href="{self.contact_info['calendly_url']}" 
+        #        target="_blank" 
+        #        style="display: block; background-color: var(--accent); color: white; 
+        #               text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
+        #               font-weight: 600; text-align: center; transition: all 0.3s ease;">
+        #         📅 Book Now
+        #     </a>
+        #     """, unsafe_allow_html=True)
         
         st.markdown("</div>", unsafe_allow_html=True)
     
