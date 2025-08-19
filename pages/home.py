@@ -516,14 +516,39 @@ class PatternChangeMethod:
         
         # Success rate using custom metrics with combined value/delta
         with st.container():
-            #st.success("✅ 85% Success Rate in Just 2 Sessions")
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("", "Success Rate", "85% in 2 sessions")
-            with col2:
-                st.metric("", "3rd Session Optional", "15% need Reinforcement")
-            with col3:
-                st.metric("", "Rapid pattern rewiring", "for Lasting change")
+            # Force 3 columns to stay in one row even on mobile
+            st.markdown("""
+            <div style="display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: nowrap; 
+                        justify-content: space-between;">
+                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+                            border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
+                        Success Rate
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
+                        85% in 2 sessions
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+                            border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
+                        3rd Session Optional
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
+                        15% need Reinforcement
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+                            border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
+                        Rapid pattern rewiring
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
+                        for Lasting change
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             
             st.success("Most clients achieve complete transformation in two 90-minute sessions. <br> About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
         
