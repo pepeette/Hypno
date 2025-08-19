@@ -17,7 +17,7 @@ class BookingForm:
         try:
             from utils.config import AppConstants
             self.concern_options = AppConstants.CONCERN_OPTIONS
-            self.discovery_url = AppConstants.CONTACT_INFO.get("discovery_call_url", "https://calendly.com/laetitiasheppard/new-meeting")
+            self.discovery_url = AppConstants.CONTACT_INFO.get("discovery_call_url", "https://calendly.com/laetitiasheppard/30min")
         except ImportError:
             self.concern_options = [
                 "Quit Smoking", 
@@ -28,7 +28,7 @@ class BookingForm:
                 "Confidence Building",
                 "Other"
             ]
-            self.discovery_url = "https://calendly.com/laetitiasheppard/new-meeting"
+            self.discovery_url = "https://calendly.com/laetitiasheppard/30min"
         
         # WhatsApp number
         self.whatsapp_number = "+66642439944"
@@ -44,23 +44,8 @@ class BookingForm:
         st.write("### Ready to Start Your Transformation?")
         st.markdown('<div id="discovery"></div>', unsafe_allow_html=True)
         
-        # Logo and Info message on same row with responsive design
-        col1, col2 = st.columns([1, 5], gap="medium")
-        
-        with col1:
-            # Logo with same height as info box
-            st.markdown("""
-            <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-                <img src="https://github.com/pepeette/Hypno/blob/main/img/logo.jpg?raw=true" 
-                     alt="Hypnotherapy Logo" 
-                     style="max-width: 100%; height: auto; border-radius: 8px; 
-                            max-height: 80px; object-fit: contain;">
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            # Info box - will automatically size to content
-            st.info("Book your free discovery call to see if the method is right for you.")
+        # Text message - changed from info to regular text
+        st.write("Book your free discovery call to see if the method is right for you.")
                
         # Benefits of discovery call
         self._render_benefits()
@@ -72,7 +57,7 @@ class BookingForm:
         """Render benefits of the discovery call"""
         benefits_html = """
         <div style="background: rgba(76, 161, 163, 0.05); border-radius: var(--radius-md);
-                    padding: 1.5rem; margin: 2rem 0; border-left: 4px solid var(--accent);">
+                    padding: 1.5rem; margin: 1rem 0; border-left: 4px solid var(--accent);">
             <h3 style="color: var(--accent); margin-bottom: 1rem;">What You'll Get in Your Discovery Call:</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -115,7 +100,7 @@ class BookingForm:
                 background: white !important;
                 border-radius: var(--radius-md) !important;
                 padding: 2rem !important;
-                margin: 2rem 0 !important;
+                margin: 0.5rem 0 !important;
                 box-shadow: var(--shadow-sm) !important;
                 border: 1px solid var(--border) !important;
             }
@@ -217,7 +202,7 @@ class BookingForm:
                       text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
                       font-weight: 500; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 1rem; border: none;">
+                      box-sizing: border-box; margin-bottom: 0.5rem; border: none;">
                 📞 Schedule Call Directly
             </a>
             """, unsafe_allow_html=True)
@@ -230,7 +215,7 @@ class BookingForm:
                       text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
                       font-weight: 500; font-size: 1rem; transition: var(--transition);
                       box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 1rem; border: 2px solid var(--border);">
+                      box-sizing: border-box; margin-bottom: 0.5rem; border: 2px solid var(--border);">
                 💬 Message on WhatsApp
             </a>
             """, unsafe_allow_html=True)
