@@ -375,12 +375,15 @@ class HomePage:
         # Use Streamlit containers for clean layout
         with st.container():
             self.hero.render()
-        
+            st.markdown("    ")
+            
         with st.container():
             self.quiz.render()
+            st.markdown("    ")
         
         with st.container():
             self.method.render()
+            st.markdown("    ")
 
 # Factory function for clean import
 def create_home_page():
