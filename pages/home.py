@@ -198,36 +198,55 @@
             
 #             st.write("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
         
-#         # Method comparison using container cards instead of columns
+#         # Method comparison using 3-column layout with image in center
 #         st.write("### The Difference Is in the Approach")
         
-#         # Traditional Methods Card
-#         with st.container():
+#         # Desktop: 3 columns, Mobile: stacked
+#         col1, col2, col3 = st.columns([1, 1, 1])
+        
+#         # Column 1: Traditional Methods Card
+#         with col1:
 #             st.markdown("""
 #             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-#                         padding: 2rem; margin: 1rem 0; border-left: 4px solid #ef4444;">
-#                 <h2 style="color: #dc2626; margin-bottom: 1rem;">❌ Traditional Methods</h2>
+#                         padding: 2rem; margin: 1rem 0; border-left: 4px solid #ef4444; height: 100%;">
+#                 <h2 style="color: #dc2626; margin-bottom: 1rem; text-align: center;">❌ Traditional Methods</h2>
 #                 <p><strong>Talk therapy:</strong> Analyzes problems but rarely creates lasting change</p>
 #                 <p><strong>Willpower:</strong> Requires constant effort and usually fails within weeks</p>
 #                 <p><strong>Medications:</strong> Manage symptoms but don't address root causes</p>
 #                 <p><strong>Self-help:</strong> Gives you tools but can't change deep programming</p>
-#                 <p style="margin: 0; font-weight: 600; color: #dc2626;">
+#                 <p style="margin: 0; font-weight: 600; color: #dc2626; text-align: center;">
 #                     Result: You know what to do but can't consistently do it
 #                 </p>
 #             </div>
 #             """, unsafe_allow_html=True)
         
-#         # Pattern Change Hypnotherapy Card  
-#         with st.container():
+#         # Column 2: Comparison Image
+#         with col2:
 #             st.markdown("""
 #             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-#                         padding: 2rem; margin: 1rem 0; border-left: 4px solid #22c55e;">
-#                 <h2 style="color: #16a34a; margin-bottom: 1rem;">✅ Pattern Change Hypnotherapy</h2>
+#                         padding: 2rem; margin: 1rem 0; text-align: center; height: 100%; 
+#                         display: flex; flex-direction: column; justify-content: center;">
+#                 <h2 style="color: #4CA1A3; margin-bottom: 1rem;">VS</h2>
+#                 <img src="https://github.com/pepeette/Hypno/blob/main/img/Hypnotherapy_compa.jpg?raw=true" 
+#                      alt="Hypnotherapy Comparison" 
+#                      style="width: 100%; max-width: 200px; border-radius: 8px; margin: 0 auto;">
+#                 <p style="margin-top: 1rem; color: #556D7A; font-style: italic;">
+#                     Different approaches, different results
+#                 </p>
+#             </div>
+#             """, unsafe_allow_html=True)
+        
+#         # Column 3: Pattern Change Hypnotherapy Card  
+#         with col3:
+#             st.markdown("""
+#             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                         padding: 2rem; margin: 1rem 0; border-left: 4px solid #22c55e; height: 100%;">
+#                 <h2 style="color: #16a34a; margin-bottom: 1rem; text-align: center;">✅ Pattern Change Hypnotherapy</h2>
 #                 <p><strong>Session 1:</strong> Map your unique subconscious triggers and patterns</p>
 #                 <p><strong>Session 2:</strong> Rewire those patterns at the subconscious level</p>
 #                 <p><strong>Session 3:</strong> Optional reinforcement if needed (15% of clients)</p>
 #                 <p><strong>Follow-up:</strong> Permanent change that feels natural and effortless</p>
-#                 <p style="margin: 0; font-weight: 600; color: #16a34a;">
+#                 <p style="margin: 0; font-weight: 600; color: #16a34a; text-align: center;">
 #                     Result: Your subconscious now supports your goals automatically
 #                 </p>
 #             </div>
@@ -305,6 +324,7 @@
 # # Factory function for clean import
 # def create_home_page():
 #     return HomePage()
+
 
 
 """
@@ -529,19 +549,15 @@ class PatternChangeMethod:
             </div>
             """, unsafe_allow_html=True)
         
-        # Column 2: Comparison Image
+        # Column 2: Comparison Image - Full image, no text
         with col2:
             st.markdown("""
             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-                        padding: 2rem; margin: 1rem 0; text-align: center; height: 100%; 
-                        display: flex; flex-direction: column; justify-content: center;">
-                <h2 style="color: #4CA1A3; margin-bottom: 1rem;">VS</h2>
+                        margin: 1rem 0; height: 100%; padding: 0; overflow: hidden;
+                        display: flex; align-items: center; justify-content: center;">
                 <img src="https://github.com/pepeette/Hypno/blob/main/img/Hypnotherapy_compa.jpg?raw=true" 
                      alt="Hypnotherapy Comparison" 
-                     style="width: 100%; max-width: 200px; border-radius: 8px; margin: 0 auto;">
-                <p style="margin-top: 1rem; color: #556D7A; font-style: italic;">
-                    Different approaches, different results
-                </p>
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
             </div>
             """, unsafe_allow_html=True)
         
