@@ -14,10 +14,10 @@ class HeroSection:
             <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
                         border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
                 <h1 style="color: white;">Stop Fighting Your Mind.<br>Start Working With It.</h1>
-                <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
-                    Most people try to change using willpower. That's why 95% fail. <br>
-                    We bypass your conscious resistance and reprogram your subconscious patterns directly.
-                </p>
+                # <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
+                #     Most people try to change using willpower. That's why 95% fail. <br>
+                #     We bypass your conscious resistance and reprogram your subconscious patterns directly.
+                # </p>
             </div>
             """, unsafe_allow_html=True)
             
@@ -43,6 +43,9 @@ class HeroSection:
             #     st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
 
 
+            # Starting lines 
+            st.write("Most people try to change using willpower. That's why 95% fail. We bypass your conscious resistance and reprogram your subconscious patterns directly.")
+            
             # Logo and Info message forced to stay on same row even on mobile
             st.markdown("""
             <div style="display: flex; gap: 1rem; margin: 1rem 0; align-items: stretch; flex-wrap: nowrap;">
