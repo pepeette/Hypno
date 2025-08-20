@@ -453,7 +453,7 @@ class TwoSessionBreakdown:
                     "Begin initial positive programming to start shifting your mindset"
                 ],
                 outcome="You'll understand WHY you do what you do, often for the first time. Many clients feel immediate relief just from this clarity.",
-                image_url="https://github.com/pepeette/Hypno/blob/main/img/session1_analysis.jpg?raw=true",
+                image_url=None, #"https://github.com/pepeette/Hypno/blob/main/img/session1_analysis.jpg?raw=true",
                 border_color="#4CA1A3"
             )
         
@@ -472,7 +472,7 @@ class TwoSessionBreakdown:
                     "Anchor your new patterns with powerful positive emotional associations"
                 ],
                 outcome="The old urges simply disappear. You naturally make choices aligned with your goals without effort or internal struggle.",
-                image_url="https://github.com/pepeette/Hypno/blob/main/img/session2_hypnosis.jpg?raw=true",
+                image_url=None, #"https://github.com/pepeette/Hypno/blob/main/img/session2_hypnosis.jpg?raw=true",
                 border_color="#4CA1A3"
             )
         
