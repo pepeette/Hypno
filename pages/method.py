@@ -441,7 +441,7 @@ class TwoSessionBreakdown:
         with col1:
             self._render_session_column(
                 session_num=1,
-                title="Analysis & Mapping",
+                title="Pattern Analysis & Mapping",
                 duration="90 minutes",
                 icon="🔍",
                 preview="Discover your patterns",
