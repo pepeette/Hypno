@@ -229,7 +229,7 @@
 
 """
 Main application entry point for the Hypnotherapy website
-Minimal version for development - Home page only with booking form and footer
+Fixed version with navigation and method page enabled
 """
 import streamlit as st
 
@@ -240,13 +240,14 @@ try:
 except ImportError:
     HomePage = None
 
-# TODO: Enable these when pages are ready
+# Enable method page
 try:
     from pages.method import create_method_page
     MethodPage = create_method_page
 except ImportError:
     MethodPage = None
 
+# TODO: Enable these when pages are ready
 # try:
 #     from pages.success import SuccessPage
 # except ImportError:
@@ -263,7 +264,6 @@ except ImportError:
 #     BookingPage = None
 
 # Import shared components with error handling
-# TODO: Enable navigation when ready
 try:
     from components.navigation import create_navigation
     Navigation = create_navigation
@@ -309,8 +309,8 @@ class HypnotherapyApp:
         self.setup_styling()
         self.setup_session_state()
         
-        # Initialize components - only footer and booking form for now
-        self.navigation = Navigation() if Navigation else None  # TODO: Enable when ready
+        # Initialize components - navigation now enabled
+        self.navigation = Navigation() if Navigation else None
         self.footer = Footer() if Footer else None
         self.booking_form = BookingForm() if BookingForm else None
         
@@ -335,7 +335,6 @@ class HypnotherapyApp:
         """Initialize session state variables"""
         initialize_session_state()
     
-    # TODO: Enable navigation when other pages are ready
     def render_navigation(self):
         """Render the main navigation menu"""
         if self.navigation:
@@ -366,23 +365,6 @@ class HypnotherapyApp:
                 }
             )
     
-    def render_page_content(self):
-        """Render Home page content only for now"""
-        try:
-            if HomePage:
-                page_instance = HomePage()
-                page_instance.render()
-            else:
-                # Simple fallback if home page not available
-                st.title("Welcome to Clinical Hypnotherapy Bangkok")
-                st.write("Transform your life in just 2 sessions with science-backed hypnotherapy")
-                
-        except Exception as e:
-            st.error("Error loading page. Please try refreshing.")
-            if st.secrets.get("debug_mode", False):
-                st.exception(e)
-    
-    # TODO: Enable when other pages exist
     def render_page_content(self, selected_page):
         """Render content based on selected navigation page"""
         try:
@@ -394,33 +376,33 @@ class HypnotherapyApp:
                 page_instance = MethodPage()
                 page_instance.render()
                     
-    #         elif selected_page == "Success" and SuccessPage:
-    #             page_instance = SuccessPage()
-    #             page_instance.render()
+            # TODO: Enable when other pages are ready
+            # elif selected_page == "Success" and SuccessPage:
+            #     page_instance = SuccessPage()
+            #     page_instance.render()
                     
-    #         elif selected_page == "Blog" and BlogPage:
-    #             page_instance = BlogPage()
-    #             page_instance.render()
+            # elif selected_page == "Blog" and BlogPage:
+            #     page_instance = BlogPage()
+            #     page_instance.render()
                     
-    #         elif selected_page == "Book Now" and BookingPage:
-    #             page_instance = BookingPage()
-    #             page_instance.render()
+            # elif selected_page == "Book Now" and BookingPage:
+            #     page_instance = BookingPage()
+            #     page_instance.render()
+            
+            else:
+                # Fallback for pages not yet implemented
+                st.title(f"{selected_page} - Coming Soon")
+                st.info(f"The {selected_page} page is being prepared. Please check back soon!")
                     
-    #     except Exception as e:
-    #         st.error(f"Error loading {selected_page} page. Please try refreshing.")
-    #         if st.secrets.get("debug_mode", False):
-    #             st.exception(e)
+        except Exception as e:
+            st.error(f"Error loading {selected_page} page. Please try refreshing.")
+            if st.secrets.get("debug_mode", False):
+                st.exception(e)
     
-    def render_booking_form(self):
-        """Render booking form - always show for now"""
-        if self.booking_form:
+    def render_booking_form(self, selected_page):
+        """Render booking form on all pages except Book Now"""
+        if selected_page != "Book Now" and self.booking_form:
             self.booking_form.render()
-    
-    # TODO: Enable when other pages exist
-    # def render_booking_form(self, selected_page):
-    #     """Render booking form on all pages except Book Now"""
-    #     if selected_page != "Book Now" and self.booking_form:
-    #         self.booking_form.render()
     
     def render_footer(self):
         """Render the footer section on all pages"""
@@ -428,16 +410,16 @@ class HypnotherapyApp:
             self.footer.render()
     
     def run(self):
-        """Main application entry point - simplified for development"""
+        """Main application entry point"""
         try:
-            # TODO: Enable navigation when other pages are ready
+            # Render navigation and get selected page
             selected_page = self.render_navigation()
             
-            # Render Home page content only
+            # Render page content based on selection
             self.render_page_content(selected_page)
             
-            # Always render booking form for now
-            self.render_booking_form()
+            # Render booking form (except on Book Now page)
+            self.render_booking_form(selected_page)
             
             # Always render footer
             self.render_footer()
@@ -454,5 +436,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
