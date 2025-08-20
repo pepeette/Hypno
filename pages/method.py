@@ -478,7 +478,7 @@ class TwoSessionBreakdown:
         
         with col3:
             self._render_session_column(
-                session_num=3,
+                session_num="+1",
                 title="Reinforcement",
                 duration="60 minutes",
                 icon="🎯",
