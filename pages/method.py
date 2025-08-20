@@ -419,12 +419,16 @@ class MethodHero:
         <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
                     border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
             <h1 style="color: white;">The Science Behind Rapid Transformation</h1>
-            <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
-                Discover why our 2-session method succeeds where traditional approaches fail. <br>
-                It's not willpower. It's neuroscience.
-            </p>
+            # <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
+            #     Discover why our 2-session method succeeds where traditional approaches fail. <br>
+            #     It's not willpower. It's neuroscience.
+            # </p>
         </div>
         """, unsafe_allow_html=True)
+
+        # Starting lines 
+            st.write("Discover why our 2-session method succeeds where traditional approaches fail. It's not willpower. It's neuroscience.")
+            
 
 class TwoSessionBreakdown:
     """Detailed breakdown of the 2-session process with 3-column layout"""
