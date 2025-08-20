@@ -404,9 +404,11 @@
 # def create_method_page():
 #     return MethodPage()
 
+
+
 """
 Method Page - The Science Behind 2-Session Transformation
-Detailed explanation using Streamlit components with consistent styling
+Reviewed and corrected version with better flow and structure
 """
 import streamlit as st
 
@@ -419,16 +421,11 @@ class MethodHero:
         <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
                     border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
             <h1 style="color: white;">The Science Behind Rapid Transformation</h1>
-            # <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
-            #     Discover why our 2-session method succeeds where traditional approaches fail. <br>
-            #     It's not willpower. It's neuroscience.
-            # </p>
         </div>
         """, unsafe_allow_html=True)
 
-        # Starting lines 
-            st.write("Discover why our 2-session method succeeds where traditional approaches fail. It's not willpower. It's neuroscience.")
-            
+        # Better positioning for description text using Streamlit
+        st.write("Discover why our 2-session method succeeds where traditional approaches fail. It's not willpower. It's neuroscience.")
 
 class TwoSessionBreakdown:
     """Detailed breakdown of the 2-session process with 3-column layout"""
@@ -602,66 +599,13 @@ class WhyItWorks:
         We identify your specific patterns and rewire them at the source. When your subconscious 
         supports your goals instead of sabotaging them, change becomes effortless.
         """)
-        
-# class CaseStudyShowcase:
-#     """Real client transformation stories"""
-    
-#     def render(self):
-#         """Render compelling case studies"""
-#         st.subheader("Real Transformations: Before & After")
-        
-#         # Case Study 1
-#         self._render_case_study(
-#             title="Sarah's Smoking Freedom",
-#             before="2 packs daily for 15 years. Tried patches, gum, cold turkey - always relapsed within weeks.",
-#             process="Session 1 revealed smoking was her stress response learned in college. Session 2 installed new stress management patterns.",
-#             after="Hasn't smoked in 8 months. No cravings. Saved ฿24,000. Runs 5K regularly.",
-#             icon="🚭",
-#             timeline="2 sessions over 10 days"
-#         )
-        
-#         # Case Study 2  
-#         self._render_case_study(
-#             title="Michael's Anxiety Breakthrough", 
-#             before="Panic attacks before presentations. Avoiding career opportunities. Taking anxiety medication.",
-#             process="Session 1 uncovered perfectionist patterns from childhood. Session 2 rewired confidence and self-acceptance.",
-#             after="Gave presentation to 200 people last month. Promoted to senior manager. Medication-free.",
-#             icon="😌",
-#             timeline="2 sessions over 1 week"
-#         )
-    
-#     def _render_case_study(self, title, before, process, after, icon, timeline):
-#         """Render individual case study"""
-#         st.markdown(f"""
-#         <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-#                     padding: 2rem; margin: 2rem 0;">
-#             <h2 style="color: #4CA1A3; margin-bottom: 1rem;">{icon} {title}</h2>
-#             <div style="font-size: 0.9rem; color: #556D7A; margin-bottom: 1rem; font-weight: 600;">
-#                 {timeline}
-#             </div>
-#         </div>
-#         """, unsafe_allow_html=True)
-        
-#         col1, col2, col3 = st.columns(3)
-        
-#         with col1:
-#             st.markdown("**Before:**")
-#             st.write(before)
-        
-#         with col2:
-#             st.markdown("**Process:**") 
-#             st.write(process)
-        
-#         with col3:
-#             st.markdown("**After:**")
-#             st.write(after)
 
 class InvestmentSection:
     """Pricing and value proposition"""
     
     def render(self):
         """Render investment options"""
-        st.subheader("Invest in Your Transformation")
+        st.subheader("Investment in Your Transformation")
         st.write("One-time investment. Lifetime results. Compare to years of traditional therapy:")
         
         col1, col2 = st.columns(2)
@@ -714,67 +658,42 @@ class InvestmentSection:
         The ongoing cost of your unwanted habit (smoking, stress eating, etc.) often exceeds our entire package price within months.
         """)
 
-class FinalCTA:
-    """Call to action section"""
-    
-    def render(self):
-        """Render compelling call to action"""
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
-                    border-radius: 16px; padding: 3rem 2rem; text-align: center; 
-                    margin: 4rem 0 2rem 0;">
-            <h2 style="color: white; margin-bottom: 1rem;">Ready to Stop Fighting Yourself?</h2>
-            <p style="color: white; opacity: 0.9; font-size: 1.1rem; 
-                      max-width: 500px; margin: 0 auto 2rem auto;">
-                Every day you wait is another day living with patterns that don't serve you. 
-                Your transformation starts with a simple conversation.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            if st.button("🎯 Start Your Transformation Journey", type="primary", use_container_width=True):
-                st.success("Perfect! Scroll down to book your free discovery call.")
-
 class MethodPage:
-    """Complete method page"""
+    """Complete method page with improved flow"""
     
     def __init__(self):
         self.hero = MethodHero()
         self.session_breakdown = TwoSessionBreakdown()
         self.success_metrics = SuccessMetrics()
         self.why_it_works = WhyItWorks()
-        # self.case_studies = CaseStudyShowcase()  # Commented out
         self.investment = InvestmentSection()
-        # self.final_cta = FinalCTA()  # Removed
     
     def render(self):
-        """Render complete method page"""
+        """Render complete method page with logical flow"""
+        # 1. Hero - introduce the page
         with st.container():
             self.hero.render()
             st.markdown("    ")
         
+        # 2. Process breakdown - show what we do
         with st.container():
             self.session_breakdown.render()
             st.markdown("    ")
         
+        # 3. Success metrics - prove it works
         with st.container():
             self.success_metrics.render()
             st.markdown("    ")
 
+        # 4. Science explanation - explain why it works
         with st.container():
             self.why_it_works.render()
             st.markdown("    ")
                 
-            
+        # 5. Investment - show the value
         with st.container():
             self.investment.render()
             st.markdown("    ")
-        
-        # with st.container():
-        #     self.case_studies.render()
-        #     st.markdown("    ")
 
 # Factory function for clean import
 def create_method_page():
