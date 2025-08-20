@@ -282,7 +282,7 @@
     
 #     def render(self):
 #         """Render investment options"""
-#         st.subheader("Investment in Your Transformation")
+#         st.subheader("Invest in Your Transformation")
 #         st.write("One-time investment. Lifetime results. Compare to years of traditional therapy:")
         
 #         col1, col2 = st.columns(2)
@@ -425,28 +425,6 @@ class MethodHero:
             </p>
         </div>
         """, unsafe_allow_html=True)
-
-class WhyItWorks:
-    """Core science explanation section"""
-    
-    def render(self):
-        """Render the core science behind the method"""
-        st.subheader("Why Traditional Methods Keep Failing You")
-        
-        # Use normal Streamlit components for better readability
-        col1, col2 = st.columns([1, 3])
-        
-        with col1:
-            st.video("https://youtu.be/5ORz1-LWrjo?feature=shared")
-        
-        with col2:
-            st.markdown("**The Problem:** Your conscious mind (5% of decisions) fights your subconscious programming (95% of decisions). Guess who wins? The subconscious. Every time.")
-        
-        st.info("""
-        **Our Breakthrough:** Instead of fighting your subconscious, we work directly with it. 
-        We identify your specific patterns and rewire them at the source. When your subconscious 
-        supports your goals instead of sabotaging them, change becomes effortless.
-        """)
 
 class TwoSessionBreakdown:
     """Detailed breakdown of the 2-session process with 3-column layout"""
@@ -599,6 +577,28 @@ class SuccessMetrics:
         
         st.success("**Compare this to traditional methods:** Most conventional approaches have success rates below 30%, require ongoing sessions, and have high relapse rates.")
 
+class WhyItWorks:
+    """Core science explanation section"""
+    
+    def render(self):
+        """Render the core science behind the method"""
+        st.subheader("Why Traditional Methods Keep Failing You")
+        
+        # Use normal Streamlit components for better readability
+        col1, col2 = st.columns([1, 3])
+        
+        with col1:
+            st.video("https://youtu.be/5ORz1-LWrjo?feature=shared")
+        
+        with col2:
+            st.markdown("**The Problem:** Your conscious mind (5% of decisions) fights your subconscious programming (95% of decisions). Guess who wins? The subconscious. Every time.")
+        
+        st.info("""
+        **Our Breakthrough:** Instead of fighting your subconscious, we work directly with it. 
+        We identify your specific patterns and rewire them at the source. When your subconscious 
+        supports your goals instead of sabotaging them, change becomes effortless.
+        """)
+        
 # class CaseStudyShowcase:
 #     """Real client transformation stories"""
     
@@ -657,7 +657,7 @@ class InvestmentSection:
     
     def render(self):
         """Render investment options"""
-        st.subheader("Investment in Your Transformation")
+        st.subheader("Invest in Your Transformation")
         st.write("One-time investment. Lifetime results. Compare to years of traditional therapy:")
         
         col1, col2 = st.columns(2)
@@ -738,9 +738,9 @@ class MethodPage:
     
     def __init__(self):
         self.hero = MethodHero()
-        self.why_it_works = WhyItWorks()
         self.session_breakdown = TwoSessionBreakdown()
         self.success_metrics = SuccessMetrics()
+        self.why_it_works = WhyItWorks()
         # self.case_studies = CaseStudyShowcase()  # Commented out
         self.investment = InvestmentSection()
         # self.final_cta = FinalCTA()  # Removed
