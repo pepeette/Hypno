@@ -404,7 +404,6 @@
 # def create_method_page():
 #     return MethodPage()
 
-
 """
 Method Page - The Science Behind 2-Session Transformation
 Detailed explanation using Streamlit components with consistent styling
@@ -438,8 +437,7 @@ class WhyItWorks:
         col1, col2 = st.columns([1, 3])
         
         with col1:
-            st.image("https://github.com/pepeette/Hypno/blob/main/img/brain_conscious.jpg?raw=true", 
-                    caption="Conscious vs Subconscious", width=120)
+            st.video("https://youtu.be/5ORz1-LWrjo?feature=shared")
         
         with col2:
             st.markdown("**The Problem:** Your conscious mind (5% of decisions) fights your subconscious programming (95% of decisions). Guess who wins? The subconscious. Every time.")
@@ -451,123 +449,103 @@ class WhyItWorks:
         """)
 
 class TwoSessionBreakdown:
-    """Detailed breakdown of the 2-session process with better navigation"""
+    """Detailed breakdown of the 2-session process with 3-column layout"""
     
     def render(self):
-        """Render the session-by-session breakdown with collapsible content"""
+        """Render the session-by-session breakdown in 3 columns"""
         st.subheader("The Proven 2-Session Process")
         st.write("Each session has a specific purpose in your transformation journey:")
         
-        # Overview cards first - visual summary
-        col1, col2 = st.columns(2)
+        # 3-column layout: Session 1, Session 2, Optional Session 3
+        col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.markdown("""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-                        padding: 1.5rem; margin: 1rem 0; border-left: 4px solid #4CA1A3; text-align: center;">
-                <div style="background: #4CA1A3; color: white; width: 40px; height: 40px; 
-                            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-                            font-weight: bold; font-size: 1.2rem; margin: 0 auto 1rem;">1</div>
-                <h3 style="color: #273548; margin-bottom: 0.5rem;">🔍 Analysis & Mapping</h3>
-                <p style="color: #556D7A; margin: 0; font-size: 0.9rem;">90 minutes • Discover your patterns</p>
-            </div>
-            """, unsafe_allow_html=True)
+            self._render_session_column(
+                session_num=1,
+                title="Analysis & Mapping",
+                duration="90 minutes",
+                icon="🔍",
+                preview="Discover your patterns",
+                what_happens=[
+                    "Comprehensive behavioral analysis using proven psychological frameworks",
+                    "Identify your unique subconscious triggers and response patterns", 
+                    "Map the emotional and environmental factors that activate old behaviors",
+                    "Discover the positive intent behind negative patterns",
+                    "Begin initial positive programming to start shifting your mindset"
+                ],
+                outcome="You'll understand WHY you do what you do, often for the first time. Many clients feel immediate relief just from this clarity.",
+                image_url="https://github.com/pepeette/Hypno/blob/main/img/session1_analysis.jpg?raw=true",
+                border_color="#4CA1A3"
+            )
         
         with col2:
-            st.markdown("""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-                        padding: 1.5rem; margin: 1rem 0; border-left: 4px solid #4CA1A3; text-align: center;">
-                <div style="background: #4CA1A3; color: white; width: 40px; height: 40px; 
-                            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-                            font-weight: bold; font-size: 1.2rem; margin: 0 auto 1rem;">2</div>
-                <h3 style="color: #273548; margin-bottom: 0.5rem;">⚡ Transformation</h3>
-                <p style="color: #556D7A; margin: 0; font-size: 0.9rem;">90 minutes • Rewire your mind</p>
-            </div>
-            """, unsafe_allow_html=True)
+            self._render_session_column(
+                session_num=2,
+                title="Subconscious Rewiring",
+                duration="90 minutes",
+                icon="⚡",
+                preview="Rewire your mind",
+                what_happens=[
+                    "Enter deep hypnotic state for maximum subconscious receptivity",
+                    "Install new neural pathways that support your desired behaviors",
+                    "Replace limiting beliefs with empowering ones at the identity level",
+                    "Create new automatic responses to old triggers",
+                    "Anchor your new patterns with powerful positive emotional associations"
+                ],
+                outcome="The old urges simply disappear. You naturally make choices aligned with your goals without effort or internal struggle.",
+                image_url="https://github.com/pepeette/Hypno/blob/main/img/session2_hypnosis.jpg?raw=true",
+                border_color="#4CA1A3"
+            )
         
-        # Detailed session breakdowns with expandable content
-        with st.expander("🔍 Session 1: Analysis & Pattern Mapping (Click to expand)", expanded=False):
-            col1, col2 = st.columns([2, 1])
-            
-            with col1:
-                st.markdown("**Duration:** 90 minutes")
-                st.markdown("**Focus:** We dive deep to understand exactly what drives your unwanted behavior")
-                
-                st.markdown("**What happens during this session:**")
-                st.write("• Comprehensive behavioral analysis using proven psychological frameworks")
-                st.write("• Identify your unique subconscious triggers and response patterns")
-                st.write("• Map the emotional and environmental factors that activate old behaviors")
-                st.write("• Discover the positive intent behind negative patterns (every behavior serves a purpose)")
-                st.write("• Begin initial positive programming to start shifting your mindset")
-                
-                st.success("**Outcome:** You'll understand WHY you do what you do, often for the first time. Many clients feel immediate relief just from this clarity.")
-            
-            with col2:
-                st.image("https://github.com/pepeette/Hypno/blob/main/img/session1_analysis.jpg?raw=true", 
-                        caption="Session 1 Analysis")
-        
-        with st.expander("⚡ Session 2: Subconscious Rewiring (Click to expand)", expanded=False):
-            col1, col2 = st.columns([2, 1])
-            
-            with col1:
-                st.markdown("**Duration:** 90 minutes")
-                st.markdown("**Focus:** We reprogram your subconscious mind for automatic positive choices")
-                
-                st.markdown("**What happens during this session:**")
-                st.write("• Enter deep hypnotic state for maximum subconscious receptivity")
-                st.write("• Install new neural pathways that support your desired behaviors")
-                st.write("• Replace limiting beliefs with empowering ones at the identity level")
-                st.write("• Create new automatic responses to old triggers")
-                st.write("• Anchor your new patterns with powerful positive emotional associations")
-                
-                st.success("**Outcome:** The old urges simply disappear. You naturally make choices aligned with your goals without effort or internal struggle.")
-            
-            with col2:
-                st.image("https://github.com/pepeette/Hypno/blob/main/img/session2_hypnosis.jpg?raw=true", 
-                        caption="Session 2 Hypnosis")
-        
-        # Optional Session 3 - always visible but styled differently
-        self._render_optional_session()
+        with col3:
+            self._render_session_column(
+                session_num=3,
+                title="Reinforcement",
+                duration="60 minutes",
+                icon="🎯",
+                preview="Optional (15% need)",
+                what_happens=[
+                    "Strengthen any remaining weak spots in your new patterns",
+                    "Address unexpected triggers that emerge in real-world situations",
+                    "Fine-tune your responses for complete confidence",
+                    "Provide additional tools for long-term maintenance"
+                ],
+                outcome="Complete confidence and mastery. Our guarantee: If you're not satisfied after 2 sessions, this session is complimentary.",
+                image_url=None,
+                border_color="#eab308",
+                is_optional=True
+            )
     
-    def _render_optional_session(self):
-        """Render optional 3rd session information"""
-        st.markdown("### Optional Reinforcement Session")
+    def _render_session_column(self, session_num, title, duration, icon, preview, what_happens, outcome, image_url, border_color, is_optional=False):
+        """Render individual session column with collapsible details"""
         
-        col1, col2 = st.columns([2, 1])
+        # Session header card
+        session_label = f"+{session_num}" if is_optional else str(session_num)
+        optional_text = " (Optional)" if is_optional else ""
         
-        with col1:
-            st.markdown("""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-                        padding: 1.5rem; margin: 1rem 0; border-left: 4px solid #eab308; opacity: 0.9;">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                    <div style="background: #eab308; color: white; width: 40px; height: 40px; 
-                                border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-                                font-weight: bold; font-size: 1.2rem;">+1</div>
-                    <div>
-                        <h3 style="color: #273548; margin: 0;">🎯 Session 3: Reinforcement</h3>
-                        <p style="color: #556D7A; margin: 0; font-weight: 600;">60 minutes • Only needed by 15% of clients</p>
-                    </div>
-                </div>
-                
-                <div style="color: #556D7A;">
-                    <strong>When this session helps:</strong><br>
-                    • Strengthen any remaining weak spots in your new patterns<br>
-                    • Address unexpected triggers that emerge in real-world situations<br>
-                    • Fine-tune your responses for complete confidence<br>
-                    • Provide additional tools for long-term maintenance
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+        st.markdown(f"""
+        <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+                    padding: 1.5rem; margin-bottom: 1rem; border-left: 4px solid {border_color}; 
+                    text-align: center;">
+            <div style="background: {border_color}; color: white; width: 40px; height: 40px; 
+                        border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+                        font-weight: bold; font-size: 1.2rem; margin: 0 auto 1rem;">{session_label}</div>
+            <h3 style="color: #273548; margin-bottom: 0.5rem; font-size: 1.1rem;">{icon} {title}{optional_text}</h3>
+            <p style="color: #556D7A; margin: 0; font-size: 0.9rem; font-weight: 600;">{duration}</p>
+            <p style="color: #556D7A; margin: 0.5rem 0 0 0; font-size: 0.85rem;">{preview}</p>
+        </div>
+        """, unsafe_allow_html=True)
         
-        with col2:
-            st.info("""
-            **Our Guarantee**
+        # Expandable details
+        with st.expander(f"Details for Session {session_num}", expanded=False):
+            if image_url:
+                st.image(image_url, caption=f"Session {session_num}")
             
-            If you're not completely satisfied after 2 sessions, 
-            your 3rd reinforcement session is complimentary.
+            st.markdown("**What happens during this session:**")
+            for item in what_happens:
+                st.write(f"• {item}")
             
-            We're that confident in our method.
-            """)
+            st.success(f"**Outcome:** {outcome}")
 
 class SuccessMetrics:
     """Success rates and statistics"""
