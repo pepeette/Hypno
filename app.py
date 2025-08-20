@@ -322,7 +322,7 @@ class HypnotherapyApp:
             # Minimal fallback config
             st.set_page_config(
                 page_title="Transform Your Life in 2 Sessions | Clinical Hypnotherapy Bangkok",
-                page_icon="🧠",
+                page_icon="https://github.com/pepeette/Hypno/blob/main/img/logo.png",  #"🧠",
                 layout="wide",
                 initial_sidebar_state="collapsed"
             )
