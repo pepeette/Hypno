@@ -533,49 +533,85 @@ class SuccessMetrics:
         """Render success metrics with visual impact"""
         st.subheader("Proven Results Across Thousands of Sessions")
         
-        # Force 3 columns to stay in one row
-        st.markdown("""
-        <div style="display: flex; gap: 1rem; margin: 2rem 0; flex-wrap: nowrap; 
-                    justify-content: space-between;">
-            <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
-                        border-radius: 12px; padding: 2rem; text-align: center; border-left: 4px solid #22c55e;">
-                <div style="color: #22c55e; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
-                    85%
+        # # Force 3 columns to stay in one row
+        # st.markdown("""
+        # <div style="display: flex; gap: 1rem; margin: 2rem 0; flex-wrap: nowrap; 
+        #             justify-content: space-between;">
+        #     <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+        #                 border-radius: 12px; padding: 2rem; text-align: center; border-left: 4px solid #22c55e;">
+        #         <div style="color: #22c55e; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
+        #             85%
+        #         </div>
+        #         <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin: 0.5rem 0;">
+        #             Complete Success
+        #         </div>
+        #         <div style="color: #273548; font-size: 0.8rem;">
+        #             Achieve all goals in 2 sessions
+        #         </div>
+        #     </div>
+        #     <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+        #                 border-radius: 12px; padding: 2rem; text-align: center; border-left: 4px solid #eab308;">
+        #         <div style="color: #eab308; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
+        #             15%
+        #         </div>
+        #         <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin: 0.5rem 0;">
+        #             Need Reinforcement
+        #         </div>
+        #         <div style="color: #273548; font-size: 0.8rem;">
+        #             Benefit from optional 3rd session
+        #         </div>
+        #     </div>
+        #     <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+        #                 border-radius: 12px; padding: 2rem; text-align: center; border-left: 4px solid #4CA1A3;">
+        #         <div style="color: #4CA1A3; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
+        #             95%+
+        #         </div>
+        #         <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin: 0.5rem 0;">
+        #             Long-term Success
+        #         </div>
+        #         <div style="color: #273548; font-size: 0.8rem;">
+        #             Still transformed 1 year later
+        #         </div>
+        #     </div>
+        # </div>
+        # """, unsafe_allow_html=True)
+
+        # Success rate using custom metrics with combined value/delta
+        with st.container():
+            # Force 3 columns to stay in one row even on mobile
+            st.markdown("""
+            <div style="display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: nowrap; 
+                        justify-content: space-between;">
+                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+                            border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
+                        Success Rate
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
+                        85% in 2 sessions
+                    </div>
                 </div>
-                <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin: 0.5rem 0;">
-                    Complete Success
+                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+                            border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
+                        3rd Session Optional
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
+                        15% need Reinforcement
+                    </div>
                 </div>
-                <div style="color: #273548; font-size: 0.8rem;">
-                    Achieve all goals in 2 sessions
+                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+                            border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
+                        Rapid pattern rewiring
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
+                        for Lasting change
+                    </div>
                 </div>
             </div>
-            <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
-                        border-radius: 12px; padding: 2rem; text-align: center; border-left: 4px solid #eab308;">
-                <div style="color: #eab308; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
-                    15%
-                </div>
-                <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin: 0.5rem 0;">
-                    Need Reinforcement
-                </div>
-                <div style="color: #273548; font-size: 0.8rem;">
-                    Benefit from optional 3rd session
-                </div>
-            </div>
-            <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
-                        border-radius: 12px; padding: 2rem; text-align: center; border-left: 4px solid #4CA1A3;">
-                <div style="color: #4CA1A3; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">
-                    95%+
-                </div>
-                <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin: 0.5rem 0;">
-                    Long-term Success
-                </div>
-                <div style="color: #273548; font-size: 0.8rem;">
-                    Still transformed 1 year later
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
+            """, unsafe_allow_html=True)
+            
         st.success("**Compare this to traditional methods:** Most conventional approaches have success rates below 30%, require ongoing sessions, and have high relapse rates.")
 
 class WhyItWorks:
@@ -679,15 +715,15 @@ class MethodPage:
         with st.container():
             self.session_breakdown.render()
             st.markdown("    ")
-        
-        # 3. Success metrics - prove it works
-        with st.container():
-            self.success_metrics.render()
-            st.markdown("    ")
 
-        # 4. Science explanation - explain why it works
+        # 3. Science explanation - explain why it works
         with st.container():
             self.why_it_works.render()
+            st.markdown("    ")
+                
+        # 4. Success metrics - prove it works
+        with st.container():
+            self.success_metrics.render()
             st.markdown("    ")
                 
         # 5. Investment - show the value
