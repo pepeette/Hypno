@@ -641,7 +641,7 @@ class InvestmentSection:
     
     def render(self):
         """Render investment options"""
-        st.subheader("Investment in Your Transformation")
+        st.subheader("Invest in Your Transformation")
         st.write("One-time investment. Lifetime results. Compare to years of traditional therapy:")
         
         col1, col2 = st.columns(2)
