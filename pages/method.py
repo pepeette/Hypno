@@ -750,21 +750,22 @@ class MethodPage:
         with st.container():
             self.hero.render()
             st.markdown("    ")
-            
-        with st.container():
-            self.why_it_works.render()
-            st.markdown("    ")
         
         with st.container():
             self.session_breakdown.render()
             st.markdown("    ")
         
         with st.container():
-            self.investment.render()
-            st.markdown("    ")
-        
-        with st.container():
             self.success_metrics.render()
+            st.markdown("    ")
+
+        with st.container():
+            self.why_it_works.render()
+            st.markdown("    ")
+                
+            
+        with st.container():
+            self.investment.render()
             st.markdown("    ")
         
         # with st.container():
