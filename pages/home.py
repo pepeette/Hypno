@@ -9,15 +9,23 @@ class HeroSection:
     def render(self):
         """Render hero section with Streamlit components"""
         # Hero container using Streamlit container
+        # with st.container():
+        #     st.markdown("""
+        #     <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
+        #                 border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
+        #         <h1 style="color: white;">Stop Fighting Your Mind.<br>Start Working With It.</h1>
+        #         # <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
+        #         #     Most people try to change using willpower. That's why 95% fail. <br>
+        #         #     We bypass your conscious resistance and reprogram your subconscious patterns directly.
+        #         # </p>
+        #     </div>
+        #     """, unsafe_allow_html=True)
         with st.container():
-            st.markdown("""
-            <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
-                        border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
-                <h1 style="color: white;">Stop Fighting Your Mind.<br>Start Working With It.</h1>
-                # <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
-                #     Most people try to change using willpower. That's why 95% fail. <br>
-                #     We bypass your conscious resistance and reprogram your subconscious patterns directly.
-                # </p>
+            st.markdown(f"""
+            <div style="display: flex; justify-content: center; align-items: center; margin: 2rem 0;">
+                <img src="https://raw.githubusercontent.com/pepeette/Hypno/main/img/hero_title_1.png" 
+                     alt="Stop Fighting Your Mind. Start Working With It." 
+                     style="max-width: 100%; height: auto; border-radius: 16px;">
             </div>
             """, unsafe_allow_html=True)
             
