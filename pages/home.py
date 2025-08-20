@@ -47,7 +47,7 @@ class HeroSection:
             st.markdown("""
             <div style="display: flex; gap: 1rem; margin: 1rem 0; align-items: stretch; flex-wrap: nowrap;">
                 <div style="flex: 0 0 auto; display: flex; align-items: center; justify-content: center; min-width: 120px;">
-                    <img src="https://github.com/pepeette/Hypno/blob/main/img/logo.jpg?raw=true" 
+                    <img src="https://github.com/pepeette/Hypno/blob/main/img/logo.png?raw=true" 
                          alt="Hypnotherapy Logo" 
                          style="max-width: 100%; height: auto; border-radius: 8px; 
                                 max-height: 80px; object-fit: contain;">
