@@ -12,11 +12,11 @@ class AppConstants:
     
     # Contact information
     CONTACT_INFO = {
-        "clinic_name": "Bangkok Hypnotherapy Clinic",
+        "clinic_name": "NEW Bangkok ADDRESS",
         "address": "27 Soi Sukhumvit 10 (Asoke)",
         "city": "Bangkok, Thailand",
         "maps_url": "https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw",
-        "calendly_url": "https://calendly.com/laetitiasheppard/new-meeting",
+        "calendly_url": "https://calendly.com/laetitiasheppard/session",
         "discovery_call_url": "https://calendly.com/laetitiasheppard/discovery",
         "package_booking_url": "https://calendly.com/laetitiasheppard/package"
     }
