@@ -93,7 +93,7 @@ class QuizSection:
     def render(self):
         """Render quiz using Streamlit components"""
         # Section header
-        st.subheader("Find Out If You're Ready for Rapid Change")
+        st.subheader("Are you ready for your Hypnotherapy Rapid change?")
         st.write("3 questions to assess your potential for transformation: (click on the most suited option)")
         
         if not st.session_state.quiz_completed:
@@ -227,7 +227,7 @@ class PatternChangeMethod:
     
     def render(self):
         """Render method explanation using Streamlit components"""
-        st.subheader("Why This Unique Approach Succeeds Where Others Haven't")
+        st.subheader("Why Hypnotherapy succeeds where others haven't")
         
         # Opening explanation using Streamlit info box
         st.info("""
@@ -276,7 +276,7 @@ class PatternChangeMethod:
             st.success("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
         
         # Method comparison using 3-column layout with image in center
-        st.write("### The Difference Is in the Approach")
+        st.write("### The key is in the method")
         
         # Desktop: 3 columns, Mobile: stacked
         col1, col2, col3 = st.columns([1, 1, 1])
