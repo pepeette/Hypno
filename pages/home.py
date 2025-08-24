@@ -8,6 +8,7 @@ class HeroSection:
     
     def render(self):
         """Render hero section with Streamlit components"""
+        # Break free from limitations... Experience transformative change...
         # Hero container using Streamlit container
         # with st.container():
         #     st.markdown("""
