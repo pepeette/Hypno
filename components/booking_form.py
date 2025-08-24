@@ -41,7 +41,7 @@ class BookingForm:
     
     def render(self, form_title=None, form_description=None):
         """Render the booking form"""
-        st.write("### Ready to Start Your Transformation?")
+        st.write("### Ready to Break Free From Unwanted Patterns?")
         
         # Simple text message (not info box)
         st.write("Discover if my proven 2-session approach is right for you. Available in-person (Bangkok) or online worldwide.")
