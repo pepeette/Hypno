@@ -33,7 +33,7 @@ class TwoSessionBreakdown:
         with col1:
             self._render_session_column(
                 session_num=1,
-                title="Pattern Analysis & Mapping",
+                title="Deep pattern analysis ",
                 duration="90 minutes",
                 icon="🔍",
                 preview="Discover your patterns",
@@ -52,7 +52,7 @@ class TwoSessionBreakdown:
         with col2:
             self._render_session_column(
                 session_num=2,
-                title="Subconscious Rewiring",
+                title="Subconscious rewiring",
                 duration="90 minutes",
                 icon="⚡",
                 preview="Rewire your mind",
@@ -251,10 +251,10 @@ class InvestmentSection:
             """, unsafe_allow_html=True)
             
             st.markdown("**Includes:**")
-            st.write("✓ Analysis Session (90 minutes)")
-            st.write("✓ Transformation Session (90 minutes)")
+            st.write("✓ Session 1: Deep pattern analysis (90 mins)")
+            st.write("✓Session 2: Subconscious rewiring (90 mins)")
             st.write("✓ Email support between sessions")
-            st.write("✓ 85% success rate")
+            st.write("✓ 85% achieve full transformation")
             
             if st.button("📞 Book Complete Package", type="primary", use_container_width=True):
                 st.success("Excellent choice! Scroll down to book your discovery call.")
@@ -273,17 +273,16 @@ class InvestmentSection:
             
             st.markdown("**Includes:**")
             st.write("✓ Everything in Complete Package")
-            st.write("✓ Plus: 3rd reinforcement session")
-            st.write("✓ 100% satisfaction guarantee")
-            st.write("✓ Maximum confidence")
+            st.write("✓ Session 3: Optional reinforcement (60 mins)")
+            st.write("✓ 100% satisfaction commitment")
+            st.write("✓ Maximum confidence approach")
             
             if st.button("⭐ Book Premium Package", use_container_width=True):
                 st.success("Smart choice! Scroll down to book your discovery call.")
         
         # Value comparison
         st.info("""
-        💡 **Value Comparison:** Traditional therapy often costs ฿60,000+ over months or years. 
-        The ongoing cost of your unwanted habit (smoking, stress eating, etc.) often exceeds our entire package price within months.
+        *Compare: Traditional therapy often costs ฿60,000+ over months/years*
         """)
 
 class MethodPage:
