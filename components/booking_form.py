@@ -44,7 +44,7 @@ class BookingForm:
         st.write("### Ready to Start Your Transformation?")
         
         # Simple text message (not info box)
-        st.write("Book your free discovery call to see if the method is right for you.")
+        st.write("Discover if my proven 2-session approach is right for you. Available in-person (Bangkok) or online worldwide.")
                
         # Benefits of discovery call
         self._render_benefits()
