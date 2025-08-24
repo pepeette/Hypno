@@ -17,7 +17,7 @@ class MethodHero:
         """, unsafe_allow_html=True)
 
         # Better positioning for description text using Streamlit
-        st.write("Discover why our 2-session method succeeds where traditional approaches fail. It's not willpower. It's neuroscience.")
+        st.write("Traditional therapy relies on willpower and takes months. My analytical hypnotherapy works directly with subconscious patterns - which is why 85% of clients achieve lasting change in just 2 sessions, not years. It's not willpower. It's neuroscience.")
 
 class TwoSessionBreakdown:
     """Detailed breakdown of the 2-session process with 3-column layout"""
