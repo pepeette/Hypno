@@ -337,7 +337,7 @@ class PatternChangeMethod:
                     <div style="background: #4CA1A3; color: white; width: 60px; height: 60px; 
                                 border-radius: 50%; display: flex; align-items: center; justify-content: center; 
                                 font-weight: bold; font-size: 1.5rem; margin: 0 auto 1rem;">1</div>
-                    <h2 style="color: #273548;">Identify Your Patterns</h2>
+                    <h2 style="color: #273548;">Deep pattern analysis</h2>
                     <p style="color: #556D7A;">We map exactly what triggers your unwanted behavior at the subconscious level - 
                     often patterns you learned in childhood that no longer serve you.</p>
                 </div>
@@ -350,7 +350,7 @@ class PatternChangeMethod:
                     <div style="background: #4CA1A3; color: white; width: 60px; height: 60px; 
                                 border-radius: 50%; display: flex; align-items: center; justify-content: center; 
                                 font-weight: bold; font-size: 1.5rem; margin: 0 auto 1rem;">2</div>
-                    <h2 style="color: #273548;">Reprogram Directly</h2>
+                    <h2 style="color: #273548;">Neural Reset Hypnosis</h2>
                     <p style="color: #556D7A;">Using clinical hypnosis, we access your subconscious mind and install new, 
                     empowering patterns that automatically support your goals.</p>
                 </div>
