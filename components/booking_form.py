@@ -57,7 +57,7 @@ class BookingForm:
         benefits_html = """
         <div style="background: rgba(76, 161, 163, 0.05); border-radius: var(--radius-md);
                     padding: 1.5rem; margin: 0.5rem 0; border-left: 4px solid var(--accent);">
-            <h3 style="color: var(--accent); margin-bottom: 1rem;">What You'll Get in Your Discovery Call:</h3>
+            <h3 style="color: var(--accent); margin-bottom: 1rem;">What you'll get in your discovery call:</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                     <span style="color: var(--accent); font-size: 1rem;">✓</span>
