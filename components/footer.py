@@ -88,7 +88,7 @@ class Footer:
                       text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
                       font-weight: 600; text-align: center; transition: all 0.3s ease;
                       margin-top: 1rem;">
-                📍 Directions to Asoke (Central Bangkok)
+                📍 Easy to access by BTS Asoke
             </a>
             """, unsafe_allow_html=True)
     
