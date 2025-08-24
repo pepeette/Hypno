@@ -70,8 +70,8 @@ class Footer:
             st.markdown("**Credentials:**")
             st.write("• Certified Clinical Hypnotherapist since 2017")
             st.write("• Advanced Neuro-Linguistic Programming")
-            st.write("• Specialized in Borderline Personality DBT")
-            st.write("• Member, International Association of Hypnotherapists")
+            st.write("• Specialized in Rapid Behavioral Change")
+            st.write("• Member, London College of Clinical Hynptherapy")
 
         with col2:
             st.markdown("**Contact:**")
