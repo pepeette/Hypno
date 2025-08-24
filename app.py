@@ -92,7 +92,7 @@ class HypnotherapyApp:
         else:
             # Minimal fallback config
             st.set_page_config(
-                page_title="Transform Your Life in 2 Sessions | Clinical Hypnotherapy Bangkok",
+                page_title="Rapid Transformation Hypnotherapy in Bangkok",
                 page_icon="🧠",
                 layout="wide",
                 initial_sidebar_state="collapsed"
