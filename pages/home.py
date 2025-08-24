@@ -67,7 +67,8 @@ class HeroSection:
                     <div style="background: rgba(76, 161, 163, 0.1); border: 1px solid #4CA1A3; 
                                 border-radius: 8px; padding: 1rem; width: 100%;">
                         <p style="margin: 0; color: #273548; font-size: 1rem; line-height: 1.6;">
-                            💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.
+                            💡 True change begins when you stop resisting yourself and start rewiring the patterns controlling your behavior.<br>
+                            → Book your hypnotherapy at our new address in BANGKOK to break free from unwanted habits. 2 sessions only needed.
                         </p>
                     </div>
                 </div>
