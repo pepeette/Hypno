@@ -12,7 +12,7 @@ class MethodHero:
         st.markdown("""
         <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
                     border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
-            <h1 style="color: white;">The Science Behind Rapid Transformation</h1>
+            <h1 style="color: white;">The Science behind Rapid Transformation</h1>
         </div>
         """, unsafe_allow_html=True)
 
@@ -24,7 +24,7 @@ class TwoSessionBreakdown:
     
     def render(self):
         """Render the session-by-session breakdown in 3 columns"""
-        st.subheader("The Proven 2-Session Process")
+        st.subheader("The proven 2-session process")
         st.write("Each session has a specific purpose in your transformation journey:")
         
         # 3-column layout: Session 1, Session 2, Optional Session 3
@@ -108,7 +108,7 @@ class TwoSessionBreakdown:
         """, unsafe_allow_html=True)
         
         # Expandable details
-        with st.expander(f"Details for Session {session_num}", expanded=False):
+        with st.expander(f"Details for session {session_num}", expanded=False):
             if image_url:
                 st.image(image_url, caption=f"Session {session_num}")
             
@@ -123,7 +123,7 @@ class SuccessMetrics:
     
     def render(self):
         """Render success metrics with visual impact"""
-        st.subheader("Proven Results Across Thousands of Sessions")
+        st.subheader("Proven results across thousands of sessions")
         
         # # Force 3 columns to stay in one row
         # st.markdown("""
@@ -186,7 +186,7 @@ class SuccessMetrics:
                 <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
                             border-radius: 8px; padding: 1rem; text-align: center;">
                     <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
-                        3rd Session Optional
+                        3rd session Optional
                     </div>
                     <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
                         15% need Reinforcement
@@ -211,7 +211,7 @@ class WhyItWorks:
     
     def render(self):
         """Render the core science behind the method"""
-        st.subheader("Why Traditional Methods Keep Failing You")
+        st.subheader("Why traditional methods keep failing you")
         
         # Use normal Streamlit components for better readability
         col1, col2 = st.columns([1, 3])
@@ -233,7 +233,7 @@ class InvestmentSection:
     
     def render(self):
         """Render investment options"""
-        st.subheader("Invest in Your Transformation")
+        st.subheader("Invest in your transformation")
         st.write("One-time investment. Lifetime results. Compare to years of traditional therapy:")
         
         col1, col2 = st.columns(2)
