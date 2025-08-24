@@ -61,6 +61,7 @@ class Footer:
         with col_text:
             st.markdown("## Laetitia Sheppard")
             st.write("Certified Clinical Hypnotherapist with over 8 years of experience in behavioral change and mental wellness.")
+            st.write("My passion is providing accessible, rapid, and effective hypnotherapy to spark easier lifestyles.")
 
         # Contact and credentials section
         col1, col2 = st.columns(2, gap="large")
@@ -87,7 +88,7 @@ class Footer:
                       text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; 
                       font-weight: 600; text-align: center; transition: all 0.3s ease;
                       margin-top: 1rem;">
-                📍 Directions to NEW ADDRESS
+                📍 Directions to Asoke (Central Bangkok)
             </a>
             """, unsafe_allow_html=True)
     
