@@ -226,7 +226,7 @@ class PatternChangeMethod:
     
     def render(self):
         """Render method explanation using Streamlit components"""
-        st.subheader("Pattern Change Hypnotherapy: Why It Works")
+        st.subheader("Why This Unique Approach Succeeds Where Others Haven't")
         
         # Opening explanation using Streamlit info box
         st.info("""
