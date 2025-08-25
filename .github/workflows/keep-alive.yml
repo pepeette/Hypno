@@ -1,0 +1,24 @@
+name: Keep Streamlit App Alive
+
+on:
+  schedule:
+    # Runs every 12 hours
+    - cron: '0 */12 * * *'
+  workflow_dispatch: # Allows manual triggering from GitHub Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Ping Streamlit App
+        run: |
+          echo "Pinging Streamlit app to keep it alive..."
+          # Replace YOUR-APP-NAME with your actual Streamlit app name
+          curl -f -s https://hypnotherapy.streamlit.app/ || echo "App might be sleeping, that's normal"
+          echo "Ping completed at $(date)"
+      
+      - name: Ping with health check (if you add one)
+        run: |
+          # This is optional - only if you add a health check endpoint
+          curl -f -s "https://hypnotherapy.streamlit.app/?health=true" || echo "Health check ping completed"
