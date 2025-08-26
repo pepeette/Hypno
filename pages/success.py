@@ -425,21 +425,18 @@ class TestimonialCards:
     def _render_card(self, testimonial):
         """Render individual testimonial card with enhanced visual appeal"""
         
-        # Map emotions to relevant stock images and color themes
+        # Map emotions to color themes (no external images for reliability)
         emotion_visuals = {
             "From Fear to Authentic Drive": {
-                "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=300&h=200&fit=crop&crop=center",
                 "color": "#22c55e",
                 "gradient": "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)"
             },
             "From Isolation to Connection": {
-                "image": "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&h=200&fit=crop&crop=center", 
-                "color": "#3b82f6",
+                "color": "#3b82f6", 
                 "gradient": "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)"
             },
             "From Fear to Trust": {
-                "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300&h=200&fit=crop&crop=center",
-                "color": "#8b5cf6", 
+                "color": "#8b5cf6",
                 "gradient": "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)"
             }
         }
@@ -447,26 +444,18 @@ class TestimonialCards:
         visual = emotion_visuals.get(testimonial['emotion'], emotion_visuals["From Fear to Trust"])
         
         with st.container():
-            # Enhanced card with image and gradient
+            # Hero header with gradient - single div, no nesting
             st.markdown(f"""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 16px; 
-                        margin: 2rem 0; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                        transition: transform 0.3s ease;">
-                <div style="position: relative; height: 200px; {visual['gradient']}; 
-                            display: flex; align-items: center; justify-content: center;">
-                    <img src="{visual['image']}" 
-                         style="width: 100%; height: 100%; object-fit: cover; opacity: 0.3;" 
-                         alt="Transformation journey">
-                    <div style="position: absolute; text-align: center; color: white;">
-                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">{testimonial['icon']}</div>
-                        <h2 style="margin: 0; font-size: 1.8rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                            {testimonial['name']}
-                        </h2>
-                        <p style="margin: 0.5rem 0 0 0; font-weight: 600; opacity: 0.9;">
-                            {testimonial['role']}
-                        </p>
-                    </div>
-                </div>
+            <div style="background: {visual['gradient']}; border-radius: 16px; 
+                        padding: 3rem 2rem; text-align: center; margin: 2rem 0;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">{testimonial['icon']}</div>
+                <h2 style="color: white; margin: 0; font-size: 1.8rem; text-shadow: none;">
+                    {testimonial['name']}
+                </h2>
+                <p style="color: white; margin: 0.5rem 0 0 0; font-weight: 600; opacity: 0.9;">
+                    {testimonial['role']}
+                </p>
             </div>
             """, unsafe_allow_html=True)
             
@@ -480,55 +469,32 @@ class TestimonialCards:
             </div>
             """, unsafe_allow_html=True)
             
-            # Before/After transformation - enhanced visual contrast
+            # Before/After using Streamlit columns
             col_before, col_after = st.columns(2, gap="large")
             
             with col_before:
-                st.markdown("""
-                <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); 
-                            padding: 1.5rem; border-radius: 12px; border-left: 4px solid #ef4444;">
-                """, unsafe_allow_html=True)
-                st.markdown("**😔 Before:**")
-                st.write(testimonial['before'])
-                st.markdown("</div>", unsafe_allow_html=True)
+                st.markdown("### 😔 Before:")
+                st.error(testimonial['before'])
             
             with col_after:
-                st.markdown("""
-                <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); 
-                            padding: 1.5rem; border-radius: 12px; border-left: 4px solid #22c55e;">
-                """, unsafe_allow_html=True)
-                st.markdown("**🌟 After:**")
-                st.write(testimonial['after'])
-                st.markdown("</div>", unsafe_allow_html=True)
+                st.markdown("### 🌟 After:")
+                st.success(testimonial['after'])
             
-            # Breakthrough insight with enhanced styling
-            st.markdown(f"""
-            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); 
-                        padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; 
-                        border-left: 4px solid #4CA1A3; position: relative;">
-                <div style="position: absolute; top: -10px; left: 20px; background: #4CA1A3; 
-                           color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">
-                    💡 KEY BREAKTHROUGH
-                </div>
-                <p style="margin: 0.5rem 0 0 0; font-style: italic; line-height: 1.6;">
-                    <strong>{testimonial['breakthrough']}</strong>
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
+            # Breakthrough insight using Streamlit info
+            st.info(f"💡 **Key Breakthrough:** {testimonial['breakthrough']}")
             
-            # Sessions count with celebratory styling
+            # Sessions count with simple styling
             st.markdown(f"""
             <div style="text-align: center; margin: 1rem 0; padding: 1rem; 
-                        background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%); 
-                        border-radius: 25px; color: white;">
+                        background: #4CA1A3; border-radius: 25px; color: white;">
                 <div style="font-size: 1.1rem; font-weight: 600;">
                     ✨ Complete transformation in {testimonial['sessions']} ✨
                 </div>
             </div>
             """, unsafe_allow_html=True)
             
-            # Add breathing space
-            st.markdown("<div style='margin: 3rem 0;'></div>", unsafe_allow_html=True)
+            # Add spacing between cards
+            st.markdown("---")
 
 class QuickStats:
     """Why hypnotherapy succeeds - explanation and metrics"""
