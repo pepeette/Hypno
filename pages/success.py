@@ -232,7 +232,6 @@ class TestimonialCards:
         self.testimonials = [
             {
                 "icon": "🎓",
-                "name": "Yasmina",
                 "role": "Yasmina : Medicine Student, Morocco → Shanghai",
                 "emotion": "From Fear to Authentic Drive", 
                 "before": "Failing to cope with competitive Chinese university system, studying out of obligation",
@@ -242,7 +241,6 @@ class TestimonialCards:
             },
             {
                 "icon": "🚭",
-                "name": "Patrick",
                 "role": "Patrick : Executive, Shanghai → Paris",
                 "emotion": "From Isolation to Connection",
                 "before": "Pack-a-day smoker, lighting cigarettes in a row, heavy ashtray breath",
@@ -252,7 +250,6 @@ class TestimonialCards:
             },
             {
                 "icon": "🌙",
-                "name": "Betsy",
                 "role": "Betty : A&E Doctor, England (15+ years)",
                 "emotion": "From Fear to Trust",
                 "before": "Sleepless nights for years, totally exhausted, chaotic sleep patterns",
@@ -299,13 +296,13 @@ class TestimonialCards:
                     {testimonial['icon']}{testimonial['emotion']}
                 </h2>
                 <p style="color: #556D7A; margin: 0.5rem 0 0 0; font-weight: 600;">
-                    {testimonial['name']}{testimonial['role']}
+                    {testimonial['role']}
                 </p>
             </div>
             """, unsafe_allow_html=True)
                             
             # Before/After using st.info with bold text
-            col_before, col_after = st.columns(1, gap="large")
+            col_before, col_after = st.columns(2, gap="small")
             
             with col_before:
                 st.info(f"**😔 Before:** {testimonial['before']}")
