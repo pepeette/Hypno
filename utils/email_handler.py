@@ -172,6 +172,77 @@ Automated Booking System
 # Global instance for easy import
 email_handler = EmailHandler()
 
+def send_testimonial_email(self, testimonial_data):
+    """Send testimonial submission notification"""
+    try:
+        msg = MIMEMultipart()
+        msg['From'] = self.sender_email
+        msg['To'] = self.recipient_email
+        msg['Subject'] = "🌟 New Success Story Submission"
+        
+        body = self._format_testimonial_email_body(testimonial_data)
+        msg.attach(MIMEText(body, 'plain'))
+        
+        if self.password:
+            return self._send_email(msg)
+        else:
+            print(f"Testimonial Submission: {testimonial_data}")
+            return True
+            
+    except Exception as e:
+        print(f"Email sending error: {e}")
+        return False
+
+def _format_testimonial_email_body(self, data):
+    """Format testimonial submission email body"""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    anonymous_status = "YES - Use first name only" if data.get('anonymous', False) else "NO - Full name OK"
+    
+    return f"""
+🌟 NEW SUCCESS STORY SUBMISSION
+Received: {timestamp}
+
+═══════════════════════════════════════
+
+👤 CLIENT INFORMATION:
+Name: {data.get('name', 'Not provided')}
+Email: {data.get('email', 'Not provided')}
+Anonymous Posting: {anonymous_status}
+
+🎯 TRANSFORMATION DETAILS:
+Concern Overcome: {data.get('concern', 'Not specified')}
+Sessions Required: {data.get('sessions', 'Not specified')}
+
+📖 SUCCESS STORY:
+
+BEFORE:
+{data.get('before', 'Not provided')}
+
+AFTER:
+{data.get('after', 'Not provided')}
+
+═══════════════════════════════════════
+
+⚡ ACTION REQUIRED:
+Review this success story for potential inclusion on the website.
+
+📞 Next Steps:
+1. Review story for authenticity and appropriateness
+2. Contact client if clarification needed
+3. Consider featuring story in Success section
+4. Send thank you email to client
+
+✅ Client has given permission to share their story
+
+═══════════════════════════════════════
+Bangkok Hypnotherapy Clinic
+Success Stories Management
+    """
+    
+def send_testimonial_email(testimonial_data):
+    """Send testimonial submission email"""
+    return email_handler.send_testimonial_email(testimonial_data)
+    
 def send_discovery_call_email(booking_data):
     """Send discovery call booking email"""
     return email_handler.send_discovery_call_email(booking_data)
