@@ -444,52 +444,44 @@ class TestimonialCards:
         visual = emotion_visuals.get(testimonial['emotion'], emotion_visuals["From Fear to Trust"])
         
         with st.container():
-            # Hero header with gradient - single div, no nesting
+            # Hero header with old session div style
             st.markdown(f"""
-            <div style="background: {visual['gradient']}; border-radius: 16px; 
-                        padding: 3rem 2rem; text-align: center; margin: 2rem 0;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <div style="text-align: center; color: {visual['color']; font-weight: 600; margin-top: 1rem;">
                 <div style="font-size: 3rem; margin-bottom: 0.5rem;">{testimonial['icon']}</div>
-                <h2 style="color: white; margin: 0; font-size: 1.8rem; text-shadow: none;">
-                    {testimonial['name']}
+                <h2 style="color: #273548; margin: 0; font-size: 1.8rem;">
+                    {testimonial['emotion']}
                 </h2>
-                <p style="color: white; margin: 0.5rem 0 0 0; font-weight: 600; opacity: 0.9;">
+                <p style="color: #556D7A; margin: 0.5rem 0 0 0; font-weight: 600;">
                     {testimonial['role']}
                 </p>
             </div>
             """, unsafe_allow_html=True)
             
-            # Emotion transformation badge
+            # Client name without background - simple text
             st.markdown(f"""
-            <div style="text-align: center; margin: -1rem 0 1.5rem 0;">
-                <span style="background: {visual['color']}; color: white; padding: 0.5rem 1.5rem; 
-                           border-radius: 25px; font-weight: 600; font-size: 0.9rem;">
-                    {testimonial['emotion']}
+            <div style="text-align: center; margin: 1rem 0;">
+                <span style="color: #273548; font-weight: 600; font-size: 1rem;">
+                    {testimonial['name']}
                 </span>
             </div>
             """, unsafe_allow_html=True)
             
-            # Before/After using Streamlit columns
+            # Before/After using st.info with bold text
             col_before, col_after = st.columns(2, gap="large")
             
             with col_before:
-                st.markdown("### 😔 Before:")
-                st.error(testimonial['before'])
+                st.info(f"**😔 Before:** {testimonial['before']}")
             
             with col_after:
-                st.markdown("### 🌟 After:")
-                st.success(testimonial['after'])
+                st.info(f"**🌟 After:** {testimonial['after']}")
             
             # Breakthrough insight using Streamlit info
             st.info(f"💡 **Key Breakthrough:** {testimonial['breakthrough']}")
             
-            # Sessions count with simple styling
+            # Sessions count without background - simple styling like old session div
             st.markdown(f"""
-            <div style="text-align: center; margin: 1rem 0; padding: 1rem; 
-                        background: #4CA1A3; border-radius: 25px; color: white;">
-                <div style="font-size: 1.1rem; font-weight: 600;">
-                    ✨ Complete transformation in {testimonial['sessions']} ✨
-                </div>
+            <div style="text-align: center; color: #4CA1A3; font-weight: 600; margin-top: 1rem;">
+                ✨ {testimonial['sessions']} ✨
             </div>
             """, unsafe_allow_html=True)
             
