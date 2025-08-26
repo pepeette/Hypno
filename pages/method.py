@@ -242,7 +242,7 @@ class InvestmentSection:
             st.markdown("""
             <div style="background: white; border: 2px solid #4CA1A3; border-radius: 12px; 
                         padding: 2rem; text-align: center; margin: 1rem 0;">
-                <h2 style="color: #4CA1A3; margin-bottom: 1rem;">Complete Package</h2>
+                <h2 style="color: #4CA1A3; margin-bottom: 1rem;">Common Package</h2>
                 <div style="color: #273548; font-size: 2.5rem; font-weight: 700; margin: 1rem 0;">
                     ฿3,000
                 </div>
@@ -256,14 +256,14 @@ class InvestmentSection:
             st.write("✓ Email support between sessions")
             st.write("✓ 85% achieve full transformation")
             
-            if st.button("📞 Book Complete Package", type="primary", use_container_width=True):
+            if st.button("📞 Book Common Package", type="primary", use_container_width=True):
                 st.success("Excellent choice! Scroll down to book your discovery call.")
         
         with col2:
             st.markdown("""
             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
                         padding: 2rem; text-align: center; margin: 1rem 0;">
-                <h2 style="color: #273548; margin-bottom: 1rem;">Premium Package</h2>
+                <h2 style="color: #273548; margin-bottom: 1rem;">Complete Package</h2>
                 <div style="color: #273548; font-size: 2.5rem; font-weight: 700; margin: 1rem 0;">
                     ฿4,000
                 </div>
@@ -272,12 +272,12 @@ class InvestmentSection:
             """, unsafe_allow_html=True)
             
             st.markdown("**Includes:**")
-            st.write("✓ Everything in Complete Package")
+            st.write("✓ Everything in Common Package")
             st.write("✓ Session 3: Optional reinforcement (60 mins)")
             st.write("✓ 100% satisfaction commitment")
             st.write("✓ Maximum confidence approach")
             
-            if st.button("⭐ Book Premium Package", use_container_width=True):
+            if st.button("⭐ Book Complete Package", use_container_width=True):
                 st.success("Smart choice! Scroll down to book your discovery call.")
         
         # Value comparison
