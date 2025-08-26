@@ -422,76 +422,67 @@ class TestimonialCards:
             self._render_card(testimonial)
     
     def _render_card(self, testimonial):
-        """Render individual testimonial card"""
-        card_html = f"""
+        """Render individual testimonial card using Streamlit components"""
+        # Container with border styling
+        st.markdown(f"""
         <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
                     padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #4CA1A3;">
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                <div style="font-size: 2.5rem;">{testimonial['icon']}</div>
-                <div>
-                    <h2 style="color: #273548; margin: 0;">{testimonial['name']}</h2>
-                    <p style="color: #556D7A; margin: 0; font-size: 0.9rem;">{testimonial['role']}</p>
-                    <p style="color: #4CA1A3; margin: 0.5rem 0 0 0; font-size: 0.85rem; font-weight: 600; font-style: italic;">
-                        {testimonial['emotion']}
-                    </p>
-                </div>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                <div>
-                    <h3 style="color: #ef4444; margin-bottom: 0.5rem;">Before:</h3>
-                    <p style="margin: 0;">{testimonial['before']}</p>
-                </div>
-                <div>
-                    <h3 style="color: #22c55e; margin-bottom: 0.5rem;">After:</h3>
-                    <p style="margin: 0;">{testimonial['after']}</p>
-                </div>
-            </div>
-            
-            <div style="background: rgba(76, 161, 163, 0.1); padding: 0.8rem; border-radius: 6px; margin-bottom: 1rem;">
-                <p style="margin: 0; font-size: 0.9rem; font-style: italic; color: #273548;">
-                    <strong>Breakthrough:</strong> {testimonial['breakthrough']}
-                </p>
-            </div>
-            
-            <div style="text-align: center; color: #4CA1A3; font-weight: 600;">
-                ✨ {testimonial['sessions']} ✨
-            </div>
+        """, unsafe_allow_html=True)
+        
+        # Header with icon and name using columns
+        col_icon, col_info = st.columns([1, 4])
+        
+        with col_icon:
+            st.markdown(f"<div style='font-size: 2.5rem; text-align: center;'>{testimonial['icon']}</div>", 
+                       unsafe_allow_html=True)
+        
+        with col_info:
+            st.markdown(f"## {testimonial['name']}")
+            st.caption(testimonial['role'])
+            st.markdown(f"*{testimonial['emotion']}*")
+        
+        # Before/After using columns
+        col_before, col_after = st.columns(2)
+        
+        with col_before:
+            st.markdown("**🔴 Before:**")
+            st.write(testimonial['before'])
+        
+        with col_after:
+            st.markdown("**🟢 After:**")
+            st.write(testimonial['after'])
+        
+        # Breakthrough insight
+        st.info(f"**💡 Breakthrough:** {testimonial['breakthrough']}")
+        
+        # Sessions count centered
+        st.markdown(f"""
+        <div style="text-align: center; color: #4CA1A3; font-weight: 600; margin-top: 1rem;">
+            ✨ {testimonial['sessions']} ✨
         </div>
-        """
-        st.markdown(card_html, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+        
+        # Close the container
+        st.markdown("</div>", unsafe_allow_html=True)
 
 class QuickStats:
-    """Simple success metrics"""
+    """Simple success metrics using Streamlit components"""
     
     def render(self):
         """Render success statistics"""
         st.subheader("The Results Speak for Themselves")
         
-        # Success metrics in one row
-        st.markdown("""
-        <div style="display: flex; gap: 1rem; margin: 2rem 0; flex-wrap: nowrap; 
-                    justify-content: space-between;">
-            <div style="flex: 1; background: white; border: 1px solid #CBD5E1; 
-                        border-radius: 8px; padding: 1.5rem; text-align: center;">
-                <div style="color: #4CA1A3; font-size: 2rem; font-weight: 700;">85%</div>
-                <div style="color: #273548; font-weight: 600;">Complete Success</div>
-                <div style="color: #556D7A; font-size: 0.9rem;">in 2 sessions</div>
-            </div>
-            <div style="flex: 1; background: white; border: 1px solid #CBD5E1; 
-                        border-radius: 8px; padding: 1.5rem; text-align: center;">
-                <div style="color: #4CA1A3; font-size: 2rem; font-weight: 700;">500+</div>
-                <div style="color: #273548; font-weight: 600;">Lives Changed</div>
-                <div style="color: #556D7A; font-size: 0.9rem;">since 2017</div>
-            </div>
-            <div style="flex: 1; background: white; border: 1px solid #CBD5E1; 
-                        border-radius: 8px; padding: 1.5rem; text-align: center;">
-                <div style="color: #4CA1A3; font-size: 2rem; font-weight: 700;">95%</div>
-                <div style="color: #273548; font-weight: 600;">Still Free</div>
-                <div style="color: #556D7A; font-size: 0.9rem;">1 year later</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        # Use Streamlit columns for metrics
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.metric("Complete Success", "85%", "in 2 sessions")
+        
+        with col2:
+            st.metric("Lives Changed", "500+", "since 2017")
+        
+        with col3:
+            st.metric("Still Free", "95%", "1 year later")
 
 class ShareYourStory:
     """Simple testimonial submission"""
@@ -561,3 +552,4 @@ class SuccessPage:
 # Factory function for clean import
 def create_success_page():
     return SuccessPage()
+    
