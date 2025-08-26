@@ -269,9 +269,10 @@ class TestimonialCards:
         
         for testimonial in self.testimonials:
             self._render_card(testimonial)
+            
     def _render_card(self, testimonial):
-    """Render individual testimonial card with enhanced visual appeal"""
-    
+        """Render individual testimonial card with enhanced visual appeal"""
+        
         # Map emotions to color themes (no external images for reliability)
         emotion_visuals = {
             "From Fear to Authentic Drive": {
