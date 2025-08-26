@@ -15,8 +15,10 @@ class EmailHandler:
         # Gmail SMTP configuration
         self.smtp_server = "smtp.gmail.com"
         self.smtp_port = 587
-        self.sender_email = "laetitiasheppard@gmail.com"
-        self.recipient_email = "laetitiasheppard@gmail.com"
+        
+        self.sender_email = st.secrets.get("SENDER_EMAIL", "default_sender@example.com")
+        self.recipient_email = st.secrets.get("RECIPIENT_EMAIL", "default_recipient@example.com")
+        self.password = st.secrets.get("GMAIL_APP_PASSWORD", "")
         
         # Try to get password from environment variables or Streamlit secrets
         try:
