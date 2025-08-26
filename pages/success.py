@@ -269,10 +269,9 @@ class TestimonialCards:
         
         for testimonial in self.testimonials:
             self._render_card(testimonial)
-    
     def _render_card(self, testimonial):
-        """Render individual testimonial card with enhanced visual appeal"""
-        
+    """Render individual testimonial card with enhanced visual appeal"""
+    
         # Map emotions to color themes (no external images for reliability)
         emotion_visuals = {
             "From Fear to Authentic Drive": {
@@ -292,9 +291,9 @@ class TestimonialCards:
         visual = emotion_visuals.get(testimonial['emotion'], emotion_visuals["From Fear to Trust"])
         
         with st.container():
-            # Hero header with old session div style
+            # Hero header with old session div style - FIXED SYNTAX ERROR
             st.markdown(f"""
-            <div style="text-align: center; color: {visual['color']; font-weight: 600; margin-top: 1rem;">
+            <div style="text-align: center; color: {visual['color']}; font-weight: 600; margin-top: 1rem;">
                 <div style="font-size: 3rem; margin-bottom: 0.5rem;">{testimonial['icon']}</div>
                 <h2 style="color: #273548; margin: 0; font-size: 1.8rem;">
                     {testimonial['emotion']}
@@ -304,7 +303,7 @@ class TestimonialCards:
                 </p>
             </div>
             """, unsafe_allow_html=True)
-            
+                
             # Client name without background - simple text
             st.markdown(f"""
             <div style="text-align: center; margin: 1rem 0;">
