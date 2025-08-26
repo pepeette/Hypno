@@ -377,12 +377,12 @@ class QuickStats:
             st.success("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
 
 class ShareYourStory:
-    """Simple testimonial submission"""
+    """Simple testimonial submission with email integration"""
     
     def render(self):
         """Render story sharing section"""
         st.markdown("---")
-        st.subheader("🌟 Share your success story")
+        st.subheader("🌟 Share Your Success Story")
         st.write("Transformed by our sessions? Your story could inspire someone to take the first step.")
         
         with st.form("share_story"):
@@ -409,10 +409,39 @@ class ShareYourStory:
             
             if st.form_submit_button("Share My Story 🌟", type="primary"):
                 if name and email and concern and sessions and before and after and permission:
-                    st.success("✅ Thank you! We'll review your story and may feature it to inspire others.")
-                    st.balloons()
+                    # Send testimonial email
+                    if self._send_testimonial_email(name, email, concern, sessions, before, after, anonymous):
+                        st.success("✅ Thank you! We'll review your story and may feature it to inspire others.")
+                        st.balloons()
+                    else:
+                        st.error("There was an issue submitting your story. Please try again or contact us directly.")
                 else:
                     st.error("Please fill in all required fields marked with *")
+    
+    def _send_testimonial_email(self, name, email, concern, sessions, before, after, anonymous):
+        """Send testimonial submission email using email handler"""
+        try:
+            # Import email handler
+            from utils.email_handler import email_handler
+            
+            # Prepare testimonial data
+            testimonial_data = {
+                'name': name,
+                'email': email,
+                'concern': concern,
+                'sessions': sessions,
+                'before': before,
+                'after': after,
+                'anonymous': anonymous,
+                'submission_type': 'testimonial'
+            }
+            
+            # Send email using the existing email handler
+            return email_handler.send_testimonial_email(testimonial_data)
+            
+        except Exception as e:
+            print(f"Error sending testimonial email: {e}")
+            return False
 
 class SuccessPage:
     """Complete success page - simplified and engaging"""
