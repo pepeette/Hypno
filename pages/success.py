@@ -233,7 +233,7 @@ class TestimonialCards:
             {
                 "icon": "🎓",
                 "role": "Yasmina : Medicine Student, Morocco → Shanghai",
-                "emotion": "From Fear to Authentic Drive", 
+                "emotion": "From trauma to inner drive", 
                 "before": "Failing to cope with competitive Chinese university system, studying out of obligation",
                 "after": "Found her own passion for medicine, excelling with genuine motivation and purpose",
                 "breakthrough": "Discovered she was studying to honor her late mother, not herself",
@@ -242,16 +242,16 @@ class TestimonialCards:
             {
                 "icon": "🚭",
                 "role": "Patrick : Executive, Shanghai → Paris",
-                "emotion": "From Isolation to Connection",
+                "emotion": "From smoker to healthier",
                 "before": "Pack-a-day smoker, lighting cigarettes in a row, heavy ashtray breath",
                 "after": "Smoke-free for 10 months, deeper connection with his wife, genuine intimacy",
-                "breakthrough": "Cigarettes were his excuse to escape - rewired to connect instead",
+                "breakthrough": "Cigarettes were his excuse to escape - rewired to walk instead",
                 "sessions": "2 sessions"
             },
             {
                 "icon": "🌙",
                 "role": "Betty : A&E Doctor, England (15+ years)",
-                "emotion": "From Fear to Trust",
+                "emotion": "From fear to trust",
                 "before": "Sleepless nights for years, totally exhausted, chaotic sleep patterns",
                 "after": "Sleeping peacefully 7-8 hours, renewed energy for patients and family",
                 "breakthrough": "Learned to trust herself enough to let go and rest deeply",
@@ -261,7 +261,7 @@ class TestimonialCards:
     
     def render(self):
         """Render testimonial cards"""
-        st.subheader("3 Lives Transformed Through Emotional Breakthroughs")
+        st.subheader("Lives transformed through emotional breakthroughs / Hypnotherapy")
         st.write("Each transformation began with identifying the deeper emotional pattern driving the surface behavior.")
         
         for testimonial in self.testimonials:
@@ -382,7 +382,7 @@ class ShareYourStory:
     def render(self):
         """Render story sharing section"""
         st.markdown("---")
-        st.subheader("🌟 Share Your Success Story")
+        st.subheader("🌟 Share your success story")
         st.write("Transformed by our sessions? Your story could inspire someone to take the first step.")
         
         with st.form("share_story"):
