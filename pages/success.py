@@ -364,14 +364,14 @@ Simplified, engaging version with emotional impact
 import streamlit as st
 
 class SuccessHero:
-    """Hero section for success stories page"""
+    """Hero section for success stories page using consistent styling"""
     
     def render(self):
         """Render success hero section"""
         st.markdown("""
         <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
                     border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
-            <h1 style="color: white;">Real People. Real Results.</h1>
+            <h1 style="color: white; text-shadow: none;">Real People. Real Results.</h1>
         </div>
         """, unsafe_allow_html=True)
 
@@ -416,54 +416,65 @@ class TestimonialCards:
     
     def render(self):
         """Render testimonial cards"""
-        st.subheader("4 Lives Transformed in Days")
+        st.subheader("3 Lives Transformed Through Emotional Breakthroughs")
+        st.write("Each transformation began with identifying the deeper emotional pattern driving the surface behavior.")
         
         for testimonial in self.testimonials:
             self._render_card(testimonial)
     
     def _render_card(self, testimonial):
         """Render individual testimonial card using Streamlit components"""
-        # Container with border styling
-        st.markdown(f"""
-        <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-                    padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #4CA1A3;">
-        """, unsafe_allow_html=True)
-        
-        # Header with icon and name using columns
-        col_icon, col_info = st.columns([1, 4])
-        
-        with col_icon:
-            st.markdown(f"<div style='font-size: 2.5rem; text-align: center;'>{testimonial['icon']}</div>", 
-                       unsafe_allow_html=True)
-        
-        with col_info:
-            st.markdown(f"## {testimonial['name']}")
-            st.caption(testimonial['role'])
-            st.markdown(f"*{testimonial['emotion']}*")
-        
-        # Before/After using columns
-        col_before, col_after = st.columns(2)
-        
-        with col_before:
-            st.markdown("**🔴 Before:**")
-            st.write(testimonial['before'])
-        
-        with col_after:
-            st.markdown("**🟢 After:**")
-            st.write(testimonial['after'])
-        
-        # Breakthrough insight
-        st.info(f"**💡 Breakthrough:** {testimonial['breakthrough']}")
-        
-        # Sessions count centered
-        st.markdown(f"""
-        <div style="text-align: center; color: #4CA1A3; font-weight: 600; margin-top: 1rem;">
-            ✨ {testimonial['sessions']} ✨
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Close the container
-        st.markdown("</div>", unsafe_allow_html=True)
+        # Use a clean container approach
+        with st.container():
+            # Create card styling using CSS class that matches your system
+            st.markdown("""
+            <style>
+            .testimonial-card {
+                background: var(--card-bg);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-md);
+                padding: var(--space-lg);
+                margin: var(--space-lg) 0;
+                border-left: 4px solid var(--accent);
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            # Header with icon and name using columns
+            col_icon, col_info = st.columns([1, 5])
+            
+            with col_icon:
+                st.markdown(f"<div style='font-size: 2.5rem; text-align: center;'>{testimonial['icon']}</div>", 
+                           unsafe_allow_html=True)
+            
+            with col_info:
+                st.subheader(testimonial['name'])
+                st.caption(testimonial['role'])
+                st.markdown(f"*{testimonial['emotion']}*")
+            
+            # Before/After using columns
+            col_before, col_after = st.columns(2)
+            
+            with col_before:
+                st.markdown("**Before:**")
+                st.write(testimonial['before'])
+            
+            with col_after:
+                st.markdown("**After:**")  
+                st.write(testimonial['after'])
+            
+            # Breakthrough insight using info box
+            st.info(f"💡 **Breakthrough:** {testimonial['breakthrough']}")
+            
+            # Sessions count
+            st.markdown(f"""
+            <div style="text-align: center; color: var(--accent); font-weight: 600; margin-top: var(--space-sm);">
+                ✨ {testimonial['sessions']} ✨
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Add spacing after each testimonial
+            st.markdown("<br>", unsafe_allow_html=True)
 
 class QuickStats:
     """Simple success metrics using Streamlit components"""
@@ -552,4 +563,3 @@ class SuccessPage:
 # Factory function for clean import
 def create_success_page():
     return SuccessPage()
-    
