@@ -232,18 +232,18 @@ class TestimonialCards:
         self.testimonials = [
             {
                 "icon": "🎓",
-                "name": "Yasmina",
-                "role": "Medicine Student, Morocco → Shanghai",
+                #"name": "Yasmina",
+                "role": "Yasmina : Medicine Student, Morocco → Shanghai",
                 "emotion": "From Fear to Authentic Drive", 
                 "before": "Failing to cope with competitive Chinese university system, studying out of obligation",
                 "after": "Found her own passion for medicine, excelling with genuine motivation and purpose",
                 "breakthrough": "Discovered she was studying to honor her late mother, not herself",
-                "sessions": "2 sessions"
+                "sessions": "6 sessions"
             },
             {
                 "icon": "🚭",
-                "name": "Patrick",
-                "role": "Executive, Shanghai → Paris",
+                #"name": "Patrick",
+                "role": "Patrick : Executive, Shanghai → Paris",
                 "emotion": "From Isolation to Connection",
                 "before": "Pack-a-day smoker, lighting cigarettes in a row, heavy ashtray breath",
                 "after": "Smoke-free for 10 months, deeper connection with his wife, genuine intimacy",
@@ -252,8 +252,8 @@ class TestimonialCards:
             },
             {
                 "icon": "🌙",
-                "name": "Betsy",
-                "role": "A&E Doctor, England (15+ years)",
+                #"name": "Betsy",
+                "role": "Betty : A&E Doctor, England (15+ years)",
                 "emotion": "From Fear to Trust",
                 "before": "Sleepless nights for years, totally exhausted, chaotic sleep patterns",
                 "after": "Sleeping peacefully 7-8 hours, renewed energy for patients and family",
@@ -295,9 +295,9 @@ class TestimonialCards:
             # Hero header with old session div style - FIXED SYNTAX ERROR
             st.markdown(f"""
             <div style="text-align: center; color: {visual['color']}; font-weight: 600; margin-top: 1rem;">
-                <div style="font-size: 3rem; margin-bottom: 0.5rem;">{testimonial['icon']}</div>
+                #<div style="font-size: 3rem; margin-bottom: 0.5rem;">{testimonial['icon']}</div>
                 <h2 style="color: #273548; margin: 0; font-size: 1.8rem;">
-                    {testimonial['emotion']}
+                    {testimonial['icon']}{testimonial['emotion']}
                 </h2>
                 <p style="color: #556D7A; margin: 0.5rem 0 0 0; font-weight: 600;">
                     {testimonial['role']}
@@ -305,17 +305,17 @@ class TestimonialCards:
             </div>
             """, unsafe_allow_html=True)
                 
-            # Client name without background - simple text
-            st.markdown(f"""
-            <div style="text-align: center; margin: 1rem 0;">
-                <span style="color: #273548; font-weight: 600; font-size: 1rem;">
-                    {testimonial['name']}
-                </span>
-            </div>
-            """, unsafe_allow_html=True)
+            # # Client name without background - simple text
+            # st.markdown(f"""
+            # <div style="text-align: center; margin: 1rem 0;">
+            #     <span style="color: #273548; font-weight: 600; font-size: 1rem;">
+            #         {testimonial['name']}
+            #     </span>
+            # </div>
+            # """, unsafe_allow_html=True)
             
             # Before/After using st.info with bold text
-            col_before, col_after = st.columns(2, gap="large")
+            col_before, col_after = st.columns(1, gap="large")
             
             with col_before:
                 st.info(f"**😔 Before:** {testimonial['before']}")
