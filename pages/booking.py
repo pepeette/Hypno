@@ -41,15 +41,15 @@ class BookingPage:
     
     def render(self):
         """Render only the action buttons"""
-        # Simple header
-        st.markdown("""
-        <div style="text-align: center; margin: 2rem 0 3rem 0;">
-            <h1>Ready to Transform Your Life?</h1>
-            <p style="color: var(--text-secondary);">
-                Choose your preferred way to get started
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+        # # Simple header
+        # st.markdown("""
+        # <div style="text-align: center; margin: 2rem 0 3rem 0;">
+        #     <h1>Ready to Transform Your Life?</h1>
+        #     <p style="color: var(--text-secondary);">
+        #         Choose your preferred way to get started
+        #     </p>
+        # </div>
+        # """, unsafe_allow_html=True)
         
         # Action buttons
         self._render_action_buttons()
