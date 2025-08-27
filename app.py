@@ -236,12 +236,12 @@ try:
 except ImportError:
     SuccessPage = None
 
-# TODO: Enable these when pages are ready
-# try:
-#     from pages.blog import BlogPage
-# except ImportError:
-#     BlogPage = None
+try:
+    from pages.blog import BlogPage
+except ImportError:
+    BlogPage = None
 
+# TODO: Enable these when pages are ready
 # try:
 #     from pages.booking import BookingPage
 # except ImportError:
@@ -364,11 +364,12 @@ class HypnotherapyApp:
                 page_instance = SuccessPage()
                 page_instance.render()
                     
+            
+            elif selected_page == "Blog" and BlogPage:
+                page_instance = BlogPage()
+                page_instance.render()
+
             # TODO: Enable when other pages are ready
-            # elif selected_page == "Blog" and BlogPage:
-            #     page_instance = BlogPage()
-            #     page_instance.render()
-                    
             # elif selected_page == "Book Now" and BookingPage:
             #     page_instance = BookingPage()
             #     page_instance.render()
