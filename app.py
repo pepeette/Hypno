@@ -242,11 +242,11 @@ try:
 except ImportError:
     BlogPage = None
 
-# TODO: Enable these when pages are ready
-# try:
-#     from pages.booking import BookingPage
-# except ImportError:
-#     BookingPage = None
+try:
+    from pages.booking import create_booking_page
+    BookingPage = create_booking_page
+except ImportError:
+    BookingPage = None
 
 # Import shared components with error handling
 try:
@@ -371,9 +371,9 @@ class HypnotherapyApp:
                 page_instance.render()
 
             # TODO: Enable when other pages are ready
-            # elif selected_page == "Book Now" and BookingPage:
-            #     page_instance = BookingPage()
-            #     page_instance.render()
+            elif selected_page == "Book Now" and BookingPage:
+                page_instance = BookingPage()
+                page_instance.render()
             
             else:
                 # Fallback for pages not yet implemented
