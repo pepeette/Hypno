@@ -382,59 +382,70 @@ class BlogArticles:
                 st.markdown(f"### {article['title']}")
                 st.write(article['summary'])
                 
-                # White background expander with custom styling
+                # Force white background for entire expander
                 st.markdown("""
                 <style>
-                .article-expander {
+                .stExpander {
                     background: white !important;
                     border: 1px solid #CBD5E1 !important;
                     border-radius: 8px !important;
                     margin: 1rem 0 !important;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+                }
+                .stExpander > div {
+                    background: white !important;
+                }
+                .stExpander > div > div {
+                    background: white !important;
                 }
                 </style>
                 """, unsafe_allow_html=True)
                 
-                # Expandable full article
+                # Expandable full article with white background
                 with st.expander(f"read full article", expanded=False):
-                    st.markdown(article['content'])
+                    st.markdown(f"""
+                    <div style="background: white; padding: 1rem; border-radius: 8px;">
+                        {article['content']}
+                    </div>
+                    """, unsafe_allow_html=True)
             
             st.markdown("---")
     
     def _get_willpower_content(self):
         """Content about willpower limitations"""
         return """
-        ## The 5% Problem
+        ## The 5% problem
         
-        Here's the uncomfortable truth: your conscious mind - the part that sets New Year's resolutions, makes promises, and tries to "just stop" - only controls about 5% of your daily behaviors.
+        Here's the uncomfortable truth: your conscious mind - the part that sets new year's resolutions, makes promises, and tries to "just stop" - only controls about 5% of your daily behaviors.
         
         The other 95% runs on autopilot through your subconscious mind. This includes:
-        - Automatic responses to stress
-        - Emotional reactions to triggers  
-        - Habitual behaviors you do without thinking
-        - Deep-seated beliefs about yourself
+        - automatic responses to stress
+        - emotional reactions to triggers  
+        - habitual behaviors you do without thinking
+        - deep-seated beliefs about yourself
         
-        ## Why Willpower Fails
+        ## Why willpower fails
         
         When you try to change using willpower alone, you're asking 5% of your mind to overpower 95%. It's like trying to row upstream against a powerful current - you might make progress for a while, but eventually, you'll get exhausted and swept back.
         
         This is why:
-        - Diets fail after a few weeks
-        - People return to smoking after quitting
-        - Anxiety comes back despite "knowing better"
-        - Self-help books don't create lasting change
+        - diets fail after a few weeks
+        - people return to smoking after quitting
+        - anxiety comes back despite "knowing better"
+        - self-help books don't create lasting change
         
-        ## What Actually Works
+        ## What actually works
         
         Instead of fighting your subconscious, we work with it directly. During hypnosis:
         
-        1. **Access the 95%**: We bypass conscious resistance and communicate directly with your subconscious mind
-        2. **Identify patterns**: We discover the specific triggers and beliefs driving your unwanted behaviors  
-        3. **Install new programming**: We replace old patterns with new ones that support your goals
-        4. **Make it automatic**: The change becomes effortless because your subconscious now supports it
+        1. **Access the 95%**: we bypass conscious resistance and communicate directly with your subconscious mind
+        2. **Identify patterns**: we discover the specific triggers and beliefs driving your unwanted behaviors  
+        3. **Install new programming**: we replace old patterns with new ones that support your goals
+        4. **Make it automatic**: the change becomes effortless because your subconscious now supports it
         
         When your subconscious and conscious minds are aligned toward the same goal, change becomes natural and permanent.
         
-        ## The Bottom Line
+        ## The bottom line
         
         You're not weak for struggling with willpower. You're human. The solution isn't more self-discipline - it's working with your mind the way it's actually designed to function.
         """
@@ -590,15 +601,21 @@ class FAQ:
         st.write("The most common questions about our hypnotherapy approach and what to expect.")
         
         for faq in self.faqs:
-            # White background for FAQ items
+            # Force white background for entire FAQ expanders
             st.markdown("""
             <style>
-            .faq-expander {
+            .stExpander {
                 background: white !important;
                 border: 1px solid #CBD5E1 !important;
                 border-radius: 8px !important;
                 margin: 0.5rem 0 !important;
                 box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+            }
+            .stExpander > div {
+                background: white !important;
+            }
+            .stExpander > div > div {
+                background: white !important;
             }
             </style>
             """, unsafe_allow_html=True)
