@@ -517,7 +517,9 @@
     #     Most clients have several insights during this mapping process:
     #     - connections they hadn't noticed before
     #     - patterns that suddenly make sense
-    #     - realization that their behavior has a"""
+    #     - realization that their behavior has a
+
+"""
 Blog/FAQ page component for the Hypnotherapy website
 Remodeled for consistency and better content structure
 """
