@@ -237,7 +237,8 @@ except ImportError:
     SuccessPage = None
 
 try:
-    from pages.blog import BlogPage
+    from pages.blog import create_blog_page
+    BlogPage = create_blog_page
 except ImportError:
     BlogPage = None
 
