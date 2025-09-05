@@ -137,7 +137,7 @@ class BookingForm:
             
             # Form submit button - white with border (no type="primary")
             form_submitted = st.form_submit_button(
-                "📞 Schedule My Free Discovery Call",
+                "✅ Click to validate privacy",
                 use_container_width=True
             )
             
@@ -155,7 +155,7 @@ class BookingForm:
                     self._send_booking_email(name, email, concern, concern_description)
                     # Set flag to trigger calendar opening
                     st.session_state.trigger_calendar = True
-                    st.success("✅ Request submitted successfully! Opening calendar...")
+                    st.success("Choose your option below to start...")
                     st.rerun()
         
         # Always visible action buttons below the form with minimized spacing
