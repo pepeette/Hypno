@@ -633,8 +633,6 @@
 # def create_home_page():
 #     return HomePage()
 
-
-"""
 """
 Fixed Home page component with better styling and readability
 """
@@ -1250,8 +1248,7 @@ class PatternChangeMethod:
                 """, unsafe_allow_html=True)
         st.markdown("""
         <p>* "we" clearly indicates that it is a binding work between the client and the therapist, throughout each session.</p>
-                                    </div>
-                """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
         
 
 class HomePage:
