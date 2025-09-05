@@ -119,7 +119,47 @@ class BlogArticles:
             #     "read_time": "3 min read",
             #     "url": "eastern-western-mind-change",
             #     "content": self._get_eastern_western_content()
-            # }
+            # },
+            # {
+            #     "title": "Why smart students procrastinate (it's not laziness)",
+            #     "summary": "Academic perfectionism psychology, fear of imperfect performance, and all-or-nothing thinking patterns that paralyze high achievers.",
+            #     "category": "Academic Psychology",
+            #     "read_time": "4 min read",
+            #     "url": "smart-students-procrastinate-perfectionism",
+            #     "content": self._get_academic_perfectionism_content()
+            # },
+            # {
+            #     "title": "The real reason presentations terrify you",
+            #     "summary": "Visibility fear vs competence, social evaluation anxiety, and why performance focus blocks natural expression.",
+            #     "category": "Performance Psychology",
+            #     "read_time": "4 min read", 
+            #     "url": "presentation-fear-visibility-anxiety",
+            #     "content": self._get_presentation_fear_content()
+            # },
+            # {
+            #     "title": "How academic anxiety follows you to work",
+            #     "summary": "Childhood performance patterns, teacher approval becoming boss approval, and grade anxiety evolving into review anxiety.",
+            #     "category": "Professional Development",
+            #     "read_time": "5 min read",
+            #     "url": "academic-anxiety-workplace-patterns",
+            #     "content": self._get_academic_to_work_content()
+            # },
+            # {
+            #     "title": "Hypnotherapy for high achievers (why successful people still struggle)",
+            #     "summary": "Control patterns, perfectionism, and why professional success doesn't guarantee personal freedom from performance anxiety.",
+            #     "category": "Executive Psychology",
+            #     "read_time": "5 min read",
+            #     "url": "hypnotherapy-high-achievers-control",
+            #     "content": self._get_high_achievers_content()
+            # },
+            # {
+            #     "title": "The real cost of procrastination (beyond missed deadlines)",
+            #     "summary": "How fear-based decision making and perfectionism create procrastination patterns that limit your potential and relationships.",
+            #     "category": "Decision Psychology",
+            #     "read_time": "4 min read",
+            #     "url": "procrastination-fear-based-decisions",
+            #     "content": self._get_procrastination_content()
+            # },
         ]
     
     def render(self):
@@ -640,6 +680,202 @@ class BlogArticles:
     #     ## The bottom line
     #     
     #     Hypnotizability isn't about being weak-willed or gullible - it's about being willing to focus your attention in service of positive change. If you can concentrate on reading this article, you can benefit from hypnotherapy.
+    #     """
+    
+    # def _get_academic_perfectionism_content(self):
+    #     """Content about academic perfectionism and procrastination"""
+    #     return """
+    #     ## The hidden perfectionist pattern
+        
+    #     High-achieving students often develop a dangerous equation: perfect performance = worthy person. This belief creates crushing pressure where any mistake feels like proof they're not good enough.
+        
+    #     ## Why procrastination protects perfectionism
+        
+    #     Your subconscious mind would rather avoid than risk imperfection. Procrastination becomes a shield:
+    #     - If you don't try your best, you can't really fail
+    #     - Running out of time provides an excuse for imperfection
+    #     - The pressure of deadlines can override perfectionist paralysis
+        
+    #     ## The all-or-nothing trap
+        
+    #     Perfectionist students think in extremes:
+    #     - Either A+ or failure (no recognition of B+ as excellent)
+    #     - Either complete understanding or total confusion
+    #     - Either perfect execution or don't start at all
+        
+    #     This eliminates the middle ground where learning actually happens.
+        
+    #     ## Breaking the perfectionist-procrastination cycle
+        
+    #     Hypnotherapy rewires the core belief from "perfect = worthy" to "effort = growth." You learn to:
+    #     - Start projects before feeling ready
+    #     - Submit work at "good enough" instead of perfect
+    #     - View mistakes as learning data, not character evidence
+    #     - Separate your identity from your performance
+        
+    #     ## The freedom of strategic excellence
+        
+    #     True high achievers pursue excellence, not perfection. They understand that consistent good work outperforms occasional perfect work that's often late or never submitted.
+    #     """
+    
+    # def _get_presentation_fear_content(self):
+    #     """Content about presentation and visibility anxiety"""
+    #     return """
+    #     ## The visibility vulnerability paradox
+        
+    #     The more competent you are, the more terrifying presentations can become. You have more to lose, more reputation at stake, more ways to be judged inadequate despite your expertise.
+        
+    #     ## Your audience becomes a jury
+        
+    #     Your subconscious transforms every face into a potential judge:
+    #     - Neutral expressions become disapproval
+    #     - Questions become attacks on competence
+    #     - Silence becomes evidence of boredom or judgment
+        
+    #     ## The competence-confidence disconnect
+        
+    #     You can know your material perfectly and still feel terror because:
+    #     - Knowledge lives in your conscious mind
+    #     - Fear lives in your subconscious mind
+    #     - Under stress, subconscious wins every time
+        
+    #     ## Physical symptoms sabotage performance
+        
+    #     Racing heart, shaking hands, trembling voice - your nervous system prepares for physical danger when facing social evaluation. You literally can't think clearly when your body believes you're under attack.
+        
+    #     ## Rewiring visibility into opportunity
+        
+    #     Hypnotherapy transforms your subconscious response:
+    #     - Audiences become collaborators, not judges
+    #     - Questions become opportunities to help, not threats to survive
+    #     - Nervous energy becomes enthusiasm to share knowledge
+    #     - Mistakes become human moments that increase connection
+        
+    #     The goal isn't eliminating nervousness - it's channeling that energy into engagement rather than terror.
+    #     """
+    
+    # def _get_academic_to_work_content(self):
+    #     """Content about how academic patterns transfer to workplace"""
+    #     return """
+    #     ## The hidden curriculum of anxiety
+        
+    #     School doesn't just teach subjects - it teaches patterns of relating to authority, evaluation, and performance that follow you into every workplace.
+        
+    #     ## Teacher becomes boss
+        
+    #     The same anxiety patterns that emerged with strict teachers often resurface with demanding managers:
+    #     - Fear of asking questions (might seem stupid)
+    #     - Perfectionist paralysis on projects
+    #     - Physical anxiety before evaluations
+    #     - Imposter feelings despite competence
+        
+    #     ## Grade anxiety becomes performance review terror
+        
+    #     That stomach-dropping feeling before getting test results? It doesn't disappear with graduation:
+    #     - Annual reviews trigger the same fight-or-flight response
+    #     - Criticism feels like character assassination, not feedback
+    #     - Success feels accidental, failure feels inevitable
+        
+    #     ## The good student trap
+        
+    #     Students who succeeded by pleasing teachers often struggle in workplaces that reward:
+    #     - Independent thinking over compliance
+    #     - Innovation over perfect execution
+    #     - Leadership over following instructions
+        
+    #     ## Breaking free from academic patterns
+        
+    #     Hypnotherapy helps you:
+    #     - Separate your worth from your performance ratings
+    #     - View feedback as information, not judgment
+    #     - Trust your competence even when authority figures are present
+    #     - Express ideas confidently without seeking permission
+        
+    #     ## Rewriting your professional identity
+        
+    #     You transform from "good student trying not to fail" to "competent professional contributing value." This shift changes everything about how you show up at work.
+    #     """
+    
+    # def _get_high_achievers_content(self):
+    #     """Content about high achiever patterns and control"""
+    #     return """
+    #     ## The high achiever's hidden struggle
+        
+    #     Success doesn't eliminate anxiety - it often amplifies it. The higher you climb, the further you have to fall, and the more your identity becomes tied to maintaining impossible standards.
+        
+    #     ## Control as a coping mechanism
+        
+    #     High achievers often develop hypercontrol patterns:
+    #     - Micromanaging every detail to prevent failure
+    #     - Working excessive hours to ensure perfect outcomes
+    #     - Avoiding delegation because "no one does it right"
+    #     - Saying yes to everything to maintain reputation
+        
+    #     ## The perfectionism prison
+        
+    #     What got you to success can become what traps you there:
+    #     - Standards so high they're impossible to maintain
+    #     - Identity so tied to achievement that rest feels like regression
+    #     - Fear that any relaxation will lead to mediocrity
+        
+    #     ## Why therapy often fails high achievers
+        
+    #     Traditional approaches assume the problem is external stress. But high achievers create their own stress through internal pressure systems that run automatically.
+        
+    #     ## The hypnotherapy advantage for executives
+        
+    #     We work directly with the subconscious patterns that drive overwork:
+    #     - Separating worth from productivity
+    #     - Installing sustainable excellence instead of exhausting perfection
+    #     - Creating internal permission to delegate and trust others
+    #     - Rewiring the nervous system to handle uncertainty without control
+        
+    #     ## Strategic high performance
+        
+    #     True peak performers know when to push and when to ease off. They maintain excellence without burning out because their subconscious supports sustainable success rather than demanding constant proof of worth.
+    #     """
+    
+    # def _get_procrastination_content(self):
+    #     """Content about procrastination and decision paralysis"""
+    #     return """
+    #     ## The procrastination-perfectionism connection
+        
+    #     Procrastination isn't about laziness or poor time management. It's about fear - specifically, fear of imperfection, judgment, or failure.
+        
+    #     ## Decision paralysis patterns
+        
+    #     When every choice feels permanent and life-altering:
+    #     - Small decisions become enormous
+    #     - Research replaces action indefinitely
+    #     - "Perfect" timing never arrives
+    #     - Avoiding choice becomes the default choice
+        
+    #     ## The hidden costs of delay
+        
+    #     Procrastination damages more than productivity:
+    #     - Self-trust erodes with each broken promise to yourself
+    #     - Opportunities pass while you prepare to be ready
+    #     - Relationships suffer from unreliability
+    #     - Identity becomes "someone who doesn't follow through"
+        
+    #     ## Why productivity systems fail procrastinators
+        
+    #     Time management tools can't fix emotional patterns:
+    #     - The fear that creates delay remains unchanged
+    #     - New systems become new ways to avoid action
+    #     - Shame about procrastination increases with each failed method
+        
+    #     ## Rewiring action patterns
+        
+    #     Hypnotherapy addresses the subconscious fears that create delay:
+    #     - Installing comfort with "good enough" decisions
+    #     - Building tolerance for uncertainty and imperfection
+    #     - Creating identity shifts from "procrastinator" to "action-taker"
+    #     - Developing trust in your ability to handle consequences
+        
+    #     ## From paralysis to flow
+        
+    #     The goal isn't forcing yourself to act despite fear - it's removing the fear that blocks natural action-taking. When decisions feel like navigation rather than life sentences, movement becomes effortless.
     #     """
 
 class FAQ:
