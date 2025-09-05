@@ -635,6 +635,7 @@
 
 
 """
+"""
 Fixed Home page component with better styling and readability
 """
 import streamlit as st
@@ -1284,8 +1285,6 @@ class HomePage:
             col1, col2, col3 = st.columns([1, 2, 1])
             with col2:
                 if st.button("📞 Book discovery call", type="primary", use_container_width=True, key="bottom_discovery_call"):
-                    # Show success message and open URL in new tab
-                    st.success("Perfect! Opening your discovery call booking page...")
                     # JavaScript to open URL in new tab
                     st.markdown(f"""
                     <script>
