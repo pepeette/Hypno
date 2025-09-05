@@ -460,10 +460,10 @@ class QuizSection:
             st.markdown(f"""
                 <a href="{self.discovery_url}" 
                    target="_blank" 
-                   style="display: inline-block; background-color: #4CA1A3; color: white;
-                          text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 8px;
-                          font-weight: 600; font-size: 1rem; transition: all 0.3s ease;
-                          text-align: center; width: 100%;
+                   style="display: inline-block; background-color: var(--accent); color: white;
+                          text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
+                          font-weight: 500; font-size: 0.9rem; transition: var(--transition);
+                          box-shadow: var(--shadow-sm); text-align: center; width: 100%;
                           box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
                     📞 Book discovery call
                 </a>
