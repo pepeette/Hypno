@@ -1080,16 +1080,17 @@ class QuizSection:
                 self._reset_quiz()
         with col2:
             # Modified button with URL redirect functionality
-            if st.button("📞 Book discovery call", type="primary", use_container_width=True):
-                # Show success message and open URL in new tab
-                st.success("Perfect! Scroll down to explore how we transform thought systems.")
-                # JavaScript to open URL in new tab
-                st.markdown(f"""
-                <script>
-                    window.open('{self.discovery_url}', '_blank');
-                </script>
+            if st.markdown(f"""
+                <a href="{self.discovery_url}" 
+                   target="_blank" 
+                   style="display: inline-block; background-color: #4CA1A3; color: white; 
+                          text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 8px; 
+                          font-weight: 600; text-align: center; transition: all 0.3s ease;
+                          width: 100%; box-sizing: border-box;">
+                    📞 Book discovery call
+                </a>
                 """, unsafe_allow_html=True)
-    
+
     def _reset_quiz(self):
         """Reset all quiz state"""
         st.session_state.quiz_answers = {}
@@ -1276,17 +1277,6 @@ class HomePage:
             self.method.render()
             st.markdown("    ")
         
-        # Additional discovery call button at the bottom of the page
-        with st.container():
-            st.markdown("### Ready to get started?")
-            col1, col2, col3 = st.columns([1, 2, 1])
-            with col2:
-                # Button with JavaScript redirect on click
-                if st.button("📞 Book discovery call", type="primary", use_container_width=True, key="bottom_discovery_call"):
-                    st.success("Perfect! Opening your discovery call booking page...")
-                    # JavaScript to open URL in new tab
-                    st.markdown(f'<script>window.open("{self.discovery_url}", "_blank");</script>', 
-                              unsafe_allow_html=True)
 
 # Factory function for clean import
 def create_home_page():
