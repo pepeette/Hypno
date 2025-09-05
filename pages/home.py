@@ -248,8 +248,8 @@ class QuizSection:
     def render(self):
         """Render the complete quiz experience"""
         # Section header
-        st.subheader("Discover what's blocking your authentic change")
-        st.write("3 questions to identify your internal thought system patterns and transformation readiness:")
+        st.subheader("Can it be suited for you? Test")
+        st.write("3 questions to assess your thought system patterns:")
         
         if not st.session_state.quiz_completed:
             self._render_all_questions()
