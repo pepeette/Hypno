@@ -1025,7 +1025,13 @@ class QuizSection:
                 "journey": "Shifting from 'doing for validation' to 'being that naturally expresses through action.'"
             }
         }
-        
+
+                
+        # Display transformation readiness score
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.metric("", f"{score}% Internal transformation readiness", "")
+            
         # Results display
         if score >= 75:
             st.success("🌟 High readiness for authentic transformation! Your awareness of internal patterns indicates excellent potential for rapid, lasting change.")
@@ -1040,22 +1046,17 @@ class QuizSection:
             st.info("🌱 Preparation phase recommended. Building awareness and readiness will optimize your transformation when you're ready.")
             readiness_level = "preparation"
         
-        # Display transformation readiness score
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.metric("", f"{score}% Internal transformation readiness", "Thought system rewiring potential")
-        
         # Mechanism-specific insight
         if blocking_mechanism in mechanism_insights:
             insight = mechanism_insights[blocking_mechanism]
             
-            st.markdown("### Your dominant internal pattern")
+            st.markdown("#### Your dominant internal pattern")
             st.info(f"**{blocking_mechanism}:** {insight['description']}")
             
-            st.markdown("### How hypnotherapy transforms this pattern")
+            st.markdown("#### How hypnotherapy transforms this pattern")
             st.success(insight['transformation'])
             
-            st.markdown("### The journey could start with")
+            st.markdown("#### Your transformation could start by")
             st.write(f"*{insight['journey']}*")
         
         # Customized recommendations based on readiness       
