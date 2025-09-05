@@ -369,22 +369,22 @@
 #             "Force and control": {
 #                 "description": "You tend to use force when resistance appears, creating internal battles that exhaust you. True change happens through alignment, not overpowering.",
 #                 "transformation": "Hypnotherapy helps you access cooperation from your subconscious mind instead of fighting it. When all parts of you want the same thing, change becomes effortless.",
-#                 "d_ansembourg_principle": "Moving from 'gourdin vs grotte' (club vs cave) to genuine inner meeting and collaboration."
+#                 "journey": "Moving from 'gourdin vs grotte' (club vs cave) to genuine inner meeting and collaboration."
 #             },
 #             "Mistrust and defensiveness": {
 #                 "description": "Your internal security system stays hyperactive, treating change as potential danger. This prevents the vulnerability needed for transformation.",
 #                 "transformation": "Hypnotherapy creates a safe space for your subconscious to update its threat assessment. When you feel internally secure, change becomes an adventure rather than a threat.",
-#                 "d_ansembourg_principle": "Transforming systematic mistrust into grounded confidence and inner security."
+#                 "journey": "Transforming systematic mistrust into grounded confidence and inner security."
 #             },
 #             "All-or-nothing thinking": {
 #                 "description": "Your mind divides experience into perfect/failure, good/bad, which eliminates the middle ground where growth actually happens.",
 #                 "transformation": "Hypnotherapy rewires binary thinking into flexible, nuanced responses. You learn to embrace progress over perfection and growth over fixed outcomes.",
-#                 "d_ansembourg_principle": "Healing the separation and division that fragments your experience of life."
+#                 "journey": "Healing the separation and division that fragments your experience of life."
 #             },
 #             "Doing addiction": {
 #                 "description": "Your worth feels tied to constant productivity and achievement. This creates exhausting cycles where rest feels like failure.",
 #                 "transformation": "Hypnotherapy separates your inherent value from your actions. You discover that being yourself naturally generates inspired action without compulsive doing.",
-#                 "d_ansembourg_principle": "Shifting from 'doing for validation' to 'being that naturally expresses through action.'"
+#                 "journey": "Shifting from 'doing for validation' to 'being that naturally expresses through action.'"
 #             }
 #         }
         
@@ -417,8 +417,8 @@
 #             st.markdown("### How hypnotherapy transforms this pattern")
 #             st.success(insight['transformation'])
             
-#             st.markdown("### The d'Ansembourg principle")
-#             st.write(f"*{insight['d_ansembourg_principle']}*")
+#             st.markdown("### The journey could be")
+#             st.write(f"*{insight['journey']}*")
         
 #         # Customized recommendations based on readiness
 #         st.markdown("### Your transformation pathway")
@@ -1281,13 +1281,11 @@ class HomePage:
             st.markdown("### Ready to get started?")
             col1, col2, col3 = st.columns([1, 2, 1])
             with col2:
-                if st.button("📞 Book discovery call", type="primary", use_container_width=True, key="bottom_discovery_call"):
-                    # JavaScript to open URL in new tab
-                    st.markdown(f"""
-                    <script>
-                        window.open('{self.discovery_url}', '_blank');
-                    </script>
-                    """, unsafe_allow_html=True)
+                # Use st.link_button for direct URL opening (Streamlit 1.29.0+)
+                st.link_button("📞 Book discovery call", 
+                              url=self.discovery_url, 
+                              type="primary", 
+                              use_container_width=True)
 
 # Factory function for clean import
 def create_home_page():
