@@ -283,14 +283,17 @@ class QuizSection:
             q2_expanded = (current_step == 2) and (2 not in st.session_state.quiz_answers)
             with st.expander("Question 2: how do you typically try to create change?", expanded=q2_expanded):
                 if 2 not in st.session_state.quiz_answers:
-                    if st.button("💪 Push harder with willpower and discipline", key="q2_willpower", use_container_width=True):
-                        self._answer_question(2, "Push harder with willpower")
-                    if st.button("📚 Learn more techniques and strategies", key="q2_techniques", use_container_width=True):
-                        self._answer_question(2, "Learn more techniques")
-                    if st.button("🔄 Change external circumstances or people", key="q2_external", use_container_width=True):
-                        self._answer_question(2, "Change external circumstances")
-                    if st.button("😤 Get frustrated and give up temporarily", key="q2_frustrated", use_container_width=True):
-                        self._answer_question(2, "Get frustrated and give up")
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button("💪 Push harder with willpower and discipline", key="q2_willpower", use_container_width=True):
+                            self._answer_question(2, "Push harder with willpower")
+                        if st.button("📚 Learn more techniques and strategies", key="q2_techniques", use_container_width=True):
+                            self._answer_question(2, "Learn more techniques")
+                    with col2:
+                        if st.button("🔄 Change external circumstances or people", key="q2_external", use_container_width=True):
+                            self._answer_question(2, "Change external circumstances")
+                        if st.button("😤 Get frustrated and give up temporarily", key="q2_frustrated", use_container_width=True):
+                            self._answer_question(2, "Get frustrated and give up")
                 else:
                     st.success(f"✅ Selected: {st.session_state.quiz_answers[2]}")
         
@@ -299,14 +302,17 @@ class QuizSection:
             q3_expanded = (current_step == 3) and (3 not in st.session_state.quiz_answers)
             with st.expander("Question 3: how ready are you to examine your thought system?", expanded=q3_expanded):
                 if 3 not in st.session_state.quiz_answers:
-                    if st.button("🤔 Curious but cautious about internal work", key="q3_curious", use_container_width=True):
-                        self._answer_question(3, "Curious but cautious")
-                    if st.button("🎯 Ready to explore how my thinking creates problems", key="q3_ready", use_container_width=True):
-                        self._answer_question(3, "Ready to explore thinking")
-                    if st.button("🔥 Desperate for a different approach to change", key="q3_desperate", use_container_width=True):
-                        self._answer_question(3, "Desperate for different approach")
-                    if st.button("🛡️ Prefer focusing on external solutions first", key="q3_external", use_container_width=True):
-                        self._answer_question(3, "Prefer external solutions")
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button("🤔 Curious but cautious about internal work", key="q3_curious", use_container_width=True):
+                            self._answer_question(3, "Curious but cautious")
+                        if st.button("🎯 Ready to explore how my thinking creates problems", key="q3_ready", use_container_width=True):
+                            self._answer_question(3, "Ready to explore thinking")
+                    with col2:
+                        if st.button("🔥 Desperate for a different approach to change", key="q3_desperate", use_container_width=True):
+                            self._answer_question(3, "Desperate for different approach")
+                        if st.button("🛡️ Prefer focusing on external solutions first", key="q3_external", use_container_width=True):
+                            self._answer_question(3, "Prefer external solutions")
                 else:
                     st.success(f"✅ Selected: {st.session_state.quiz_answers[3]}")
         
