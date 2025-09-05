@@ -331,7 +331,7 @@ class HypnotherapyApp:
                 options = AppConstants.NAVIGATION_OPTIONS
                 icons = AppConstants.NAVIGATION_ICONS
             except ImportError:
-                options = ["Home", "Method", "Success", "Blog", "Book Now"]
+                options = ["Hypnosis", "Method", "Testimonials", "Blog", "Book Now"]
                 icons = ["house", "gear", "star", "book", "calendar"]
             
             # Simple fallback navigation
@@ -353,7 +353,7 @@ class HypnotherapyApp:
     def render_page_content(self, selected_page):
         """Render content based on selected navigation page"""
         try:
-            if selected_page == "Home" and HomePage:
+            if selected_page == "Hypnosis" and HomePage:
                 page_instance = HomePage()
                 page_instance.render()
                     
@@ -361,7 +361,7 @@ class HypnotherapyApp:
                 page_instance = MethodPage()
                 page_instance.render()
                     
-            elif selected_page == "Success" and SuccessPage:
+            elif selected_page == "Testimonials" and SuccessPage:
                 page_instance = SuccessPage()
                 page_instance.render()
                     
