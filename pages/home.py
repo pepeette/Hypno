@@ -363,13 +363,14 @@ class QuizSection:
         return min(total_score, 100)
     
     def _render_transformation_results(self):
+        """Render results focusing on internal transformation readiness"""
+        
         # White container wrapper
         st.markdown("""
         <div style="background-color: white; padding: 2rem; border-radius: 12px; 
                     border: 1px solid #e2e8f0; margin: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         """, unsafe_allow_html=True)
-
-        """Render results focusing on internal transformation readiness"""
+    
         score = st.session_state.quiz_score
         blocking_mechanism = st.session_state.dominant_blocking_mechanism
         
@@ -446,15 +447,13 @@ class QuizSection:
         # Action buttons
         col1, col2 = st.columns(2)
         with col1:
-            # Modified button with URL redirect functionality
-            st.markdown(f"""    """)
             st.markdown(f"""
                 <a href="{self.discovery_url}" 
                    target="_blank" 
-                   style="display: inline-block; background-color: var(--accent); color: white;
-                          text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
-                          font-weight: 500; font-size: 1rem; transition: var(--transition);
-                          box-shadow: var(--shadow-sm); text-align: center; width: 100%;
+                   style="display: inline-block; background-color: #4CA1A3; color: white;
+                          text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 8px;
+                          font-weight: 600; font-size: 1rem; transition: all 0.3s ease;
+                          text-align: center; width: 100%;
                           box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
                     📞 Book discovery call
                 </a>
