@@ -440,9 +440,6 @@ class QuizSection:
         # Action buttons
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("🔄 Retake assessment", use_container_width=True):
-                self._reset_quiz()
-        with col2:
             # Modified button with URL redirect functionality
             st.markdown(f"""    """)
             st.markdown(f"""
@@ -456,6 +453,9 @@ class QuizSection:
                     📞 Book discovery call
                 </a>
                 """, unsafe_allow_html=True)
+        with col2:
+            if st.button("🔄 Retake assessment", use_container_width=True):
+                self._reset_quiz()
 
     def _reset_quiz(self):
         """Reset all quiz state"""
