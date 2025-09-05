@@ -1058,9 +1058,7 @@ class QuizSection:
             st.markdown("### The journey could start with")
             st.write(f"*{insight['journey']}*")
         
-        # Customized recommendations based on readiness
-        st.markdown("### Your transformation pathway")
-        
+        # Customized recommendations based on readiness       
         if readiness_level == "high":
             st.write("You demonstrate strong awareness of how internal thought systems create external problems. This insight positions you perfectly for the 2-session hypnotherapy method that rewires thinking patterns at their source.")
             
@@ -1080,6 +1078,7 @@ class QuizSection:
                 self._reset_quiz()
         with col2:
             # Modified button with URL redirect functionality
+            st.markdown(f"""    """)
             st.markdown(f"""
                 <a href="{self.discovery_url}" 
                    target="_blank" 
