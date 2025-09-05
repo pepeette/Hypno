@@ -1080,7 +1080,7 @@ class QuizSection:
                 self._reset_quiz()
         with col2:
             # Modified button with URL redirect functionality
-            if st.markdown(f"""
+            st.markdown(f"""
                 <a href="{self.discovery_url}" 
                    target="_blank" 
                    style="display: inline-block; background-color: #4CA1A3; color: white; 
