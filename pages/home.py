@@ -89,6 +89,8 @@ class QuizSection:
             st.session_state.quiz_completed = False
         if 'quiz_score' not in st.session_state:
             st.session_state.quiz_score = 0
+        if 'primary_pattern' not in st.session_state:
+            st.session_state.primary_pattern = ""
     
     def render(self):
         """Render quiz using Streamlit components"""
@@ -188,6 +190,7 @@ class QuizSection:
     def _render_results(self):
         """Render quiz results using Streamlit components"""
         score = st.session_state.quiz_score
+        primary_pattern = st.session_state.primary_pattern
         
         # Determine message based on score
         if score >= 70:
