@@ -363,6 +363,12 @@ class QuizSection:
         return min(total_score, 100)
     
     def _render_transformation_results(self):
+        # White container wrapper
+        st.markdown("""
+        <div style="background-color: white; padding: 2rem; border-radius: 12px; 
+                    border: 1px solid #e2e8f0; margin: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        """, unsafe_allow_html=True)
+
         """Render results focusing on internal transformation readiness"""
         score = st.session_state.quiz_score
         blocking_mechanism = st.session_state.dominant_blocking_mechanism
@@ -456,6 +462,9 @@ class QuizSection:
         with col2:
             if st.button("🔄 Retake assessment", use_container_width=True):
                 self._reset_quiz()
+        
+        # Close white container
+        st.markdown("</div>", unsafe_allow_html=True)
 
     def _reset_quiz(self):
         """Reset all quiz state"""
