@@ -462,7 +462,6 @@
 # def create_method_page():
 #     return MethodPage()
 
-
 """
 Method Page - The Science Behind 2-Session Transformation
 Updated to redirect to booking form with prefilled package information
