@@ -672,12 +672,361 @@
 
 
 
+# """
+# Finalized Home page component with video integration
+# Hero → Quiz → Method Teaser with Video → CTA
+# """
+# import streamlit as st
+# from utils.config import AppConstants
+
+# class HeroSection:
+#     """Clean hero section with image and key message"""
+    
+#     def render(self):
+#         """Render hero section with hero banner"""
+#         with st.container():
+#             # Hero banner image
+#             st.markdown("""
+#             <div style="display: flex; justify-content: center; align-items: center; margin: 2rem 0;">
+#                 <img src="https://raw.githubusercontent.com/pepeette/Hypno/main/img/herobanner.jpg" 
+#                      alt="Stop Fighting Your Mind. Start Working With It." 
+#                      style="max-width: 100%; height: auto; border-radius: 16px;">
+#             </div>
+#             """, unsafe_allow_html=True)
+            
+#             # Key message and value proposition
+#             st.write("Most people try to change using willpower. That's why 95% fail. We bypass your conscious resistance and reprogram your subconscious patterns directly.")
+            
+#             st.write("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
+            
+#             st.info("→ Book your hypnotherapy at our new address in Bangkok to break free from unwanted habits. 2 sessions only needed.")
+
+
+#             # Immediate value proposition with authority
+#             st.markdown("## Transform in 2 sessions what takes traditional therapy longer")
+            
+#             # Desktop: 3 columns, Mobile: stacked
+#             col1, col2, col3 = st.columns([1, 1, 1])
+            
+#             # Column 1: Traditional Methods Card
+#             with col1:
+#                 st.markdown("""
+#                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                             padding: 2rem; margin: 1rem 0; border-left: 4px solid #ef4444; height: 100%;">
+#                     <h2 style="color: #dc2626; margin-bottom: 1rem; text-align: center;">❌ Traditional Methods</h2>
+#                     <p><strong>Talk therapy:</strong> Analyzes problems but rarely creates lasting change</p>
+#                     <p><strong>Willpower:</strong> Requires constant effort and usually fails within weeks</p>
+#                     <p><strong>Medications:</strong> Manage symptoms but don't address root causes</p>
+#                     <p><strong>Self-help:</strong> Gives you tools but can't change deep programming</p>
+#                     <p style="margin: 0; font-weight: 600; color: #dc2626; text-align: center;">
+#                         Result: You know what to do but can't consistently do it
+#                     </p>
+#                 </div>
+#                 """, unsafe_allow_html=True)
+            
+#             # Column 2: Comparison Image - Full image, no text
+#             with col2:
+#                 st.markdown("""
+#                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                             margin: 1rem 0; height: 100%; padding: 0; overflow: hidden;
+#                             display: flex; align-items: center; justify-content: center;">
+#                     <img src="https://github.com/pepeette/Hypno/blob/main/img/Hypnotherapy_compa.jpg?raw=true" 
+#                          alt="Hypnotherapy Comparison" 
+#                          style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+#                 </div>
+#                 """, unsafe_allow_html=True)
+            
+#             # Column 3: Pattern Change Hypnotherapy Card  
+#             with col3:
+#                 st.markdown("""
+#                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                             padding: 2rem; margin: 1rem 0; border-left: 4px solid #22c55e; height: 100%;">
+#                     <h2 style="color: #16a34a; margin-bottom: 1rem; text-align: center;">✅ Hypnotherapy</h2>
+#                     <p><strong>Session 1:</strong> Map your unique subconscious triggers and patterns</p>
+#                     <p><strong>Session 2:</strong> Rewire those patterns at the subconscious level</p>
+#                     <p><strong>Session 3:</strong> Optional reinforcement if needed (15% of clients)</p>
+#                     <p><strong>Follow-up:</strong> Permanent change that feels natural and effortless</p>
+#                     <p style="margin: 0; font-weight: 600; color: #16a34a; text-align: center;">
+#                         Result: Your subconscious now supports your goals automatically
+#                     </p>
+#                 </div>
+#                 """, unsafe_allow_html=True)
+
+
+# class QuizSection:
+#     """Quiz section identifying internal blocking mechanisms"""
+    
+#     def __init__(self):
+#         # Initialize session state
+#         if 'quiz_answers' not in st.session_state:
+#             st.session_state.quiz_answers = {}
+#         if 'quiz_step' not in st.session_state:
+#             st.session_state.quiz_step = 1
+#         if 'quiz_completed' not in st.session_state:
+#             st.session_state.quiz_completed = False
+#         if 'quiz_score' not in st.session_state:
+#             st.session_state.quiz_score = 0
+#         if 'dominant_blocking_mechanism' not in st.session_state:
+#             st.session_state.dominant_blocking_mechanism = ""
+        
+#         # Get discovery URL from config
+#         self.discovery_url = AppConstants.CONTACT_INFO.get("discovery_call_url", "https://calendly.com/laetitiasheppard/discovery")
+    
+#     def render(self):
+#         """Render the complete quiz experience"""
+#         st.subheader("Test : Do you need rapid change?")
+#         st.write("3 questions to assess your thought system patterns:")
+        
+#         if not st.session_state.quiz_completed:
+#             self._render_all_questions()
+#         else:
+#             self._render_transformation_results()
+    
+#     def _render_all_questions(self):
+#         """Show all questions with proper progression"""
+#         current_step = st.session_state.quiz_step
+        
+#         # Question 1 - Identify dominant blocking mechanism
+#         q1_expanded = (current_step == 1) or (1 not in st.session_state.quiz_answers)
+#         with st.expander("Question 1: which internal pattern most limits your growth?", expanded=q1_expanded):
+#             if 1 not in st.session_state.quiz_answers:
+#                 col1, col2 = st.columns(2)
+#                 with col1:
+#                     if st.button("⚔️ Force and control\n'I must push through resistance'", key="q1_force", use_container_width=True):
+#                         self._answer_question(1, "Force and control")
+#                     if st.button("🔒 Mistrust and defensiveness\n'I can't let my guard down'", key="q1_mistrust", use_container_width=True):
+#                         self._answer_question(1, "Mistrust and defensiveness")
+#                 with col2:
+#                     if st.button("⚖️ All-or-nothing thinking\n'It's either perfect or failure'", key="q1_binary", use_container_width=True):
+#                         self._answer_question(1, "All-or-nothing thinking")
+#                     if st.button("🏃 Doing addiction\n'My worth depends on productivity'", key="q1_doing", use_container_width=True):
+#                         self._answer_question(1, "Doing addiction")
+#             else:
+#                 st.success(f"✅ Selected: {st.session_state.quiz_answers[1]}")
+        
+#         # Question 2 - Change attempts and frustration
+#         if len(st.session_state.quiz_answers) >= 1:
+#             q2_expanded = (current_step == 2) and (2 not in st.session_state.quiz_answers)
+#             with st.expander("Question 2: how do you typically try to create change?", expanded=q2_expanded):
+#                 if 2 not in st.session_state.quiz_answers:
+#                     col1, col2 = st.columns(2)
+#                     with col1:
+#                         if st.button("💪 Push harder with willpower and discipline", key="q2_willpower", use_container_width=True):
+#                             self._answer_question(2, "Push harder with willpower")
+#                         if st.button("📚 Learn more techniques and strategies", key="q2_techniques", use_container_width=True):
+#                             self._answer_question(2, "Learn more techniques")
+#                     with col2:
+#                         if st.button("🔄 Change external circumstances or people", key="q2_external", use_container_width=True):
+#                             self._answer_question(2, "Change external circumstances")
+#                         if st.button("😤 Get frustrated and give up temporarily", key="q2_frustrated", use_container_width=True):
+#                             self._answer_question(2, "Get frustrated and give up")
+#                 else:
+#                     st.success(f"✅ Selected: {st.session_state.quiz_answers[2]}")
+        
+#         # Question 3 - Readiness for internal transformation
+#         if len(st.session_state.quiz_answers) >= 2:
+#             q3_expanded = (current_step == 3) and (3 not in st.session_state.quiz_answers)
+#             with st.expander("Question 3: how ready are you to examine your thought system?", expanded=q3_expanded):
+#                 if 3 not in st.session_state.quiz_answers:
+#                     col1, col2 = st.columns(2)
+#                     with col1:
+#                         if st.button("🤔 Curious but cautious about internal work", key="q3_curious", use_container_width=True):
+#                             self._answer_question(3, "Curious but cautious")
+#                         if st.button("🎯 Ready to explore how my thinking creates problems", key="q3_ready", use_container_width=True):
+#                             self._answer_question(3, "Ready to explore thinking")
+#                     with col2:
+#                         if st.button("🔥 Desperate for a different approach to change", key="q3_desperate", use_container_width=True):
+#                             self._answer_question(3, "Desperate for different approach")
+#                         if st.button("🛡️ Prefer focusing on external solutions first", key="q3_external", use_container_width=True):
+#                             self._answer_question(3, "Prefer external solutions")
+#                 else:
+#                     st.success(f"✅ Selected: {st.session_state.quiz_answers[3]}")
+        
+#         # Progress indicator
+#         progress = len(st.session_state.quiz_answers) / 3
+#         if progress > 0:
+#             st.progress(progress)
+#             if progress < 1:
+#                 st.caption(f"Question {len(st.session_state.quiz_answers) + 1} of 3")
+#             else:
+#                 st.caption("Complete!")
+    
+#     def _answer_question(self, question_id, answer):
+#         """Handle question answers and progression"""
+#         st.session_state.quiz_answers[question_id] = answer
+#         if question_id == 1:
+#             st.session_state.dominant_blocking_mechanism = answer
+        
+#         if question_id < 3:
+#             st.session_state.quiz_step = question_id + 1
+#         else:
+#             st.session_state.quiz_completed = True
+#             st.session_state.quiz_score = self._calculate_transformation_readiness()
+#         st.rerun()
+    
+#     def _calculate_transformation_readiness(self):
+#         """Calculate readiness score"""
+#         scoring = {
+#             1: {
+#                 "Force and control": 25,
+#                 "Mistrust and defensiveness": 20,
+#                 "All-or-nothing thinking": 30,
+#                 "Doing addiction": 35
+#             },
+#             2: {
+#                 "Push harder with willpower": 15,
+#                 "Learn more techniques": 25,
+#                 "Change external circumstances": 10,
+#                 "Get frustrated and give up": 30
+#             },
+#             3: {
+#                 "Curious but cautious": 25,
+#                 "Ready to explore thinking": 35,
+#                 "Desperate for different approach": 30,
+#                 "Prefer external solutions": 10
+#             }
+#         }
+        
+#         total_score = 0
+#         for q_id, answer in st.session_state.quiz_answers.items():
+#             if q_id in scoring and answer in scoring[q_id]:
+#                 total_score += scoring[q_id][answer]
+        
+#         return min(total_score, 100)
+    
+#     def _render_transformation_results(self):
+#         """Render results with insights and recommendations"""
+#         score = st.session_state.quiz_score
+#         blocking_mechanism = st.session_state.dominant_blocking_mechanism
+        
+#         # Results display
+#         if score >= 75:
+#             st.success("🌟 High readiness for authentic transformation! Your awareness of internal patterns indicates excellent potential for rapid, lasting change.")
+#         elif score >= 55:
+#             st.warning("🎯 Good transformation potential! You show strong indicators for successful internal pattern rewiring with proper support.")
+#         elif score >= 35:
+#             st.info("💬 Guided transformation recommended. Your situation would benefit from professional support to navigate internal resistance safely.")
+#         else:
+#             st.info("🌱 Preparation phase recommended. Building awareness and readiness will optimize your transformation when you're ready.")
+        
+#         # Display score
+#         col1, col2, col3 = st.columns([1, 2, 1])
+#         with col2:
+#             st.metric("", f"{score}% Transformation readiness", "")
+        
+#         # Blocking mechanism insight
+#         mechanism_insights = {
+#             "Force and control": "You tend to use force when resistance appears, creating internal battles. True change happens through alignment, not overpowering.",
+#             "Mistrust and defensiveness": "Your security system stays hyperactive, treating change as danger. Transformation requires safe vulnerability.", 
+#             "All-or-nothing thinking": "Your mind divides experience into perfect/failure, eliminating the middle ground where growth happens.",
+#             "Doing addiction": "Your worth feels tied to productivity. This creates exhausting cycles where rest feels like failure."
+#         }
+        
+#         if blocking_mechanism in mechanism_insights:
+#             st.markdown("#### Your dominant internal pattern")
+#             st.info(f"**{blocking_mechanism}:** {mechanism_insights[blocking_mechanism]}")
+        
+#         # Action buttons
+#         col1, col2 = st.columns(2)
+#         with col1:
+#             st.markdown(f"""
+#             <a href="{self.discovery_url}" target="_blank" 
+#                style="display: inline-block; background-color: #4CA1A3; color: white;
+#                       text-decoration: none; padding: 1rem 2rem; border-radius: 8px;
+#                       font-weight: 600; text-align: center; width: 100%;
+#                       box-sizing: border-box;">
+#                 📞 Book discovery call
+#             </a>
+#             """, unsafe_allow_html=True)
+#         with col2:
+#             if st.button("🔄 Retake assessment", use_container_width=True):
+#                 self._reset_quiz()
+    
+#     def _reset_quiz(self):
+#         """Reset all quiz state"""
+#         st.session_state.quiz_answers = {}
+#         st.session_state.quiz_step = 1
+#         st.session_state.quiz_completed = False
+#         st.session_state.quiz_score = 0
+#         st.session_state.dominant_blocking_mechanism = ""
+#         st.rerun()
+
+# class MethodTeaserWithVideo:
+#     """Method overview with video integration and link to method page"""
+    
+#     def render(self):
+#         """Render method teaser with video and complete explanation link"""
+#         st.subheader("Why hypnotherapy succeeds where others haven't")
+        
+#         # Video and explanation side by side
+#         col1, col2 = st.columns([1, 2])
+        
+#         with col1:
+#             st.video("https://youtu.be/5ORz1-LWrjo?feature=shared")
+        
+#         with col2:
+#             st.write("""
+#             **The problem:** Your conscious mind (5% of decisions) fights your subconscious programming (95% of decisions). 
+#             The subconscious always wins.
+#             """)
+            
+#             st.write("""
+#             **Our breakthrough:** Instead of fighting your subconscious, we work directly with it. 
+#             We identify your specific patterns and rewire them at the source.
+#             """)
+
+#         st.info("When your subconscious programming supports your goals instead of fighting them, change becomes effortless and permanent.")
+        
+#         # Call to action for method page
+#         st.markdown("---")
+        
+#         col1, col2 = st.columns([2, 1])
+        
+#         with col1:
+#             st.write("**Want to understand the complete neuroscience behind our method?** See the detailed breakdown of how neuroplasticity creates lasting change, brain wave states, and clinical evidence.")
+        
+#         with col2:
+#             # Note: In actual implementation, this would trigger page navigation
+#             if st.button("🧠 Learn the complete method", type="primary", use_container_width=True):
+#                 st.info("This would navigate to the Method page in the full application")
+
+# class HomePage:
+#     """Finalized home page with optimal flow"""
+    
+#     def __init__(self):
+#         self.hero = HeroSection()
+#         self.quiz = QuizSection()
+#         self.method_teaser = MethodTeaserWithVideo()
+    
+#     def render(self):
+#         """Render complete home page with video integration"""
+#         # Hero - immediate impact and value proposition
+#         with st.container():
+#             self.hero.render()
+#             st.markdown("    ")
+        
+#         # Quiz - engagement and qualification
+#         with st.container():
+#             self.quiz.render()
+#             st.markdown("    ")
+        
+#         # Method teaser with video - credibility and link to more info
+#         with st.container():
+#             self.method_teaser.render()
+#             st.markdown("    ")
+
+# # Factory function for clean import
+# def create_home_page():
+#     return HomePage()
+
+
+
 """
-Finalized Home page component with video integration
-Hero → Quiz → Method Teaser with Video → CTA
+Updated Home page with enhanced 4-question quiz integration
 """
 import streamlit as st
 from utils.config import AppConstants
+from components.quiz import create_quiz  # Import the enhanced quiz
 
 class HeroSection:
     """Clean hero section with image and key message"""
@@ -701,7 +1050,6 @@ class HeroSection:
             
             st.info("→ Book your hypnotherapy at our new address in Bangkok to break free from unwanted habits. 2 sessions only needed.")
 
-
             # Immediate value proposition with authority
             st.markdown("## Transform in 2 sessions what takes traditional therapy longer")
             
@@ -724,7 +1072,7 @@ class HeroSection:
                 </div>
                 """, unsafe_allow_html=True)
             
-            # Column 2: Comparison Image - Full image, no text
+            # Column 2: Comparison Image
             with col2:
                 st.markdown("""
                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
@@ -736,7 +1084,7 @@ class HeroSection:
                 </div>
                 """, unsafe_allow_html=True)
             
-            # Column 3: Pattern Change Hypnotherapy Card  
+            # Column 3: Hypnotherapy Card  
             with col3:
                 st.markdown("""
                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
@@ -752,204 +1100,15 @@ class HeroSection:
                 </div>
                 """, unsafe_allow_html=True)
 
-
 class QuizSection:
-    """Quiz section identifying internal blocking mechanisms"""
+    """Quiz section using the enhanced component"""
     
     def __init__(self):
-        # Initialize session state
-        if 'quiz_answers' not in st.session_state:
-            st.session_state.quiz_answers = {}
-        if 'quiz_step' not in st.session_state:
-            st.session_state.quiz_step = 1
-        if 'quiz_completed' not in st.session_state:
-            st.session_state.quiz_completed = False
-        if 'quiz_score' not in st.session_state:
-            st.session_state.quiz_score = 0
-        if 'dominant_blocking_mechanism' not in st.session_state:
-            st.session_state.dominant_blocking_mechanism = ""
-        
-        # Get discovery URL from config
-        self.discovery_url = AppConstants.CONTACT_INFO.get("discovery_call_url", "https://calendly.com/laetitiasheppard/discovery")
+        self.quiz = create_quiz()  # Create quiz instance
     
     def render(self):
-        """Render the complete quiz experience"""
-        st.subheader("Test : Do you need rapid change?")
-        st.write("3 questions to assess your thought system patterns:")
-        
-        if not st.session_state.quiz_completed:
-            self._render_all_questions()
-        else:
-            self._render_transformation_results()
-    
-    def _render_all_questions(self):
-        """Show all questions with proper progression"""
-        current_step = st.session_state.quiz_step
-        
-        # Question 1 - Identify dominant blocking mechanism
-        q1_expanded = (current_step == 1) or (1 not in st.session_state.quiz_answers)
-        with st.expander("Question 1: which internal pattern most limits your growth?", expanded=q1_expanded):
-            if 1 not in st.session_state.quiz_answers:
-                col1, col2 = st.columns(2)
-                with col1:
-                    if st.button("⚔️ Force and control\n'I must push through resistance'", key="q1_force", use_container_width=True):
-                        self._answer_question(1, "Force and control")
-                    if st.button("🔒 Mistrust and defensiveness\n'I can't let my guard down'", key="q1_mistrust", use_container_width=True):
-                        self._answer_question(1, "Mistrust and defensiveness")
-                with col2:
-                    if st.button("⚖️ All-or-nothing thinking\n'It's either perfect or failure'", key="q1_binary", use_container_width=True):
-                        self._answer_question(1, "All-or-nothing thinking")
-                    if st.button("🏃 Doing addiction\n'My worth depends on productivity'", key="q1_doing", use_container_width=True):
-                        self._answer_question(1, "Doing addiction")
-            else:
-                st.success(f"✅ Selected: {st.session_state.quiz_answers[1]}")
-        
-        # Question 2 - Change attempts and frustration
-        if len(st.session_state.quiz_answers) >= 1:
-            q2_expanded = (current_step == 2) and (2 not in st.session_state.quiz_answers)
-            with st.expander("Question 2: how do you typically try to create change?", expanded=q2_expanded):
-                if 2 not in st.session_state.quiz_answers:
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        if st.button("💪 Push harder with willpower and discipline", key="q2_willpower", use_container_width=True):
-                            self._answer_question(2, "Push harder with willpower")
-                        if st.button("📚 Learn more techniques and strategies", key="q2_techniques", use_container_width=True):
-                            self._answer_question(2, "Learn more techniques")
-                    with col2:
-                        if st.button("🔄 Change external circumstances or people", key="q2_external", use_container_width=True):
-                            self._answer_question(2, "Change external circumstances")
-                        if st.button("😤 Get frustrated and give up temporarily", key="q2_frustrated", use_container_width=True):
-                            self._answer_question(2, "Get frustrated and give up")
-                else:
-                    st.success(f"✅ Selected: {st.session_state.quiz_answers[2]}")
-        
-        # Question 3 - Readiness for internal transformation
-        if len(st.session_state.quiz_answers) >= 2:
-            q3_expanded = (current_step == 3) and (3 not in st.session_state.quiz_answers)
-            with st.expander("Question 3: how ready are you to examine your thought system?", expanded=q3_expanded):
-                if 3 not in st.session_state.quiz_answers:
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        if st.button("🤔 Curious but cautious about internal work", key="q3_curious", use_container_width=True):
-                            self._answer_question(3, "Curious but cautious")
-                        if st.button("🎯 Ready to explore how my thinking creates problems", key="q3_ready", use_container_width=True):
-                            self._answer_question(3, "Ready to explore thinking")
-                    with col2:
-                        if st.button("🔥 Desperate for a different approach to change", key="q3_desperate", use_container_width=True):
-                            self._answer_question(3, "Desperate for different approach")
-                        if st.button("🛡️ Prefer focusing on external solutions first", key="q3_external", use_container_width=True):
-                            self._answer_question(3, "Prefer external solutions")
-                else:
-                    st.success(f"✅ Selected: {st.session_state.quiz_answers[3]}")
-        
-        # Progress indicator
-        progress = len(st.session_state.quiz_answers) / 3
-        if progress > 0:
-            st.progress(progress)
-            if progress < 1:
-                st.caption(f"Question {len(st.session_state.quiz_answers) + 1} of 3")
-            else:
-                st.caption("Complete!")
-    
-    def _answer_question(self, question_id, answer):
-        """Handle question answers and progression"""
-        st.session_state.quiz_answers[question_id] = answer
-        if question_id == 1:
-            st.session_state.dominant_blocking_mechanism = answer
-        
-        if question_id < 3:
-            st.session_state.quiz_step = question_id + 1
-        else:
-            st.session_state.quiz_completed = True
-            st.session_state.quiz_score = self._calculate_transformation_readiness()
-        st.rerun()
-    
-    def _calculate_transformation_readiness(self):
-        """Calculate readiness score"""
-        scoring = {
-            1: {
-                "Force and control": 25,
-                "Mistrust and defensiveness": 20,
-                "All-or-nothing thinking": 30,
-                "Doing addiction": 35
-            },
-            2: {
-                "Push harder with willpower": 15,
-                "Learn more techniques": 25,
-                "Change external circumstances": 10,
-                "Get frustrated and give up": 30
-            },
-            3: {
-                "Curious but cautious": 25,
-                "Ready to explore thinking": 35,
-                "Desperate for different approach": 30,
-                "Prefer external solutions": 10
-            }
-        }
-        
-        total_score = 0
-        for q_id, answer in st.session_state.quiz_answers.items():
-            if q_id in scoring and answer in scoring[q_id]:
-                total_score += scoring[q_id][answer]
-        
-        return min(total_score, 100)
-    
-    def _render_transformation_results(self):
-        """Render results with insights and recommendations"""
-        score = st.session_state.quiz_score
-        blocking_mechanism = st.session_state.dominant_blocking_mechanism
-        
-        # Results display
-        if score >= 75:
-            st.success("🌟 High readiness for authentic transformation! Your awareness of internal patterns indicates excellent potential for rapid, lasting change.")
-        elif score >= 55:
-            st.warning("🎯 Good transformation potential! You show strong indicators for successful internal pattern rewiring with proper support.")
-        elif score >= 35:
-            st.info("💬 Guided transformation recommended. Your situation would benefit from professional support to navigate internal resistance safely.")
-        else:
-            st.info("🌱 Preparation phase recommended. Building awareness and readiness will optimize your transformation when you're ready.")
-        
-        # Display score
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.metric("", f"{score}% Transformation readiness", "")
-        
-        # Blocking mechanism insight
-        mechanism_insights = {
-            "Force and control": "You tend to use force when resistance appears, creating internal battles. True change happens through alignment, not overpowering.",
-            "Mistrust and defensiveness": "Your security system stays hyperactive, treating change as danger. Transformation requires safe vulnerability.", 
-            "All-or-nothing thinking": "Your mind divides experience into perfect/failure, eliminating the middle ground where growth happens.",
-            "Doing addiction": "Your worth feels tied to productivity. This creates exhausting cycles where rest feels like failure."
-        }
-        
-        if blocking_mechanism in mechanism_insights:
-            st.markdown("#### Your dominant internal pattern")
-            st.info(f"**{blocking_mechanism}:** {mechanism_insights[blocking_mechanism]}")
-        
-        # Action buttons
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown(f"""
-            <a href="{self.discovery_url}" target="_blank" 
-               style="display: inline-block; background-color: #4CA1A3; color: white;
-                      text-decoration: none; padding: 1rem 2rem; border-radius: 8px;
-                      font-weight: 600; text-align: center; width: 100%;
-                      box-sizing: border-box;">
-                📞 Book discovery call
-            </a>
-            """, unsafe_allow_html=True)
-        with col2:
-            if st.button("🔄 Retake assessment", use_container_width=True):
-                self._reset_quiz()
-    
-    def _reset_quiz(self):
-        """Reset all quiz state"""
-        st.session_state.quiz_answers = {}
-        st.session_state.quiz_step = 1
-        st.session_state.quiz_completed = False
-        st.session_state.quiz_score = 0
-        st.session_state.dominant_blocking_mechanism = ""
-        st.rerun()
+        """Render the quiz using the component"""
+        self.quiz.render()
 
 class MethodTeaserWithVideo:
     """Method overview with video integration and link to method page"""
@@ -991,21 +1150,21 @@ class MethodTeaserWithVideo:
                 st.info("This would navigate to the Method page in the full application")
 
 class HomePage:
-    """Finalized home page with optimal flow"""
+    """Home page with enhanced quiz integration"""
     
     def __init__(self):
         self.hero = HeroSection()
-        self.quiz = QuizSection()
+        self.quiz = QuizSection()  # Uses the component now
         self.method_teaser = MethodTeaserWithVideo()
     
     def render(self):
-        """Render complete home page with video integration"""
+        """Render complete home page"""
         # Hero - immediate impact and value proposition
         with st.container():
             self.hero.render()
             st.markdown("    ")
         
-        # Quiz - engagement and qualification
+        # Quiz - engagement and qualification using component
         with st.container():
             self.quiz.render()
             st.markdown("    ")
@@ -1018,4 +1177,3 @@ class HomePage:
 # Factory function for clean import
 def create_home_page():
     return HomePage()
-
