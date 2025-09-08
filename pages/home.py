@@ -25,7 +25,7 @@ class HeroSection:
         with st.container():
             st.markdown(f"""
             <div style="display: flex; justify-content: center; align-items: center; margin: 2rem 0;">
-                <img src="https://raw.githubusercontent.com/pepeette/Hypno/main/img/hero_title_1.png" 
+                <img src="https://raw.githubusercontent.com/pepeette/Hypno/main/img/herobanner.jpg" 
                      alt="Stop Fighting Your Mind. Start Working With It." 
                      style="max-width: 100%; height: auto; border-radius: 16px;">
             </div>
