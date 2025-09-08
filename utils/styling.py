@@ -98,24 +98,31 @@
 #         text-shadow: none !important;
 #     }
 
-#     /* CTA Button Style */
+#     /* CTA Button Style - Matching Streamlit button shape */
 #     .cta-button {
 #         display: inline-block;
 #         background-color: var(--accent);
-#         color: #FFFFFF !important;   /* override global a styles */
+#         color: #FFFFFF !important;
 #         text-decoration: none;
-#         padding: 0.8rem 0.8rem;
-#         border-radius: var(--radius-sm);
-#         font-weight: 500;
-#         font-size: 0.9rem;
+#         /* Match Streamlit button padding and dimensions */
+#         padding: var(--space-sm) var(--space-md) !important;
+#         border-radius: var(--radius-sm) !important;
+#         font-weight: 600 !important;
+#         font-size: var(--font-size-normal) !important;
 #         transition: var(--transition);
 #         box-shadow: var(--shadow-sm);
 #         text-align: center;
 #         width: 100%;
 #         box-sizing: border-box;
-#         margin-bottom: 0.25rem;
-#         border: none;
+#         margin: var(--space-xs) 0 !important;
+#         border: none !important;
+#         cursor: pointer;
+#         /* Additional Streamlit button properties */
+#         min-height: 2.5rem;
+#         vertical-align: middle;
+#         line-height: 1.6;
 #     }
+    
 #     /* Global link reset */
 #     a {
 #         text-decoration: none !important;
@@ -126,13 +133,13 @@
 #         text-decoration: none !important;
 #     }
 
-#     /* Hover effect */
+#     /* CTA Button hover effect - light background */
 #     .cta-button:hover {
 #         background-color: #E1F0F0 !important;
 #         color: #273548 !important;
+#         transform: translateY(-1px);
 #         box-shadow: 0 4px 12px rgba(243,246,248,0.6);
 #     }
-
     
 #     /* Improved section spacing */
 #     .stMarkdown {
@@ -362,6 +369,7 @@
 #     </style>
 #     """, unsafe_allow_html=True)
 
+
 """
 Enhanced styling module for the Hypnotherapy website
 Improved spacing, typography, and visual hierarchy
@@ -555,7 +563,7 @@ def apply_global_styles():
         box-shadow: var(--shadow-sm);
     }
     
-    /* Button System with better spacing */
+    /* Button System with better spacing and matching hover effect */
     .stButton {
         margin: var(--space-xs) 0;
     }
@@ -569,6 +577,9 @@ def apply_global_styles():
         border: none !important;
         font-size: var(--font-size-normal) !important;
         margin: var(--space-xs) 0 !important;
+        min-height: 2.5rem;
+        vertical-align: middle;
+        line-height: 1.6;
     }
     
     .stButton>button[kind="primary"] {
@@ -577,8 +588,10 @@ def apply_global_styles():
     }
     
     .stButton>button[kind="primary"]:hover {
-        background-color: var(--accent-hover) !important;
+        background-color: #E1F0F0 !important;
+        color: #273548 !important;
         transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(243,246,248,0.6);
     }
     
     .stButton>button[kind="secondary"] {
@@ -588,8 +601,10 @@ def apply_global_styles():
     }
     
     .stButton>button[kind="secondary"]:hover {
-        background-color: var(--accent) !important;
-        color: white !important;
+        background-color: #E1F0F0 !important;
+        color: #273548 !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(243,246,248,0.6);
     }
     
     /* Form Elements with improved spacing */
