@@ -498,7 +498,7 @@ class PatternChangeMethod:
         st.subheader("Why Hypnotherapy succeeds where others haven't")
         
         # Opening explanation using Streamlit info box
-        st.info("""
+        st.write("""
         Every unwanted behavior is driven by subconscious patterns you learned years ago. 
         Traditional therapy tries to override these patterns with willpower. We change the patterns themselves.
         When your subconscious programming supports your goals instead of fighting them, 
@@ -526,7 +526,7 @@ class PatternChangeMethod:
                         3rd Session Optional
                     </div>
                     <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
-                        15% need Reinforcement
+                        15% need Reinforcing
                     </div>
                 </div>
                 <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
