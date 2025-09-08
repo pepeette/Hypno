@@ -12,7 +12,7 @@ class MethodHero:
         st.markdown("""
         <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
                     border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
-            <h1 style="color: white;">The neuroscience behind rapid transformation</h1>
+            <h1 style="color: white;">The method that achieves rapid transformation</h1>
         </div>
         """, unsafe_allow_html=True)
 
