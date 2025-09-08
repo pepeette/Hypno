@@ -290,39 +290,27 @@ class WhyItWorks:
 #         """)
 
 class InvestmentSection:
-    """Pricing and value proposition"""
-
-    def send_email(self, package_name: str):
-        """Send Gmail notification when a visitor clicks a package"""
-        sender = "ab@gmail.com"
-        recipient = "ab@gmail.com"
-        subject = f"New Booking Click: {package_name}"
-        body = f"A visitor clicked on: {package_name}"
-
-        msg = MIMEText(body)
-        msg["Subject"] = subject
-        msg["From"] = sender
-        msg["To"] = recipient
-
-        try:
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-                server.login(st.secrets["gmail"]["user"], st.secrets["gmail"]["password"])
-                server.sendmail(sender, recipient, msg.as_string())
-        except Exception as e:
-            st.error(f"Email could not be sent: {e}")
+    """Pricing and value proposition with email integration"""
+    
+    def __init__(self):
+        # Initialize session state for tracking email sends
+        if 'email_sent' not in st.session_state:
+            st.session_state.email_sent = False
+        if 'selected_package' not in st.session_state:
+            st.session_state.selected_package = None
 
     def render(self):
-        """Render investment options"""
+        """Render investment options with email functionality"""
         st.subheader("Invest in your transformation")
         st.write("One-time investment. Lifetime results. Compare to years of traditional therapy:")
 
-        # --- Detect query param to trigger email ---
-        query_params = st.query_params
-        if "package" in st.query_params:
-            package = st.query_params["package"]
-            send_package_booking_email({"package_type": package})
-            st.query_params.clear()
-            st.success(f"Your interest in **{package}** was recorded!")
+        # Show success message if email was sent
+        if st.session_state.email_sent and st.session_state.selected_package:
+            st.success(f"✅ Your interest in **{st.session_state.selected_package}** has been recorded! We'll contact you within 24 hours.")
+            st.info("📞 For immediate assistance, scroll down to book a discovery call.")
+            # Reset the flag
+            st.session_state.email_sent = False
+            st.session_state.selected_package = None
 
         col1, col2 = st.columns(2)
 
@@ -344,21 +332,8 @@ class InvestmentSection:
             st.write("✓ Email support between sessions")
             st.write("✓ 85% achieve full transformation")
 
-            st.markdown(
-                f"""
-                <a href="?package=Common+Package" 
-                   target="_self"
-                   onclick="window.open('https://calendly.com/your-link/common','_blank');"
-                   style="display: inline-block; background-color: var(--accent); color: white;
-                          text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
-                          font-weight: 500; font-size: 0.9rem; transition: var(--transition);
-                          box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                          box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
-                    📞 Book Common Package
-                </a>
-                """,
-                unsafe_allow_html=True,
-            )
+            if st.button("📞 Book Common Package", type="primary", use_container_width=True, key="common_pkg"):
+                self._handle_package_selection("Common Package (฿3,000)")
 
         with col2:
             st.markdown("""
@@ -378,26 +353,72 @@ class InvestmentSection:
             st.write("✓ 100% satisfaction commitment")
             st.write("✓ Maximum confidence approach")
 
-            st.markdown(
-                f"""
-                <a href="?package=Complete+Package" 
-                   target="_self"
-                   onclick="window.open('https://calendly.com/your-link/complete','_blank');"
-                   style="display: inline-block; background-color: var(--accent); color: white;
-                          text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
-                          font-weight: 500; font-size: 0.9rem; transition: var(--transition);
-                          box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                          box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
-                    ⭐ Book Complete Package
-                </a>
-                """,
-                unsafe_allow_html=True,
-            )
+            if st.button("⭐ Book Complete Package", use_container_width=True, key="complete_pkg"):
+                self._handle_package_selection("Complete Package (฿4,000)")
 
         # Value comparison
         st.info("""
-        *Compare: Traditional therapy often costs ฿60,000+ over months/years*
+        💡 **Value Comparison:** Traditional therapy often costs ฿60,000+ over months or years. 
+        The ongoing cost of your unwanted habit often exceeds our package price within months.
         """)
+
+        # Direct booking links
+        st.markdown("### Ready to start? Choose your booking method:")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            <a href="https://calendly.com/laetitiasheppard/discovery" target="_blank" 
+               style="display: inline-block; background-color: var(--accent); color: white;
+                      text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
+                      font-weight: 600; transition: var(--transition);
+                      box-shadow: var(--shadow-sm); text-align: center; width: 100%;
+                      box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
+                📞 Discovery Call First
+            </a>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown("""
+            <a href="https://calendly.com/laetitiasheppard/package" target="_blank" 
+               style="display: inline-block; background-color: white; color: var(--text-primary);
+                      text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
+                      font-weight: 600; transition: var(--transition);
+                      box-shadow: var(--shadow-sm); text-align: center; width: 100%;
+                      box-sizing: border-box; margin-bottom: 0.25rem; border: 2px solid var(--border);">
+                ⚡ Direct Package Booking
+            </a>
+            """, unsafe_allow_html=True)
+
+    def _handle_package_selection(self, package_name):
+        """Handle package selection and send email"""
+        try:
+            # Import email handler
+            from utils.email_handler import send_package_booking_email
+            
+            # Prepare booking data
+            booking_data = {
+                'package_type': package_name,
+                'timestamp': st.session_state.get('current_time', 'Unknown'),
+                'source': 'Method Page - Package Selection',
+                'message': f'Visitor expressed interest in {package_name} package'
+            }
+            
+            # Send email
+            email_success = send_package_booking_email(booking_data)
+            
+            if email_success:
+                st.session_state.email_sent = True
+                st.session_state.selected_package = package_name
+                st.rerun()
+            else:
+                st.error("❌ There was an issue sending your request. Please try booking directly using the calendar links below.")
+                
+        except Exception as e:
+            st.error("❌ Unable to process your request. Please use the direct booking links below.")
+            # Optional: Log error for debugging
+            if st.secrets.get("debug_mode", False):
+                st.exception(e)
 
 
 class MethodPage:
