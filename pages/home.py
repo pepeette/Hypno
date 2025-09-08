@@ -251,7 +251,7 @@ class QuizSection:
     def render(self):
         """Render the complete quiz experience"""
         # Section header
-        st.subheader("Can it be suited for you? Test")
+        st.subheader("Is this suited for you? Test")
         st.write("3 questions to assess your thought system patterns:")
         
         if not st.session_state.quiz_completed:
