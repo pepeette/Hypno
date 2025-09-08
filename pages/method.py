@@ -3,6 +3,10 @@ Method Page - The Science Behind 2-Session Transformation
 Reviewed and corrected version with better flow and structure
 """
 import streamlit as st
+import smtplib
+from email.mime.text import MIMEText
+from utils.email_handler import send_package_booking_email
+
 
 class MethodHero:
     """Hero section for method page using consistent styling"""
@@ -228,16 +232,100 @@ class WhyItWorks:
         supports your goals instead of sabotaging them, change becomes effortless.
         """)
 
+# class InvestmentSection:
+#     """Pricing and value proposition"""
+    
+#     def render(self):
+#         """Render investment options"""
+#         st.subheader("Invest in your transformation")
+#         st.write("One-time investment. Lifetime results. Compare to years of traditional therapy:")
+        
+#         col1, col2 = st.columns(2)
+        
+#         with col1:
+#             st.markdown("""
+#             <div style="background: white; border: 2px solid #4CA1A3; border-radius: 12px; 
+#                         padding: 2rem; text-align: center; margin: 1rem 0;">
+#                 <h2 style="color: #4CA1A3; margin-bottom: 1rem;">Common Package</h2>
+#                 <div style="color: #273548; font-size: 2.5rem; font-weight: 700; margin: 1rem 0;">
+#                     ฿3,000
+#                 </div>
+#                 <div style="color: #556D7A; margin-bottom: 1.5rem;">Sessions 1 & 2 • Most Popular</div>
+#             </div>
+#             """, unsafe_allow_html=True)
+            
+#             st.markdown("**Includes:**")
+#             st.write("✓ Session 1: Deep pattern analysis (90 mins)")
+#             st.write("✓Session 2: Subconscious rewiring (90 mins)")
+#             st.write("✓ Email support between sessions")
+#             st.write("✓ 85% achieve full transformation")
+            
+#             if st.button("📞 Book Common Package", type="primary", use_container_width=True):
+#                 st.success("Excellent choice! Scroll down to book your discovery call.")
+        
+#         with col2:
+#             st.markdown("""
+#             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                         padding: 2rem; text-align: center; margin: 1rem 0;">
+#                 <h2 style="color: #273548; margin-bottom: 1rem;">Complete Package</h2>
+#                 <div style="color: #273548; font-size: 2.5rem; font-weight: 700; margin: 1rem 0;">
+#                     ฿4,000
+#                 </div>
+#                 <div style="color: #556D7A; margin-bottom: 1.5rem;">All 3 sessions • Peace of Mind</div>
+#             </div>
+#             """, unsafe_allow_html=True)
+            
+#             st.markdown("**Includes:**")
+#             st.write("✓ Everything in Common Package")
+#             st.write("✓ Session 3: Optional reinforcement (60 mins)")
+#             st.write("✓ 100% satisfaction commitment")
+#             st.write("✓ Maximum confidence approach")
+            
+#             if st.button("⭐ Book Complete Package", use_container_width=True):
+#                 st.success("Smart choice! Scroll down to book your discovery call.")
+        
+#         # Value comparison
+#         st.info("""
+#         *Compare: Traditional therapy often costs ฿60,000+ over months/years*
+#         """)
+
 class InvestmentSection:
     """Pricing and value proposition"""
-    
+
+    def send_email(self, package_name: str):
+        """Send Gmail notification when a visitor clicks a package"""
+        sender = "ab@gmail.com"
+        recipient = "ab@gmail.com"
+        subject = f"New Booking Click: {package_name}"
+        body = f"A visitor clicked on: {package_name}"
+
+        msg = MIMEText(body)
+        msg["Subject"] = subject
+        msg["From"] = sender
+        msg["To"] = recipient
+
+        try:
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+                server.login(st.secrets["gmail"]["user"], st.secrets["gmail"]["password"])
+                server.sendmail(sender, recipient, msg.as_string())
+        except Exception as e:
+            st.error(f"Email could not be sent: {e}")
+
     def render(self):
         """Render investment options"""
         st.subheader("Invest in your transformation")
         st.write("One-time investment. Lifetime results. Compare to years of traditional therapy:")
-        
+
+        # --- Detect query param to trigger email ---
+        query_params = st.query_params
+        if "package" in st.query_params:
+            package = st.query_params["package"]
+            send_package_booking_email({"package_type": package})
+            st.query_params.clear()
+            st.success(f"Your interest in **{package}** was recorded!")
+
         col1, col2 = st.columns(2)
-        
+
         with col1:
             st.markdown("""
             <div style="background: white; border: 2px solid #4CA1A3; border-radius: 12px; 
@@ -249,16 +337,29 @@ class InvestmentSection:
                 <div style="color: #556D7A; margin-bottom: 1.5rem;">Sessions 1 & 2 • Most Popular</div>
             </div>
             """, unsafe_allow_html=True)
-            
+
             st.markdown("**Includes:**")
             st.write("✓ Session 1: Deep pattern analysis (90 mins)")
-            st.write("✓Session 2: Subconscious rewiring (90 mins)")
+            st.write("✓ Session 2: Subconscious rewiring (90 mins)")
             st.write("✓ Email support between sessions")
             st.write("✓ 85% achieve full transformation")
-            
-            if st.button("📞 Book Common Package", type="primary", use_container_width=True):
-                st.success("Excellent choice! Scroll down to book your discovery call.")
-        
+
+            st.markdown(
+                f"""
+                <a href="?package=Common+Package" 
+                   target="_self"
+                   onclick="window.open('https://calendly.com/your-link/common','_blank');"
+                   style="display: inline-block; background-color: var(--accent); color: white;
+                          text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
+                          font-weight: 500; font-size: 0.9rem; transition: var(--transition);
+                          box-shadow: var(--shadow-sm); text-align: center; width: 100%;
+                          box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
+                    📞 Book Common Package
+                </a>
+                """,
+                unsafe_allow_html=True,
+            )
+
         with col2:
             st.markdown("""
             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
@@ -270,20 +371,34 @@ class InvestmentSection:
                 <div style="color: #556D7A; margin-bottom: 1.5rem;">All 3 sessions • Peace of Mind</div>
             </div>
             """, unsafe_allow_html=True)
-            
+
             st.markdown("**Includes:**")
             st.write("✓ Everything in Common Package")
             st.write("✓ Session 3: Optional reinforcement (60 mins)")
             st.write("✓ 100% satisfaction commitment")
             st.write("✓ Maximum confidence approach")
-            
-            if st.button("⭐ Book Complete Package", use_container_width=True):
-                st.success("Smart choice! Scroll down to book your discovery call.")
-        
+
+            st.markdown(
+                f"""
+                <a href="?package=Complete+Package" 
+                   target="_self"
+                   onclick="window.open('https://calendly.com/your-link/complete','_blank');"
+                   style="display: inline-block; background-color: var(--accent); color: white;
+                          text-decoration: none; padding: 0.8rem 0.5rem; border-radius: var(--radius-sm);
+                          font-weight: 500; font-size: 0.9rem; transition: var(--transition);
+                          box-shadow: var(--shadow-sm); text-align: center; width: 100%;
+                          box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
+                    ⭐ Book Complete Package
+                </a>
+                """,
+                unsafe_allow_html=True,
+            )
+
         # Value comparison
         st.info("""
         *Compare: Traditional therapy often costs ฿60,000+ over months/years*
         """)
+
 
 class MethodPage:
     """Complete method page with improved flow"""
