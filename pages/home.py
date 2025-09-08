@@ -49,7 +49,7 @@ class HeroSection:
             # with col2:
             #     # Info box - will automatically size to content
             #     st.info("💡 True change begins when you stop resisting yourself and start rewiring the patterns controlling your behavior.
-                            → Book your hypnotherapy at our new address in BANGKOK to break free from unwanted habits. 2 sessions only needed.")
+                            # → Book your hypnotherapy at our new address in BANGKOK to break free from unwanted habits. 2 sessions only needed.")
 
 
             # Starting lines 
