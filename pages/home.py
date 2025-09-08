@@ -1050,31 +1050,52 @@ class HeroSection:
             # Key differentiator with research backing
             st.write("**Clinical hypnotherapy achieves 93% lasting change in 6 sessions.** Compare this to traditional approaches: psychoanalysis (38% after 600 sessions) and behavioral therapy (72% after 22 sessions).")
             
-            # Cost and time comparison
-            col1, col2 = st.columns(2)
+            # Desktop: 3 columns, Mobile: stacked
+            col1, col2, col3 = st.columns([1, 1, 1])
             
+            # Column 1: Traditional Methods Card
             with col1:
                 st.markdown("""
-                <div style="background: #ef4444; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
-                    <h3 style="color: white; margin-bottom: 0.5rem;">Traditional Therapy</h3>
-                    <div style="font-size: 1.2rem; font-weight: bold;">60,000+ THB</div>
-                    <div style="opacity: 0.9;">Years of weekly sessions</div>
-                    <div style="opacity: 0.9;">38-72% success rate</div>
+                <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+                            padding: 2rem; margin: 1rem 0; border-left: 4px solid #ef4444; height: 100%;">
+                    <h2 style="color: #dc2626; margin-bottom: 1rem; text-align: center;">❌ Traditional Methods</h2>
+                    <p><strong>Talk therapy:</strong> Analyzes problems but rarely creates lasting change</p>
+                    <p><strong>Willpower:</strong> Requires constant effort and usually fails within weeks</p>
+                    <p><strong>Medications:</strong> Manage symptoms but don't address root causes</p>
+                    <p><strong>Self-help:</strong> Gives you tools but can't change deep programming</p>
+                    <p style="margin: 0; font-weight: 600; color: #dc2626; text-align: center;">
+                        Result: You know what to do but can't consistently do it
+                    </p>
                 </div>
                 """, unsafe_allow_html=True)
             
+            # Column 2: Comparison Image - Full image, no text
             with col2:
                 st.markdown("""
-                <div style="background: #4CA1A3; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
-                    <h3 style="color: white; margin-bottom: 0.5rem;">Our Hypnotherapy</h3>
-                    <div style="font-size: 1.2rem; font-weight: bold;">3,000 THB</div>
-                    <div style="opacity: 0.9;">2 sessions over 2 weeks</div>
-                    <div style="opacity: 0.9;">93% lasting change</div>
+                <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+                            margin: 1rem 0; height: 100%; padding: 0; overflow: hidden;
+                            display: flex; align-items: center; justify-content: center;">
+                    <img src="https://github.com/pepeette/Hypno/blob/main/img/Hypnotherapy_compa.jpg?raw=true" 
+                         alt="Hypnotherapy Comparison" 
+                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
                 </div>
                 """, unsafe_allow_html=True)
             
-            # Authority and credentials
-            st.info("🧠 **Neuroscience-Based Approach** | 8+ Years Clinical Experience | Research-Backed Method | Bangkok Clinic + Worldwide Online")
+            # Column 3: Pattern Change Hypnotherapy Card  
+            with col3:
+                st.markdown("""
+                <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+                            padding: 2rem; margin: 1rem 0; border-left: 4px solid #22c55e; height: 100%;">
+                    <h2 style="color: #16a34a; margin-bottom: 1rem; text-align: center;">✅ Hypnotherapy</h2>
+                    <p><strong>Session 1:</strong> Map your unique subconscious triggers and patterns</p>
+                    <p><strong>Session 2:</strong> Rewire those patterns at the subconscious level</p>
+                    <p><strong>Session 3:</strong> Optional reinforcement if needed (15% of clients)</p>
+                    <p><strong>Follow-up:</strong> Permanent change that feels natural and effortless</p>
+                    <p style="margin: 0; font-weight: 600; color: #16a34a; text-align: center;">
+                        Result: Your subconscious now supports your goals automatically
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
 
 class QuizSection:
     """Enhanced quiz with better connection to transformation readiness"""
