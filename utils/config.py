@@ -7,7 +7,7 @@ class AppConstants:
     """Application-wide constants"""
     
     # Navigation
-    NAVIGATION_OPTIONS = ["Hypnosis", "Method", "Blog", "Testimonials", "Book Now"]
+    NAVIGATION_OPTIONS = ["Home", "Method", "Blog", "Testimonials", "Book Now"]
     NAVIGATION_ICONS = ["house", "gear", "book", "star", "calendar"]
     
     # Contact information
