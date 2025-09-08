@@ -668,10 +668,9 @@
 # def create_home_page():
 #     return HomePage()
 
-
 """
-Streamlined Home page component with clear flow
-Hero → Quiz → Method Teaser → Link to Method Page
+Finalized Home page component with video integration
+Hero → Quiz → Method Teaser with Video → CTA
 """
 import streamlit as st
 from utils.config import AppConstants
@@ -896,19 +895,33 @@ class QuizSection:
         st.session_state.dominant_blocking_mechanism = ""
         st.rerun()
 
-class MethodTeaser:
-    """Simplified method overview that links to method page"""
+class MethodTeaserWithVideo:
+    """Method overview with video integration and link to method page"""
     
     def render(self):
-        """Render method teaser with link to full method page"""
+        """Render method teaser with video and complete explanation link"""
         st.subheader("Why hypnotherapy succeeds where others haven't")
         
-        st.write("""
-        Every unwanted behavior is driven by subconscious patterns you learned years ago. 
-        Traditional therapy tries to override these patterns with willpower. We change the patterns themselves.
-        """)
+        # Video and explanation side by side
+        col1, col2 = st.columns([1, 2])
+        
+        with col1:
+            st.video("https://youtu.be/5ORz1-LWrjo?feature=shared")
+        
+        with col2:
+            st.write("""
+            **The problem:** Your conscious mind (5% of decisions) fights your subconscious programming (95% of decisions). 
+            The subconscious always wins.
+            """)
+            
+            st.write("""
+            **Our breakthrough:** Instead of fighting your subconscious, we work directly with it. 
+            We identify your specific patterns and rewire them at the source.
+            """)
         
         # Success metrics in compact form
+        st.markdown("### Proven results")
+        
         col1, col2, col3 = st.columns(3)
         
         with col1:
@@ -951,45 +964,39 @@ class MethodTeaser:
             """, unsafe_allow_html=True)
         
         # Simple method overview
-        st.write("### Our neuroscience-based approach")
+        st.markdown("### Our neuroscience-based approach")
+        
+        st.write("**Session 1:** Deep pattern analysis - we map your specific neural pathways and identify the subconscious triggers driving unwanted behaviors.")
+        
+        st.write("**Session 2:** Neural reset hypnosis - using clinical hypnosis, we create new neural pathways and deactivate old automatic responses.")
+        
+        st.write("**Session 3:** Optional reinforcement - strengthen and consolidate new patterns if needed (15% of clients).")
+        
+        st.info("When your subconscious programming supports your goals instead of fighting them, change becomes effortless and permanent.")
+        
+        # Call to action for method page
+        st.markdown("---")
         
         col1, col2 = st.columns([2, 1])
         
         with col1:
-            st.write("**Session 1:** Deep pattern analysis - we map your specific neural pathways and identify the subconscious triggers driving unwanted behaviors.")
-            
-            st.write("**Session 2:** Neural reset hypnosis - using clinical hypnosis, we create new neural pathways and deactivate old automatic responses.")
-            
-            st.write("**Session 3:** Optional reinforcement - strengthen and consolidate new patterns if needed (15% of clients).")
-            
-            st.info("When your subconscious programming supports your goals instead of fighting them, change becomes effortless and permanent.")
+            st.write("**Want to understand the complete neuroscience behind our method?** See the detailed breakdown of how neuroplasticity creates lasting change, brain wave states, and clinical evidence.")
         
         with col2:
-            # Method page link
-            st.markdown("""
-            <div style="text-align: center; margin: 2rem 0;">
-                <p style="color: #556D7A; margin-bottom: 1rem;">
-                    Want to understand the complete neuroscience behind our method?
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Note: In actual implementation, this would need to trigger page navigation
-            # For now, showing as a styled button that would link to method page
+            # Note: In actual implementation, this would trigger page navigation
             if st.button("🧠 Learn the complete method", type="primary", use_container_width=True):
                 st.info("This would navigate to the Method page in the full application")
-                # In actual app: st.switch_page("Method") or similar navigation
 
 class HomePage:
-    """Streamlined home page with clear flow"""
+    """Finalized home page with optimal flow"""
     
     def __init__(self):
         self.hero = HeroSection()
         self.quiz = QuizSection()
-        self.method_teaser = MethodTeaser()
+        self.method_teaser = MethodTeaserWithVideo()
     
     def render(self):
-        """Render complete home page with streamlined flow"""
+        """Render complete home page with video integration"""
         # Hero - immediate impact and value proposition
         with st.container():
             self.hero.render()
@@ -1000,7 +1007,7 @@ class HomePage:
             self.quiz.render()
             st.markdown("    ")
         
-        # Method teaser - credibility and link to more info
+        # Method teaser with video - credibility and link to more info
         with st.container():
             self.method_teaser.render()
             st.markdown("    ")
