@@ -397,7 +397,6 @@
 #     """Factory function to create BookingForm instance"""
 #     return BookingForm()
 
-
 """
 Fixed Booking form component for the Hypnotherapy website
 Updated to handle package prefills and proper email integration
