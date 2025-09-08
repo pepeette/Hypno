@@ -84,19 +84,8 @@ class Footer:
             st.markdown(f"""
                 <a href="{self.contact_info['maps_url']}" 
                    target="_blank" 
-                   style="display: inline-block; 
-                          background-color: #4CA1A3; 
-                          color: #FFFFFF; 
-                          text-decoration: none; 
-                          padding: 0.5rem 1rem; 
-                          border-radius: 8px; 
-                          font-weight: 600; 
-                          text-align: center; 
-                          transition: all 0.3s ease; 
-                          margin-top: 1rem;"
-                   onmouseover="this.style.backgroundColor='#E1F0F0'; this.style.color='#273548';"
-                   onmouseout="this.style.backgroundColor='#4CA1A3'; this.style.color='#FFFFFF';">
-                    📍 Easy to access by BTS Asoke
+                   class="cta-button">
+                   📍 Easy to access by BTS Asoke
                 </a>
             """, unsafe_allow_html=True)
     
