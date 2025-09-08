@@ -1,6 +1,6 @@
 # """
 # Method Page - The Science Behind 2-Session Transformation
-# Updated to redirect to booking form with prefilled package information
+# Updated with unified method explanation merging both concepts
 # """
 # import streamlit as st
 
@@ -18,96 +18,92 @@
 
 #         st.write("Traditional therapy relies on willpower and takes months. My analytical hypnotherapy works directly with subconscious patterns - which is why 85% of clients achieve lasting change in just 2 sessions, not years. It's not willpower. It's neuroscience.")
 
-# class TwoSessionBreakdown:
-#     """Detailed breakdown of the 2-session process with 3-column layout"""
+# class UnifiedMethodExplanation:
+#     """Unified explanation combining both method concepts"""
     
 #     def render(self):
-#         """Render the session-by-session breakdown in 3 columns"""
-#         st.subheader("The proven 2-session process")
-#         st.write("Each session has a specific purpose in your transformation journey:")
+#         """Render the unified method explanation: 2 + 1"""
+#         st.subheader("How the proven method works: 2 + 1")
+#         st.write("Each session has a specific purpose in your transformation journey. This collaborative process between you and the therapist ensures lasting change:")
         
-#         # 3-column layout: Session 1, Session 2, Optional Session 3
+#         # 3-column layout showing the complete method
 #         col1, col2, col3 = st.columns(3)
         
 #         with col1:
-#             self._render_session_column(
-#                 session_num=1,
-#                 title="Deep pattern analysis",
-#                 duration="90 minutes",
-#                 icon="🔍",
-#                 preview="Discover your patterns",
-#                 what_happens=[
-#                     "Comprehensive behavioral analysis using proven psychological frameworks",
-#                     "Identify your unique subconscious triggers and response patterns", 
-#                     "Map the emotional and environmental factors that activate old behaviors",
-#                     "Discover the positive intent behind negative patterns",
-#                     "Begin initial positive programming to start shifting your mindset"
-#                 ],
-#                 outcome="You'll understand WHY you do what you do, often for the first time. Many clients feel immediate relief just from this clarity.",
-#                 border_color="#4CA1A3"
-#             )
+#             st.markdown("""
+#             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                         padding: 1.5rem; text-align: center; margin: 1rem 0; border-left: 4px solid #4CA1A3;">
+#                 <div style="background: #4CA1A3; color: white; width: 50px; height: 50px; 
+#                             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+#                             font-weight: bold; font-size: 1.3rem; margin: 0 auto 1rem;">1</div>
+#                 <h3 style="color: #273548; margin-bottom: 0.5rem;">🔍 Deep Pattern Analysis</h3>
+#                 <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">90 minutes</p>
+#                 <p style="color: #556D7A;">We map exactly what triggers your unwanted behavior at the subconscious level - 
+#                 often patterns you learned in childhood that no longer serve you. You'll understand WHY you do what you do.</p>
+#             </div>
+#             """, unsafe_allow_html=True)
+            
+#             with st.expander("What happens in Session 1:", expanded=False):
+#                 st.write("• Comprehensive behavioral analysis using proven frameworks")
+#                 st.write("• Identify your unique subconscious triggers")
+#                 st.write("• Map emotional and environmental factors")
+#                 st.write("• Discover the positive intent behind negative patterns")
+#                 st.write("• Begin initial positive programming")
+#                 st.success("**Result:** Many clients feel immediate relief just from this clarity.")
         
 #         with col2:
-#             self._render_session_column(
-#                 session_num=2,
-#                 title="Subconscious rewiring",
-#                 duration="90 minutes",
-#                 icon="⚡",
-#                 preview="Rewire your mind",
-#                 what_happens=[
-#                     "Enter deep hypnotic state for maximum subconscious receptivity",
-#                     "Install new neural pathways that support your desired behaviors",
-#                     "Replace limiting beliefs with empowering ones at the identity level",
-#                     "Create new automatic responses to old triggers",
-#                     "Anchor your new patterns with powerful positive emotional associations"
-#                 ],
-#                 outcome="The old urges simply disappear. You naturally make choices aligned with your goals without effort or internal struggle.",
-#                 border_color="#4CA1A3"
-#             )
+#             st.markdown("""
+#             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                         padding: 1.5rem; text-align: center; margin: 1rem 0; border-left: 4px solid #4CA1A3;">
+#                 <div style="background: #4CA1A3; color: white; width: 50px; height: 50px; 
+#                             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+#                             font-weight: bold; font-size: 1.3rem; margin: 0 auto 1rem;">2</div>
+#                 <h3 style="color: #273548; margin-bottom: 0.5rem;">⚡ Neural Reset Hypnosis</h3>
+#                 <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">90 minutes</p>
+#                 <p style="color: #556D7A;">Using clinical hypnosis, we access your subconscious mind and install new, 
+#                 empowering patterns that automatically support your goals. The old urges simply disappear.</p>
+#             </div>
+#             """, unsafe_allow_html=True)
+            
+#             with st.expander("What happens in Session 2:", expanded=False):
+#                 st.write("• Enter deep hypnotic state for maximum receptivity")
+#                 st.write("• Install new neural pathways supporting desired behaviors")
+#                 st.write("• Replace limiting beliefs with empowering ones")
+#                 st.write("• Create new automatic responses to old triggers")
+#                 st.write("• Anchor new patterns with positive emotional associations")
+#                 st.success("**Result:** You naturally make choices aligned with your goals without effort.")
         
 #         with col3:
-#             self._render_session_column(
-#                 session_num="+1",
-#                 title="Reinforcement",
-#                 duration="60 minutes",
-#                 icon="🎯",
-#                 preview="Optional (15% need)",
-#                 what_happens=[
-#                     "Strengthen any remaining weak spots in your new patterns",
-#                     "Address unexpected triggers that emerge in real-world situations",
-#                     "Fine-tune your responses for complete confidence",
-#                     "Provide additional tools for long-term maintenance"
-#                 ],
-#                 outcome="Complete confidence and mastery. Our guarantee: If you're not satisfied after 2 sessions, this session is complimentary.",
-#                 border_color="#eab308",
-#                 is_optional=True
-#             )
-    
-#     def _render_session_column(self, session_num, title, duration, icon, preview, what_happens, outcome, border_color, is_optional=False):
-#         """Render individual session column with collapsible details"""
+#             st.markdown("""
+#             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                         padding: 1.5rem; text-align: center; margin: 1rem 0; border-left: 4px solid #eab308;">
+#                 <div style="background: #eab308; color: white; width: 50px; height: 50px; 
+#                             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+#                             font-weight: bold; font-size: 1.3rem; margin: 0 auto 1rem;">+1</div>
+#                 <h3 style="color: #273548; margin-bottom: 0.5rem;">🎯 Reinforcement (Optional)</h3>
+#                 <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">60 minutes • 15% need this</p>
+#                 <p style="color: #556D7A;">Live the change effortlessly. Fine-tune any remaining patterns and ensure 
+#                 complete confidence. The transformation becomes your new natural state.</p>
+#             </div>
+#             """, unsafe_allow_html=True)
+            
+#             with st.expander("What happens in Session +1:", expanded=False):
+#                 st.write("• Strengthen any remaining weak spots")
+#                 st.write("• Address unexpected triggers from real-world situations")
+#                 st.write("• Fine-tune responses for complete confidence")
+#                 st.write("• Provide additional tools for long-term maintenance")
+#                 st.success("**Result:** Complete mastery. If not satisfied after 2 sessions, this is complimentary.")
         
-#         session_label = f"+{session_num}" if is_optional else str(session_num)
-#         optional_text = " (Optional)" if is_optional else ""
-        
-#         st.markdown(f"""
-#         <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-#                     padding: 1.5rem; margin-bottom: 1rem; border-left: 4px solid {border_color}; 
-#                     text-align: center;">
-#             <div style="background: {border_color}; color: white; width: 40px; height: 40px; 
-#                         border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-#                         font-weight: bold; font-size: 1.2rem; margin: 0 auto 1rem;">{session_label}</div>
-#             <h3 style="color: #273548; margin-bottom: 0.5rem; font-size: 1.1rem;">{icon} {title}{optional_text}</h3>
-#             <p style="color: #556D7A; margin: 0; font-size: 0.9rem; font-weight: 600;">{duration}</p>
-#             <p style="color: #556D7A; margin: 0.5rem 0 0 0; font-size: 0.85rem;">{preview}</p>
+#         # Important disclaimer about collaborative work
+#         st.markdown("""
+#         <div style="background: rgba(76, 161, 163, 0.1); border-radius: 8px; padding: 1rem; margin: 1.5rem 0; 
+#                     border-left: 4px solid #4CA1A3;">
+#             <p style="margin: 0; color: #273548; font-style: italic;">
+#                 * The word "we" clearly indicates that this is collaborative work between you and the therapist 
+#                 throughout each session. Your active participation is essential for transformation.
+#             </p>
 #         </div>
 #         """, unsafe_allow_html=True)
-        
-#         with st.expander(f"Details for session {session_num}", expanded=False):
-#             st.markdown("**What happens during this session:**")
-#             for item in what_happens:
-#                 st.write(f"• {item}")
-            
-#             st.success(f"**Outcome:** {outcome}")
 
 # class SuccessMetrics:
 #     """Success rates and statistics"""
@@ -197,7 +193,7 @@
 
 #             st.markdown("**Includes:**")
 #             st.write("✓ Session 1: Deep pattern analysis (90 mins)")
-#             st.write("✓ Session 2: Subconscious rewiring (90 mins)")
+#             st.write("✓ Session 2: Neural reset hypnosis (90 mins)")
 #             st.write("✓ Email support between sessions")
 #             st.write("✓ 85% achieve full transformation")
 
@@ -218,7 +214,7 @@
 
 #             st.markdown("**Includes:**")
 #             st.write("✓ Everything in Common Package")
-#             st.write("✓ Session 3: Optional reinforcement (60 mins)")
+#             st.write("✓ Session +1: Optional reinforcement (60 mins)")
 #             st.write("✓ 100% satisfaction commitment")
 #             st.write("✓ Maximum confidence approach")
 
@@ -243,7 +239,7 @@
     
 #     def __init__(self):
 #         self.hero = MethodHero()
-#         self.session_breakdown = TwoSessionBreakdown()
+#         self.unified_method = UnifiedMethodExplanation()
 #         self.success_metrics = SuccessMetrics()
 #         self.why_it_works = WhyItWorks()
 #         self.investment = InvestmentSection()
@@ -255,7 +251,7 @@
 #             st.markdown("    ")
         
 #         with st.container():
-#             self.session_breakdown.render()
+#             self.unified_method.render()
 #             st.markdown("    ")
 
 #         with st.container():
@@ -273,10 +269,9 @@
 # def create_method_page():
 #     return MethodPage()
 
-
 """
 Method Page - The Science Behind 2-Session Transformation
-Updated with unified method explanation merging both concepts
+Updated with crystal clear, simple language explanation
 """
 import streamlit as st
 
@@ -295,14 +290,14 @@ class MethodHero:
         st.write("Traditional therapy relies on willpower and takes months. My analytical hypnotherapy works directly with subconscious patterns - which is why 85% of clients achieve lasting change in just 2 sessions, not years. It's not willpower. It's neuroscience.")
 
 class UnifiedMethodExplanation:
-    """Unified explanation combining both method concepts"""
+    """Crystal clear explanation of the 2+1 method"""
     
     def render(self):
-        """Render the unified method explanation: 2 + 1"""
-        st.subheader("How the proven method works: 2 + 1")
-        st.write("Each session has a specific purpose in your transformation journey. This collaborative process between you and the therapist ensures lasting change:")
+        """Render the simplified method explanation: 2 + 1"""
+        st.subheader("How it works: 2 sessions + 1 optional")
+        st.write("Simple, proven process. We work together to find your triggers, reprogram your responses, and lock in the changes:")
         
-        # 3-column layout showing the complete method
+        # 3-column layout showing the complete method in simple terms
         col1, col2, col3 = st.columns(3)
         
         with col1:
@@ -312,20 +307,19 @@ class UnifiedMethodExplanation:
                 <div style="background: #4CA1A3; color: white; width: 50px; height: 50px; 
                             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
                             font-weight: bold; font-size: 1.3rem; margin: 0 auto 1rem;">1</div>
-                <h3 style="color: #273548; margin-bottom: 0.5rem;">🔍 Deep Pattern Analysis</h3>
+                <h3 style="color: #273548; margin-bottom: 0.5rem;">🔍 Find Your Triggers</h3>
                 <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">90 minutes</p>
-                <p style="color: #556D7A;">We map exactly what triggers your unwanted behavior at the subconscious level - 
-                often patterns you learned in childhood that no longer serve you. You'll understand WHY you do what you do.</p>
+                <p style="color: #556D7A;">We discover exactly what drives your unwanted behavior. 
+                You'll finally understand WHY you do what you do and what keeps you stuck.</p>
             </div>
             """, unsafe_allow_html=True)
             
             with st.expander("What happens in Session 1:", expanded=False):
-                st.write("• Comprehensive behavioral analysis using proven frameworks")
-                st.write("• Identify your unique subconscious triggers")
-                st.write("• Map emotional and environmental factors")
-                st.write("• Discover the positive intent behind negative patterns")
-                st.write("• Begin initial positive programming")
-                st.success("**Result:** Many clients feel immediate relief just from this clarity.")
+                st.write("• Map your specific triggers and patterns")
+                st.write("• Understand the root causes of your behavior")
+                st.write("• Discover when and why these patterns started")
+                st.write("• Begin the reprogramming process")
+                st.success("**Result:** Clear understanding and immediate relief for many clients.")
         
         with col2:
             st.markdown("""
@@ -334,20 +328,19 @@ class UnifiedMethodExplanation:
                 <div style="background: #4CA1A3; color: white; width: 50px; height: 50px; 
                             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
                             font-weight: bold; font-size: 1.3rem; margin: 0 auto 1rem;">2</div>
-                <h3 style="color: #273548; margin-bottom: 0.5rem;">⚡ Neural Reset Hypnosis</h3>
+                <h3 style="color: #273548; margin-bottom: 0.5rem;">⚡ Reprogram Your Mind</h3>
                 <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">90 minutes</p>
-                <p style="color: #556D7A;">Using clinical hypnosis, we access your subconscious mind and install new, 
-                empowering patterns that automatically support your goals. The old urges simply disappear.</p>
+                <p style="color: #556D7A;">Using hypnosis, we replace your old automatic responses with new, healthy ones. 
+                The urges and cravings simply disappear.</p>
             </div>
             """, unsafe_allow_html=True)
             
             with st.expander("What happens in Session 2:", expanded=False):
-                st.write("• Enter deep hypnotic state for maximum receptivity")
-                st.write("• Install new neural pathways supporting desired behaviors")
-                st.write("• Replace limiting beliefs with empowering ones")
-                st.write("• Create new automatic responses to old triggers")
-                st.write("• Anchor new patterns with positive emotional associations")
-                st.success("**Result:** You naturally make choices aligned with your goals without effort.")
+                st.write("• Enter a relaxed, focused state (hypnosis)")
+                st.write("• Install new automatic responses to old triggers")
+                st.write("• Replace negative patterns with positive ones")
+                st.write("• Create new neural pathways in your brain")
+                st.success("**Result:** Natural, effortless behavior change without struggle.")
         
         with col3:
             st.markdown("""
@@ -356,27 +349,26 @@ class UnifiedMethodExplanation:
                 <div style="background: #eab308; color: white; width: 50px; height: 50px; 
                             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
                             font-weight: bold; font-size: 1.3rem; margin: 0 auto 1rem;">+1</div>
-                <h3 style="color: #273548; margin-bottom: 0.5rem;">🎯 Reinforcement (Optional)</h3>
-                <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">60 minutes • 15% need this</p>
-                <p style="color: #556D7A;">Live the change effortlessly. Fine-tune any remaining patterns and ensure 
-                complete confidence. The transformation becomes your new natural state.</p>
+                <h3 style="color: #273548; margin-bottom: 0.5rem;">🎯 Lock It In</h3>
+                <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">60 minutes • Only 15% need this</p>
+                <p style="color: #556D7A;">Strengthen your new patterns if needed. 
+                Ensure complete confidence and lasting change.</p>
             </div>
             """, unsafe_allow_html=True)
             
-            with st.expander("What happens in Session +1:", expanded=False):
-                st.write("• Strengthen any remaining weak spots")
-                st.write("• Address unexpected triggers from real-world situations")
-                st.write("• Fine-tune responses for complete confidence")
-                st.write("• Provide additional tools for long-term maintenance")
-                st.success("**Result:** Complete mastery. If not satisfied after 2 sessions, this is complimentary.")
+            with st.expander("What happens in Session 3 (optional):", expanded=False):
+                st.write("• Fine-tune any remaining weak spots")
+                st.write("• Handle unexpected triggers from daily life")
+                st.write("• Build complete confidence in your new habits")
+                st.write("• Ensure the changes stick permanently")
+                st.success("**Result:** Total mastery. If you're not satisfied after 2 sessions, this is free.")
         
-        # Important disclaimer about collaborative work
+        # Simple disclaimer about collaborative work
         st.markdown("""
         <div style="background: rgba(76, 161, 163, 0.1); border-radius: 8px; padding: 1rem; margin: 1.5rem 0; 
                     border-left: 4px solid #4CA1A3;">
             <p style="margin: 0; color: #273548; font-style: italic;">
-                * The word "we" clearly indicates that this is collaborative work between you and the therapist 
-                throughout each session. Your active participation is essential for transformation.
+                * This is collaborative work between you and the therapist. Your active participation makes the transformation possible.
             </p>
         </div>
         """, unsafe_allow_html=True)
@@ -407,16 +399,16 @@ class SuccessMetrics:
                         3rd session Optional
                     </div>
                     <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
-                        15% need Reinforcement
+                        15% need reinforcement
                     </div>
                 </div>
                 <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
                             border-radius: 8px; padding: 1rem; text-align: center;">
                     <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
-                        Rapid pattern rewiring
+                        Time to results
                     </div>
                     <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
-                        for Lasting change
+                        1-2 weeks total
                     </div>
                 </div>
             </div>
@@ -459,22 +451,22 @@ class InvestmentSection:
             st.markdown("""
             <div style="background: white; border: 2px solid #4CA1A3; border-radius: 12px; 
                         padding: 2rem; text-align: center; margin: 1rem 0;">
-                <h2 style="color: #4CA1A3; margin-bottom: 1rem;">Common Package</h2>
+                <h2 style="color: #4CA1A3; margin-bottom: 1rem;">Standard Package</h2>
                 <div style="color: #273548; font-size: 2.5rem; font-weight: 700; margin: 1rem 0;">
                     ฿3,000
                 </div>
-                <div style="color: #556D7A; margin-bottom: 1.5rem;">Sessions 1 & 2 • Most Popular</div>
+                <div style="color: #556D7A; margin-bottom: 1.5rem;">2 Sessions • Most Popular</div>
             </div>
             """, unsafe_allow_html=True)
 
             st.markdown("**Includes:**")
-            st.write("✓ Session 1: Deep pattern analysis (90 mins)")
-            st.write("✓ Session 2: Neural reset hypnosis (90 mins)")
+            st.write("✓ Session 1: Find your triggers (90 mins)")
+            st.write("✓ Session 2: Reprogram your mind (90 mins)")
             st.write("✓ Email support between sessions")
-            st.write("✓ 85% achieve full transformation")
+            st.write("✓ 85% achieve complete transformation")
 
-            if st.button("📞 Select Common Package", type="primary", use_container_width=True, key="common_pkg"):
-                self._select_package("Common Package (฿3,000) - Sessions 1 & 2")
+            if st.button("📞 Select Standard Package", type="primary", use_container_width=True, key="standard_pkg"):
+                self._select_package("Standard Package (฿3,000) - 2 Sessions")
 
         with col2:
             st.markdown("""
@@ -484,18 +476,18 @@ class InvestmentSection:
                 <div style="color: #273548; font-size: 2.5rem; font-weight: 700; margin: 1rem 0;">
                     ฿4,000
                 </div>
-                <div style="color: #556D7A; margin-bottom: 1.5rem;">All 3 sessions • Peace of Mind</div>
+                <div style="color: #556D7A; margin-bottom: 1.5rem;">3 Sessions • Peace of Mind</div>
             </div>
             """, unsafe_allow_html=True)
 
             st.markdown("**Includes:**")
-            st.write("✓ Everything in Common Package")
-            st.write("✓ Session +1: Optional reinforcement (60 mins)")
-            st.write("✓ 100% satisfaction commitment")
-            st.write("✓ Maximum confidence approach")
+            st.write("✓ Everything in Standard Package")
+            st.write("✓ Session 3: Lock it in (60 mins)")
+            st.write("✓ 100% satisfaction guarantee")
+            st.write("✓ Complete confidence approach")
 
             if st.button("⭐ Select Complete Package", use_container_width=True, key="complete_pkg"):
-                self._select_package("Complete Package (฿4,000) - All 3 sessions with satisfaction guarantee")
+                self._select_package("Complete Package (฿4,000) - 3 Sessions with guarantee")
 
         # Show selection status
         if st.session_state.get('selected_package'):
