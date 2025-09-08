@@ -137,7 +137,7 @@
             
 #             # Form submit button - white with border (no type="primary")
 #             form_submitted = st.form_submit_button(
-#                 "✅ Click to validate privacy",
+#                 "✅ Click here to validate privacy*",
 #                 use_container_width=True
 #             )
             
@@ -543,7 +543,7 @@ class BookingForm:
             
             # Form submit button
             form_submitted = st.form_submit_button(
-                "✅ Click to validate privacy",
+                "✅ Click here to validate privacy*",
                 use_container_width=True
             )
             
