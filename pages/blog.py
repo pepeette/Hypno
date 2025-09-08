@@ -2017,9 +2017,9 @@
 
 
 """
-Blog Page - Complete Education Center with Neuroscience Authority
-Features deep neuroscience explanation, educational articles, and clinical evidence
-Full code with all content methods included
+Complete Blog Page - Neuroscience Education Center with Anchor Links
+Features deep neuroscience explanation, educational articles with direct linking capability
+Full implementation with all content methods and anchor navigation
 """
 import streamlit as st
 
@@ -2038,7 +2038,7 @@ class BlogHero:
         st.write("Discover why analytical hypnotherapy works when other methods fail. Deep dive into the brain science behind rapid transformation and get answers to your questions about the process.")
 
 class NeuroscienceDeepdive:
-    """Comprehensive neuroscience explanation moved from method page"""
+    """Comprehensive neuroscience explanation"""
     
     def render(self):
         """Render detailed neuroscience explanation"""
@@ -2207,7 +2207,7 @@ class SuccessMetrics:
         st.success("**Clinical comparison:** Traditional cognitive behavioral therapy shows 30% success rates over 6-12 months. Our neuroscience-based approach achieves 85% success in 1-2 weeks by directly accessing and rewiring subconscious neural networks.")
 
 class BlogArticles:
-    """Educational articles focused on neuroscience and psychology"""
+    """Educational articles with anchor links for direct access"""
     
     def __init__(self):
         self.articles = [
@@ -2216,6 +2216,7 @@ class BlogArticles:
                 "summary": "Understanding the 95% vs 5% rule: why conscious effort can't override subconscious programming.",
                 "category": "Neuroscience",
                 "read_time": "3 min read",
+                "anchor": "willpower-fails",
                 "content": self._get_willpower_content()
             },
             {
@@ -2223,6 +2224,7 @@ class BlogArticles:
                 "summary": "Neural pathways, emotional triggers, and why your brain resists change - plus how to work with it instead of against it.",
                 "category": "Psychology",
                 "read_time": "4 min read",
+                "anchor": "habits-hard-to-break",
                 "content": self._get_habits_content()
             },
             {
@@ -2230,6 +2232,7 @@ class BlogArticles:
                 "summary": "Brain wave states, neuroplasticity, and why theta waves are the key to rapid transformation.",
                 "category": "Neuroscience", 
                 "read_time": "4 min read",
+                "anchor": "brain-during-hypnosis",
                 "content": self._get_brain_content()
             },
             {
@@ -2237,6 +2240,7 @@ class BlogArticles:
                 "summary": "Debunking stage hypnosis myths and explaining what clinical hypnotherapy really involves - you stay aware and in control.",
                 "category": "Psychology",
                 "read_time": "3 min read",
+                "anchor": "hypnosis-not-mind-control",
                 "content": self._get_mind_control_content()
             },
             {
@@ -2244,141 +2248,29 @@ class BlogArticles:
                 "summary": "How perfectionism and fear-based decision making create procrastination patterns in your neural networks.",
                 "category": "Neuroscience",
                 "read_time": "4 min read",
-                "content": self._get_procrastination_neuroscience_content()
+                "anchor": "neuroscience-procrastination",
+                "content": self._get_procrastination_content()
             },
             {
                 "title": "Why anxiety keeps coming back (and how to break the cycle)",
                 "summary": "Understanding fight-flight-freeze responses and how anxiety becomes a learned neural pattern that reinforces itself.",
                 "category": "Mental Health",
                 "read_time": "5 min read",
-                "content": self._get_anxiety_cycle_content()
+                "anchor": "anxiety-cycle",
+                "content": self._get_anxiety_content()
             },
             {
                 "title": "How childhood patterns shape adult performance anxiety",
                 "summary": "Why school evaluation patterns follow you to work, and how early performance conditioning creates lasting neural pathways.",
                 "category": "Psychology",
                 "read_time": "4 min read",
-                "content": self._get_performance_patterns_content()
-            }
-        ]
-        
-        # Future articles - ready for deployment when needed
-        self.future_articles = [
-            # Sleep and rest articles
-            {
-                "title": "Why some brains won't let you sleep (and how to fix it)",
-                "summary": "Hypervigilance, control patterns, and the neuroscience of why your brain won't trust enough to rest.",
-                "category": "Neuroscience",
-                "read_time": "4 min read",
-                "content": self._get_sleep_neuroscience_content()
-            },
-            {
-                "title": "The real reason you can't turn your mind off",
-                "summary": "Default mode network overactivity and why some brains get stuck in constant analysis mode.",
-                "category": "Mental Health",
-                "read_time": "4 min read",
-                "content": self._get_overthinking_content()
-            },
-            
-            # Relationship and social articles
-            {
-                "title": "Why social anxiety feels like life or death (spoiler: it's not)",
-                "summary": "How your brain confuses social rejection with physical survival threat, and why this ancient wiring backfires in modern life.",
-                "category": "Psychology",
-                "read_time": "5 min read",
-                "content": self._get_social_anxiety_content()
-            },
-            {
-                "title": "The neuroscience of people-pleasing: why saying no feels impossible",
-                "summary": "How childhood survival patterns create neural pathways that prioritize others' needs over your own.",
-                "category": "Psychology",
-                "read_time": "4 min read",
-                "content": self._get_people_pleasing_content()
-            },
-            
-            # Addiction and compulsive behavior articles
-            {
-                "title": "Why addiction isn't about willpower (it's about neural hijacking)",
-                "summary": "How substances and behaviors literally rewire your brain's reward system, and why traditional recovery methods miss the point.",
-                "category": "Neuroscience",
-                "read_time": "5 min read",
-                "content": self._get_addiction_neuroscience_content()
-            },
-            {
-                "title": "The hidden addiction: when work becomes your drug",
-                "summary": "How achievement addiction creates the same neural patterns as substance abuse, and why successful people burn out.",
-                "category": "Psychology",
-                "read_time": "4 min read",
-                "content": self._get_work_addiction_content()
-            },
-            
-            # Identity and self-concept articles
-            {
-                "title": "Why changing your identity is harder than changing your behavior",
-                "summary": "How self-concept becomes neurologically hardwired, and why lasting change requires identity-level transformation.",
-                "category": "Neuroscience",
-                "read_time": "5 min read",
-                "content": self._get_identity_change_content()
-            },
-            {
-                "title": "Imposter syndrome: when your brain hasn't caught up to your success",
-                "summary": "Why competent people feel fraudulent, and how outdated neural programming keeps you feeling like you don't belong.",
-                "category": "Psychology",
-                "read_time": "4 min read",
-                "content": self._get_imposter_syndrome_content()
-            },
-            
-            # Decision-making and life direction articles
-            {
-                "title": "Why smart people make terrible decisions (and how to fix it)",
-                "summary": "How analysis paralysis occurs when your prefrontal cortex overrides intuitive decision-making circuits.",
-                "category": "Neuroscience",
-                "read_time": "4 min read",
-                "content": self._get_decision_paralysis_content()
-            },
-            {
-                "title": "The neuroscience of feeling stuck: when your brain resists change",
-                "summary": "How familiarity bias and loss aversion create neural resistance to positive life changes.",
-                "category": "Psychology",
-                "read_time": "4 min read",
-                "content": self._get_feeling_stuck_content()
-            },
-            
-            # Specialized therapeutic topics
-            {
-                "title": "What your therapist might be missing (and why hypnotherapy works faster)",
-                "summary": "Comparing traditional talk therapy with neuroscience-based approaches for creating lasting change.",
-                "category": "Method",
-                "read_time": "5 min read",
-                "content": self._get_therapy_comparison_content()
-            },
-            {
-                "title": "Can you really change personality? The neuroscience says yes",
-                "summary": "How personality traits are neurologically malleable, despite what psychology textbooks used to teach.",
-                "category": "Neuroscience",
-                "read_time": "4 min read",
-                "content": self._get_personality_change_content()
-            },
-            
-            # Cultural and modern life articles
-            {
-                "title": "Why modern life makes your brain anxious (and what to do about it)",
-                "summary": "How technology, social media, and urban living overwhelm neural systems designed for simpler environments.",
-                "category": "Cultural",
-                "read_time": "4 min read",
-                "content": self._get_modern_anxiety_content()
-            },
-            {
-                "title": "The meditation myth: why mindfulness alone isn't enough",
-                "summary": "How meditation helps but can't address deep-seated neural programming that requires active intervention.",
-                "category": "Method",
-                "read_time": "4 min read",
-                "content": self._get_meditation_limits_content()
+                "anchor": "childhood-performance-patterns",
+                "content": self._get_performance_content()
             }
         ]
     
     def render(self):
-        """Render articles section"""
+        """Render articles section with anchor navigation"""
         st.subheader("Essential reading on the science of change")
         st.write("Deep dive into the neuroscience and psychology behind why hypnotherapy works when other methods don't.")
         
@@ -2386,7 +2278,10 @@ class BlogArticles:
             self._render_article_card(article)
     
     def _render_article_card(self, article):
-        """Render individual article card"""
+        """Render individual article card with anchor link"""
+        # Add anchor link for direct article access
+        st.markdown(f'<a id="{article["anchor"]}"></a>', unsafe_allow_html=True)
+        
         with st.container():
             col_meta, col_content = st.columns([1, 4])
             
@@ -2404,13 +2299,32 @@ class BlogArticles:
                 """, unsafe_allow_html=True)
             
             with col_content:
-                st.markdown(f"### {article['title']}")
+                # Add copy link button
+                col_title, col_link = st.columns([4, 1])
+                
+                with col_title:
+                    st.markdown(f"### {article['title']}")
+                
+                with col_link:
+                    # Create the direct link URL
+                    st.markdown(f"""
+                    <div style="text-align: right; margin-top: 0.5rem;">
+                        <button onclick="navigator.clipboard.writeText(window.location.origin + window.location.pathname + '#{article['anchor']}')" 
+                                style="background: #4CA1A3; color: white; border: none; padding: 0.3rem 0.6rem; 
+                                       border-radius: 4px; font-size: 0.8rem; cursor: pointer;">
+                            🔗 Copy link
+                        </button>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
                 st.write(article['summary'])
                 
                 with st.expander(f"Read full article", expanded=False):
                     st.markdown(article['content'])
             
             st.markdown("---")
+    
+    # ARTICLE CONTENT METHODS
     
     def _get_willpower_content(self):
         """Content about willpower limitations with neuroscience focus"""
@@ -2589,8 +2503,8 @@ class BlogArticles:
         The therapist guides the process, but your brain does the actual rewiring.
         """
     
-    def _get_procrastination_neuroscience_content(self):
-        """Consolidated procrastination content with neuroscience focus"""
+    def _get_procrastination_content(self):
+        """Content about procrastination with neuroscience focus"""
         return """
         ## The neural basis of procrastination
         
@@ -2639,7 +2553,7 @@ class BlogArticles:
         **Case example:** Sarah, a research scientist, couldn't start her dissertation despite having all the knowledge. Session 1 revealed her brain had learned to associate "beginning" with "potential for not being good enough." Session 2 rewired this to "beginning" equals "opportunity to contribute knowledge." She finished her dissertation within 6 months.
         """
     
-    def _get_anxiety_cycle_content(self):
+    def _get_anxiety_content(self):
         """Content about anxiety cycles with neural focus"""
         return """
         ## The anxiety paradox in your brain
@@ -2687,8 +2601,8 @@ class BlogArticles:
         **Clinical example:** Mark developed social anxiety after being humiliated in a meeting. His amygdala learned to associate "being seen" with "danger." Traditional therapy helped him understand this intellectually, but his nervous system still reacted with panic. Hypnotherapy updated the neural programming directly - now he presents confidently because his brain no longer perceives visibility as threatening.
         """
     
-    def _get_performance_patterns_content(self):
-        """Consolidated content about performance anxiety patterns"""
+    def _get_performance_content(self):
+        """Content about performance anxiety patterns"""
         return """
         ## The hidden curriculum of performance conditioning
         
@@ -2741,138 +2655,9 @@ class BlogArticles:
         
         **Success story:** Dr. Lisa, a brilliant surgeon, experienced panic attacks before complex procedures despite 15 years of expertise. The pattern traced to childhood where any mistake meant harsh criticism. Her brain had learned to anticipate failure even in areas of mastery. Hypnotherapy updated this programming - now she operates with calm confidence because her neural networks finally recognize her actual competence.
         """
-    
-    # Future article content methods - ready for deployment
-    
-    def _get_sleep_neuroscience_content(self):
-        """Content about sleep difficulties with neural focus"""
-        return """
-        ## The neuroscience of sleep resistance
-        
-        Good sleepers don't think about sleep - their brains naturally transition through the required neural states. But if you struggle with sleep, brain imaging reveals specific patterns that keep your nervous system alert when it should be resting.
-        
-        ## Your brain's security system won't shut down
-        
-        Sleep requires fundamental neurological trust - allowing your vigilant conscious mind to go offline while deeper brain systems take over. For many people, this neural handoff feels too vulnerable.
-        
-        **The hypervigilance pattern:** Chronic stress or trauma can condition your brain to scan for threats continuously. Your amygdala remains partially active, ready to wake you at the first sign of danger (real or imagined).
-        
-        ## Why your brain won't trust rest
-        
-        Neural resistance to sleep often stems from:
-        - **Survival programming:** Brain learned that vigilance equals safety
-        - **Control patterns:** Fear of losing conscious oversight
-        - **Guilt associations:** Neural pathways linking rest with laziness or irresponsibility
-        - **Unprocessed stress:** Cortisol system stuck in activation mode
-        
-        ## The overthinking-insomnia cycle
-        
-        When you can't sleep, your brain often defaults to problem-solving mode:
-        1. **Default mode network activation:** Mind begins reviewing problems
-        2. **Stress hormone release:** Thinking about problems triggers cortisol
-        3. **Physical arousal:** Stress hormones activate body systems
-        4. **Sleep impossibility:** Activated nervous system can't enter rest states
-        5. **Frustration amplification:** Worry about not sleeping creates more arousal
-        
-        ## Rewiring rest at the neural level
-        
-        Hypnotherapy addresses sleep issues by:
-        - **Calming threat detection:** Teaching your amygdala that sleep is safe
-        - **Installing trust patterns:** Creating neural pathways that support letting go
-        - **Addressing root causes:** Finding and updating the experiences that programmed hypervigilance
-        - **Creating positive sleep associations:** Rewiring rest as restorative rather than vulnerable
-        
-        Your body already knows how to sleep - we just remove the neural interference patterns that developed over time.
-        """
-    
-    def _get_overthinking_content(self):
-        """Content about mental overactivity and rumination"""
-        return """
-        ## When your default mode network gets stuck
-        
-        Your brain has a "default mode network" (DMN) - neural circuits that activate when you're not focused on specific tasks. For most people, this creates healthy mind-wandering and self-reflection. But some brains get stuck in constant analytical mode.
-        
-        ## The rumination trap
-        
-        Overthinking isn't just a habit - it's a neural pattern where:
-        - **Problem-solving circuits** remain chronically activated
-        - **Threat detection systems** scan for potential issues continuously  
-        - **Perfectionist networks** search for flaws and improvements
-        - **Control mechanisms** attempt to manage every variable
-        
-        ## Why smart people overthink more
-        
-        Intelligence can become a neurological trap:
-        - **Analytical ability** makes you better at finding problems
-        - **Pattern recognition** sees potential issues everywhere
-        - **Perfectionist conditioning** demands considering every angle
-        - **Cognitive confidence** makes you believe thinking more equals better outcomes
-        
-        ## The exhaustion of mental hyperactivity
-        
-        Constant thinking depletes your brain's resources:
-        - **Glucose depletion:** Analytical processing burns enormous mental energy
-        - **Neurotransmitter imbalance:** Chronic activation disrupts brain chemistry
-        - **Sleep disruption:** Active mind can't transition to rest states
-        - **Decision fatigue:** Too many options create choice paralysis
-        
-        ## Creating neural off switches
-        
-        Hypnotherapy helps by:
-        - **Training attention regulation:** Learning to direct rather than be hijacked by thoughts
-        - **Installing pause patterns:** Creating neural circuits that can stop analytical loops
-        - **Building trust in intuition:** Strengthening non-analytical decision-making networks
-        - **Programming mental rest:** Teaching your brain that not-thinking is productive
-        """
-    
-    # Add remaining content methods...
-    def _get_social_anxiety_content(self):
-        """Content about social anxiety and survival brain responses"""
-        return """
-        ## Why your brain treats social rejection like physical death
-        
-        Social anxiety feels disproportionately intense because your brain processes social threats through the same neural pathways designed for physical survival. Brain imaging shows that social rejection activates your anterior cingulate cortex - the same region that fires when you experience physical pain.
-        
-        ## The evolutionary wiring problem
-        
-        For thousands of years, social rejection meant death:
-        - **Tribal exclusion** = no protection from predators
-        - **Resource isolation** = starvation and exposure
-        - **Mate rejection** = genetic extinction
-        - **Group conflict** = physical violence
-        
-        Your amygdala still responds as if these ancient threats are current reality.
-        
-        ## Modern triggers, ancient responses
-        
-        Today's social situations activate prehistoric survival circuits:
-        - **Job interviews** = tribal acceptance tests
-        - **Public speaking** = visibility to potential threats
-        - **Social media** = constant evaluation by the group
-        - **Dating** = mate selection pressure
-        
-        ## The audience becomes a jury
-        
-        Social anxiety transforms every interaction into a threat assessment:
-        - **Neutral faces** become potential disapproval
-        - **Questions** become competence challenges
-        - **Silence** becomes evidence of judgment
-        - **Laughter** becomes mockery (even when it's not about you)
-        
-        ## Updating your social threat detection
-        
-        Hypnotherapy recalibrates your neural responses:
-        - **Distinguishing real from imagined threats:** Teaching your amygdala that social discomfort isn't life-threatening
-        - **Reframing audience as collaborators:** Shifting from "judge" to "fellow human" neural programming
-        - **Building social confidence circuits:** Strengthening networks that recognize your actual social competence
-        - **Installing perspective patterns:** Creating neural pathways that remember most people aren't thinking about you as much as you think they are
-        """
-    
-    # Additional methods would continue here - for space, I'll include just the key ones
-    # The complete file would have all 14 future article content methods
 
 class BlogPage:
-    """Complete blog page focused on neuroscience education"""
+    """Complete blog page focused on neuroscience education with anchor links"""
     
     def __init__(self):
         self.hero = BlogHero()
