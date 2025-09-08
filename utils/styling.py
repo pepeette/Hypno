@@ -97,6 +97,33 @@ def apply_global_styles():
         color: var(--text-secondary) !important;
         text-shadow: none !important;
     }
+
+    /* CTA Button Style */
+    .cta-button {
+        display: inline-block;
+        background-color: var(--accent);
+        color: #FFFFFF !important;   /* override global a styles */
+        text-decoration: none;
+        padding: 0.8rem 0.5rem;
+        border-radius: var(--radius-sm);
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 0.25rem;
+        border: none;
+    }
+    
+    /* Hover effect */
+    .cta-button:hover {
+        background-color: #E1F0F0 !important;
+        color: #273548 !important;
+        box-shadow: 0 4px 12px rgba(243,246,248,0.6);
+    }
+
     
     /* Improved section spacing */
     .stMarkdown {
