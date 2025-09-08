@@ -116,7 +116,16 @@ def apply_global_styles():
         margin-bottom: 0.25rem;
         border: none;
     }
+    /* Global link reset */
+    a {
+        text-decoration: none !important;
+        color: inherit;
+    }
     
+    a:hover {
+        text-decoration: none !important;
+    }
+
     /* Hover effect */
     .cta-button:hover {
         background-color: #E1F0F0 !important;
