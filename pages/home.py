@@ -251,7 +251,7 @@
 #     def render(self):
 #         """Render the complete quiz experience"""
 #         # Section header
-#         st.subheader("Is this suited for you? Test")
+#         st.subheader("Test : Do you want rapid change?")
 #         st.write("3 questions to assess your thought system patterns:")
         
 #         if not st.session_state.quiz_completed:
@@ -397,7 +397,7 @@
 #             "Force and control": {
 #                 "description": "You tend to use force when resistance appears, creating internal battles that exhaust you. True change happens through alignment, not overpowering.",
 #                 "transformation": "Hypnotherapy helps you access cooperation from your subconscious mind instead of fighting it. When all parts of you want the same thing, change becomes effortless.",
-#                 "journey": "Moving from 'gourdin vs grotte' (club vs cave) to genuine inner meeting and collaboration."
+#                 "journey": "Moving from binary thinking (fueled by ego) to genuine inner meeting and collaboration."
 #             },
 #             "Mistrust and defensiveness": {
 #                 "description": "Your internal security system stays hyperactive, treating change as potential danger. This prevents the vulnerability needed for transformation.",
@@ -703,10 +703,7 @@ class HeroSection:
 
 
             # Immediate value proposition with authority
-            st.markdown("## Transform in 2 Sessions What Takes Traditional Therapy 600+ Sessions")
-            
-            # Key differentiator with research backing
-            st.write("**Clinical hypnotherapy achieves 93% lasting change in 6 sessions.** Compare this to traditional approaches: psychoanalysis (38% after 600 sessions) and behavioral therapy (72% after 22 sessions).")
+            st.markdown("## Transform in 2 sessions what takes traditional therapy longer")
             
             # Desktop: 3 columns, Mobile: stacked
             col1, col2, col3 = st.columns([1, 1, 1])
@@ -777,7 +774,7 @@ class QuizSection:
     
     def render(self):
         """Render the complete quiz experience"""
-        st.subheader("Is this suited for you? Test")
+        st.subheader("Test : Do you need rapid change?"")
         st.write("3 questions to assess your thought system patterns:")
         
         if not st.session_state.quiz_completed:
@@ -977,60 +974,7 @@ class MethodTeaserWithVideo:
             **Our breakthrough:** Instead of fighting your subconscious, we work directly with it. 
             We identify your specific patterns and rewire them at the source.
             """)
-        
-        # Success metrics in compact form
-        st.markdown("### Proven results")
-        
-        col1, col2, col3 = st.columns(3)
-        
-        with col1:
-            st.markdown("""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
-                        padding: 1rem; text-align: center;">
-                <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700;">
-                    85%
-                </div>
-                <div style="color: #556D7A; font-size: 0.9rem;">
-                    Success rate
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            st.markdown("""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
-                        padding: 1rem; text-align: center;">
-                <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700;">
-                    2
-                </div>
-                <div style="color: #556D7A; font-size: 0.9rem;">
-                    Sessions needed
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col3:
-            st.markdown("""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
-                        padding: 1rem; text-align: center;">
-                <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700;">
-                    1-2
-                </div>
-                <div style="color: #556D7A; font-size: 0.9rem;">
-                    Weeks timeline
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Simple method overview
-        st.markdown("### Our neuroscience-based approach")
-        
-        st.write("**Session 1:** Deep pattern analysis - we map your specific neural pathways and identify the subconscious triggers driving unwanted behaviors.")
-        
-        st.write("**Session 2:** Neural reset hypnosis - using clinical hypnosis, we create new neural pathways and deactivate old automatic responses.")
-        
-        st.write("**Session 3:** Optional reinforcement - strengthen and consolidate new patterns if needed (15% of clients).")
-        
+
         st.info("When your subconscious programming supports your goals instead of fighting them, change becomes effortless and permanent.")
         
         # Call to action for method page
