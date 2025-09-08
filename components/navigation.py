@@ -9,7 +9,7 @@ class Navigation:
     """Main navigation component using Streamlit components"""
     
     def __init__(self):
-        self.options = ["Hypnosis", "Method", "Blog", "Testimonials", "Book Now"]
+        self.options = ["Home", "Method", "Blog", "Testimonials", "Book Now"]
         self.icons = ["house", "gear", "book", "star", "calendar"]
         
     def create_menu(self):
