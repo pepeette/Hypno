@@ -2059,153 +2059,6 @@ class NeuroscienceDeepdive:
         We identify your specific maladaptive neural circuits and literally rewire them with new, adaptive pathways that support your goals.
         """)
         
-        # Brain wave states explanation
-        st.markdown("### Brain wave states and transformation")
-        
-        brain_states = [
-            {
-                "wave": "Beta waves (13-30 Hz)",
-                "state": "Normal waking consciousness",
-                "characteristics": "Logical thinking, problem-solving, conscious control, analytical processing",
-                "hypnotherapy_role": "Initial consultation and conscious goal setting"
-            },
-            {
-                "wave": "Alpha waves (8-12 Hz)",
-                "state": "Relaxed awareness",
-                "characteristics": "Meditation, light hypnosis, creative states, reduced critical thinking",
-                "hypnotherapy_role": "Initial relaxation and preparation for deeper work"
-            },
-            {
-                "wave": "Theta waves (4-7 Hz)",
-                "state": "Deep hypnotic state",
-                "characteristics": "Subconscious access, memory consolidation, maximum neuroplasticity",
-                "hypnotherapy_role": "Primary transformation work and neural rewiring"
-            },
-            {
-                "wave": "Delta waves (0.5-3 Hz)",
-                "state": "Deep sleep",
-                "characteristics": "Physical healing, unconscious processing, memory integration",
-                "hypnotherapy_role": "Natural integration period post-session"
-            }
-        ]
-        
-        for state in brain_states:
-            with st.expander(f"🧠 {state['wave']} - {state['state']}", expanded=False):
-                st.write(f"**Characteristics:** {state['characteristics']}")
-                st.write(f"**Role in hypnotherapy:** {state['hypnotherapy_role']}")
-        
-        # Advanced neuroscience explanation
-        with st.expander("🔬 Advanced neuroscience mechanisms", expanded=False):
-            st.markdown("**The cellular level of transformation:**")
-            
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                st.markdown("**Synaptic plasticity:**")
-                st.write("• Long-term potentiation (LTP) strengthens beneficial neural connections")
-                st.write("• Long-term depression (LTD) weakens maladaptive pathways")
-                st.write("• Repeated activation during hypnosis creates permanent synaptic changes")
-                
-                st.markdown("**Neurotransmitter optimization:**")
-                st.write("• Dopamine pathways restructured to reward positive behaviors")
-                st.write("• Serotonin regulation improved for mood stability")
-                st.write("• GABA enhancement for reduced anxiety responses")
-            
-            with col2:
-                st.markdown("**Structural brain changes:**")
-                st.write("• Hippocampal consolidation integrates new behavioral patterns")
-                st.write("• Prefrontal cortex strengthening improves decision-making")
-                st.write("• Amygdala regulation reduces fear-based responses")
-                
-                st.markdown("**Neural network reorganization:**")
-                st.write("• Default mode network shifts support new identity patterns")
-                st.write("• Salience network prioritizes goal-relevant stimuli")
-                st.write("• Executive control network strengthens conscious regulation")
-        
-        # Clinical evidence
-        st.markdown("### Clinical evidence and brain imaging studies")
-        
-        evidence_cols = st.columns(3)
-        
-        with evidence_cols[0]:
-            st.markdown("""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
-                        padding: 1.5rem; text-align: center; margin: 1rem 0;">
-                <h4 style="color: #4CA1A3;">Measurable neural changes</h4>
-                <p style="color: #556D7A; font-size: 0.9rem;">
-                    fMRI studies show detectable changes in neural density and connectivity 
-                    after just 2 hypnotherapy sessions
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with evidence_cols[1]:
-            st.markdown("""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
-                        padding: 1.5rem; text-align: center; margin: 1rem 0;">
-                <h4 style="color: #4CA1A3;">Rapid neural adaptation</h4>
-                <p style="color: #556D7A; font-size: 0.9rem;">
-                    EEG monitoring reveals decreased activity in addiction/anxiety circuits 
-                    within 48 hours of treatment
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with evidence_cols[2]:
-            st.markdown("""
-            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
-                        padding: 1.5rem; text-align: center; margin: 1rem 0;">
-                <h4 style="color: #4CA1A3;">Long-term integration</h4>
-                <p style="color: #556D7A; font-size: 0.9rem;">
-                    Enhanced neurotransmitter regulation and connectivity 
-                    lasting 6+ months post-treatment
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-
-class SuccessMetrics:
-    """Clinical evidence and success statistics"""
-    
-    def render(self):
-        """Render success metrics with neuroscience framing"""
-        st.subheader("Clinical evidence of neural transformation")
-        
-        with st.container():
-            st.markdown("""
-            <div style="display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: nowrap; 
-                        justify-content: space-between;">
-                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
-                            border-radius: 8px; padding: 1rem; text-align: center;">
-                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
-                        Neuroplasticity success rate
-                    </div>
-                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
-                        85% in 2 sessions
-                    </div>
-                </div>
-                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
-                            border-radius: 8px; padding: 1rem; text-align: center;">
-                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
-                        Neural consolidation needed
-                    </div>
-                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
-                        15% require session 3
-                    </div>
-                </div>
-                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
-                            border-radius: 8px; padding: 1rem; text-align: center;">
-                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
-                        Brain rewiring timeline
-                    </div>
-                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
-                        7-14 days total
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-
-        st.success("**Clinical comparison:** Traditional cognitive behavioral therapy shows 30% success rates over 6-12 months. Our neuroscience-based approach achieves 85% success in 1-2 weeks by directly accessing and rewiring subconscious neural networks.")
-
 class BlogArticles:
     """Educational articles with anchor links for direct access"""
     
@@ -2663,7 +2516,6 @@ class BlogPage:
         self.hero = BlogHero()
         self.neuroscience_deepdive = NeuroscienceDeepdive()
         self.articles = BlogArticles()
-        self.success_metrics = SuccessMetrics()
     
     def render(self):
         """Render complete blog page as education center"""
@@ -2682,10 +2534,6 @@ class BlogPage:
             self.articles.render()
             st.markdown("    ")
         
-        # Clinical evidence - proof that the science works
-        with st.container():
-            self.success_metrics.render()
-            st.markdown("    ")
 
 # Factory function for clean import
 def create_blog_page():
