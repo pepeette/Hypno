@@ -374,24 +374,8 @@ class BookingForm:
             st.markdown(f"""
                 <a href="{self.discovery_url}" 
                    target="_blank" 
-                   style="display: inline-block; 
-                          background-color: var(--accent); 
-                          color: #FFFFFF; 
-                          text-decoration: none; 
-                          padding: 0.8rem 0.5rem; 
-                          border-radius: var(--radius-sm); 
-                          font-weight: 500; 
-                          font-size: 0.9rem; 
-                          transition: var(--transition); 
-                          box-shadow: var(--shadow-sm); 
-                          text-align: center; 
-                          width: 100%; 
-                          box-sizing: border-box; 
-                          margin-bottom: 0.25rem; 
-                          border: none;"
-                   onmouseover="this.style.backgroundColor='#E1F0F0'; this.style.color='#273548'; this.style.boxShadow='0 4px 12px rgba(243,246,248,0.6)';"
-                   onmouseout="this.style.backgroundColor='var(--accent)'; this.style.color='#FFFFFF'; this.style.boxShadow='var(--shadow-sm)';">
-                    📞 Direct Booking
+                   class="cta-button">
+                   📞 Direct Booking
                 </a>
             """, unsafe_allow_html=True)
         
