@@ -2016,10 +2016,13 @@
 
 
 
+
+
+
 """
-Complete Blog Page - Neuroscience Education Center with Anchor Links
-Features deep neuroscience explanation, educational articles with direct linking capability
-Full implementation with all content methods and anchor navigation
+Blog Page - Neuroscience Education Center
+Features deep neuroscience explanation and educational articles
+Clean, authoritative content establishing clinical credibility
 """
 import streamlit as st
 
@@ -2059,6 +2062,153 @@ class NeuroscienceDeepdive:
         We identify your specific maladaptive neural circuits and literally rewire them with new, adaptive pathways that support your goals.
         """)
         
+        # Brain wave states explanation
+        st.markdown("### Brain wave states and transformation")
+        
+        brain_states = [
+            {
+                "wave": "Beta waves (13-30 Hz)",
+                "state": "Normal waking consciousness",
+                "characteristics": "Logical thinking, problem-solving, conscious control, analytical processing",
+                "hypnotherapy_role": "Initial consultation and conscious goal setting"
+            },
+            {
+                "wave": "Alpha waves (8-12 Hz)",
+                "state": "Relaxed awareness",
+                "characteristics": "Meditation, light hypnosis, creative states, reduced critical thinking",
+                "hypnotherapy_role": "Initial relaxation and preparation for deeper work"
+            },
+            {
+                "wave": "Theta waves (4-7 Hz)",
+                "state": "Deep hypnotic state",
+                "characteristics": "Subconscious access, memory consolidation, maximum neuroplasticity",
+                "hypnotherapy_role": "Primary transformation work and neural rewiring"
+            },
+            {
+                "wave": "Delta waves (0.5-3 Hz)",
+                "state": "Deep sleep",
+                "characteristics": "Physical healing, unconscious processing, memory integration",
+                "hypnotherapy_role": "Natural integration period post-session"
+            }
+        ]
+        
+        for state in brain_states:
+            with st.expander(f"🧠 {state['wave']} - {state['state']}", expanded=False):
+                st.write(f"**Characteristics:** {state['characteristics']}")
+                st.write(f"**Role in hypnotherapy:** {state['hypnotherapy_role']}")
+        
+        # Advanced neuroscience explanation
+        with st.expander("🔬 Advanced neuroscience mechanisms", expanded=False):
+            st.markdown("**The cellular level of transformation:**")
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.markdown("**Synaptic plasticity:**")
+                st.write("• Long-term potentiation (LTP) strengthens beneficial neural connections")
+                st.write("• Long-term depression (LTD) weakens maladaptive pathways")
+                st.write("• Repeated activation during hypnosis creates permanent synaptic changes")
+                
+                st.markdown("**Neurotransmitter optimization:**")
+                st.write("• Dopamine pathways restructured to reward positive behaviors")
+                st.write("• Serotonin regulation improved for mood stability")
+                st.write("• GABA enhancement for reduced anxiety responses")
+            
+            with col2:
+                st.markdown("**Structural brain changes:**")
+                st.write("• Hippocampal consolidation integrates new behavioral patterns")
+                st.write("• Prefrontal cortex strengthening improves decision-making")
+                st.write("• Amygdala regulation reduces fear-based responses")
+                
+                st.markdown("**Neural network reorganization:**")
+                st.write("• Default mode network shifts support new identity patterns")
+                st.write("• Salience network prioritizes goal-relevant stimuli")
+                st.write("• Executive control network strengthens conscious regulation")
+        
+        # Clinical evidence
+        st.markdown("### Clinical evidence and brain imaging studies")
+        
+        evidence_cols = st.columns(3)
+        
+        with evidence_cols[0]:
+            st.markdown("""
+            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
+                        padding: 1.5rem; text-align: center; margin: 1rem 0;">
+                <h4 style="color: #4CA1A3;">Measurable neural changes</h4>
+                <p style="color: #556D7A; font-size: 0.9rem;">
+                    fMRI studies show detectable changes in neural density and connectivity 
+                    after just 2 hypnotherapy sessions
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with evidence_cols[1]:
+            st.markdown("""
+            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
+                        padding: 1.5rem; text-align: center; margin: 1rem 0;">
+                <h4 style="color: #4CA1A3;">Rapid neural adaptation</h4>
+                <p style="color: #556D7A; font-size: 0.9rem;">
+                    EEG monitoring reveals decreased activity in addiction/anxiety circuits 
+                    within 48 hours of treatment
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with evidence_cols[2]:
+            st.markdown("""
+            <div style="background: white; border: 1px solid #CBD5E1; border-radius: 8px; 
+                        padding: 1.5rem; text-align: center; margin: 1rem 0;">
+                <h4 style="color: #4CA1A3;">Long-term integration</h4>
+                <p style="color: #556D7A; font-size: 0.9rem;">
+                    Enhanced neurotransmitter regulation and connectivity 
+                    lasting 6+ months post-treatment
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+class SuccessMetrics:
+    """Clinical evidence and success statistics"""
+    
+    def render(self):
+        """Render success metrics with neuroscience framing"""
+        st.subheader("Clinical evidence of neural transformation")
+        
+        with st.container():
+            st.markdown("""
+            <div style="display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: nowrap; 
+                        justify-content: space-between;">
+                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+                            border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
+                        Neuroplasticity success rate
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
+                        85% in 2 sessions
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+                            border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
+                        Neural consolidation needed
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
+                        15% require session 3
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
+                            border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
+                        Brain rewiring timeline
+                    </div>
+                    <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
+                        7-14 days total
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.success("**Clinical comparison:** Traditional cognitive behavioral therapy shows 30% success rates over 6-12 months. Our neuroscience-based approach achieves 85% success in 1-2 weeks by directly accessing and rewiring subconscious neural networks.")
+
 class BlogArticles:
     """Educational articles with anchor links for direct access"""
     
@@ -2121,9 +2271,78 @@ class BlogArticles:
                 "content": self._get_performance_content()
             }
         ]
+        
+        # FUTURE ARTICLES (Commented out for launch - ready to deploy when needed)
+        
+        # self.future_articles = [
+        #     {
+        #         "title": "Why some brains won't let you sleep (and how to fix it)",
+        #         "summary": "Hypervigilance, control patterns, and the neuroscience of why your brain won't trust enough to rest.",
+        #         "category": "Neuroscience",
+        #         "read_time": "4 min read",
+        #         "anchor": "brains-wont-sleep",
+        #         "content": self._get_sleep_neuroscience_content()
+        #     },
+        #     {
+        #         "title": "The real reason you can't turn your mind off",
+        #         "summary": "Default mode network overactivity and why some brains get stuck in constant analysis mode.",
+        #         "category": "Mental Health",
+        #         "read_time": "4 min read",
+        #         "anchor": "turn-mind-off",
+        #         "content": self._get_overthinking_content()
+        #     },
+        #     {
+        #         "title": "Why social anxiety feels like life or death (spoiler: it's not)",
+        #         "summary": "How your brain confuses social rejection with physical survival threat, and why this ancient wiring backfires in modern life.",
+        #         "category": "Psychology",
+        #         "read_time": "5 min read",
+        #         "anchor": "social-anxiety-life-death",
+        #         "content": self._get_social_anxiety_content()
+        #     },
+        #     {
+        #         "title": "The neuroscience of people-pleasing: why saying no feels impossible",
+        #         "summary": "How childhood survival patterns create neural pathways that prioritize others' needs over your own.",
+        #         "category": "Psychology",
+        #         "read_time": "4 min read",
+        #         "anchor": "people-pleasing-neuroscience",
+        #         "content": self._get_people_pleasing_content()
+        #     },
+        #     {
+        #         "title": "Why addiction isn't about willpower (it's about neural hijacking)",
+        #         "summary": "How substances and behaviors literally rewire your brain's reward system, and why traditional recovery methods miss the point.",
+        #         "category": "Neuroscience",
+        #         "read_time": "5 min read",
+        #         "anchor": "addiction-neural-hijacking",
+        #         "content": self._get_addiction_neuroscience_content()
+        #     },
+        #     {
+        #         "title": "Imposter syndrome: when your brain hasn't caught up to your success",
+        #         "summary": "Why competent people feel fraudulent, and how outdated neural programming keeps you feeling like you don't belong.",
+        #         "category": "Psychology",
+        #         "read_time": "4 min read",
+        #         "anchor": "imposter-syndrome-brain",
+        #         "content": self._get_imposter_syndrome_content()
+        #     },
+        #     {
+        #         "title": "The neuroscience of feeling stuck: when your brain resists change",
+        #         "summary": "How familiarity bias and loss aversion create neural resistance to positive life changes.",
+        #         "category": "Psychology",
+        #         "read_time": "4 min read",
+        #         "anchor": "neuroscience-feeling-stuck",
+        #         "content": self._get_feeling_stuck_content()
+        #     },
+        #     {
+        #         "title": "What your therapist might be missing (and why hypnotherapy works faster)",
+        #         "summary": "Comparing traditional talk therapy with neuroscience-based approaches for creating lasting change.",
+        #         "category": "Method",
+        #         "read_time": "5 min read",
+        #         "anchor": "therapist-missing-hypnotherapy",
+        #         "content": self._get_therapy_comparison_content()
+        #     }
+        # ]
     
     def render(self):
-        """Render articles section with anchor navigation"""
+        """Render articles section with clean presentation"""
         st.subheader("Essential reading on the science of change")
         st.write("Deep dive into the neuroscience and psychology behind why hypnotherapy works when other methods don't.")
         
@@ -2152,24 +2371,7 @@ class BlogArticles:
                 """, unsafe_allow_html=True)
             
             with col_content:
-                # Add copy link button
-                col_title, col_link = st.columns([4, 1])
-                
-                with col_title:
-                    st.markdown(f"### {article['title']}")
-                
-                with col_link:
-                    # Create the direct link URL
-                    st.markdown(f"""
-                    <div style="text-align: right; margin-top: 0.5rem;">
-                        <button onclick="navigator.clipboard.writeText(window.location.origin + window.location.pathname + '#{article['anchor']}')" 
-                                style="background: #4CA1A3; color: white; border: none; padding: 0.3rem 0.6rem; 
-                                       border-radius: 4px; font-size: 0.8rem; cursor: pointer;">
-                            🔗 Copy link
-                        </button>
-                    </div>
-                    """, unsafe_allow_html=True)
-                
+                st.markdown(f"### {article['title']}")
                 st.write(article['summary'])
                 
                 with st.expander(f"Read full article", expanded=False):
@@ -2508,6 +2710,40 @@ class BlogArticles:
         
         **Success story:** Dr. Lisa, a brilliant surgeon, experienced panic attacks before complex procedures despite 15 years of expertise. The pattern traced to childhood where any mistake meant harsh criticism. Her brain had learned to anticipate failure even in areas of mastery. Hypnotherapy updated this programming - now she operates with calm confidence because her neural networks finally recognize her actual competence.
         """
+    
+    # FUTURE ARTICLE CONTENT METHODS (Commented out for launch)
+    
+    # def _get_sleep_neuroscience_content(self):
+    #     """Content about sleep difficulties with neural focus"""
+    #     return """
+    #     ## The neuroscience of sleep resistance
+    #     
+    #     Good sleepers don't think about sleep - their brains naturally transition through the required neural states. But if you struggle with sleep, brain imaging reveals specific patterns that keep your nervous system alert when it should be resting.
+    #     
+    #     ## Your brain's security system won't shut down
+    #     
+    #     Sleep requires fundamental neurological trust - allowing your vigilant conscious mind to go offline while deeper brain systems take over. For many people, this neural handoff feels too vulnerable.
+    #     
+    #     **The hypervigilance pattern:** Chronic stress or trauma can condition your brain to scan for threats continuously. Your amygdala remains partially active, ready to wake you at the first sign of danger (real or imagined).
+    #     """
+    
+    # def _get_social_anxiety_content(self):
+    #     """Content about social anxiety and survival brain responses"""
+    #     return """
+    #     ## Why your brain treats social rejection like physical death
+    #     
+    #     Social anxiety feels disproportionately intense because your brain processes social threats through the same neural pathways designed for physical survival. Brain imaging shows that social rejection activates your anterior cingulate cortex - the same region that fires when you experience physical pain.
+    #     """
+    
+    # def _get_addiction_neuroscience_content(self):
+    #     """Content about addiction as neural hijacking"""
+    #     return """
+    #     ## How addiction literally hijacks your brain's hardware
+    #     
+    #     Addiction isn't a moral failing or lack of willpower - it's a neurological hijacking of your brain's reward system. Brain imaging shows that addictive substances and behaviors fundamentally rewire the neural circuits responsible for motivation, decision-making, and impulse control.
+    #     """
+    
+    # Additional future content methods would continue here...
 
 class BlogPage:
     """Complete blog page focused on neuroscience education with anchor links"""
@@ -2516,6 +2752,7 @@ class BlogPage:
         self.hero = BlogHero()
         self.neuroscience_deepdive = NeuroscienceDeepdive()
         self.articles = BlogArticles()
+        self.success_metrics = SuccessMetrics()
     
     def render(self):
         """Render complete blog page as education center"""
@@ -2534,6 +2771,10 @@ class BlogPage:
             self.articles.render()
             st.markdown("    ")
         
+        # Clinical evidence - proof that the science works
+        with st.container():
+            self.success_metrics.render()
+            st.markdown("    ")
 
 # Factory function for clean import
 def create_blog_page():
