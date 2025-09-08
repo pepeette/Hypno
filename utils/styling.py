@@ -362,8 +362,6 @@
 #     </style>
 #     """, unsafe_allow_html=True)
 
-
-
 """
 Enhanced styling module for the Hypnotherapy website
 Improved spacing, typography, and visual hierarchy
@@ -499,11 +497,12 @@ def apply_global_styles():
         text-decoration: none !important;
     }
 
-    /* CTA Button hover effect - matching Streamlit behavior */
+    /* CTA Button hover effect - light background */
     .cta-button:hover {
-        background-color: var(--accent-hover) !important;
+        background-color: #E1F0F0 !important;
+        color: #273548 !important;
         transform: translateY(-1px);
-        box-shadow: var(--shadow-md);
+        box-shadow: 0 4px 12px rgba(243,246,248,0.6);
     }
     
     /* Improved section spacing */
