@@ -632,7 +632,7 @@ class PatternChangeMethod:
                     <div style="background: #4CA1A3; color: white; width: 60px; height: 60px; 
                                 border-radius: 50%; display: flex; align-items: center; justify-content: center; 
                                 font-weight: bold; font-size: 1.5rem; margin: 0 auto 1rem;">3</div>
-                    <h2 style="color: #273548;">Live the Change</h2>
+                    <h2 style="color: #273548;">Live the change</h2>
                     <p style="color: #556D7A;">The old urges and compulsions simply disappear. You naturally make choices 
                     that align with your goals without effort or struggle.</p>
                 </div>
