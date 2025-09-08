@@ -617,13 +617,10 @@ class BookingForm:
         
         with col1:
             st.markdown(f"""
-            <a href="{self.discovery_url}" target="_blank" 
-               style="display: inline-block; background-color: var(--accent); color: white;
-                      text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
-                      font-weight: 500; font-size: 1rem; transition: var(--transition);
-                      box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 0.25rem; border: none;">
-                📞 Schedule your Session
+            <a href="{self.discovery_url}" 
+                   target="_blank" 
+                   class="cta-button">
+                   📞 Schedule your Session
             </a>
             """, unsafe_allow_html=True)
         
