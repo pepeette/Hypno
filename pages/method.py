@@ -690,16 +690,12 @@ class InvestmentSection:
             if st.button("⭐ Select Complete Package", use_container_width=True, key="complete_pkg"):
                 self._select_package("Complete Package (฿4,000) - All 3 sessions with satisfaction guarantee")
 
-        # Value comparison
-        st.info("""
-        💡 **Value Comparison:** Traditional therapy often costs ฿60,000+ over months/years. 
-        The ongoing cost of your unwanted habit often exceeds our package price within months.
-        """)
-
         # Show selection status
         if st.session_state.get('selected_package'):
             st.success(f"✅ You selected: **{st.session_state.selected_package}**")
-            st.info("📍 Scroll down to complete your booking with the prefilled form.")
+            st.info("🔄 Redirecting to booking form... If not redirected automatically, scroll down to complete your booking.")
+        else:
+            st.info("💡 **Value Comparison:** Traditional therapy often costs ฿60,000+ over months/years. The ongoing cost of your unwanted habit often exceeds our package price within months.")
 
     def _select_package(self, package_name):
         """Store selected package and scroll to booking form"""
