@@ -60,8 +60,8 @@ class Footer:
         
         with col_text:
             st.markdown("## Laetitia Sheppard")
-            st.write("Certified Clinical Hypnotherapist with over 8 years of experience in behavioral change and mental wellness.")
-            st.write("My passion is providing accessible, rapid, and effective hypnotherapy to spark easier lifestyles.")
+            st.write("Certified Clinical Hypnotherapist with over 8 years of experience in behavioral change.")
+            st.write("My passion is providing accessible, rapid, and effective tools for a life of least resistance.")
 
         # Contact and credentials section
         col1, col2 = st.columns(2, gap="large")
@@ -69,10 +69,10 @@ class Footer:
         with col1:
             # Credentials using simple text
             st.markdown("**Credentials:**")
-            st.write("• Certified Clinical Hypnotherapist since 2017")
-            st.write("• Advanced Neuro-Linguistic Programming")
-            st.write("• Specialized in Rapid Behavioral Change")
-            st.write("• Member, London College of Clinical Hynptherapy")
+            st.write("• Certified Clinical Hypnotherapist since 2017, by LCCH")
+            st.write("• Advanced Neuro-Linguistic Programming, by Transformers")
+            st.write("• Specialized in Rapid Behavioral Change and Borderline Therapy")
+            st.write("• Member, London College of Clinical Hynptherapy & British Society of Clinical Hypnotherapy")
 
         with col2:
             st.markdown("**Contact:**")
