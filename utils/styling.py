@@ -104,7 +104,7 @@ def apply_global_styles():
         background-color: var(--accent);
         color: #FFFFFF !important;   /* override global a styles */
         text-decoration: none;
-        padding: 0.8rem 0.5rem;
+        padding: 0.8rem 0.8rem;
         border-radius: var(--radius-sm);
         font-weight: 500;
         font-size: 0.9rem;
