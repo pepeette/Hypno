@@ -56,7 +56,7 @@ class HeroSection:
             st.write("Most people try to change using willpower. That's why 95% fail. We bypass your conscious resistance and reprogram your subconscious patterns directly.")
 
             # Add compelling message using Streamlit info box
-            st.info("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
+            st.write("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
             st.info("→ Book your hypnotherapy at our new address in BANGKOK to break free from unwanted habits. 2 sessions only needed.")
             
             # # OR Logo and Info message forced to stay on same row even on mobile
