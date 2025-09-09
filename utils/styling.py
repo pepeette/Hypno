@@ -91,7 +91,7 @@ def apply_global_styles():
         text-shadow: none !important;
     }
     
-    p, li, span, div, a, button, input, textarea, select, label, .stMarkdown, .stText {
+    p, li, span, div, a, input, textarea, select, label, .stMarkdown, .stText {
         font-size: var(--font-size-normal) !important;
         line-height: var(--line-height-normal) !important;
         color: var(--text-secondary) !important;
