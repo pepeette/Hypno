@@ -1643,19 +1643,19 @@ class BehavioralPatternAssessment:
         current = st.session_state.current_question
         progress = (current - 1) / self.total_questions
         
-        # Determine current section
-        if current <= 25:
-            section = 1
-            section_progress = current / 25
-        elif current <= 40:
-            section = 2
-            section_progress = (current - 25) / 15
-        else:
-            section = 3
-            section_progress = (current - 40) / 15
+        # # Determine current section
+        # if current <= 25:
+        #     section = 1
+        #     section_progress = current / 25
+        # elif current <= 40:
+        #     section = 2
+        #     section_progress = (current - 25) / 15
+        # else:
+        #     section = 3
+        #     section_progress = (current - 40) / 15
         
         st.progress(progress)
-        st.caption(f"Question {current} of {self.total_questions} • Section {section}: {self.sections[section]['name']}")
+        st.caption(f"Question {current} of {self.total_questions}") #• Section {section}: {self.sections[section]['name']}
     
     def _render_current_question(self):
         """Render current question with appropriate input type"""
