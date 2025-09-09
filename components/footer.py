@@ -22,7 +22,7 @@ class Footer:
                 "address": "27 Soi Sukhumvit 10 (Asoke)",
                 "city": "Bangkok, Thailand",
                 "maps_url": "https://maps.app.goo.gl/9WmJTiu6HFsnDkvRA",
-                "calendly_url": "https://calendly.com/laetitiasheppard/session"
+                "calendly_url": "https://calendly.com/laetitiasheppard/discovery"
             }
             self.founder_image = "https://github.com/pepeette/Hypno/blob/main/img/ID.jpg?raw=true"
     
