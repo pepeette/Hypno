@@ -217,7 +217,12 @@ Main application entry point for the Hypnotherapy website
 Enhanced with hidden assessment page accessible only via direct URL
 """
 import streamlit as st
+import os
 
+# Disable file watching in production
+if os.getenv('STREAMLIT_ENV') == 'production':
+    st.set_option('server.fileWatcherType', 'none')
+    
 # Import page modules with error handling
 try:
     from pages.home import create_home_page
