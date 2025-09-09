@@ -1584,7 +1584,7 @@ class PatternAssessment:
         """Render assessment header"""
         st.markdown("""
         <div style="text-align: center; margin: 2rem 0 3rem 0;">
-            <h1>Behavioral Pattern Assessment</h1>
+            <h1>Behavioral pattern assessment</h1>
             <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto;">
                 This assessment helps us understand your unique patterns and design the most effective approach for your transformation. 
                 Answer intuitively - your first response is usually most accurate.
@@ -1815,7 +1815,7 @@ class PatternAssessment:
     
     def _render_results(self):
         """Render assessment results"""
-        st.markdown("## Assessment Complete!")
+        st.markdown("## Assessment complete!")
         st.success("Your comprehensive behavioral pattern analysis has been completed and sent to our clinical team.")
         
         scores = st.session_state.assessment_scores
@@ -1825,35 +1825,35 @@ class PatternAssessment:
     
     def _render_pattern_breakdown(self, scores):
         """Render pattern score breakdown (neutral language)"""
-        st.markdown("### Your Assessment Results")
+        st.markdown("### Your assessment results")
         
         # Sort patterns by score
         sorted_patterns = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         
-        st.write("Our clinical team will review your responses to identify the most effective approach for your transformation. Your detailed analysis includes:")
+        st.write("Your responses are being reviewed to identify the most effective approach for your transformation. Current detailed analysis includes:")
         
         col1, col2, col3 = st.columns(3)
         
         with col1:
             total_responses = len([r for r in st.session_state.assessment_data.values() if r])
-            st.metric("Questions Completed", total_responses, "Comprehensive Analysis")
+            st.metric("Questions completed", total_responses, "Comprehensive analysis")
             
         with col2:
             readiness = st.session_state.assessment_data.get('q47', 5)
-            st.metric("Change Readiness", f"{readiness}/10", "Self-Assessment")
+            st.metric("Change readiness", f"{readiness}/10", "Self-assessment")
             
         with col3:
             completion_time = "25-30 minutes"
-            st.metric("Assessment Depth", completion_time, "Thorough Evaluation")
+            st.metric("Assessment depth", completion_time, "Thorough evaluation")
     
     def _render_next_steps(self):
         """Render next steps and booking options"""
-        st.markdown("### Your Next Steps")
+        st.markdown("### Your next steps")
         
         readiness = st.session_state.assessment_data.get('q47', 5)
         
         if readiness >= 7:
-            st.success("Your responses indicate strong readiness for transformation. You're an excellent candidate for our rapid change method.")
+            st.success("Your responses indicate strong readiness for transformation. You're an excellent candidate for the rapid change method.")
         else:
             st.info("Your assessment shows good potential for transformation. A discovery call will help determine the best approach.")
         
