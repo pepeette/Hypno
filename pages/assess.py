@@ -1934,7 +1934,7 @@ AVOID LANGUAGE: {clinical_mapping['avoid_language'][:100]}...
         st.caption("**Confidential & professional**: Your assessment results are reviewed only by our clinical team and are kept strictly confidential. All discussions follow professional therapeutic standards.")
 
 
-class EnhancedAssessPage:
+class AssessPage:
     """Main enhanced assessment page component"""
     
     def __init__(self):
@@ -2008,6 +2008,6 @@ class EnhancedAssessPage:
 
 
 # Factory function for clean import
-def create_enhanced_assess_page():
-    """Factory function to create EnhancedAssessPage instance"""
-    return EnhancedAssessPage()
+def create_assess_page():
+    """Factory function to create AssessPage instance"""
+    return AssessPage()
