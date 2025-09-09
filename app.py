@@ -332,23 +332,23 @@ class HypnotherapyApp:
         initialize_session_state()
 
     def _check_hidden_page_access(self):
-    """Check URL parameters for hidden page access"""
-    try:
-        # Get URL parameters - FIXED: Using new st.query_params
-        query_params = st.query_params
+        """Check URL parameters for hidden page access"""
+        try:
+            # Get URL parameters - FIXED: Using new st.query_params
+            query_params = st.query_params
+            
+            # Check for assessment page access
+            if 'page' in query_params and 'assess' in query_params['page']:
+                return 'assess'
+                
+            # Check for other hidden pages if needed
+            # if 'page' in query_params and 'admin' in query_params['page']:
+            #     return 'admin'
+                
+            return None
+        except:
+            return None
         
-        # Check for assessment page access
-        if 'page' in query_params and 'assess' in query_params['page']:
-            return 'assess'
-            
-        # Check for other hidden pages if needed
-        # if 'page' in query_params and 'admin' in query_params['page']:
-        #     return 'admin'
-            
-        return None
-    except:
-        return None
-    
     
     def render_navigation(self):
         """Render the main navigation menu (only for public pages)"""
