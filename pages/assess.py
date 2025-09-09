@@ -1548,6 +1548,7 @@ class PatternAssessment:
                     'insight': 'overall_readiness'
                 }
             ]
+        }
     
     def _get_question_pattern_mapping(self):
         """Mapping with weights and insights"""
