@@ -991,16 +991,14 @@ class EnhancedQuizSection:
         # Action buttons
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown("   ")
+            st.markdown("  ")
             st.markdown(f"""
-            <a href="{self.discovery_url}" target="_blank" 
-               style="display: inline-block; background-color: #4CA1A3; color: white;
-                      text-decoration: none; padding: 1rem 2rem; border-radius: 8px;
-                      font-weight: 600; text-align: center; width: 100%;
-                      box-sizing: border-box;">
-                📞 Book discovery call
-            </a>
-            """, unsafe_allow_html=True)
+                <a href="{self.discovery_url}" 
+                   target="_blank" 
+                   class="cta-button">
+                   📞 Book discovery call
+                </a>
+                """, unsafe_allow_html=True)
         with col2:
             if st.button("🔄 Retake assessment", use_container_width=True):
                 self._reset_quiz()
