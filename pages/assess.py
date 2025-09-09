@@ -959,15 +959,15 @@
 
 
 """
-Complete Enhanced Behavioral Pattern Assessment Page
+Complete Behavioral Pattern Assessment Page
 pages/assess.py - Ready for production deployment
 """
 import streamlit as st
 from datetime import datetime
 import json
 
-class EnhancedPatternAssessment:
-    """Enhanced pattern assessment with comprehensive clinical mapping"""
+class PatternAssessment:
+    """Pattern assessment with comprehensive clinical mapping"""
     
     def __init__(self):
         # Initialize session state
@@ -984,7 +984,7 @@ class EnhancedPatternAssessment:
         if 'clinical_insights' not in st.session_state:
             st.session_state.clinical_insights = {}
         
-        # Enhanced pattern definitions
+        # Pattern definitions
         self.patterns = {
             1: "Unhappiness culture",
             2: "Power struggles", 
@@ -1004,14 +1004,14 @@ class EnhancedPatternAssessment:
             3: {"name": "Change readiness", "questions": 7}
         }
         
-        # Enhanced question sets
-        self.questions = self._get_enhanced_questions()
+        # Question sets
+        self.questions = self._get_questions()
         
         # Clinical mapping
         self.question_patterns = self._get_question_pattern_mapping()
     
-    def _get_enhanced_questions(self):
-        """Enhanced question set with clinical mapping focus"""
+    def _get_questions(self):
+        """Question set with clinical mapping focus"""
         return {
             # Section 1: Core pattern identification (10 questions)
             1: [
@@ -1308,7 +1308,7 @@ class EnhancedPatternAssessment:
         }
     
     def _get_question_pattern_mapping(self):
-        """Enhanced mapping with weights and insights"""
+        """Mapping with weights and insights"""
         mapping = {}
         for section_num, questions in self.questions.items():
             for question in questions:
@@ -1328,10 +1328,10 @@ class EnhancedPatternAssessment:
             self._render_section_progress()
             self._render_current_section()
         else:
-            self._render_comprehensive_results()
+            self._render_results()
     
     def _render_header(self):
-        """Enhanced header with section context"""
+        """Header with section context"""
         current_section = st.session_state.current_section
         section_name = self.sections[current_section]['name']
         
@@ -1345,7 +1345,7 @@ class EnhancedPatternAssessment:
         """, unsafe_allow_html=True)
     
     def _render_section_progress(self):
-        """Enhanced progress with section awareness"""
+        """Progress with section awareness"""
         current_section = st.session_state.current_section
         current_question = st.session_state.current_question
         
@@ -1375,14 +1375,14 @@ class EnhancedPatternAssessment:
             questions = self.questions[current_section]
             if current_question <= len(questions):
                 question = questions[current_question - 1]
-                self._render_enhanced_question(question)
+                self._render_question(question)
             else:
                 self._advance_section()
         else:
             self._render_contact_form()
     
-    def _render_enhanced_question(self, question):
-        """Render question with enhanced UX"""
+    def _render_question(self, question):
+        """Render question with UX"""
         st.markdown(f"### {question['text']}")
         
         # Add context for clinical questions
@@ -1443,7 +1443,7 @@ class EnhancedPatternAssessment:
         self._render_section_navigation()
     
     def _render_section_navigation(self):
-        """Enhanced navigation with section awareness"""
+        """Navigation with section awareness"""
         col1, col2, col3 = st.columns([1, 2, 1])
         
         with col1:
@@ -1484,7 +1484,7 @@ class EnhancedPatternAssessment:
             self._render_contact_form()
     
     def _save_response(self, question_id, response, question):
-        """Enhanced response saving with clinical insights"""
+        """Response saving with clinical insights"""
         st.session_state.assessment_data[question_id] = response
         
         # Save clinical insights
@@ -1500,11 +1500,11 @@ class EnhancedPatternAssessment:
             })
     
     def _render_contact_form(self):
-        """Enhanced contact form with assessment context"""
+        """Contact form with assessment context"""
         st.markdown("### Complete your assessment")
         st.write("Provide your details to receive your comprehensive behavioral pattern analysis and personalized transformation plan.")
         
-        with st.form("enhanced_contact_form"):
+        with st.form("contact_form"):
             col1, col2 = st.columns(2)
             
             with col1:
@@ -1533,7 +1533,7 @@ class EnhancedPatternAssessment:
             )
             
             if st.form_submit_button("Complete assessment & receive results", type="primary"):
-                if self._validate_enhanced_contact_info(name, email, primary_concern):
+                if self._validate_contact_info(name, email, primary_concern):
                     self._save_response('contact_name', name, {'insight': 'contact_info'})
                     self._save_response('contact_email', email, {'insight': 'contact_info'})
                     self._save_response('contact_phone', phone, {'insight': 'contact_info'})
@@ -1541,24 +1541,24 @@ class EnhancedPatternAssessment:
                     self._save_response('contact_concern', primary_concern, {'insight': 'primary_concern'})
                     self._save_response('contact_urgency', urgency, {'insight': 'urgency_level'})
                     
-                    self._complete_enhanced_assessment()
+                    self._complete_assessment()
                     st.session_state.assessment_completed = True
                     st.rerun()
                 else:
                     st.error("Please provide your name, valid email, and describe your primary concern.")
     
-    def _validate_enhanced_contact_info(self, name, email, concern):
-        """Enhanced validation"""
+    def _validate_contact_info(self, name, email, concern):
+        """Contact validation"""
         import re
         if not name or not email or not concern:
             return False
         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         return re.match(email_pattern, email) is not None
     
-    def _complete_enhanced_assessment(self):
+    def _complete_assessment(self):
         """Complete assessment with comprehensive analysis"""
         # Calculate pattern scores
-        pattern_scores = self._calculate_enhanced_pattern_scores()
+        pattern_scores = self._calculate_pattern_scores()
         
         # Extract clinical insights
         clinical_mapping = self._extract_clinical_mapping()
@@ -1568,10 +1568,10 @@ class EnhancedPatternAssessment:
         st.session_state.clinical_mapping = clinical_mapping
         
         # Send comprehensive email
-        self._send_enhanced_assessment_email(pattern_scores, clinical_mapping)
+        self._send_assessment_email(pattern_scores, clinical_mapping)
     
-    def _calculate_enhanced_pattern_scores(self):
-        """Enhanced scoring with weights"""
+    def _calculate_pattern_scores(self):
+        """Scoring with weights"""
         scores = {pattern: 0 for pattern in self.patterns.keys()}
         
         for question_id, response in st.session_state.assessment_data.items():
@@ -1693,7 +1693,7 @@ class EnhancedPatternAssessment:
         mapping['avoid_language'] = ' | '.join(filter(None, trigger_lang))
         
         # Determine session focus based on dominant patterns
-        pattern_scores = self._calculate_enhanced_pattern_scores()
+        pattern_scores = self._calculate_pattern_scores()
         sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
         
         if sorted_patterns:
@@ -1711,7 +1711,7 @@ class EnhancedPatternAssessment:
         
         return mapping
     
-    def _send_enhanced_assessment_email(self, pattern_scores, clinical_mapping):
+    def _send_assessment_email(self, pattern_scores, clinical_mapping):
         """Send comprehensive assessment email"""
         try:
             from utils.email_handler import send_discovery_call_email
@@ -1729,7 +1729,7 @@ class EnhancedPatternAssessment:
                 'name': name,
                 'email': email,
                 'concern': concern,
-                'form_type': 'Enhanced Behavioral Pattern Assessment',
+                'form_type': 'Behavioral Pattern Assessment',
                 'source': 'Comprehensive Assessment Page',
                 'concern_description': clinical_report,
                 'pattern_scores': pattern_scores,
@@ -1759,7 +1759,7 @@ class EnhancedPatternAssessment:
         """Format comprehensive clinical report"""
         sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
         
-        report = "═══ ENHANCED BEHAVIORAL PATTERN ASSESSMENT ═══\n\n"
+        report = "═══ BEHAVIORAL PATTERN ASSESSMENT ═══\n\n"
         report += f"CLIENT: {st.session_state.assessment_data.get('contact_name', 'Unknown')}\n"
         report += f"DATE: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
         report += f"ASSESSMENT TYPE: Comprehensive 3-Section Analysis\n\n"
@@ -1801,13 +1801,31 @@ class EnhancedPatternAssessment:
         """Generate clinical template for therapist use"""
         sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
         
+        # Extract data safely to avoid f-string issues
+        client_name = st.session_state.assessment_data.get('contact_name', '_____________')
+        date_str = datetime.now().strftime('%Y-%m-%d')
+        
+        # Safely extract pattern data
+        dominant_pattern = self.patterns[sorted_patterns[0][0]] if sorted_patterns else '_____________'
+        dominant_score = f"{sorted_patterns[0][1]:.1f}/8" if sorted_patterns else '___'
+        
+        primary_pattern = self.patterns[sorted_patterns[1][0]] if len(sorted_patterns) > 1 else '_____________'
+        primary_score = f"{sorted_patterns[1][1]:.1f}/8" if len(sorted_patterns) > 1 else '___'
+        
+        secondary_pattern = self.patterns[sorted_patterns[2][0]] if len(sorted_patterns) > 2 else '_____________'
+        secondary_score = f"{sorted_patterns[2][1]:.1f}/8" if len(sorted_patterns) > 2 else '___'
+        
+        # Safely extract resistance points
+        resistance_1 = clinical_mapping['predicted_resistance_points'][0] if len(clinical_mapping['predicted_resistance_points']) > 0 else ''
+        resistance_2 = clinical_mapping['predicted_resistance_points'][1] if len(clinical_mapping['predicted_resistance_points']) > 1 else ''
+        
         template = f"""
-CLIENT: {st.session_state.assessment_data.get('contact_name', '_____________')}
-DATE: {datetime.now().strftime('%Y-%m-%d')}
+CLIENT: {client_name}
+DATE: {date_str}
 
-DOMINANT PATTERN: {self.patterns[sorted_patterns[0][0]] if sorted_patterns else '_____________'} (Score: {sorted_patterns[0][1]:.1f}/8 if sorted_patterns else '___'})
-PRIMARY PATTERN: {self.patterns[sorted_patterns[1][0]] if len(sorted_patterns) > 1 else '_____________'} (Score: {sorted_patterns[1][1]:.1f}/8 if len(sorted_patterns) > 1 else '___'})
-SECONDARY PATTERN: {self.patterns[sorted_patterns[2][0]] if len(sorted_patterns) > 2 else '_____________'} (Score: {sorted_patterns[2][1]:.1f}/8 if len(sorted_patterns) > 2 else '___'})
+DOMINANT PATTERN: {dominant_pattern} (Score: {dominant_score})
+PRIMARY PATTERN: {primary_pattern} (Score: {primary_score})
+SECONDARY PATTERN: {secondary_pattern} (Score: {secondary_score})
 
 CORE LIMITING BELIEF: {clinical_mapping['core_limiting_belief'][:100]}...
 HIDDEN BENEFITS: {clinical_mapping['hidden_benefits'][:100]}...
@@ -1821,15 +1839,15 @@ POTENTIAL SESSION 3 NEED: {clinical_mapping['potential_session_3_need']}
 CHANGE READINESS SCORE: {clinical_mapping['change_readiness_score']}/10
 
 PREDICTED RESISTANCE POINTS:
-1. {clinical_mapping['predicted_resistance_points'][0] if len(clinical_mapping['predicted_resistance_points']) > 0 else ''}
-2. {clinical_mapping['predicted_resistance_points'][1] if len(clinical_mapping['predicted_resistance_points']) > 1 else ''}
+1. {resistance_1}
+2. {resistance_2}
 
 INTERVENTION KEYWORDS: {clinical_mapping['intervention_keywords'][:100]}...
 AVOID LANGUAGE: {clinical_mapping['avoid_language'][:100]}...
         """
         return template
     
-    def _render_comprehensive_results(self):
+    def _render_results(self):
         """Render comprehensive results page"""
         st.markdown("## Assessment complete!")
         st.success("Your comprehensive behavioral pattern analysis has been completed and sent to our clinical team.")
@@ -1935,17 +1953,17 @@ AVOID LANGUAGE: {clinical_mapping['avoid_language'][:100]}...
 
 
 class AssessPage:
-    """Main enhanced assessment page component"""
+    """Main assessment page component"""
     
     def __init__(self):
-        self.assessment = EnhancedPatternAssessment()
+        self.assessment = PatternAssessment()
     
     def render(self):
-        """Render the complete enhanced assessment page"""
+        """Render the complete assessment page"""
         # Apply consistent styling
         st.markdown("""
         <style>
-        /* Enhanced assessment specific styles */
+        /* Assessment specific styles */
         .assessment-section {
             background: var(--card-bg);
             border-radius: var(--radius-md);
@@ -1983,7 +2001,7 @@ class AssessPage:
             margin: var(--space-lg) 0;
         }
         
-        .cta-enhanced {
+        .cta-assessment {
             background: var(--card-bg);
             border: 2px solid var(--accent);
             border-radius: var(--radius-md);
