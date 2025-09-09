@@ -235,7 +235,7 @@ class BlogArticles:
             with col_meta:
                 st.markdown(f"""
                 <div style="text-align: center; padding: 1rem;">
-                    <div style="background: #4CA1A3; color: white; padding: 0.5rem 1rem; 
+                    <div style="background: #4CA1A3; color: #FFFFFF; padding: 0.5rem 1rem; 
                                border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;">
                         {article['category']}
                     </div>
