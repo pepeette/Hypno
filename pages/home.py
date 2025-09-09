@@ -99,7 +99,7 @@
 #     # def render(self):
 #     #     """Render quiz using Streamlit components"""
 #     #     # Section header
-#     #     st.subheader("Are you ready for your Hypnotherapy Rapid change?")
+#     #     st.subheader("Are you ready for your hypnotherapy rapid change?")
 #     #     st.write("3 questions to assess your potential for transformation: (click on the most suited option)")
         
 #     #     if not st.session_state.quiz_completed:
@@ -491,7 +491,7 @@
     
 #     def render(self):
 #         """Render method explanation using Streamlit components"""
-#         st.subheader("Why Hypnotherapy succeeds where others haven't")
+#         st.subheader("Why hypnotherapy succeeds where others haven't")
         
 #         # Opening explanation using Streamlit info box
 #         st.write("""
@@ -773,7 +773,7 @@ class EnhancedQuizSection:
     
     def render(self):
         """Render the complete quiz experience"""
-        st.subheader("Test: Are you ready for your Hypnotherapy Rapid change?")
+        st.subheader("Test: Are you ready for your rapid change with hypnotherapy?")
         st.write("4 questions to assess if our method is right for your situation:")
         
         if not st.session_state.quiz_completed:
