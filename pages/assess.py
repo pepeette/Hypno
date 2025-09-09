@@ -1011,9 +1011,9 @@ class PatternAssessment:
         self.question_patterns = self._get_question_pattern_mapping()
     
     def _get_questions(self):
-        """Question set with clinical mapping focus"""
+        """Comprehensive question set with clinical mapping focus"""
         return {
-            # Section 1: Core pattern identification (10 questions)
+            # Section 1: Core pattern identification (15 questions)
             1: [
                 {
                     'id': 'q1_1',
@@ -1031,6 +1031,30 @@ class PatternAssessment:
                 },
                 {
                     'id': 'q1_2',
+                    'text': 'Complete this quickly: "When I\'m truly happy, I..."',
+                    'options': [
+                        "Embrace it fully and share it with others",
+                        "Wait for the other shoe to drop",
+                        "Feel uncomfortable, like I'm tempting fate",
+                        "Sabotage it somehow or create problems",
+                        "Feel guilty and try to tone it down"
+                    ],
+                    'type': 'radio',
+                    'pattern': 1,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q1_3',
+                    'text': 'Rate your agreement: "I feel guilty when things are going too well"',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'pattern': 1,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q1_4',
                     'text': 'When someone disagrees with you or challenges your position, your body:',
                     'options': [
                         "Stays relatively calm and curious",
@@ -1044,7 +1068,31 @@ class PatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_3',
+                    'id': 'q1_5',
+                    'text': 'During a disagreement, you\'re most likely to:',
+                    'options': [
+                        "Listen to understand their perspective",
+                        "Attack their position aggressively",
+                        "Withdraw and shut down emotionally",
+                        "Manipulate the situation to get your way",
+                        "Submit externally but feel resentful internally"
+                    ],
+                    'type': 'radio',
+                    'pattern': 2,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q1_6',
+                    'text': 'Rate your agreement: "Being right is more important than being connected"',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'pattern': 2,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q1_7',
                     'text': 'Your default assumption about new people\'s intentions toward you:',
                     'options': [
                         "Most people are generally well-meaning",
@@ -1058,7 +1106,31 @@ class PatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_4',
+                    'id': 'q1_8',
+                    'text': 'When you enter a room of strangers, you automatically think:',
+                    'options': [
+                        "These seem like interesting people to meet",
+                        "They're probably thinking something critical about me",
+                        "I don't belong here",
+                        "I need to figure out the social dynamics quickly",
+                        "I hope I can get through this without embarrassing myself"
+                    ],
+                    'type': 'radio',
+                    'pattern': 3,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q1_9',
+                    'text': 'Rate your agreement: "If people really knew me, they\'d reject me"',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'pattern': 3,
+                    'weight': 'high'
+                },
+                {
+                    'id': 'q1_10',
                     'text': 'When facing important life choices, you typically:',
                     'options': [
                         "Look for creative solutions that honor multiple values",
@@ -1072,7 +1144,21 @@ class PatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_5',
+                    'id': 'q1_11',
+                    'text': 'Complete this sentence: "In life, I have to choose between security _____ freedom"',
+                    'options': [
+                        "AND (I can have both)",
+                        "OR (I must choose one)",
+                        "This sentence doesn't resonate with me",
+                        "I've never thought about it this way",
+                        "Both seem impossible to achieve"
+                    ],
+                    'type': 'radio',
+                    'pattern': 4,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q1_12',
                     'text': 'Complete this honestly: "I am valuable when I..."',
                     'options': [
                         "Simply exist as I am",
@@ -1086,13 +1172,383 @@ class PatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_6',
+                    'id': 'q1_13',
+                    'text': 'Rate your agreement: "My worth depends on what I achieve"',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'pattern': 5,
+                    'weight': 'high'
+                },
+                {
+                    'id': 'q1_14',
+                    'text': 'When you take time to do absolutely nothing productive:',
+                    'options': [
+                        "You can enjoy the rest completely",
+                        "You feel guilty and anxious",
+                        "You literally cannot do it",
+                        "You feel worthless and lazy",
+                        "You worry about what others will think"
+                    ],
+                    'type': 'radio',
+                    'pattern': 5,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q1_15',
                     'text': 'Your personality or behavior significantly changes based on:',
                     'options': [
                         "It stays pretty consistent across all contexts",
                         "Which group of people you're with",
                         "Professional versus personal settings",
                         "Whether you're in control or following others",
+                        "If you're the expert or the newcomer"
+                    ],
+                    'type': 'radio',
+                    'pattern': 6,
+                    'weight': 'high'
+                }
+            ],
+            
+            # Section 2: Deeper insights (15 questions)
+            2: [
+                {
+                    'id': 'q2_1',
+                    'text': 'Rate your agreement: "I have different versions of myself for different audiences"',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'pattern': 6,
+                    'weight': 'high'
+                },
+                {
+                    'id': 'q2_2',
+                    'text': 'There are areas of your life where you feel completely capable, and others where you feel powerless:',
+                    'options': [
+                        "No, I feel consistently myself everywhere",
+                        "Yes - I'm like two completely different people",
+                        "I'm strong professionally but weak personally",
+                        "I'm confident socially but insecure privately",
+                        "I lead some groups but follow others completely"
+                    ],
+                    'type': 'radio',
+                    'pattern': 6,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q2_3',
+                    'text': 'When it comes to your own health, fitness, or wellbeing:',
+                    'options': [
+                        "I naturally prioritize my wellbeing alongside others'",
+                        "I know what to do but can't make myself do it",
+                        "I care for everyone else first, then there's no energy left",
+                        "I feel selfish focusing on my own needs",
+                        "I'm great at advising others but terrible at following my own advice"
+                    ],
+                    'type': 'radio',
+                    'pattern': 7,
+                    'weight': 'high'
+                },
+                {
+                    'id': 'q2_4',
+                    'text': 'You consistently have energy and motivation for:',
+                    'options': [
+                        "Both personal and external responsibilities equally",
+                        "Other people's goals but not your own",
+                        "Work projects but not personal care",
+                        "Helping others but not helping yourself",
+                        "Everything except what your body needs"
+                    ],
+                    'type': 'radio',
+                    'pattern': 7,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q2_5',
+                    'text': 'When you think about doing something purely for your own pleasure or health:',
+                    'options': [
+                        "You can do it without internal conflict",
+                        "You feel guilty and selfish",
+                        "You find excuses to avoid it",
+                        "You start but don't follow through",
+                        "You sabotage it somehow"
+                    ],
+                    'type': 'radio',
+                    'pattern': 7,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q2_6',
+                    'text': 'Your major life goals (career, lifestyle, achievements) are primarily:',
+                    'options': [
+                        "Genuinely what you desire for your own life",
+                        "What your family expected or dreamed for you",
+                        "Honoring someone who died or sacrificed for you",
+                        "Proving you're worthy of someone's love or sacrifice",
+                        "What you think you 'should' want based on your background"
+                    ],
+                    'type': 'radio',
+                    'pattern': 8,
+                    'weight': 'high'
+                },
+                {
+                    'id': 'q2_7',
+                    'text': 'When you think about what YOU actually want (separate from all expectations):',
+                    'options': [
+                        "You can access it clearly and confidently",
+                        "You honestly don't know anymore",
+                        "You feel guilty for wanting something different",
+                        "You feel like you'd be betraying someone important",
+                        "You're afraid it's not worthy or important enough"
+                    ],
+                    'type': 'radio',
+                    'pattern': 8,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q2_8',
+                    'text': 'Rate your agreement: "I would disappoint or abandon someone important if I lived my true desires"',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'pattern': 8,
+                    'weight': 'high'
+                },
+                {
+                    'id': 'q2_9',
+                    'text': 'With your closest friends or certain social groups, you:',
+                    'options': [
+                        "Stay true to your values and boundaries",
+                        "Become someone you don't respect or recognize",
+                        "Lose all your usual boundaries and standards",
+                        "Act against your stated values and beliefs",
+                        "Can't say no even when you desperately want to"
+                    ],
+                    'type': 'radio',
+                    'pattern': 9,
+                    'weight': 'high'
+                },
+                {
+                    'id': 'q2_10',
+                    'text': 'There are specific people around whom you consistently make choices you later regret:',
+                    'options': [
+                        "No, I make similar choices regardless of who's around",
+                        "Yes, and I know who they are but can't seem to stop",
+                        "I become weak-willed around certain personality types",
+                        "I desperately want their approval and will do anything for it",
+                        "I'm afraid of conflict so I go along with things I hate"
+                    ],
+                    'type': 'radio',
+                    'pattern': 9,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q2_11',
+                    'text': 'Rate your agreement: "I\'m much stronger in some relationships than others"',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'pattern': 9,
+                    'weight': 'medium'
+                },
+                {
+                    'id': 'q2_12',
+                    'text': 'Complete this sentence: "I can\'t have what I want because..."',
+                    'type': 'text',
+                    'placeholder': 'Complete this thought honestly...',
+                    'insight': 'core_limiting_belief'
+                },
+                {
+                    'id': 'q2_13',
+                    'text': 'What would you lose if this problem disappeared completely?',
+                    'options': [
+                        "Nothing - I can't think of any benefits",
+                        "Attention, sympathy, and care from others",
+                        "An excuse for not reaching my full potential",
+                        "Permission to avoid bigger challenges",
+                        "Control over situations and other people's reactions"
+                    ],
+                    'type': 'radio',
+                    'insight': 'hidden_benefits'
+                },
+                {
+                    'id': 'q2_14',
+                    'text': 'Who would you be without this problem?',
+                    'type': 'text',
+                    'placeholder': 'Describe the identity shift that might concern you...',
+                    'insight': 'identity_threat'
+                },
+                {
+                    'id': 'q2_15',
+                    'text': 'Who in your life benefits from you staying the same?',
+                    'type': 'text',
+                    'placeholder': 'Name specific people and how they benefit...',
+                    'insight': 'systemic_resistance'
+                }
+            ],
+            
+            # Section 3: Transformation readiness (15 questions)
+            3: [
+                {
+                    'id': 'q3_1',
+                    'text': 'Rate your willingness to question beliefs you\'ve held since childhood:',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'clinical': True,
+                    'insight': 'change_readiness'
+                },
+                {
+                    'id': 'q3_2',
+                    'text': 'Rate your commitment to doing whatever it takes to change:',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'clinical': True,
+                    'insight': 'change_commitment'
+                },
+                {
+                    'id': 'q3_3',
+                    'text': 'What percentage of responsibility do you take for your current situation?',
+                    'type': 'slider',
+                    'min': 0,
+                    'max': 100,
+                    'default': 50,
+                    'clinical': True,
+                    'insight': 'responsibility_taking'
+                },
+                {
+                    'id': 'q3_4',
+                    'text': 'How much are you willing to invest (time/money/effort) in transformation?',
+                    'options': [
+                        "Whatever it takes - this is my priority",
+                        "Significant investment if I believe it will work",
+                        "Moderate investment with clear guarantees",
+                        "Minimal investment - want easy solutions",
+                        "Hoping for change without much effort from me"
+                    ],
+                    'type': 'radio',
+                    'insight': 'investment_readiness'
+                },
+                {
+                    'id': 'q3_5',
+                    'text': 'When you\'ve tried to change before, what pattern always stops you?',
+                    'options': [
+                        "I sabotage myself right before success",
+                        "I get overwhelmed and give up",
+                        "Other people undermine my efforts",
+                        "I convince myself it\'s not worth it",
+                        "I find excuses to avoid the hard work"
+                    ],
+                    'type': 'radio',
+                    'insight': 'sabotage_pattern'
+                },
+                {
+                    'id': 'q3_6',
+                    'text': 'When you\'re stressed, what\'s your default escape/avoidance pattern?',
+                    'options': [
+                        "Scroll social media or binge watch",
+                        "Sleep or withdraw from everyone",
+                        "Work obsessively on unimportant tasks",
+                        "Eat, drink, or use substances",
+                        "Start fights or create drama"
+                    ],
+                    'type': 'radio',
+                    'insight': 'stress_response'
+                },
+                {
+                    'id': 'q3_7',
+                    'text': 'What words or phrases motivate you most?',
+                    'type': 'text',
+                    'placeholder': 'Language that inspires action in you...',
+                    'insight': 'motivational_language'
+                },
+                {
+                    'id': 'q3_8',
+                    'text': 'What words or phrases trigger resistance in you?',
+                    'type': 'text',
+                    'placeholder': 'Language that makes you shut down...',
+                    'insight': 'trigger_language'
+                },
+                {
+                    'id': 'q3_9',
+                    'text': 'How do you prefer to receive feedback or guidance?',
+                    'options': [
+                        "Direct and straightforward",
+                        "Gentle and supportive",
+                        "Challenging and provocative",
+                        "Logical and evidence-based",
+                        "Intuitive and metaphorical"
+                    ],
+                    'type': 'radio',
+                    'insight': 'feedback_preference'
+                },
+                {
+                    'id': 'q3_10',
+                    'text': 'Rate your trust in your own ability to handle whatever comes up:',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'insight': 'self_trust'
+                },
+                {
+                    'id': 'q3_11',
+                    'text': 'What would convince you that change is actually possible for you?',
+                    'type': 'text',
+                    'placeholder': 'What evidence or experience would you need?',
+                    'insight': 'possibility_criteria'
+                },
+                {
+                    'id': 'q3_12',
+                    'text': 'What scares you most about completely solving your main problem?',
+                    'options': [
+                        "Nothing really scares me about solving it",
+                        "I wouldn't know who I am anymore",
+                        "People might expect too much from me",
+                        "I might lose connections with others who struggle similarly",
+                        "I'd have to take full responsibility for my life and happiness"
+                    ],
+                    'type': 'radio',
+                    'insight': 'change_fear'
+                },
+                {
+                    'id': 'q3_13',
+                    'text': 'Complete this sentence: "People like me don\'t get to have..."',
+                    'type': 'text',
+                    'placeholder': 'Your response...',
+                    'insight': 'limiting_belief_identity'
+                },
+                {
+                    'id': 'q3_14',
+                    'text': 'What does your current problem/pattern give you that you\'re not supposed to want?',
+                    'options': [
+                        "I can't think of any hidden benefits",
+                        "Permission to avoid bigger challenges or responsibilities",
+                        "Attention, care, and sympathy from others",
+                        "An excuse for not reaching my full potential",
+                        "Control over situations and other people's behavior"
+                    ],
+                    'type': 'radio',
+                    'insight': 'secondary_gains'
+                },
+                {
+                    'id': 'q3_15',
+                    'text': 'Rate your overall readiness to begin transformation work right now:',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'insight': 'overall_readiness'
+                }
+            ]
+        }                                "Whether you're in control or following others",
                         "If you're the expert or the newcomer"
                     ],
                     'type': 'radio',
