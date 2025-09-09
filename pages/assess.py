@@ -1633,9 +1633,9 @@ class BehavioralPatternAssessment:
         
         # Assessment value explanation
         st.info("""
-        **Why this assessment matters:** Traditional hypnotherapy uses generic scripts. 
-        This comprehensive evaluation identifies your specific patterns, triggers, and readiness factors 
-        to create a targeted approach that works with your unique psychological landscape. This detailed assessment maps your unique behavioral patterns to design the most effective hypnotherapy approach for your transformation.
+        **Why this assessment matters:** Most hypnotherapy uses general scripts. 
+        This assessment detects your habits and triggers to build a plan that fits your needs. 
+        The assessment matches your behavior with the best neural rewiring hypnotherapy for you.
         """)
     
     def _render_progress(self):
