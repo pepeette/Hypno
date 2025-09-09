@@ -959,8 +959,8 @@
 
 
 """
-Enhanced Behavioral Pattern Assessment - Comprehensive Clinical Version
-Streamlit implementation with improved clinical mapping capabilities
+Complete Enhanced Behavioral Pattern Assessment Page
+pages/assess.py - Ready for production deployment
 """
 import streamlit as st
 from datetime import datetime
@@ -999,9 +999,9 @@ class EnhancedPatternAssessment:
         
         # Progressive disclosure sections
         self.sections = {
-            1: {"name": "Pattern identification", "questions": 20},
-            2: {"name": "Dominant pattern deep-dive", "questions": 15}, 
-            3: {"name": "Change readiness and resistance mapping", "questions": 20}
+            1: {"name": "Pattern identification", "questions": 10},
+            2: {"name": "Clinical insights", "questions": 8}, 
+            3: {"name": "Change readiness", "questions": 7}
         }
         
         # Enhanced question sets
@@ -1009,12 +1009,11 @@ class EnhancedPatternAssessment:
         
         # Clinical mapping
         self.question_patterns = self._get_question_pattern_mapping()
-        self.clinical_probes = self._get_clinical_probes()
     
     def _get_enhanced_questions(self):
         """Enhanced question set with clinical mapping focus"""
         return {
-            # Section 1: Core pattern identification (20 questions)
+            # Section 1: Core pattern identification (10 questions)
             1: [
                 {
                     'id': 'q1_1',
@@ -1032,15 +1031,6 @@ class EnhancedPatternAssessment:
                 },
                 {
                     'id': 'q1_2',
-                    'text': 'Rate your stress level right now as you take this assessment:',
-                    'type': 'slider',
-                    'min': 1,
-                    'max': 10,
-                    'default': 5,
-                    'clinical': True
-                },
-                {
-                    'id': 'q1_3',
                     'text': 'When someone disagrees with you or challenges your position, your body:',
                     'options': [
                         "Stays relatively calm and curious",
@@ -1054,7 +1044,7 @@ class EnhancedPatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_4',
+                    'id': 'q1_3',
                     'text': 'Your default assumption about new people\'s intentions toward you:',
                     'options': [
                         "Most people are generally well-meaning",
@@ -1068,20 +1058,7 @@ class EnhancedPatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_5',
-                    'text': 'Previous experience with therapy or personal development work:',
-                    'options': [
-                        "No previous experience",
-                        "Some therapy, limited results", 
-                        "Multiple therapists, still struggling",
-                        "Extensive work, some progress",
-                        "Successful transformation experience"
-                    ],
-                    'type': 'radio',
-                    'clinical': True
-                },
-                {
-                    'id': 'q1_6',
+                    'id': 'q1_4',
                     'text': 'When facing important life choices, you typically:',
                     'options': [
                         "Look for creative solutions that honor multiple values",
@@ -1095,7 +1072,7 @@ class EnhancedPatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_7',
+                    'id': 'q1_5',
                     'text': 'Complete this honestly: "I am valuable when I..."',
                     'options': [
                         "Simply exist as I am",
@@ -1109,16 +1086,7 @@ class EnhancedPatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_8',
-                    'text': 'Rate the quality of your current support system:',
-                    'type': 'slider',
-                    'min': 1,
-                    'max': 10,
-                    'default': 5,
-                    'clinical': True
-                },
-                {
-                    'id': 'q1_9',
+                    'id': 'q1_6',
                     'text': 'Your personality or behavior significantly changes based on:',
                     'options': [
                         "It stays pretty consistent across all contexts",
@@ -1132,7 +1100,7 @@ class EnhancedPatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_10',
+                    'id': 'q1_7',
                     'text': 'When it comes to your own health, fitness, or wellbeing:',
                     'options': [
                         "I naturally prioritize my wellbeing alongside others'",
@@ -1146,20 +1114,7 @@ class EnhancedPatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_11',
-                    'text': 'Are you currently going through a major life transition?',
-                    'options': [
-                        "No major changes happening",
-                        "Career transition or job change",
-                        "Relationship beginning or ending", 
-                        "Health challenge or recovery",
-                        "Multiple major changes at once"
-                    ],
-                    'type': 'radio',
-                    'clinical': True
-                },
-                {
-                    'id': 'q1_12',
+                    'id': 'q1_8',
                     'text': 'Your major life goals (career, lifestyle, achievements) are primarily:',
                     'options': [
                         "Genuinely what you desire for your own life",
@@ -1173,7 +1128,7 @@ class EnhancedPatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_13',
+                    'id': 'q1_9',
                     'text': 'With your closest friends or certain social groups, you:',
                     'options': [
                         "Stay true to your values and boundaries",
@@ -1187,7 +1142,7 @@ class EnhancedPatternAssessment:
                     'weight': 'high'
                 },
                 {
-                    'id': 'q1_14',
+                    'id': 'q1_10',
                     'text': 'Rate your willingness to question beliefs you\'ve held since childhood:',
                     'type': 'slider',
                     'min': 1,
@@ -1195,87 +1150,10 @@ class EnhancedPatternAssessment:
                     'default': 5,
                     'clinical': True,
                     'insight': 'change_readiness'
-                },
-                {
-                    'id': 'q1_15',
-                    'text': 'Complete this quickly: "When I\'m truly happy, I..."',
-                    'options': [
-                        "Embrace it fully and share it with others",
-                        "Wait for the other shoe to drop",
-                        "Feel uncomfortable, like I'm tempting fate",
-                        "Sabotage it somehow or create problems",
-                        "Feel guilty and try to tone it down"
-                    ],
-                    'type': 'radio',
-                    'pattern': 1,
-                    'weight': 'medium'
-                },
-                {
-                    'id': 'q1_16',
-                    'text': 'Rate your commitment to doing whatever it takes to change:',
-                    'type': 'slider',
-                    'min': 1,
-                    'max': 10,
-                    'default': 5,
-                    'clinical': True,
-                    'insight': 'change_commitment'
-                },
-                {
-                    'id': 'q1_17',
-                    'text': 'During a disagreement, you\'re most likely to:',
-                    'options': [
-                        "Listen to understand their perspective",
-                        "Attack their position aggressively",
-                        "Withdraw and shut down emotionally",
-                        "Manipulate the situation to get your way",
-                        "Submit externally but feel resentful internally"
-                    ],
-                    'type': 'radio',
-                    'pattern': 2,
-                    'weight': 'medium'
-                },
-                {
-                    'id': 'q1_18',
-                    'text': 'What percentage of responsibility do you take for your current situation?',
-                    'type': 'slider',
-                    'min': 0,
-                    'max': 100,
-                    'default': 50,
-                    'clinical': True,
-                    'insight': 'responsibility_taking'
-                },
-                {
-                    'id': 'q1_19',
-                    'text': 'When you enter a room of strangers, you automatically think:',
-                    'options': [
-                        "These seem like interesting people to meet",
-                        "They're probably thinking something critical about me",
-                        "I don't belong here",
-                        "I need to figure out the social dynamics quickly",
-                        "I hope I can get through this without embarrassing myself"
-                    ],
-                    'type': 'radio',
-                    'pattern': 3,
-                    'weight': 'medium'
-                },
-                {
-                    'id': 'q1_20',
-                    'text': 'Growing up, which phrase did you hear most often?',
-                    'options': [
-                        "You can achieve anything you set your mind to",
-                        "Life is tough, get used to it",
-                        "Don't get your hopes up",
-                        "We're not here to have fun",
-                        "Good things happen to other people, not us"
-                    ],
-                    'type': 'radio',
-                    'pattern': 1,
-                    'weight': 'high',
-                    'insight': 'family_programming'
                 }
             ],
             
-            # Section 2: Dominant pattern deep-dive (15 questions)
+            # Section 2: Clinical insights (8 questions)
             2: [
                 {
                     'id': 'q2_1',
@@ -1286,13 +1164,6 @@ class EnhancedPatternAssessment:
                 },
                 {
                     'id': 'q2_2',
-                    'text': 'What would happen if you got everything you wanted?',
-                    'type': 'text',
-                    'placeholder': 'Describe what scares you about complete success...',
-                    'insight': 'success_fear'
-                },
-                {
-                    'id': 'q2_3',
                     'text': 'What would you lose if this problem disappeared completely?',
                     'options': [
                         "Nothing - I can't think of any benefits",
@@ -1305,62 +1176,21 @@ class EnhancedPatternAssessment:
                     'insight': 'hidden_benefits'
                 },
                 {
-                    'id': 'q2_4',
-                    'text': 'How does this issue protect you from something worse?',
-                    'type': 'text',
-                    'placeholder': 'What bigger fear does this problem help you avoid?',
-                    'insight': 'protection_mechanism'
-                },
-                {
-                    'id': 'q2_5',
+                    'id': 'q2_3',
                     'text': 'Who would you be without this problem?',
                     'type': 'text',
-                    'placeholder': 'Describe the identity shift that scares you...',
+                    'placeholder': 'Describe the identity shift that might concern you...',
                     'insight': 'identity_threat'
                 },
                 {
-                    'id': 'q2_6',
-                    'text': 'Which relationships would change if you transformed completely?',
-                    'options': [
-                        "My relationships would likely improve",
-                        "Some family members would feel threatened",
-                        "My partner might feel insecure or left behind",
-                        "Friends who bond over shared struggles would feel abandoned",
-                        "People who depend on me being weak would resist"
-                    ],
-                    'type': 'radio',
-                    'insight': 'relationship_resistance'
-                },
-                {
-                    'id': 'q2_7',
+                    'id': 'q2_4',
                     'text': 'Who in your life benefits from you staying the same?',
                     'type': 'text',
                     'placeholder': 'Name specific people and how they benefit...',
                     'insight': 'systemic_resistance'
                 },
                 {
-                    'id': 'q2_8',
-                    'text': 'What family or cultural rules would you break by changing?',
-                    'type': 'text',
-                    'placeholder': 'What unspoken agreements would be violated?',
-                    'insight': 'cultural_resistance'
-                },
-                {
-                    'id': 'q2_9',
-                    'text': 'What part of your identity depends on having this struggle?',
-                    'type': 'text',
-                    'placeholder': 'How does this problem define who you are?',
-                    'insight': 'identity_attachment'
-                },
-                {
-                    'id': 'q2_10',
-                    'text': 'What story do you tell yourself about why change is impossible?',
-                    'type': 'text',
-                    'placeholder': 'What\'s your favorite excuse or limitation story?',
-                    'insight': 'impossibility_narrative'
-                },
-                {
-                    'id': 'q2_11',
+                    'id': 'q2_5',
                     'text': 'When you\'ve tried to change before, what pattern always stops you?',
                     'options': [
                         "I sabotage myself right before success",
@@ -1373,28 +1203,45 @@ class EnhancedPatternAssessment:
                     'insight': 'sabotage_pattern'
                 },
                 {
-                    'id': 'q2_12',
-                    'text': 'What excuse do you always use when change becomes difficult?',
+                    'id': 'q2_6',
+                    'text': 'What words or phrases motivate you most?',
                     'type': 'text',
-                    'placeholder': 'Your go-to rationalization...',
-                    'insight': 'default_excuse'
+                    'placeholder': 'Language that inspires action in you...',
+                    'insight': 'motivational_language'
                 },
                 {
-                    'id': 'q2_13',
-                    'text': 'What\'s the worst thing that could happen if you changed completely?',
+                    'id': 'q2_7',
+                    'text': 'What words or phrases trigger resistance in you?',
                     'type': 'text',
-                    'placeholder': 'Your deepest fear about transformation...',
-                    'insight': 'transformation_fear'
+                    'placeholder': 'Language that makes you shut down...',
+                    'insight': 'trigger_language'
                 },
                 {
-                    'id': 'q2_14',
-                    'text': 'What responsibilities would you have to face if this was solved?',
-                    'type': 'text',
-                    'placeholder': 'What would you no longer be able to avoid?',
-                    'insight': 'avoided_responsibilities'
+                    'id': 'q2_8',
+                    'text': 'Rate your commitment to doing whatever it takes to change:',
+                    'type': 'slider',
+                    'min': 1,
+                    'max': 10,
+                    'default': 5,
+                    'clinical': True,
+                    'insight': 'change_commitment'
+                }
+            ],
+            
+            # Section 3: Change readiness (7 questions)
+            3: [
+                {
+                    'id': 'q3_1',
+                    'text': 'What percentage of responsibility do you take for your current situation?',
+                    'type': 'slider',
+                    'min': 0,
+                    'max': 100,
+                    'default': 50,
+                    'clinical': True,
+                    'insight': 'responsibility_taking'
                 },
                 {
-                    'id': 'q2_15',
+                    'id': 'q3_2',
                     'text': 'How much are you willing to invest (time/money/effort) in transformation?',
                     'options': [
                         "Whatever it takes - this is my priority",
@@ -1405,53 +1252,9 @@ class EnhancedPatternAssessment:
                     ],
                     'type': 'radio',
                     'insight': 'investment_readiness'
-                }
-            ],
-            
-            # Section 3: Change readiness and communication preferences (20 questions)
-            3: [
-                {
-                    'id': 'q3_1',
-                    'text': 'What words or phrases motivate you most?',
-                    'type': 'text',
-                    'placeholder': 'Language that inspires action in you...',
-                    'insight': 'motivational_language'
-                },
-                {
-                    'id': 'q3_2',
-                    'text': 'How do you prefer to receive feedback or guidance?',
-                    'options': [
-                        "Direct and straightforward",
-                        "Gentle and supportive",
-                        "Challenging and provocative",
-                        "Logical and evidence-based",
-                        "Intuitive and metaphorical"
-                    ],
-                    'type': 'radio',
-                    'insight': 'feedback_preference'
                 },
                 {
                     'id': 'q3_3',
-                    'text': 'What words or phrases trigger resistance in you?',
-                    'type': 'text',
-                    'placeholder': 'Language that makes you shut down...',
-                    'insight': 'trigger_language'
-                },
-                {
-                    'id': 'q3_4',
-                    'text': 'What way of speaking makes you shut down?',
-                    'options': [
-                        "Aggressive or confrontational",
-                        "Condescending or patronizing",
-                        "Overly emotional or dramatic",
-                        "Cold and clinical",
-                        "Vague and indirect"
-                    ],
-                    'type': 'radio',
-                    'insight': 'shutdown_triggers'
-                },
-                {
-                    'id': 'q3_5',
                     'text': 'When you\'re stressed, what\'s your default escape/avoidance pattern?',
                     'options': [
                         "Scroll social media or binge watch",
@@ -1464,132 +1267,20 @@ class EnhancedPatternAssessment:
                     'insight': 'stress_response'
                 },
                 {
-                    'id': 'q3_6',
-                    'text': 'What do you do when someone challenges your core beliefs?',
+                    'id': 'q3_4',
+                    'text': 'How do you prefer to receive feedback or guidance?',
                     'options': [
-                        "Consider their perspective with curiosity",
-                        "Defend aggressively and attack back",
-                        "Shut down and refuse to engage",
-                        "Pretend to agree while internally resisting",
-                        "Become confused and doubt yourself"
+                        "Direct and straightforward",
+                        "Gentle and supportive",
+                        "Challenging and provocative",
+                        "Logical and evidence-based",
+                        "Intuitive and metaphorical"
                     ],
                     'type': 'radio',
-                    'insight': 'belief_challenge_response'
+                    'insight': 'feedback_preference'
                 },
                 {
-                    'id': 'q3_7',
-                    'text': 'Rate your agreement: "I need to feel completely safe before I can be vulnerable"',
-                    'type': 'slider',
-                    'min': 1,
-                    'max': 10,
-                    'default': 5,
-                    'insight': 'vulnerability_threshold'
-                },
-                {
-                    'id': 'q3_8',
-                    'text': 'What type of environment helps you open up most?',
-                    'options': [
-                        "Structured and professional",
-                        "Warm and nurturing",
-                        "Challenging but supportive",
-                        "Private and confidential",
-                        "Creative and expressive"
-                    ],
-                    'type': 'radio',
-                    'insight': 'optimal_environment'
-                },
-                {
-                    'id': 'q3_9',
-                    'text': 'When facing resistance to change, you respond best to:',
-                    'options': [
-                        "Understanding the resistance with compassion",
-                        "Pushing through with determination",
-                        "Finding creative ways around it",
-                        "Analyzing it logically",
-                        "Getting support from others"
-                    ],
-                    'type': 'radio',
-                    'insight': 'resistance_response_preference'
-                },
-                {
-                    'id': 'q3_10',
-                    'text': 'Rate your need for control during the change process:',
-                    'type': 'slider',
-                    'min': 1,
-                    'max': 10,
-                    'default': 5,
-                    'insight': 'control_needs'
-                },
-                {
-                    'id': 'q3_11',
-                    'text': 'What pace of change works best for you?',
-                    'options': [
-                        "Rapid transformation - get it over with",
-                        "Steady gradual progress",
-                        "Intense bursts with recovery periods",
-                        "Slow and very gentle",
-                        "Depends on what we\'re changing"
-                    ],
-                    'type': 'radio',
-                    'insight': 'change_pace_preference'
-                },
-                {
-                    'id': 'q3_12',
-                    'text': 'How do you prefer to process emotional material?',
-                    'options': [
-                        "Talk through it verbally",
-                        "Experience it in my body",
-                        "Understand it intellectually first",
-                        "Express it creatively",
-                        "Process it privately then share"
-                    ],
-                    'type': 'radio',
-                    'insight': 'emotional_processing_style'
-                },
-                {
-                    'id': 'q3_13',
-                    'text': 'Rate your comfort with uncertainty during change:',
-                    'type': 'slider',
-                    'min': 1,
-                    'max': 10,
-                    'default': 5,
-                    'insight': 'uncertainty_tolerance'
-                },
-                {
-                    'id': 'q3_14',
-                    'text': 'What kind of support do you need most during difficult changes?',
-                    'options': [
-                        "Someone to believe in me when I don\'t",
-                        "Clear steps and practical guidance",
-                        "Permission to feel whatever comes up",
-                        "Accountability and gentle pushing",
-                        "Reassurance that I\'m not alone"
-                    ],
-                    'type': 'radio',
-                    'insight': 'support_needs'
-                },
-                {
-                    'id': 'q3_15',
-                    'text': 'How do you know when you\'re ready to take the next step?',
-                    'options': [
-                        "I feel clear and confident",
-                        "I\'ve analyzed all the options",
-                        "Someone I trust encourages me",
-                        "The pain of staying the same becomes unbearable",
-                        "I just take a leap of faith"
-                    ],
-                    'type': 'radio',
-                    'insight': 'readiness_indicators'
-                },
-                {
-                    'id': 'q3_16',
-                    'text': 'What would convince you that change is actually possible for you?',
-                    'type': 'text',
-                    'placeholder': 'What evidence or experience would you need?',
-                    'insight': 'possibility_criteria'
-                },
-                {
-                    'id': 'q3_17',
+                    'id': 'q3_5',
                     'text': 'Rate your trust in your own ability to handle whatever comes up:',
                     'type': 'slider',
                     'min': 1,
@@ -1598,21 +1289,14 @@ class EnhancedPatternAssessment:
                     'insight': 'self_trust'
                 },
                 {
-                    'id': 'q3_18',
-                    'text': 'What makes you feel most understood and supported?',
+                    'id': 'q3_6',
+                    'text': 'What would convince you that change is actually possible for you?',
                     'type': 'text',
-                    'placeholder': 'Describe the feeling or experience...',
-                    'insight': 'support_language'
+                    'placeholder': 'What evidence or experience would you need?',
+                    'insight': 'possibility_criteria'
                 },
                 {
-                    'id': 'q3_19',
-                    'text': 'If you could wave a magic wand and change one thing about how you approach problems, what would it be?',
-                    'type': 'text',
-                    'placeholder': 'What pattern would you most want to shift?',
-                    'insight': 'change_priority'
-                },
-                {
-                    'id': 'q3_20',
+                    'id': 'q3_7',
                     'text': 'Rate your overall readiness to begin transformation work right now:',
                     'type': 'slider',
                     'min': 1,
@@ -1636,21 +1320,6 @@ class EnhancedPatternAssessment:
                     }
         return mapping
     
-    def _get_clinical_probes(self):
-        """Clinical insight categories for comprehensive mapping"""
-        return {
-            'core_limiting_belief': [],
-            'hidden_benefits': [],
-            'identity_threat': [],
-            'systemic_resistance': [],
-            'change_readiness': [],
-            'motivational_language': [],
-            'trigger_language': [],
-            'resistance_patterns': [],
-            'support_needs': [],
-            'communication_preferences': []
-        }
-    
     def render(self):
         """Render the progressive assessment"""
         self._render_header()
@@ -1668,7 +1337,7 @@ class EnhancedPatternAssessment:
         
         st.markdown(f"""
         <div style="text-align: center; margin: 1rem 0 2rem 0;">
-            <h1>Comprehensive behavioral pattern assessment</h1>
+            <h1>Behavioral pattern assessment</h1>
             <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto;">
                 Section {current_section}: {section_name}
             </p>
@@ -1734,6 +1403,29 @@ class EnhancedPatternAssessment:
                 self._save_response(question['id'], response, question)
                 self._advance_question()
                 
+        elif question['type'] == 'slider':
+            response = st.slider(
+                question['id'],
+                question['min'],
+                question['max'],
+                question['default'],
+                label_visibility="collapsed",
+                key=question['id']
+            )
+            
+            # Add helpful labels for sliders
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.caption(f"{question['min']} - Low")
+            with col2:
+                st.caption("Current rating")
+            with col3:
+                st.caption(f"{question['max']} - High")
+            
+            if st.button("Continue", type="primary", key=f"next_{question['id']}"):
+                self._save_response(question['id'], response, question)
+                self._advance_question()
+                
         elif question['type'] == 'text':
             response = st.text_area(
                 question['id'],
@@ -1761,14 +1453,14 @@ class EnhancedPatternAssessment:
                     st.rerun()
         
         with col2:
-            if st.button("Save progress & continue later"):
-                st.success("Progress saved! Use the same email to continue where you left off.")
+            if st.button("Save progress"):
+                st.success("Progress saved! You can return to complete the assessment anytime.")
         
         with col3:
             current_section = st.session_state.current_section
             section_questions = self.sections[current_section]['questions']
             if st.session_state.current_question < section_questions:
-                if st.button("Skip this question"):
+                if st.button("Skip question"):
                     self._advance_question()
     
     def _advance_question(self):
@@ -1860,28 +1552,7 @@ class EnhancedPatternAssessment:
         import re
         if not name or not email or not concern:
             return False
-        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
-                
-        elif question['type'] == 'slider':
-            response = st.slider(
-                question['id'],
-                question['min'],
-                question['max'],
-                question['default'],
-                label_visibility="collapsed",
-                key=question['id']
-            )
-            
-            # Add helpful labels for sliders
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.caption(f"{question['min']} - Low")
-            with col2:
-                st.caption("Current rating")
-            with col3:
-                st.caption(f"{question['max']} - High")
-            
-            if st.button("
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         return re.match(email_pattern, email) is not None
     
     def _complete_enhanced_assessment(self):
@@ -1963,39 +1634,35 @@ class EnhancedPatternAssessment:
         
         # Extract core limiting belief
         core_belief_responses = []
-        for insight_key in ['core_limiting_belief', 'impossibility_narrative', 'success_fear']:
-            if insight_key in st.session_state.clinical_insights:
-                for item in st.session_state.clinical_insights[insight_key]:
-                    core_belief_responses.append(item['response'])
+        if 'core_limiting_belief' in st.session_state.clinical_insights:
+            for item in st.session_state.clinical_insights['core_limiting_belief']:
+                core_belief_responses.append(item['response'])
         mapping['core_limiting_belief'] = ' | '.join(filter(None, core_belief_responses))
         
         # Extract hidden benefits
         hidden_benefits_responses = []
-        for insight_key in ['hidden_benefits', 'protection_mechanism', 'avoided_responsibilities']:
-            if insight_key in st.session_state.clinical_insights:
-                for item in st.session_state.clinical_insights[insight_key]:
-                    hidden_benefits_responses.append(item['response'])
+        if 'hidden_benefits' in st.session_state.clinical_insights:
+            for item in st.session_state.clinical_insights['hidden_benefits']:
+                hidden_benefits_responses.append(item['response'])
         mapping['hidden_benefits'] = ' | '.join(filter(None, hidden_benefits_responses))
         
         # Extract systemic resistance
         systemic_responses = []
-        for insight_key in ['systemic_resistance', 'relationship_resistance', 'cultural_resistance']:
-            if insight_key in st.session_state.clinical_insights:
-                for item in st.session_state.clinical_insights[insight_key]:
-                    systemic_responses.append(item['response'])
+        if 'systemic_resistance' in st.session_state.clinical_insights:
+            for item in st.session_state.clinical_insights['systemic_resistance']:
+                systemic_responses.append(item['response'])
         mapping['systemic_resistance'] = ' | '.join(filter(None, systemic_responses))
         
         # Extract identity threat
         identity_responses = []
-        for insight_key in ['identity_threat', 'identity_attachment', 'transformation_fear']:
-            if insight_key in st.session_state.clinical_insights:
-                for item in st.session_state.clinical_insights[insight_key]:
-                    identity_responses.append(item['response'])
+        if 'identity_threat' in st.session_state.clinical_insights:
+            for item in st.session_state.clinical_insights['identity_threat']:
+                identity_responses.append(item['response'])
         mapping['identity_threat'] = ' | '.join(filter(None, identity_responses))
         
         # Calculate change readiness score
         readiness_scores = []
-        for insight_key in ['change_readiness', 'change_commitment', 'overall_readiness', 'investment_readiness']:
+        for insight_key in ['change_readiness', 'change_commitment', 'overall_readiness']:
             if insight_key in st.session_state.clinical_insights:
                 for item in st.session_state.clinical_insights[insight_key]:
                     if isinstance(item['response'], (int, float)):
@@ -2004,10 +1671,12 @@ class EnhancedPatternAssessment:
         
         # Extract resistance patterns
         resistance_patterns = []
-        for insight_key in ['sabotage_pattern', 'default_excuse', 'stress_response']:
-            if insight_key in st.session_state.clinical_insights:
-                for item in st.session_state.clinical_insights[insight_key]:
-                    resistance_patterns.append(item['response'])
+        if 'sabotage_pattern' in st.session_state.clinical_insights:
+            for item in st.session_state.clinical_insights['sabotage_pattern']:
+                resistance_patterns.append(item['response'])
+        if 'stress_response' in st.session_state.clinical_insights:
+            for item in st.session_state.clinical_insights['stress_response']:
+                resistance_patterns.append(item['response'])
         mapping['predicted_resistance_points'] = resistance_patterns
         
         # Extract communication preferences
@@ -2035,7 +1704,7 @@ class EnhancedPatternAssessment:
             mapping['session_2_target'] = f"Neural rewiring targeting {dominant_pattern}"
             
             # Predict session 3 need
-            if mapping['change_readiness_score'] < 6 or len(resistance_patterns) > 2:
+            if mapping['change_readiness_score'] < 6 or len(resistance_patterns) > 1:
                 mapping['potential_session_3_need'] = "Likely - multiple resistance patterns and lower readiness"
             else:
                 mapping['potential_session_3_need'] = "Unlikely - good readiness and clear patterns"
@@ -2055,8 +1724,8 @@ class EnhancedPatternAssessment:
             # Format comprehensive clinical report
             clinical_report = self._format_clinical_report(pattern_scores, clinical_mapping)
             
-            # Prepare comprehensive data
-            assessment_data = {
+            # Prepare comprehensive email data
+            email_data = {
                 'name': name,
                 'email': email,
                 'concern': concern,
@@ -2069,11 +1738,15 @@ class EnhancedPatternAssessment:
                 'clinical_insights': st.session_state.clinical_insights,
                 'timestamp': datetime.now().isoformat(),
                 'total_sections': len(self.sections),
-                'completion_rate': '100%'
+                'completion_rate': '100%',
+                'urgency': st.session_state.assessment_data.get('contact_urgency', 'Standard'),
+                'preferred_contact': st.session_state.assessment_data.get('contact_preferred', 'Email'),
+                'phone': st.session_state.assessment_data.get('contact_phone', ''),
+                'clinical_template': self._generate_clinical_template(pattern_scores, clinical_mapping)
             }
             
             # Send email
-            success = send_discovery_call_email(assessment_data)
+            success = send_discovery_call_email(email_data)
             if success:
                 st.success("Comprehensive assessment results sent successfully!")
             else:
@@ -2122,13 +1795,39 @@ class EnhancedPatternAssessment:
         report += f"INTERVENTION KEYWORDS: {clinical_mapping['intervention_keywords'][:150]}...\n"
         report += f"AVOID LANGUAGE: {clinical_mapping['avoid_language'][:150]}...\n"
         
-        # Additional clinical context
-        report += "\n═══ CLINICAL CONTEXT ═══\n"
-        report += f"PRIMARY CONCERN: {st.session_state.assessment_data.get('contact_concern', 'Not provided')}\n"
-        report += f"URGENCY LEVEL: {st.session_state.assessment_data.get('contact_urgency', 'Not provided')}\n"
-        report += f"PREFERRED CONTACT: {st.session_state.assessment_data.get('contact_preferred', 'Email')}\n"
-        
         return report
+    
+    def _generate_clinical_template(self, pattern_scores, clinical_mapping):
+        """Generate clinical template for therapist use"""
+        sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+        
+        template = f"""
+CLIENT: {st.session_state.assessment_data.get('contact_name', '_____________')}
+DATE: {datetime.now().strftime('%Y-%m-%d')}
+
+DOMINANT PATTERN: {self.patterns[sorted_patterns[0][0]] if sorted_patterns else '_____________'} (Score: {sorted_patterns[0][1]:.1f}/8 if sorted_patterns else '___'})
+PRIMARY PATTERN: {self.patterns[sorted_patterns[1][0]] if len(sorted_patterns) > 1 else '_____________'} (Score: {sorted_patterns[1][1]:.1f}/8 if len(sorted_patterns) > 1 else '___'})
+SECONDARY PATTERN: {self.patterns[sorted_patterns[2][0]] if len(sorted_patterns) > 2 else '_____________'} (Score: {sorted_patterns[2][1]:.1f}/8 if len(sorted_patterns) > 2 else '___'})
+
+CORE LIMITING BELIEF: {clinical_mapping['core_limiting_belief'][:100]}...
+HIDDEN BENEFITS: {clinical_mapping['hidden_benefits'][:100]}...
+SYSTEMIC RESISTANCE: {clinical_mapping['systemic_resistance'][:100]}...
+IDENTITY THREAT: {clinical_mapping['identity_threat'][:100]}...
+
+SESSION 1 FOCUS: {clinical_mapping['session_1_focus']}
+SESSION 2 TARGET: {clinical_mapping['session_2_target']}
+POTENTIAL SESSION 3 NEED: {clinical_mapping['potential_session_3_need']}
+
+CHANGE READINESS SCORE: {clinical_mapping['change_readiness_score']}/10
+
+PREDICTED RESISTANCE POINTS:
+1. {clinical_mapping['predicted_resistance_points'][0] if len(clinical_mapping['predicted_resistance_points']) > 0 else ''}
+2. {clinical_mapping['predicted_resistance_points'][1] if len(clinical_mapping['predicted_resistance_points']) > 1 else ''}
+
+INTERVENTION KEYWORDS: {clinical_mapping['intervention_keywords'][:100]}...
+AVOID LANGUAGE: {clinical_mapping['avoid_language'][:100]}...
+        """
+        return template
     
     def _render_comprehensive_results(self):
         """Render comprehensive results page"""
@@ -2213,9 +1912,9 @@ class EnhancedPatternAssessment:
         # CTA with clinical context
         urgency = st.session_state.assessment_data.get('contact_urgency', '')
         if 'Very urgent' in urgency:
-            st.error("⚡ Your assessment indicates this issue is significantly affecting your daily life. Priority booking recommended.")
+            st.error("Your assessment indicates this issue is significantly affecting your daily life. Priority booking recommended.")
         elif 'Moderately urgent' in urgency:
-            st.warning("📅 You indicated moderate urgency. We recommend scheduling within the next week.")
+            st.warning("You indicated moderate urgency. We recommend scheduling within the next week.")
         
         st.markdown("""
         <div style="background: var(--card-bg); border: 2px solid var(--accent); border-radius: var(--radius-md); 
@@ -2226,7 +1925,7 @@ class EnhancedPatternAssessment:
                style="display: inline-block; background-color: var(--accent); color: white;
                       text-decoration: none; padding: 1rem 2rem; border-radius: var(--radius-sm);
                       font-weight: 600; font-size: 1.1rem;">
-                📞 Book your discovery call
+                Book your discovery call
             </a>
         </div>
         """, unsafe_allow_html=True)
@@ -2243,6 +1942,68 @@ class EnhancedAssessPage:
     
     def render(self):
         """Render the complete enhanced assessment page"""
+        # Apply consistent styling
+        st.markdown("""
+        <style>
+        /* Enhanced assessment specific styles */
+        .assessment-section {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin: var(--space-md) 0;
+            border: 1px solid var(--border);
+        }
+        
+        .progress-container {
+            margin: var(--space-md) 0;
+        }
+        
+        .question-container {
+            background: var(--card-bg);
+            border-radius: var(--radius-sm);
+            padding: var(--space-lg);
+            margin: var(--space-md) 0;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .clinical-insight {
+            background: rgba(76, 161, 163, 0.1);
+            border-radius: var(--radius-sm);
+            padding: var(--space-sm);
+            margin: var(--space-xs) 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .results-summary {
+            background: linear-gradient(135deg, var(--accent) 0%, #E1F0F0 100%);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            text-align: center;
+            margin: var(--space-lg) 0;
+        }
+        
+        .cta-enhanced {
+            background: var(--card-bg);
+            border: 2px solid var(--accent);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            text-align: center;
+            margin: var(--space-lg) 0;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .assessment-complete {
+            background: var(--success);
+            color: white;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            text-align: center;
+            margin: var(--space-lg) 0;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
         self.assessment.render()
 
 
@@ -2250,24 +2011,3 @@ class EnhancedAssessPage:
 def create_enhanced_assess_page():
     """Factory function to create EnhancedAssessPage instance"""
     return EnhancedAssessPage()
-                
-        elif question['type'] == 'slider':
-            response = st.slider(
-                question['id'],
-                question['min'],
-                question['max'],
-                question['default'],
-                label_visibility="collapsed",
-                key=question['id']
-            )
-            
-            # Add helpful labels for sliders
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.caption(f"{question['min']} - Low")
-            with col2:
-                st.caption("Current rating")
-            with col3:
-                st.caption(f"{question['max']} - High")
-            
-            if st.button("
