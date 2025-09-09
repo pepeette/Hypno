@@ -998,11 +998,11 @@ class EnhancedQuizSection:
                       text-decoration: none; padding: 1rem 2rem; border-radius: 8px;
                       font-weight: 600; text-align: center; width: 100%;
                       box-sizing: border-box;">
-                📞 Book Discovery Call
+                📞 Book discovery call
             </a>
             """, unsafe_allow_html=True)
         with col2:
-            if st.button("🔄 Retake Assessment", use_container_width=True):
+            if st.button("🔄 Retake assessment", use_container_width=True):
                 self._reset_quiz()
         
         # Close white background container
