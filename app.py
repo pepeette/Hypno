@@ -212,7 +212,6 @@
 # if __name__ == "__main__":
 #     main()
 
-
 """
 Main application entry point for the Hypnotherapy website
 Enhanced with hidden assessment page accessible only via direct URL
