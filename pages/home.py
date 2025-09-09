@@ -773,7 +773,7 @@ class EnhancedQuizSection:
     
     def render(self):
         """Render the complete quiz experience"""
-        st.subheader("Test: Do you need rapid change?")
+        st.subheader("Test: Are you ready for your Hypnotherapy Rapid change?")
         st.write("4 questions to assess if our method is right for your situation:")
         
         if not st.session_state.quiz_completed:
@@ -931,11 +931,11 @@ class EnhancedQuizSection:
         """Render results with white background component"""
         score = st.session_state.quiz_score
         
-        # White background results container
-        st.markdown("""
-        <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-                    padding: 2rem; margin: 2rem 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-        """, unsafe_allow_html=True)
+        # # White background results container
+        # st.markdown("""
+        # <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+        #             padding: 2rem; margin: 2rem 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        # """, unsafe_allow_html=True)
         
         # Results based on score
         if score >= 75:
@@ -1042,20 +1042,21 @@ class MethodTeaserWithVideo:
             **Our breakthrough:** Instead of fighting your subconscious, we work directly with it. 
             We identify your specific patterns and rewire them at the source.
             """)
-
-        st.info("When your subconscious programming supports your goals instead of fighting them, change becomes effortless and permanent.")
+            
+            st.info("When your subconscious programming supports your goals instead of fighting them, change becomes effortless and permanent.")
         
         # Call to action for method page
         st.markdown("---")
         
-        col1, col2 = st.columns([2, 1])
+        col1, col2 = st.columns([3, 1])
         
         with col1:
             st.write("**Want to understand the complete neuroscience behind our method?** See the detailed breakdown of how neuroplasticity creates lasting change, brain wave states, and clinical evidence.")
         
         with col2:
-            if st.button("🧠 Learn the complete method", type="primary", use_container_width=True):
-                st.info("This would navigate to the Method page in the full application")
+            if st.button("Know more about the 2+1 method", type="primary", use_container_width=True):
+                redirect("https://hypnotherapy.streamlit.app/#deep-pattern-analysis")
+                st.info("Menu : [Method] at the top of the page")
 
 class HomePage:
     """Complete home page with integrated 4-question quiz"""
