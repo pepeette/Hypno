@@ -21,7 +21,7 @@ class Footer:
                 "clinic_name": "NEW Bangkok ADDRESS",
                 "address": "27 Soi Sukhumvit 10 (Asoke)",
                 "city": "Bangkok, Thailand",
-                "maps_url": "https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw",
+                "maps_url": "https://maps.app.goo.gl/9WmJTiu6HFsnDkvRA",
                 "calendly_url": "https://calendly.com/laetitiasheppard/session"
             }
             self.founder_image = "https://github.com/pepeette/Hypno/blob/main/img/ID.jpg?raw=true"
