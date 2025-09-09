@@ -212,7 +212,7 @@ def apply_global_styles():
     
     .stButton>button[kind="primary"] {
         background-color: var(--accent) !important;
-        color: white !important;
+        color: #FFFFFF !important;
     }
     
     .stButton>button[kind="primary"]:hover {
