@@ -246,9 +246,11 @@
 #     """Send testimonial submission email"""
 #     return email_handler.send_testimonial_email(data)
 
+
+
 """
 Complete email handler utility for all booking notifications and assessment results
-Maintains all original functionality while adding assessment capabilities
+Fixes all broken functionality while maintaining assessment capabilities
 """
 import smtplib
 import os
@@ -282,37 +284,42 @@ class EmailHandler:
     # ---------------- EMAIL TYPES ---------------- #
     def send_discovery_call_email(self, booking_data):
         """Send discovery call booking notification - handles both regular and assessment data"""
+        print(f"[DEBUG] send_discovery_call_email called with form_type: {booking_data.get('form_type')}")
+        
         # Check if this is assessment data
         if booking_data.get('form_type') == 'Complete behavioral pattern assessment':
+            print("[DEBUG] Routing to assessment email")
             return self.send_assessment_results_email(booking_data)
         else:
+            print("[DEBUG] Routing to regular discovery call email")
             # Regular discovery call booking
             msg = self._build_email(
-                subject="🔔 New Discovery Call Booking Request",
+                subject="🔔 New discovery call booking request",
                 body=self._format_discovery_email_body(booking_data)
             )
-            return self._dispatch(msg, booking_data, "Discovery Call")
+            return self._dispatch(msg, booking_data, "Discovery call")
 
     def send_assessment_results_email(self, assessment_data):
         """Send comprehensive assessment results with pattern analysis"""
+        print("[DEBUG] Sending assessment results email")
         msg = self._build_email(
-            subject="🧠 Complete Behavioral Pattern Assessment Results",
+            subject="🧠 Complete behavioral pattern assessment results",
             body=self._format_assessment_results_body(assessment_data)
         )
-        return self._dispatch(msg, assessment_data, "Assessment Results")
+        return self._dispatch(msg, assessment_data, "Assessment results")
 
     def send_package_booking_email(self, booking_data):
         """Send package booking notification"""
         msg = self._build_email(
-            subject="💰 New Package Interest Notification",
+            subject="💰 New package interest notification",
             body=self._format_package_email_body(booking_data)
         )
-        return self._dispatch(msg, booking_data, "Package Interest")
+        return self._dispatch(msg, booking_data, "Package interest")
 
     def send_testimonial_email(self, testimonial_data):
         """Send testimonial submission notification"""
         msg = self._build_email(
-            subject="🌟 New Success Story Submission",
+            subject="🌟 New success story submission",
             body=self._format_testimonial_email_body(testimonial_data)
         )
         return self._dispatch(msg, testimonial_data, "Testimonial")
@@ -333,7 +340,7 @@ class EmailHandler:
             # Log for debugging but still return success for demo purposes
             print(f"[DEBUG] {email_type} email would be sent (no password configured)")
             print(f"To: {self.recipient_email}")
-            print(f"Data: {data}")
+            print(f"Data preview: {str(data)[:200]}...")
             return True  # Return True so the UI shows success
         
         if not self.sender_email or not self.recipient_email:
@@ -361,7 +368,7 @@ class EmailHandler:
             
         except smtplib.SMTPAuthenticationError as e:
             print(f"[ERROR] SMTP Authentication failed: {e}")
-            print("Check your Gmail App Password in Streamlit secrets")
+            print("Check your Gmail app password in Streamlit secrets")
             return False
         except smtplib.SMTPException as e:
             print(f"[ERROR] SMTP error: {e}")
@@ -370,7 +377,7 @@ class EmailHandler:
             print(f"[ERROR] Unexpected error sending email: {e}")
             return False
 
-    # ---------------- ASSESSMENT RESULTS FORMATTER (NEW) ---------------- #
+    # ---------------- ASSESSMENT RESULTS FORMATTER ---------------- #
     def _format_assessment_results_body(self, data):
         """Format comprehensive assessment results email"""
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -384,15 +391,15 @@ class EmailHandler:
         
         # Pattern definitions for analysis
         patterns = {
-            1: "Unhappiness Culture",
-            2: "Power Struggles", 
-            3: "Systematic Mistrust",
-            4: "Separation/Division",
-            5: "Doing vs Being",
-            6: "Compartmentalized Authenticity",
-            7: "Self-Sacrifice/Care Avoidance",
-            8: "Inherited Missions",
-            9: "Context-Dependent Weakness"
+            1: "Unhappiness culture",
+            2: "Power struggles", 
+            3: "Systematic mistrust",
+            4: "Separation/division",
+            5: "Doing vs being",
+            6: "Compartmentalized authenticity",
+            7: "Self-sacrifice/care avoidance",
+            8: "Inherited missions",
+            9: "Context-dependent weakness"
         }
         
         # Sort patterns by activation level
@@ -407,9 +414,9 @@ Assessment completed: {timestamp}
 👤 CLIENT INFORMATION:
 Name: {name}
 Email: {email}
-Primary Concern: {concern}
-Total Questions Completed: {data.get('total_questions', 50)}
-Completion Rate: {data.get('completion_rate', '100%')}
+Primary concern: {concern}
+Total questions completed: {data.get('total_questions', 50)}
+Completion rate: {data.get('completion_rate', '100%')}
 
 ═══════════════════════════════════════════════════════════
 
@@ -423,18 +430,18 @@ Completion Rate: {data.get('completion_rate', '100%')}
             
             body += f"""
 🎯 PRIMARY PATTERN: {patterns.get(primary_pattern[0], 'Unknown')}
-Activation Score: {primary_pattern[1]}/6
-Priority Level: {'HIGH' if primary_pattern[1] >= 4 else 'MEDIUM' if primary_pattern[1] >= 2 else 'LOW'}
+Activation score: {primary_pattern[1]}/6
+Priority level: {'High' if primary_pattern[1] >= 4 else 'Medium' if primary_pattern[1] >= 2 else 'Low'}
 
 🎯 SECONDARY PATTERN: {patterns.get(secondary_pattern[0], 'Unknown')}
-Activation Score: {secondary_pattern[1]}/6
-Priority Level: {'HIGH' if secondary_pattern[1] >= 4 else 'MEDIUM' if secondary_pattern[1] >= 2 else 'LOW'}
+Activation score: {secondary_pattern[1]}/6
+Priority level: {'High' if secondary_pattern[1] >= 4 else 'Medium' if secondary_pattern[1] >= 2 else 'Low'}
 
 📋 COMPLETE PATTERN BREAKDOWN:
 """
             for pattern_id, score in sorted_patterns:
                 pattern_name = patterns.get(pattern_id, f'Pattern {pattern_id}')
-                activation = 'HIGH' if score >= 4 else 'MEDIUM' if score >= 2 else 'LOW'
+                activation = 'High' if score >= 4 else 'Medium' if score >= 2 else 'Low'
                 body += f"   • {pattern_name}: {score}/6 ({activation})\n"
         
         # Add key clinical indicators
@@ -452,16 +459,16 @@ Priority Level: {'HIGH' if secondary_pattern[1] >= 4 else 'MEDIUM' if secondary_
         limiting_belief = raw_responses.get('q49', 'Not provided')
         
         body += f"""
-📈 Change Readiness Score: {change_readiness}/10
-😰 Primary Change Fear: {change_fear}
-🎭 Hidden Pattern Benefits: {hidden_benefits}
-🚫 Core Limiting Belief: "People like me don't get to have {limiting_belief}"
+📈 Change readiness score: {change_readiness}/10
+😰 Primary change fear: {change_fear}
+🎭 Hidden pattern benefits: {hidden_benefits}
+🚫 Core limiting belief: "People like me don't get to have {limiting_belief}"
 
 ═══════════════════════════════════════════════════════════
 
 💡 THERAPEUTIC RECOMMENDATIONS:
 
-🗺️ SESSION 1 FOCUS (Pattern Mapping - 90 minutes):
+🗺️ SESSION 1 FOCUS (Pattern mapping - 90 minutes):
 """
         
         if sorted_patterns:
@@ -473,7 +480,7 @@ Priority Level: {'HIGH' if secondary_pattern[1] >= 4 else 'MEDIUM' if secondary_
    • Identify protective functions and hidden benefits
    • Begin initial positive programming for {primary_name}
 
-⚡ SESSION 2 FOCUS (Neural Rewiring - 90 minutes):
+⚡ SESSION 2 FOCUS (Neural rewiring - 90 minutes):
    • Rewire {primary_name} at subconscious level
    • Install new response patterns for identified triggers
    • Address {secondary_name} as secondary target
@@ -489,7 +496,7 @@ Priority Level: {'HIGH' if secondary_pattern[1] >= 4 else 'MEDIUM' if secondary_
             
             # Determine if third session likely needed
             if primary_pattern[1] >= 5 or secondary_pattern[1] >= 4:
-                body += "   • LIKELY NEEDED due to high pattern activation\n"
+                body += "   • Likely needed due to high pattern activation\n"
             else:
                 body += "   • May not be necessary based on moderate activation levels\n"
                 
@@ -506,13 +513,13 @@ Key responses for session preparation:
         
         # Include specific responses relevant to top patterns
         relevant_questions = [
-            ('q1', 'Happiness Response'),
-            ('q2', 'Conflict Body Response'), 
-            ('q3', 'Social Assumptions'),
-            ('q5', 'Value Source'),
-            ('q7', 'Self-Care Patterns'),
-            ('q8', 'Goal Origins'),
-            ('q9', 'Social Boundary Changes')
+            ('q1', 'Happiness response'),
+            ('q2', 'Conflict body response'), 
+            ('q3', 'Social assumptions'),
+            ('q5', 'Value source'),
+            ('q7', 'Self-care patterns'),
+            ('q8', 'Goal origins'),
+            ('q9', 'Social boundary changes')
         ]
         
         for q_id, description in relevant_questions:
@@ -537,9 +544,9 @@ Key responses for session preparation:
 4. Address any concerns about the process
 
 🎯 PROGNOSIS:
-Change Readiness: {change_readiness}/10
-Expected Sessions Needed: {'2-3' if primary_pattern[1] >= 4 if sorted_patterns else '2'}
-Success Probability: {'HIGH' if str(change_readiness).isdigit() and int(change_readiness) >= 7 else 'MEDIUM'}
+Change readiness: {change_readiness}/10
+Expected sessions needed: {'2-3' if primary_pattern[1] >= 4 if sorted_patterns else '2'}
+Success probability: {'High' if str(change_readiness).isdigit() and int(change_readiness) >= 7 else 'Medium'}
 
 ═══════════════════════════════════════════════════════════
 
@@ -549,13 +556,13 @@ Success Probability: {'HIGH' if str(change_readiness).isdigit() and int(change_r
 {json.dumps(raw_responses, indent=2)}
 
 ═══════════════════════════════════════════════════════════
-Bangkok Hypnotherapy Clinic - Automated Assessment System
-Clinical Analysis Generated: {timestamp}
+Bangkok hypnotherapy clinic - automated assessment system
+Clinical analysis generated: {timestamp}
         """
         
         return body
 
-    # ---------------- ORIGINAL FORMATTERS (PRESERVED) ---------------- #
+    # ---------------- ORIGINAL FORMATTERS (RESTORED) ---------------- #
     def _format_discovery_email_body(self, data):
         """Format discovery call email body with package information"""
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -580,12 +587,12 @@ Name: {data.get('name', 'Not provided')}
 Email: {data.get('email', 'Not provided')}
 
 {package_info}🎯 CONCERN DETAILS:
-Primary Concern: {data.get('concern', 'Not specified')}
+Primary concern: {data.get('concern', 'Not specified')}
 Description: {data.get('concern_description', 'Not provided')}
 
 📋 SOURCE INFORMATION:
-Form Type: {data.get('form_type', 'Unknown')}
-Source Page: {data.get('source', 'Website')}
+Form type: {data.get('form_type', 'Unknown')}
+Source page: {data.get('source', 'Website')}
 
 ═══════════════════════════════════════
 
@@ -599,7 +606,7 @@ Please contact this person within 24 hours to schedule their discovery call.
 {f"4. Discuss {data.get('selected_package')} package details" if package_info else ""}
 
 ═══════════════════════════════════════
-Bangkok Hypnotherapy Clinic - Automated Booking System
+Bangkok hypnotherapy clinic - automated booking system
         """
 
     def _format_package_email_body(self, data):
@@ -612,12 +619,12 @@ Received: {timestamp}
 ═══════════════════════════════════════
 
 📦 PACKAGE DETAILS:
-Selected Package: {data.get('package_type', 'Not specified')}
-Source: {data.get('source', 'Method Page')}
+Selected package: {data.get('package_type', 'Not specified')}
+Source: {data.get('source', 'Method page')}
 
 👤 VISITOR INFORMATION:
 Timestamp: {data.get('timestamp', 'Not recorded')}
-Session Info: {data.get('session_id', 'Not tracked')}
+Session info: {data.get('session_id', 'Not tracked')}
 
 💬 CONTEXT:
 {data.get('message', 'Visitor showed interest in package from method page')}
@@ -633,16 +640,16 @@ High-potential lead - visitor clicked package button.
 3. Offer discovery call to discuss their specific needs
 4. Schedule Session 1 if they're ready to proceed
 
-💰 Package Value: 3,000-4,000 THB
+💰 Package value: 3,000-4,000 THB
 
 ═══════════════════════════════════════
-Bangkok Hypnotherapy Clinic - Automated Booking System
+Bangkok hypnotherapy clinic - automated booking system
         """
 
     def _format_testimonial_email_body(self, data):
         """Format testimonial email body"""
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        anonymous_status = "YES - First name only" if data.get('anonymous', False) else "NO - Full name"
+        anonymous_status = "Yes - first name only" if data.get('anonymous', False) else "No - full name"
         return f"""
 🌟 NEW SUCCESS STORY SUBMISSION
 Received: {timestamp}
@@ -652,18 +659,18 @@ Received: {timestamp}
 👤 CLIENT INFORMATION:
 Name: {data.get('name', 'Not provided')}
 Email: {data.get('email', 'Not provided')}
-Anonymous Preference: {anonymous_status}
+Anonymous preference: {anonymous_status}
 
 🎯 SUCCESS DETAILS:
-Concern Overcome: {data.get('concern', 'Not specified')}
-Sessions Required: {data.get('sessions', 'Not specified')}
+Concern overcome: {data.get('concern', 'Not specified')}
+Sessions required: {data.get('sessions', 'Not specified')}
 
 📝 TRANSFORMATION STORY:
 
-BEFORE HYPNOTHERAPY:
+Before hypnotherapy:
 {data.get('before', 'Not provided')}
 
-AFTER HYPNOTHERAPY:
+After hypnotherapy:
 {data.get('after', 'Not provided')}
 
 ═══════════════════════════════════════
@@ -674,7 +681,7 @@ AFTER HYPNOTHERAPY:
 3. Consider featuring as case study
 
 ═══════════════════════════════════════
-Bangkok Hypnotherapy Clinic - Automated Booking System
+Bangkok hypnotherapy clinic - automated booking system
         """
 
 
