@@ -1215,6 +1215,7 @@ Complete Behavioral Pattern Assessment Page
 import streamlit as st
 from datetime import datetime
 import re
+from components.paywall import create_clinical_paywall
 
 class BehavioralPatternAssessment:
     """Comprehensive 55-question behavioral pattern assessment"""
@@ -2070,6 +2071,102 @@ class BehavioralPatternAssessment:
         #         for insight_type, insight_data in clinical_insights.items():
         #             if insight_data:
         #                 st.write(f"**{insight_type.replace('_', ' ').title()}:** {insight_data}")
+
+
+    # Replace the _render_readiness_analysis method in your assess.py file with this enhanced version:
+
+    # def _render_readiness_analysis(self):
+    #     """Render readiness analysis with paywall for clinical insights"""
+    #     st.markdown("### Transformation Readiness Analysis")
+        
+    #     readiness_scores = self._calculate_readiness_metrics()
+        
+    #     if readiness_scores.get('motivation_level', 5) >= 7:
+    #         st.success("High motivation level indicates excellent potential for rapid transformation.")
+    #     elif readiness_scores.get('motivation_level', 5) >= 5:
+    #         st.info("Good motivation level shows solid readiness for the transformation process.")
+    #     else:
+    #         st.warning("Lower motivation suggests a discovery call would help clarify the best approach.")
+        
+    #     # Enhanced Clinical Analysis with Paywall
+    #     self._render_clinical_analysis_section()
+    
+    # def _render_clinical_analysis_section(self):
+    #     """Render clinical analysis section with paywall protection"""
+    #     st.markdown("### 🧠 Clinical Pattern Analysis")
+        
+    #     # Import paywall component
+    #     try:
+    #         from components.paywall import create_clinical_paywall
+    #         paywall = create_clinical_paywall()
+            
+    #         # Get assessment data for paywall
+    #         assessment_data = {
+    #             'assessment_results': st.session_state.assessment_results,
+    #             'assessment_responses': st.session_state.assessment_responses,
+    #             **st.session_state.assessment_responses.get('contact_info', {})
+    #         }
+            
+    #         # Check if user has paid access
+    #         if paywall.check_payment_status():
+    #             # Show premium analysis
+    #             paywall.render_premium_analysis(assessment_data)
+    #         else:
+    #             # Show preview and paywall
+    #             self._render_analysis_preview()
+                
+    #             # Show paywall interface
+    #             with st.expander("🔓 Unlock Complete Clinical Analysis", expanded=False):
+    #                 paywall.render_paywall_interface(assessment_data)
+                    
+    #     except ImportError:
+    #         # Fallback if paywall component is not available
+    #         st.info("Clinical analysis feature is being updated. Please contact us directly for detailed insights.")
+    
+    # def _render_analysis_preview(self):
+    #     """Render a preview of what's available in the clinical analysis"""
+    #     st.markdown("""
+    #     **Free Preview:** Your assessment reveals significant patterns that could benefit from professional analysis.
+        
+    #     🔒 **Complete Clinical Analysis includes:**
+    #     - Detailed breakdown of your 9 behavioral patterns
+    #     - Therapeutic priorities ranked by importance  
+    #     - Professional interpretation of your responses
+    #     - Personalized session planning recommendations
+    #     - Communication style adaptations for optimal results
+    #     """)
+        
+    #     # Show basic pattern summary (limited)
+    #     assessment_results = st.session_state.assessment_results
+    #     pattern_scores = assessment_results.get('pattern_scores', {})
+        
+    #     if pattern_scores:
+    #         # Show only top 2 patterns as preview
+    #         sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            
+    #         pattern_names = {
+    #             1: "Unhappiness Culture",
+    #             2: "Power Struggles", 
+    #             3: "Systematic Mistrust",
+    #             4: "Separation/Division",
+    #             5: "Doing vs Being",
+    #             6: "Compartmentalized Authenticity",
+    #             7: "Self-Sacrifice/Care Avoidance",
+    #             8: "Inherited Missions",
+    #             9: "Context-Dependent Weakness"
+    #         }
+            
+    #         st.markdown("**Preview - Your Top Patterns:**")
+    #         for i, (pattern_id, score) in enumerate(sorted_patterns[:2]):
+    #             pattern_name = pattern_names.get(pattern_id, f"Pattern {pattern_id}")
+    #             st.write(f"• {pattern_name}: Activation detected")
+            
+    #         if len(sorted_patterns) > 2:
+    #             remaining = len(sorted_patterns) - 2
+    #             st.write(f"• Plus {remaining} additional patterns analyzed...")
+        
+    #     st.info("💡 Unlock the complete analysis to see detailed insights, therapeutic priorities, and your personalized transformation roadmap.")
+
     
     def _render_next_steps(self):
         """Render next steps based on assessment"""
