@@ -632,7 +632,7 @@ class PatternAssessment:
         """Render assessment header"""
         st.markdown("""
         <div style="text-align: center; margin: 2rem 0 3rem 0;">
-            <h1>Behavioral Pattern Assessment</h1>
+            <h1>Behavioral patterns assessment</h1>
             <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto;">
                 This assessment helps us understand your unique patterns and design the most effective approach for your transformation. 
                 Answer intuitively - your first response is usually most accurate.
