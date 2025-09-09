@@ -251,8 +251,10 @@ except ImportError:
 
 # Import assessment page (hidden)
 try:
-    from pages.assess import create_assess_page
-    AssessPage = create_assess_page
+    # from pages.assess import create_assess_page
+    # AssessPage = create_assess_page
+    from pages.assess import create_aenhanced_ssess_page
+    EnhancedAssessPage() = create_enhanced_assess_page
 except ImportError:
     AssessPage = None
 
@@ -436,7 +438,8 @@ class HypnotherapyApp:
             </div>
             """, unsafe_allow_html=True)
             
-            page_instance = AssessPage()
+            #page_instance = AssessPage()
+            page_instance = EnhancedAssessPage()
             page_instance.render()
         else:
             st.error("Assessment page not available. Please contact support.")
