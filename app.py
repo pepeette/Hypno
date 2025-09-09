@@ -253,7 +253,7 @@ except ImportError:
 try:
     # from pages.assess import create_assess_page
     # AssessPage = create_assess_page
-    from pages.assess import create_aenhanced_ssess_page
+    from pages.assess import create_enhanced_ssess_page
     EnhancedAssessPage() = create_enhanced_assess_page
 except ImportError:
     AssessPage = None
