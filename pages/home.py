@@ -991,7 +991,6 @@ class EnhancedQuizSection:
         # Action buttons
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown("  ")
             st.markdown(f"""
                 <a href="{self.discovery_url}" 
                    target="_blank" 
