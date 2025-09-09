@@ -212,19 +212,129 @@ Bangkok Hypnotherapy Clinic - Automated Booking System
             print(f"[ERROR] Error formatting discovery email: {e}")
             return f"Error formatting email body: {e}"
 
+#     def _format_assessment_results_body(self, data):
+#         """Format comprehensive assessment results email"""
+#         try:
+#             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            
+#             # Extract key data safely
+#             name = data.get('name', 'Unknown client')
+#             email = data.get('email', 'Unknown email')
+#             concern = data.get('concern', 'General assessment')
+#             scores = data.get('assessment_scores', {})
+#             raw_responses = data.get('raw_responses', {})
+            
+#             body = f"""
+# 🧠 COMPREHENSIVE BEHAVIORAL PATTERN ASSESSMENT RESULTS
+# Assessment completed: {timestamp}
+
+# ═══════════════════════════════════════════════════════════
+
+# 👤 CLIENT INFORMATION:
+# Name: {name}
+# Email: {email}
+# Primary Concern: {concern}
+# Total Questions Completed: {data.get('total_questions', 50)}
+# Completion Rate: {data.get('completion_rate', '100%')}
+
+# ═══════════════════════════════════════════════════════════
+
+# 📊 PATTERN ACTIVATION ANALYSIS:
+# {scores}
+
+# Raw responses:
+# {raw_responses}
+
+# ═══════════════════════════════════════════════════════════
+# Bangkok Hypnotherapy Clinic - Automated Assessment System
+# Clinical Analysis Generated: {timestamp}
+#             """
+            
+#             return body
+            
+#         except Exception as e:
+#             print(f"[ERROR] Error formatting assessment email: {e}")
+#             return f"Error formatting assessment email body: {e}"
+
+#     def _format_package_email_body(self, data):
+#         """Format package booking email body"""
+#         try:
+#             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#             return f"""
+# 💰 NEW PACKAGE INTEREST NOTIFICATION
+# Received: {timestamp}
+
+# ═══════════════════════════════════════
+
+# 📦 PACKAGE DETAILS:
+# Selected Package: {data.get('package_type', 'Not specified')}
+# Source: {data.get('source', 'Method Page')}
+
+# 👤 VISITOR INFORMATION:
+# Timestamp: {data.get('timestamp', 'Not recorded')}
+# Session Info: {data.get('session_id', 'Not tracked')}
+
+# 💬 CONTEXT:
+# {data.get('message', 'Visitor showed interest in package from method page')}
+
+# ═══════════════════════════════════════
+
+# ⚡ ACTION REQUIRED:
+# High-potential lead - visitor clicked package button.
+
+# 📞 RECOMMENDED NEXT STEPS:
+# 1. Follow up within 4 hours while interest is high
+# 2. Send welcome email with package details
+# 3. Offer discovery call to discuss their specific needs
+# 4. Schedule Session 1 if they're ready to proceed
+
+# 💰 Package Value: 3,000-4,000 THB
+
+# ═══════════════════════════════════════
+# Bangkok Hypnotherapy Clinic - Automated Booking System
+#             """
+#         except Exception as e:
+#             print(f"[ERROR] Error formatting package email: {e}")
+#             return f"Error formatting package email body: {e}"
+
+
     def _format_assessment_results_body(self, data):
-        """Format comprehensive assessment results email"""
-        try:
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            
-            # Extract key data safely
-            name = data.get('name', 'Unknown client')
-            email = data.get('email', 'Unknown email')
-            concern = data.get('concern', 'General assessment')
-            scores = data.get('assessment_scores', {})
-            raw_responses = data.get('raw_responses', {})
-            
-            body = f"""
+    """Format comprehensive assessment results email with clinical structure"""
+    try:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Extract structured data safely
+        name = data.get('name', 'Unknown client')
+        email = data.get('email', 'Unknown email')
+        phone = data.get('phone', 'Not provided')
+        concern = data.get('concern', 'General assessment')
+        urgency = data.get('urgency', 'Not specified')
+        session_preference = data.get('session_preference', 'Not specified')
+        
+        # Get assessment results
+        assessment_results = data.get('assessment_results', {})
+        pattern_scores = assessment_results.get('pattern_scores', {})
+        clinical_insights = assessment_results.get('clinical_insights', {})
+        readiness_metrics = assessment_results.get('readiness_metrics', {})
+        
+        # Get clinical template if available
+        clinical_template = data.get('clinical_template', '')
+        
+        # Pattern definitions for reference
+        pattern_names = {
+            1: "Unhappiness Culture",
+            2: "Power Struggles", 
+            3: "Systematic Mistrust",
+            4: "Separation/Division",
+            5: "Doing vs Being",
+            6: "Compartmentalized Authenticity",
+            7: "Self-Sacrifice/Care Avoidance",
+            8: "Inherited Missions",
+            9: "Context-Dependent Weakness"
+        }
+        
+        # Build email body
+        body = f"""
 🧠 COMPREHENSIVE BEHAVIORAL PATTERN ASSESSMENT RESULTS
 Assessment completed: {timestamp}
 
@@ -233,70 +343,146 @@ Assessment completed: {timestamp}
 👤 CLIENT INFORMATION:
 Name: {name}
 Email: {email}
+Phone: {phone}
 Primary Concern: {concern}
-Total Questions Completed: {data.get('total_questions', 50)}
+Urgency Level: {urgency}
+Preferred Next Step: {session_preference}
+Total Questions Completed: {data.get('total_questions', 55)}
 Completion Rate: {data.get('completion_rate', '100%')}
 
 ═══════════════════════════════════════════════════════════
 
-📊 PATTERN ACTIVATION ANALYSIS:
-{scores}
+📊 BEHAVIORAL PATTERN ANALYSIS:
+"""
+        
+        # Add pattern scores if available
+        if pattern_scores:
+            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            body += "Primary Therapeutic Targets (Highest Activation):\n"
+            for i, (pattern_id, score) in enumerate(sorted_patterns[:5]):  # Top 5 patterns
+                pattern_name = pattern_names.get(pattern_id, f"Pattern {pattern_id}")
+                activation_level = "High" if score >= 8 else "Medium" if score >= 4 else "Low"
+                body += f"  {i+1}. {pattern_name}: Activation Level {score} ({activation_level})\n"
+            body += "\n"
+        
+        # Add readiness metrics if available
+        if readiness_metrics:
+            body += "🎯 TRANSFORMATION READINESS METRICS:\n"
+            for metric, score in readiness_metrics.items():
+                metric_name = metric.replace('_', ' ').title()
+                body += f"  • {metric_name}: {score}/10\n"
+            
+            # Calculate overall readiness
+            avg_readiness = sum(readiness_metrics.values()) / len(readiness_metrics)
+            readiness_level = "High" if avg_readiness >= 7 else "Medium" if avg_readiness >= 5 else "Low"
+            body += f"  • Overall Readiness: {avg_readiness:.1f}/10 ({readiness_level})\n\n"
+        
+        # Add clinical insights if available
+        if clinical_insights:
+            body += "🔍 KEY CLINICAL INSIGHTS:\n"
+            
+            # Prioritize important clinical factors
+            priority_insights = [
+                ('limiting_belief', 'Core Limiting Belief'),
+                ('change_fear', 'Primary Change Fear'),
+                ('secondary_gain', 'Hidden Benefits'),
+                ('family_origin', 'Family Origin Pattern'),
+                ('communication_style', 'Preferred Communication'),
+                ('learning_style', 'Learning Style')
+            ]
+            
+            for insight_key, insight_label in priority_insights:
+                if insight_key in clinical_insights:
+                    value = clinical_insights[insight_key]
+                    if isinstance(value, str) and value.strip():
+                        body += f"  • {insight_label}: {value}\n"
+            
+            # Add other insights
+            for key, value in clinical_insights.items():
+                if key not in [p[0] for p in priority_insights] and isinstance(value, str) and value.strip():
+                    label = key.replace('_', ' ').title()
+                    body += f"  • {label}: {value}\n"
+            body += "\n"
+        
+        # Add session recommendations
+        body += "💡 RECOMMENDED SESSION APPROACH:\n"
+        if pattern_scores:
+            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            if len(sorted_patterns) >= 2:
+                primary_pattern = pattern_names.get(sorted_patterns[0][0], "Primary Pattern")
+                secondary_pattern = pattern_names.get(sorted_patterns[1][0], "Secondary Pattern")
+                body += f"  Session 1: Map {primary_pattern} and {secondary_pattern} patterns\n"
+                body += f"  Session 2: Neural rewiring targeting {primary_pattern}\n"
+                body += "  Session 3: Reinforcement if needed (assess after Session 2)\n\n"
+        
+        # Add communication preferences
+        comm_style = clinical_insights.get('communication_style', 'Not specified')
+        learning_style = clinical_insights.get('learning_style', 'Not specified')
+        session_format = clinical_insights.get('session_preference', 'Not specified')
+        
+        body += "📞 THERAPEUTIC COMMUNICATION NOTES:\n"
+        body += f"  • Communication Style: {comm_style}\n"
+        body += f"  • Learning Style: {learning_style}\n"
+        body += f"  • Session Format Preference: {session_format}\n\n"
+        
+        # Add urgency and next steps
+        body += "⚡ RECOMMENDED IMMEDIATE ACTIONS:\n"
+        if urgency and 'extremely' in urgency.lower():
+            body += "  🔴 HIGH PRIORITY - Contact within 24 hours\n"
+        elif urgency and any(word in urgency.lower() for word in ['very', 'quite']):
+            body += "  🟡 MEDIUM PRIORITY - Contact within 48 hours\n"
+        else:
+            body += "  🟢 STANDARD PRIORITY - Contact within 72 hours\n"
+        
+        if 'discovery call' in session_preference.lower():
+            body += "  1. Schedule discovery call to review assessment results\n"
+            body += "  2. Discuss personalized approach based on pattern analysis\n"
+        elif 'package' in session_preference.lower():
+            body += "  1. Client ready for transformation package - expedite scheduling\n"
+            body += "  2. Prepare session plan based on primary patterns identified\n"
+        else:
+            body += "  1. Send detailed written analysis if requested\n"
+            body += "  2. Follow up with consultation offer\n"
+        
+        body += "  3. Prepare personalized therapeutic approach\n"
+        body += "  4. Consider any communication/learning style adaptations needed\n\n"
+        
+        # Add clinical template if available
+        if clinical_template:
+            body += "📋 DETAILED CLINICAL TEMPLATE:\n"
+            body += "═" * 50 + "\n"
+            body += clinical_template + "\n"
+            body += "═" * 50 + "\n\n"
+        
+        # Footer
+        body += "═══════════════════════════════════════════════════════════\n"
+        body += "Bangkok Hypnotherapy Clinic - Automated Assessment System\n"
+        body += f"Clinical Analysis Generated: {timestamp}\n"
+        body += "⚠️  CONFIDENTIAL: This assessment contains sensitive psychological data\n"
+        
+        return body
+        
+    except Exception as e:
+        print(f"[ERROR] Error formatting assessment email: {e}")
+        import traceback
+        traceback.print_exc()
+        return f"""
+🧠 ASSESSMENT RESULTS - ERROR IN FORMATTING
 
-Raw responses:
-{raw_responses}
+Basic Information:
+Name: {data.get('name', 'Unknown')}
+Email: {data.get('email', 'Unknown')}
+Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
-═══════════════════════════════════════════════════════════
+Error Details: {str(e)}
+
+Raw Data: {str(data)[:1000]}...
+
+Please review the assessment data manually.
 Bangkok Hypnotherapy Clinic - Automated Assessment System
-Clinical Analysis Generated: {timestamp}
-            """
-            
-            return body
-            
-        except Exception as e:
-            print(f"[ERROR] Error formatting assessment email: {e}")
-            return f"Error formatting assessment email body: {e}"
+        """
 
-    def _format_package_email_body(self, data):
-        """Format package booking email body"""
-        try:
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            return f"""
-💰 NEW PACKAGE INTEREST NOTIFICATION
-Received: {timestamp}
-
-═══════════════════════════════════════
-
-📦 PACKAGE DETAILS:
-Selected Package: {data.get('package_type', 'Not specified')}
-Source: {data.get('source', 'Method Page')}
-
-👤 VISITOR INFORMATION:
-Timestamp: {data.get('timestamp', 'Not recorded')}
-Session Info: {data.get('session_id', 'Not tracked')}
-
-💬 CONTEXT:
-{data.get('message', 'Visitor showed interest in package from method page')}
-
-═══════════════════════════════════════
-
-⚡ ACTION REQUIRED:
-High-potential lead - visitor clicked package button.
-
-📞 RECOMMENDED NEXT STEPS:
-1. Follow up within 4 hours while interest is high
-2. Send welcome email with package details
-3. Offer discovery call to discuss their specific needs
-4. Schedule Session 1 if they're ready to proceed
-
-💰 Package Value: 3,000-4,000 THB
-
-═══════════════════════════════════════
-Bangkok Hypnotherapy Clinic - Automated Booking System
-            """
-        except Exception as e:
-            print(f"[ERROR] Error formatting package email: {e}")
-            return f"Error formatting package email body: {e}"
-
+    
     def _format_testimonial_email_body(self, data):
         """Format testimonial email body"""
         try:
