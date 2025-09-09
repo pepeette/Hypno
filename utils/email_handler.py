@@ -378,7 +378,7 @@
 
 """
 Email handler utility for sending booking notifications via Gmail SMTP
-Fixed version with proper assessment handling
+Properly fixed version preserving all existing functionality
 """
 import smtplib
 import os
@@ -411,12 +411,12 @@ class EmailHandler:
 
     # ---------------- EMAIL TYPES ---------------- #
     def send_discovery_call_email(self, booking_data):
-        """Send discovery call booking notification with improved assessment detection"""
+        """Send discovery call booking notification"""
         try:
             print(f"[DEBUG] send_discovery_call_email called with data keys: {list(booking_data.keys())}")
             print(f"[DEBUG] Form type: {booking_data.get('form_type', 'Not specified')}")
             
-            # Check if this is assessment data - case insensitive check
+            # Check if this is assessment data - improved detection
             form_type = str(booking_data.get('form_type', '')).lower()
             is_assessment = any([
                 'behavioral pattern assessment' in form_type,
@@ -425,8 +425,6 @@ class EmailHandler:
                 'assessment_results' in booking_data,
                 'clinical_template' in booking_data
             ])
-            
-            print(f"[DEBUG] Is assessment detected: {is_assessment}")
             
             if is_assessment:
                 print("[DEBUG] Detected assessment data, routing to assessment handler")
@@ -550,7 +548,7 @@ class EmailHandler:
             print(f"[ERROR] Unexpected error sending email: {e}")
             return False
 
-    # ---------------- FORMATTERS ---------------- #
+    # ---------------- EMAIL FORMATTERS ---------------- #
     def _format_discovery_email_body(self, data):
         """Format discovery call email body with package information"""
         try:
@@ -825,3 +823,81 @@ Bangkok Hypnotherapy Clinic - Automated Booking System
         except Exception as e:
             print(f"[ERROR] Error formatting package email: {e}")
             return f"Error formatting package email body: {e}"
+
+    def _format_testimonial_email_body(self, data):
+        """Format testimonial email body"""
+        try:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            anonymous_status = "YES - First name only" if data.get('anonymous', False) else "NO - Full name"
+            return f"""
+🌟 NEW SUCCESS STORY SUBMISSION
+Received: {timestamp}
+
+═══════════════════════════════════════
+
+👤 CLIENT INFORMATION:
+Name: {data.get('name', 'Not provided')}
+Email: {data.get('email', 'Not provided')}
+Anonymous Preference: {anonymous_status}
+
+🎯 SUCCESS DETAILS:
+Concern Overcome: {data.get('concern', 'Not specified')}
+Sessions Required: {data.get('sessions', 'Not specified')}
+
+📝 TRANSFORMATION STORY:
+
+BEFORE HYPNOTHERAPY:
+{data.get('before', 'Not provided')}
+
+AFTER HYPNOTHERAPY:
+{data.get('after', 'Not provided')}
+
+═══════════════════════════════════════
+
+⚡ ACTION REQUIRED:
+1. Review and approve testimonial for website
+2. Send thank you email to client
+3. Consider featuring as case study
+
+═══════════════════════════════════════
+Bangkok Hypnotherapy Clinic - Automated Booking System
+            """
+        except Exception as e:
+            print(f"[ERROR] Error formatting testimonial email: {e}")
+            return f"Error formatting testimonial email body: {e}"
+
+
+# ---------- Global instance for imports ---------- #
+email_handler = EmailHandler()
+
+def send_discovery_call_email(data): 
+    """Send discovery call booking email or assessment results"""
+    try:
+        return email_handler.send_discovery_call_email(data)
+    except Exception as e:
+        print(f"[ERROR] Exception in global send_discovery_call_email: {e}")
+        return False
+
+def send_assessment_results_email(data):
+    """Send comprehensive assessment results email"""
+    try:
+        return email_handler.send_assessment_results_email(data)
+    except Exception as e:
+        print(f"[ERROR] Exception in global send_assessment_results_email: {e}")
+        return False
+
+def send_package_booking_email(data): 
+    """Send package interest notification email"""
+    try:
+        return email_handler.send_package_booking_email(data)
+    except Exception as e:
+        print(f"[ERROR] Exception in global send_package_booking_email: {e}")
+        return False
+
+def send_testimonial_email(data): 
+    """Send testimonial submission email"""
+    try:
+        return email_handler.send_testimonial_email(data)
+    except Exception as e:
+        print(f"[ERROR] Exception in global send_testimonial_email: {e}")
+        return False
