@@ -36,21 +36,21 @@ class UnifiedMethodExplanation:
                 <div style="background: #4CA1A3; color: white; width: 50px; height: 50px; 
                             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
                             font-weight: bold; font-size: 1.3rem; margin: 0 auto 1rem;">1</div>
-                <h3 style="color: #273548; margin-bottom: 0.5rem;">Deep pattern analysis</h3>
-                <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">90 minutes</p>
-                <p style="color: #556D7A;">We map your specific neural pathways and identify the subconscious triggers 
-                that drive unwanted behaviors. You'll understand the neurological basis of your patterns for the first time.</p>
+                <h3 style="color: #273548; margin-bottom: 0.5rem;">Behavioral pattern analysis</h3>
+                <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">90 minutes • One-on-one assessment</p>
+                <p style="color: #556D7A;">Through focused conversation, we map the specific mental patterns and subconscious triggers 
+                behind your unwanted behaviors. You'll understand exactly how your mind creates these automatic responses.</p>
             </div>
             """, unsafe_allow_html=True)
-            
+    
             with st.expander("What happens in session 1:", expanded=False):
-                st.write("• Comprehensive behavioral analysis using proven psychological frameworks")
-                st.write("• Map your unique neural triggers and automatic response patterns")
-                st.write("• Identify the neurological roots of your unwanted behaviors")
-                st.write("• Discover the original conditioning events that created these pathways")
-                st.write("• Begin initial positive neural programming in your subconscious mind")
-                st.success("**Neuroscience result:** Clear understanding of your brain patterns and immediate relief for many clients.")
-        
+                st.write("• Detailed conversation to understand your behavioral patterns")
+                st.write("• Identify the specific psychological triggers that activate unwanted responses")
+                st.write("• Map the neural pathways that have become automatic over time")
+                st.write("• Discover where these mental patterns originally formed")
+                st.write("• Begin preparing your subconscious for the rewiring process")
+                st.success("**Outcome:** Complete understanding of your patterns plus immediate psychological relief.")
+
         with col2:
             st.markdown("""
             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
@@ -58,21 +58,21 @@ class UnifiedMethodExplanation:
                 <div style="background: #4CA1A3; color: white; width: 50px; height: 50px; 
                             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
                             font-weight: bold; font-size: 1.3rem; margin: 0 auto 1rem;">2</div>
-                <h3 style="color: #273548; margin-bottom: 0.5rem;">Neural reset hypnosis</h3>
-                <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">90 minutes</p>
-                <p style="color: #556D7A;">Using clinical hypnosis to access your subconscious mind, we create new neural pathways 
-                and deactivate old automatic responses. Your brain literally rewires itself for success.</p>
+                <h3 style="color: #273548; margin-bottom: 0.5rem;">Subconscious rewiring with hypnosis</h3>
+                <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">90 minutes • Clinical hypnosis session</p>
+                <p style="color: #556D7A;">Using clinical hypnosis, we access your subconscious mind to rewire the patterns 
+                identified in session 1. Your nervous system naturally forms new, healthier automatic responses.</p>
             </div>
             """, unsafe_allow_html=True)
             
             with st.expander("What happens in session 2:", expanded=False):
-                st.write("• Enter theta brainwave state for maximum neuroplasticity")
+                st.write("• Enter a deep hypnotic state where your mind is most receptive to change")
+                st.write("• Systematically rewire the problematic patterns through clinical hypnosis")
                 st.write("• Install new neural pathways that support your desired behaviors")
-                st.write("• Deactivate limiting neural circuits and strengthen empowering ones")
-                st.write("• Create new synaptic connections that bypass old triggers")
-                st.write("• Anchor positive behavioral patterns at the cellular level")
-                st.success("**Neuroscience result:** Effortless behavior change as your brain adopts new default patterns.")
-        
+                st.write("• Strengthen mental connections that create positive automatic responses")
+                st.write("• Program your subconscious with new, empowering behavioral patterns")
+                st.success("**Outcome:** Effortless transformation as your nervous system adopts new healthy patterns.")
+                
         with col3:
             st.markdown("""
             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
@@ -80,20 +80,20 @@ class UnifiedMethodExplanation:
                 <div style="background: #eab308; color: white; width: 50px; height: 50px; 
                             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
                             font-weight: bold; font-size: 1.3rem; margin: 0 auto 1rem;">+1</div>
-                <h3 style="color: #273548; margin-bottom: 0.5rem;">Neural consolidation</h3>
+                <h3 style="color: #273548; margin-bottom: 0.5rem;">Pattern reinforcement</h3>
                 <p style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">60 minutes • Only 15% need this</p>
-                <p style="color: #556D7A;">Strengthen and consolidate your new neural networks if needed. 
-                Ensure complete synaptic integration and long-term potentiation of positive patterns.</p>
+                <p style="color: #556D7A;">Strengthen and consolidate your new mental patterns if needed. 
+                Ensure complete integration and long-term stability of your positive behavioral changes.</p>
             </div>
             """, unsafe_allow_html=True)
             
             with st.expander("What happens in session 3 (optional):", expanded=False):
-                st.write("• Reinforce new neural pathways through targeted hypnotic suggestion")
-                st.write("• Address any remaining weak synaptic connections")
-                st.write("• Fine-tune neurotransmitter responses to environmental triggers")
-                st.write("• Consolidate long-term memory formation of new behavioral patterns")
-                st.success("**Neuroscience result:** Complete neural mastery with permanent synaptic changes. If you're not satisfied after 2 sessions, this session is complimentary.")
-        
+                st.write("• Reinforce new neural pathways through targeted hypnotic techniques")
+                st.write("• Address any remaining weak mental connections")
+                st.write("• Fine-tune your subconscious responses to environmental triggers")
+                st.write("• Consolidate long-term retention of your new behavioral patterns")
+                st.success("**Outcome:** Complete mastery with permanent pattern changes. If you're not satisfied after 2 sessions, this session is complimentary.")
+     
         # Scientific disclaimer about collaborative neuroplasticity
         st.markdown("""
         <div style="background: rgba(76, 161, 163, 0.1); border-radius: 8px; padding: 1rem; margin: 1.5rem 0; 
