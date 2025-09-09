@@ -1051,11 +1051,17 @@ class MethodTeaserWithVideo:
         col1, col2 = st.columns([3, 1])
         
         with col1:
-            st.write("**Want to understand the complete neuroscience behind our method?** See the detailed breakdown of how neuroplasticity creates lasting change, brain wave states, and clinical evidence.")
+            st.write("**Want to understand the complete neuroscience behind our method?** ")
+            st.write("See the detailed breakdown of how neuroplasticity creates lasting change, brain wave states, and clinical evidence.")
         
         with col2:
             if st.button("Know more about the 2+1 method", type="primary", use_container_width=True):
-                redirect("https://hypnotherapy.streamlit.app/#deep-pattern-analysis")
+                #redirect("https://hypnotherapy.streamlit.app/#deep-pattern-analysis")
+                from pages.method import create_method_page
+                MethodPage = create_method_page
+                page_instance = MethodPage()
+                page_instance.render()
+                st.experimental_set_query_params(page="MethodPage")
                 st.info("Menu : [Method] at the top of the page")
 
 class HomePage:
