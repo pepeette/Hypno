@@ -635,7 +635,7 @@ class PatternAssessment:
             <h1>Behavioral patterns assessment</h1>
             <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto;">
                 This assessment helps us understand your unique patterns and design the most effective approach for your transformation. 
-                Answer intuitively - your first response is usually most accurate.
+                Answer intuitively : your first response is usually most accurate.
             </p>
         </div>
         """, unsafe_allow_html=True)
