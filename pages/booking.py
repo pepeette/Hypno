@@ -63,7 +63,7 @@ class BookingPage:
         
         # Action buttons side by side
         col1, col2 = st.columns(2)
-        
+
         with col1:
             # Schedule Session button (primary accent color)
             st.markdown(f"""
@@ -75,17 +75,37 @@ class BookingPage:
                 """, unsafe_allow_html=True)
         
         with col2:
-            # WhatsApp button (white with border)
+            # WhatsApp button (secondary white background)
             st.markdown(f"""
-            <a href="{whatsapp_url}" target="_blank" 
-               style="display: inline-block; background-color: white; color: var(--text-primary);
-                      text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
-                      font-weight: 500; font-size: 1rem; transition: var(--transition);
-                      box-shadow: var(--shadow-sm); text-align: center; width: 100%;
-                      box-sizing: border-box; margin-bottom: 0.25rem; border: 2px solid var(--border);">
-                💬 Message on WhatsApp
-            </a>
-            """, unsafe_allow_html=True)
+                <a href="{whatsapp_url}" 
+                   target="_blank" 
+                   class="cta-button-secondary">
+                   💬 Message on WhatsApp
+                </a>
+                """, unsafe_allow_html=True)
+        
+        # with col1:
+        #     # Schedule Session button (primary accent color)
+        #     st.markdown(f"""
+        #         <a href="{self.discovery_url}" 
+        #            target="_blank" 
+        #            class="cta-button">
+        #            📞 Schedule your Session
+        #         </a>
+        #         """, unsafe_allow_html=True)
+        
+        # with col2:
+        #     # WhatsApp button (white with border)
+        #     st.markdown(f"""
+        #     <a href="{whatsapp_url}" target="_blank" 
+        #        style="display: inline-block; background-color: white; color: var(--text-primary);
+        #               text-decoration: none; padding: 1rem 1rem; border-radius: var(--radius-sm);
+        #               font-weight: 500; font-size: 1rem; transition: var(--transition);
+        #               box-shadow: var(--shadow-sm); text-align: center; width: 100%;
+        #               box-sizing: border-box; margin-bottom: 0.25rem; border: 2px solid var(--border);">
+        #         💬 Message on WhatsApp
+        #     </a>
+        #     """, unsafe_allow_html=True)
     
     def _create_whatsapp_message(self, name, email, concern, concern_description):
         """Create WhatsApp message from form data"""
