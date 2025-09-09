@@ -1627,12 +1627,7 @@ class BehavioralPatternAssessment:
         """Render assessment header with clear value proposition"""
         st.markdown("""
         <div style="text-align: center; margin: 1rem 0 2rem 0;">
-            <h1>Comprehensive Behavioral Pattern Assessment</h1>
-            <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto;">
-                This detailed assessment maps your unique behavioral patterns to design the most effective 
-                hypnotherapy approach for your transformation. Your responses create a clinical template 
-                that guides your personalized session strategy.
-            </p>
+            <h1>Behavioral pattern assessment</h1>
         </div>
         """, unsafe_allow_html=True)
         
@@ -1640,7 +1635,7 @@ class BehavioralPatternAssessment:
         st.info("""
         **Why this assessment matters:** Traditional hypnotherapy uses generic scripts. 
         This comprehensive evaluation identifies your specific patterns, triggers, and readiness factors 
-        to create a targeted approach that works with your unique psychological landscape.
+        to create a targeted approach that works with your unique psychological landscape. This detailed assessment maps your unique behavioral patterns to design the most effective hypnotherapy approach for your transformation.
         """)
     
     def _render_progress(self):
