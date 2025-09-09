@@ -1056,12 +1056,12 @@ class MethodTeaserWithVideo:
         
         with col2:
             if st.button("Know more about the 2+1 method", type="primary", use_container_width=True):
-                #redirect("https://hypnotherapy.streamlit.app/#deep-pattern-analysis")
-                from pages.method import create_method_page
-                MethodPage = create_method_page
-                page_instance = MethodPage()
-                page_instance.render()
-                st.experimental_set_query_params(page="MethodPage")
+                redirect("https://hypnotherapy.streamlit.app/#deep-pattern-analysis")
+                # from pages.method import create_method_page
+                # MethodPage = create_method_page
+                # page_instance = MethodPage()
+                # page_instance.render()
+                # st.query_params(page="MethodPage")
                 st.info("Menu : [Method] at the top of the page")
 
 class HomePage:
