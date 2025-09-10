@@ -2112,28 +2112,46 @@ class AdaptiveBehavioralAssessment:
         self._handle_response_types(current_q_id, question)
         self._render_navigation(current_q_id)
 
-    def _handle_response_types(self, q_id, question):
-        if question['type'] == 'single_choice':
+    def _handle_response_types(self, qid, question):
+        qtype = question['type']
+        
+        if qtype == 'single_choice':
             for i, option in enumerate(question['options']):
-                if st.button(option, key=f"q_{q_id}_opt_{i}", use_container_width=True):
-                    self._save_response(q_id, option, question)
+                if st.button(option, key=f"q_{qid}_opt_{i}", use_container_width=True):
+                    self._save_response(qid, option, question)
                     self._advance_question()
-                    st.rerun()
-        elif question['type'] == 'text_completion':
+                    st.experimental_rerun()
+        
+        elif qtype == 'slider':
+            value = st.slider(
+                label=question.get('text', ''),
+                min_value=question.get('min', 0),
+                max_value=question.get('max', 10),
+                value=question.get('value', 5),
+                key=f"slider_{qid}"
+            )
+            if st.button("Continue", key=f"continue_{qid}", use_container_width=True):
+                self._save_response(qid, str(value), question)
+                self._advance_question()
+                st.experimental_rerun()
+        
+        elif qtype == 'text_completion':
             response = st.text_area(
-                "response",
+                label=question.get('text', ''),
                 placeholder=question.get('placeholder', 'Your response...'),
-                key=f"q_{q_id}_text",
+                key=f"text_{qid}",
                 height=80,
-                label_visibility="collapsed"
+                label_visibility='collapsed'
             )
             if response.strip():
-                if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-                    self._save_response(q_id, response.strip(), question)
+                if st.button("Continue", key=f"continue_{qid}", use_container_width=True):
+                    self._save_response(qid, response.strip(), question)
                     self._advance_question()
-                    st.rerun()
+                    st.experimental_rerun()
             else:
+                # No slider shown message here, just separator or prompt
                 st.markdown("---")
+
 
     def _render_navigation(self, current_q_id):
         col1, col2 = st.columns([1, 1])
