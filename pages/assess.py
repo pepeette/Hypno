@@ -902,9 +902,9 @@ class ComprehensiveBehavioralAssessment:
 
         st.markdown(f"### {question['text']}")
         
-        if 'clinical_insight' in question:
-            with st.expander("Clinical Context", expanded=False):
-                st.markdown(f"**Purpose:** {question['clinical_insight']}")
+        # if 'clinical_insight' in question:
+        #     with st.expander("Clinical Context", expanded=False):
+        #         st.markdown(f"**Purpose:** {question['clinical_insight']}")
 
         self._handle_response_types(current_q_id, question)
         self._render_navigation(current_q_id)
