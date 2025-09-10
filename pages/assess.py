@@ -1491,10 +1491,7 @@ class AdaptiveBehavioralAssessment:
                 st.session_state[key] = value
 
     # --- Questionnaire definition methods ---
-    # [Implement your advanced core, adaptive, safety, and hypnotic questions as provided in your file -- unchanged below.]
     def _get_core_questions(self):
-
-        def _get_core_questions(self):
         """Clinical-grade questions targeting subconscious patterns"""
         return {
             1: {
