@@ -1328,6 +1328,15 @@
 #     return AssessPage()
 
 
+
+
+
+
+
+
+
+
+
 """
 Enhanced Behavioral Pattern Assessment - FIXED Mobile-Optimized UX
 Improved spacing, alignment, and email integration
@@ -2103,7 +2112,10 @@ class AdaptiveBehavioralAssessment:
             st.info("Please provide your response to continue.")
 
     def _render_navigation(self, current_q_id):
-        """Render navigation"""
+        """Render compact navigation"""
+        # Navigation area
+        st.markdown('<div class="navigation-area">', unsafe_allow_html=True)
+        
         # Navigation buttons in columns
         col1, col2, col3 = st.columns([1, 2, 1])
         
@@ -2116,10 +2128,10 @@ class AdaptiveBehavioralAssessment:
                 st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
-            # Progress info
+            # Progress info - compact
             answered_count = len(st.session_state.assessment_responses)
             st.markdown(f"""
-            <div style="text-align: center; padding: 0.5rem; color: #556D7A; font-size: 0.9rem;">
+            <div style="text-align: center; padding: 0.25rem; color: #556D7A; font-size: 0.8rem;">
                 <strong>{answered_count}</strong> answered
             </div>
             """, unsafe_allow_html=True)
@@ -2131,6 +2143,8 @@ class AdaptiveBehavioralAssessment:
                 self._advance_question()
                 st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
     def _get_current_question_id(self):
         """Get the ID of the current question to display"""
@@ -2439,7 +2453,7 @@ class AdaptiveBehavioralAssessment:
             errors.append("Name is required")
         if not email.strip():
             errors.append("Email is required")
-        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
             errors.append("Valid email required")
         if not concern.strip():
             errors.append("Primary concern required")
