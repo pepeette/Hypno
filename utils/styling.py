@@ -162,6 +162,7 @@ def apply_global_styles():
     .cta-button:hover {
         background-color: #E1F0F0 !important;
         color: #273548 !important;
+        border-color: #E1F0F0 !important;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(243,246,248,0.6);
     }
