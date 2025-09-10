@@ -1367,8 +1367,8 @@ def apply_clinical_styles():
     st.markdown("""
     <style>
     .main .block-container {
-        padding-top: 1rem !important;
-        padding-bottom: 1rem !important;
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
         max-width: 100% !important;
     }
     @media (min-width: 768px) {
@@ -2068,17 +2068,13 @@ class AdaptiveBehavioralAssessment:
             self._render_results()
 
     def _render_header(self):
-        st.markdown("""
-        <div style="text-align: center; margin-bottom: 1.5rem;">
-            <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #273548;">
-                Behavioral Pattern Assessment
-            </h1>
-            <p style="color: #556D7A; font-size: 1rem; margin: 0;">
-                Personalized clinical analysis for transformation planning
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-
+        st.header("Behavioral pattern assessment")
+        st.info(
+            "Why this matters: Most hypnotherapy uses general scripts. "
+            "This assessment finds your habits and triggers to build a plan that fits your needs. "
+            "The assessment matches your behavior with the best hypnotherapy for you."
+        )
+        
     def _render_current_question(self):
         current_q_id = self._get_current_question_id()
         if current_q_id is None:
@@ -2104,7 +2100,7 @@ class AdaptiveBehavioralAssessment:
         """, unsafe_allow_html=True)
 
         # Question text
-        st.markdown(f"### {question['text']}")
+        st.markdown(f"#### {question['text']}")
 
         # Response logic
         self._handle_response_types(current_q_id, question)
