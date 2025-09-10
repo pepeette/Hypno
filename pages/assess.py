@@ -2569,13 +2569,23 @@ class AdaptiveBehavioralAssessment:
         else:
             self._render_comprehensive_results()
 
-    def _apply_clinical_styles(self):
-        """Apply clinical-grade styling"""
+def _apply_clean_styles(self):
+        """Apply clean, minimal styles following styling.py guidelines"""
         st.markdown("""
         <style>
+        /* Remove all containers and colors behind questions */
+        .clinical-question, .safety-notice, .clinical-insight {
+            all: unset !important;
+        }
+        
+        /* Force light mode and clean typography */
+        html, body, [class*="st"] {
+            color-scheme: light !important;
+        }
+        
         .main .block-container {
-            padding-top: 1rem !important;
-            padding-bottom: 1rem !important;
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
             max-width: 100% !important;
         }
         
@@ -2586,61 +2596,55 @@ class AdaptiveBehavioralAssessment:
             }
         }
         
-        .stButton > button {
+        /* Clean question text - no backgrounds, no colors */
+        .question-text {
+            font-size: 1rem !important;
+            line-height: 1.4 !important;
+            color: #273548 !important;
+            margin-bottom: 1rem !important;
+            font-weight: 400 !important;
+            text-shadow: none !important;
+        }
+        
+        /* Assessment buttons - clean and left-aligned */
+        .assess-button > button {
+            all: revert !important;
+            display: block !important;
             width: 100% !important;
-            margin-bottom: 0.25rem !important;
-            padding: 0.6rem 1rem !important;
+            margin: 0 !important;
+            margin-bottom: 2px !important;
+            padding: 8px 12px !important;
+            font-size: 14px !important;
+            line-height: 1.2 !important;
             text-align: left !important;
             background-color: #F8FAFC !important;
             border: 1px solid #E2E8F0 !important;
             border-radius: 6px !important;
             color: #374151 !important;
-            font-size: 0.95rem !important;
-            transition: all 0.2s ease !important;
-            line-height: 1.3 !important;
+            cursor: pointer !important;
+            box-sizing: border-box !important;
+            font-weight: 400 !important;
+            min-height: auto !important;
+            height: auto !important;
+            box-shadow: none !important;
+            transition: background-color 0.15s ease !important;
         }
         
-        .stButton > button:hover {
-            background-color: #F1F5F9 !important;
+        .assess-button > button:hover {
+            background-color: #E1F0F0 !important;
             border-color: #4CA1A3 !important;
-            transform: translateY(-1px) !important;
+            color: #273548 !important;
         }
         
-        .clinical-question {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            color: white;
-        }
-        
-        .safety-notice {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-            font-size: 0.9rem;
-        }
-        
-        .clinical-insight {
-            background-color: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 0.75rem;
-            margin: 0.5rem 0;
-            font-size: 0.85rem;
-        }
-        
+        /* Progress bar styling */
         .progress-container {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             font-size: 0.85rem;
             color: #556D7A;
             padding: 0.5rem;
-            border-radius: 6px;
-            border: 1px solid #E2E8F0;
         }
         
         .progress-bar {
@@ -2656,20 +2660,52 @@ class AdaptiveBehavioralAssessment:
             background: #4CA1A3;
             transition: width 0.3s ease;
         }
+        
+        /* Text area styling */
+        .stTextArea textarea {
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 6px !important;
+            padding: 0.75rem !important;
+            font-size: 0.95rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        /* Navigation buttons */
+        .stButton > button {
+            border-radius: 6px !important;
+            padding: 0.5rem 1rem !important;
+            font-size: 0.9rem !important;
+            margin-bottom: 0.25rem !important;
+        }
+        
+        /* Hide Streamlit elements */
+        header[data-testid="stHeader"] {
+            display: none !important;
+        }
+        
+        .stDeployButton {
+            display: none !important;
+        }
+        
+        /* Mobile optimization */
+        @media (max-width: 767px) {
+            .main .block-container {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+            
+            .question-text {
+                font-size: 0.95rem !important;
+                line-height: 1.3 !important;
+            }
+            
+            .assess-button > button {
+                padding: 6px 8px !important;
+                font-size: 13px !important;
+                margin-bottom: 1px !important;
+            }
+        }
         </style>
-        """, unsafe_allow_html=True)
-
-    def _render_header(self):
-        """Render compact header"""
-        st.markdown("""
-        <div style="text-align: center; margin-bottom: 1.5rem;">
-            <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #273548;">
-                Clinical Pattern Assessment
-            </h1>
-            <p style="color: #556D7A; font-size: 1rem; margin: 0;">
-                Expert analysis for rapid transformation planning
-            </p>
-        </div>
         """, unsafe_allow_html=True)
 
     def _render_current_question(self):
