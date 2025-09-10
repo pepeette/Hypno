@@ -419,6 +419,8 @@
 #     """, unsafe_allow_html=True)
 
 
+
+
 """
 Enhanced styling module for the Hypnotherapy website
 Improved spacing, typography, and visual hierarchy
@@ -669,20 +671,14 @@ def apply_global_styles():
         box-sizing: border-box;
     }
     
-    /* Primary Button - Higher specificity to override all global rules */
-    .stButton>button[kind="primary"],
-    .stButton>button[kind="primary"] *,
-    button[kind="primary"],
-    button[kind="primary"] * {
+    /* Primary Button - Specific targeting without nested button effects */
+    .stButton>button[kind="primary"] {
         background-color: var(--accent) !important;
         color: #FFFFFF !important;
         border: 2px solid var(--accent) !important;
     }
     
-    .stButton>button[kind="primary"]:hover,
-    .stButton>button[kind="primary"]:hover *,
-    button[kind="primary"]:hover,
-    button[kind="primary"]:hover * {
+    .stButton>button[kind="primary"]:hover {
         background-color: #E1F0F0 !important;
         color: #273548 !important;
         border-color: #E1F0F0 !important;
@@ -690,20 +686,14 @@ def apply_global_styles():
         box-shadow: 0 4px 12px rgba(243,246,248,0.6);
     }
     
-    /* Secondary Button - Higher specificity to override all global rules */
-    .stButton>button[kind="secondary"],
-    .stButton>button[kind="secondary"] *,
-    button[kind="secondary"],
-    button[kind="secondary"] * {
+    /* Secondary Button - Specific targeting without nested button effects */
+    .stButton>button[kind="secondary"] {
         background-color: white !important;
         color: var(--text-primary) !important;
         border: 2px solid var(--border) !important;
     }
     
-    .stButton>button[kind="secondary"]:hover,
-    .stButton>button[kind="secondary"]:hover *,
-    button[kind="secondary"]:hover,
-    button[kind="secondary"]:hover * {
+    .stButton>button[kind="secondary"]:hover {
         background-color: var(--accent) !important;
         color: #FFFFFF !important;
         border-color: var(--accent) !important;
