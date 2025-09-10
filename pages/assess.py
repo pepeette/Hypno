@@ -2149,10 +2149,17 @@ class AdaptiveBehavioralAssessment:
             """, unsafe_allow_html=True)
         with col3:
             if st.button("Skip", key="nav_skip", use_container_width=True):
-                # Use "Not applicable" as generic skip
-                self._save_response(current_q_id, "Not applicable", {"patterns": None, "weights": [0]})
-                self._advance_question()
-                st.rerun()
+                # Register a skip by saving "Skipped" or empty response without scoring
+                self._save_response(
+                    current_question_id,
+                    "Skipped",
+                    {
+                        "patterns": None,
+                        "weights": [0],  # zero weight to exclude from scoring
+                    },
+                )
+                self._advance()
+                st.experimental_rerun()  #
 
     # ---- Results + Paywall logic (from your commented code, unchanged) ----
     def _render_contact_form(self):
