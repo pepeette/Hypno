@@ -2124,7 +2124,7 @@ class AdaptiveBehavioralAssessment:
         with col3:
             if st.button("Skip", key="nav_skip", use_container_width=True):
                 # Use "Not applicable" as generic skip
-                self._save_response(current_q_id, "Not applicable", {"patterns": None, "weights": })
+                self._save_response(current_q_id, "Not applicable", {"patterns": None, "weights": [0]})
                 self._advance_question()
                 st.rerun()
 
