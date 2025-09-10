@@ -1223,900 +1223,852 @@
 
 
 """
-Improved clinical email handler for hypnotherapy assessment
-Streamlined, practical, and data-driven approach
+Complete Email Handler for Hypnotherapy Website
+Supports both clinical assessment analysis and standard booking workflows
+Integrates with all website pages and maintains backward compatibility
 """
 import smtplib
 import os
-import streamlit as st
+import re
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 
-
-class ImprovedClinicalEmailHandler:
-    """Streamlined email handler focusing on actionable clinical insights"""
-
+class ComprehensiveEmailHandler:
+    """Complete email handler for all website email needs"""
+    
     def __init__(self):
+        # Gmail SMTP configuration
         self.smtp_server = "smtp.gmail.com"
         self.smtp_port = 587
-
+        
+        # Try to get credentials from Streamlit secrets, then environment
         try:
-            self.sender_email = st.secrets.get("SENDER_EMAIL") or st.secrets.get("gmail", {}).get("user") or "laetitiasheppard@gmail.com"
-            self.recipient_email = st.secrets.get("RECIPIENT_EMAIL") or "laetitiasheppard@gmail.com"
-            self.password = st.secrets.get("GMAIL_APP_PASSWORD") or st.secrets.get("gmail", {}).get("password")
-        except Exception as e:
-            print(f"[DEBUG] error accessing secrets: {e}")
+            import streamlit as st
+            self.sender_email = st.secrets.get("SENDER_EMAIL", "laetitiasheppard@gmail.com")
+            self.recipient_email = st.secrets.get("RECIPIENT_EMAIL", "laetitiasheppard@gmail.com")
+            self.password = st.secrets.get("GMAIL_APP_PASSWORD", "")
+        except:
             self.sender_email = os.environ.get("SENDER_EMAIL", "laetitiasheppard@gmail.com")
             self.recipient_email = os.environ.get("RECIPIENT_EMAIL", "laetitiasheppard@gmail.com")
-            self.password = os.environ.get("GMAIL_APP_PASSWORD")
-
-        # pattern definitions for clinical analysis
-        self.patterns = {
-            1: "unhappiness culture", 2: "power struggles", 3: "systematic mistrust", 4: "separation and division",
-            5: "doing versus being", 6: "compartmentalized authenticity", 7: "self sacrifice and care avoidance",
-            8: "inherited missions", 9: "context dependent weakness"
+            self.password = os.environ.get("GMAIL_APP_PASSWORD", "")
+        
+        # Pattern descriptions for clinical analysis
+        self.pattern_descriptions = {
+            1: "Unhappiness Culture - Difficulty accepting or maintaining positive states",
+            2: "Power Struggles - Recurring conflicts and control issues",
+            3: "Systematic Mistrust - Default skepticism and trust difficulties",
+            4: "Separation/Division - Black-and-white thinking patterns",
+            5: "Doing vs Being - Self-worth tied to achievement",
+            6: "Compartmentalized Authenticity - Inconsistent identity",
+            7: "Self-Sacrifice - Prioritizing others while neglecting self",
+            8: "Inherited Missions - Life choices driven by family expectations",
+            9: "Context Dependent Weakness - Situational boundary loss"
         }
-
-    def send_clinical_assessment_results(self, clinical_data):
-        """Send streamlined clinical assessment with practical insights"""
+    
+    # ================== CLINICAL ASSESSMENT EMAILS ==================
+    
+    def send_clinical_assessment_results(self, assessment_data):
+        """Send comprehensive clinical assessment with therapeutic analysis"""
         try:
-            print("[DEBUG] sending clinical assessment results email")
+            print("[DEBUG] Sending clinical assessment results")
             
-            # extract urgency for subject priority
-            urgency = clinical_data.get('urgency', 'standard priority')
-            risk_flags = clinical_data.get('assessment_results', {}).get('risk_flags', [])
-            priority_flag = self._get_priority_flag(urgency, risk_flags)
+            # Extract key information
+            contact_info = assessment_data.get('contact_info', {})
+            results = assessment_data.get('assessment_results', {})
+            urgency = contact_info.get('urgency', 'Standard priority')
             
-            msg = self._build_email(
-                subject=f"{priority_flag} behavioral pattern assessment - {clinical_data.get('name', 'new client')}",
-                body=self._format_clinical_email(clinical_data)
-            )
+            # Determine priority flag
+            priority_flag = self._get_priority_flag(urgency, results.get('risk_flags', []))
             
-            return self._dispatch(msg, clinical_data, "clinical assessment")
+            subject = f"{priority_flag} Clinical Assessment - {contact_info.get('name', 'Client')}"
+            body = self._format_clinical_email_body(assessment_data)
+            
+            return self._send_email(subject, body, "Clinical Assessment")
             
         except Exception as e:
-            print(f"[ERROR] exception in send_clinical_assessment_results: {e}")
-            import traceback
-            traceback.print_exc()
+            print(f"[ERROR] Clinical assessment email error: {e}")
             return False
-
-    def _get_priority_flag(self, urgency, risk_flags):
-        """get priority flag for email subject"""
-        if len(risk_flags) >= 3:
-            return "🔴 HIGH RISK"
-        elif 'extremely urgent' in urgency.lower():
-            return "🔴 URGENT" 
-        elif 'very urgent' in urgency.lower():
-            return "🟡 PRIORITY"
-        else:
-            return "📋 STANDARD"
-
-    def _format_clinical_email(self, data):
-        """format practical clinical email focused on actionable insights"""
+    
+    def _format_clinical_email_body(self, data):
+        """Format comprehensive clinical assessment email"""
         try:
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
-            # extract basic client data
-            name = data.get('name', 'unknown client')
-            email = data.get('email', 'not provided')
-            phone = data.get('phone', 'not provided')
-            urgency = data.get('urgency', 'not specified')
-            primary_concern = data.get('primary_concern', 'not provided')
-            next_step = data.get('next_step', 'not specified')
-            
-            # extract assessment results
-            assessment_results = data.get('assessment_results', {})
-            pattern_scores = assessment_results.get('pattern_scores', {})
-            risk_flags = assessment_results.get('risk_flags', [])
-            total_questions = assessment_results.get('total_questions_answered', 0)
-            completion_rate = assessment_results.get('completion_rate', 1.0)
-            adaptive_triggered = assessment_results.get('adaptive_paths_triggered', [])
-            intensity_data = assessment_results.get('intensity_data', {})
-            
-            # extract key responses for clinical insights
+            # Extract data components
+            contact_info = data.get('contact_info', {})
+            results = data.get('assessment_results', {})
             responses = data.get('assessment_responses', {})
-            presenting_problem = self._extract_presenting_problem(responses)
-            triggers = self._extract_triggers(responses)
-            physical_response = self._extract_physical_response(responses)
-            emotions = self._extract_emotions(responses)
-            inner_voice = self._extract_inner_voice(responses)
-            behavioral_response = self._extract_behavioral_response(responses)
-            secondary_gains = self._extract_secondary_gains(responses)
+            intensity_data = data.get('intensity_responses', {})
             
-            # analyze dominant patterns
-            dominant_patterns = self._analyze_dominant_patterns(pattern_scores)
+            # Basic info
+            name = contact_info.get('name', 'Unknown')
+            email = contact_info.get('email', 'Unknown')
+            phone = contact_info.get('phone', 'Not provided')
+            urgency = contact_info.get('urgency', 'Not specified')
+            primary_concern = contact_info.get('primary_concern', 'Not provided')
+            next_step = contact_info.get('next_step', 'Not specified')
             
-            # build email body
+            # Clinical data
+            pattern_scores = results.get('pattern_scores', {})
+            risk_flags = results.get('risk_flags', [])
+            dominant_pattern = results.get('dominant_pattern')
+            completion_rate = results.get('completion_rate', 0) * 100
+            total_questions = results.get('total_questions_answered', 0)
+            adaptive_paths = results.get('adaptive_paths_triggered', [])
+            
             body = f"""
-BEHAVIORAL PATTERN ASSESSMENT RESULTS
-assessment completed: {timestamp}
+🧠 COMPREHENSIVE BEHAVIORAL PATTERN ASSESSMENT
+Assessment Completed: {timestamp}
+Clinical Priority: {self._get_clinical_priority(urgency, risk_flags)}
 
-CLIENT INFORMATION
-name: {name}
-email: {email}
-phone: {phone}
-urgency: {urgency}
-primary concern: {primary_concern}
-preferred next step: {next_step}
+═══════════════════════════════════════════════════════════
 
-ASSESSMENT OVERVIEW
-questions completed: {total_questions}
-completion rate: {completion_rate*100:.0f}%
-risk factors identified: {len(risk_flags)}
-adaptive modules triggered: {len(adaptive_triggered)}
-average intensity rating: {self._calculate_average_intensity(intensity_data)}
+👤 CLIENT PROFILE & CONTACT INFORMATION
 
-═══════════════════════════════════════════════════════
+Name: {name}
+Email: {email}
+Phone: {phone}
+Urgency Level: {urgency}
+Primary Concern: {primary_concern}
+Preferred Next Step: {next_step}
 
-PRESENTING PROBLEM ANALYSIS
+Assessment Quality: {completion_rate:.0f}% completion rate
+Total Questions Answered: {total_questions}
+Adaptive Pathways Triggered: {len(adaptive_paths)}
 
-target behavior for transformation:
-{presenting_problem}
+═══════════════════════════════════════════════════════════
 
-typical triggering situation:
-{triggers}
+🎯 BEHAVIORAL PATTERN ANALYSIS
 
-physical response pattern:
-{physical_response}
+PRIMARY PATTERNS IDENTIFIED:
+"""
+            
+            # Add pattern analysis
+            if pattern_scores:
+                sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+                
+                for i, (pattern_id, score) in enumerate(sorted_patterns[:5]):
+                    pattern_name = self.pattern_descriptions.get(pattern_id, f"Pattern {pattern_id}")
+                    intensity = self._get_intensity_level(score)
+                    rank = "🔴 DOMINANT" if i == 0 else f"{i+1}. SECONDARY"
+                    
+                    body += f"""
+{rank} PATTERN: {pattern_name}
+├─ Activation Score: {score:.1f}/12 ({intensity} intensity)
+├─ Clinical Significance: {self._get_clinical_significance(pattern_id, score)}
+├─ Therapeutic Approach: {self._get_therapeutic_approach(pattern_id)}
+└─ Session Priority: {self._get_session_priority(pattern_id, i == 0)}
+"""
+                
+                if len(sorted_patterns) > 5:
+                    body += f"\nADDITIONAL PATTERNS: {len(sorted_patterns) - 5} lower-intensity patterns detected\n"
+            else:
+                body += "\nNo significant patterns above threshold - exploratory approach recommended\n"
+            
+            body += f"""
+═══════════════════════════════════════════════════════════
 
-emotional response pattern:
-{emotions}
+⚠️ CLINICAL RISK ASSESSMENT
 
-automatic thoughts:
-{inner_voice}
+Risk Level: {self._assess_overall_risk_level(risk_flags)}
+Risk Factors Identified: {len(risk_flags)}
+"""
+            
+            # Risk factor details
+            if risk_flags:
+                body += "\nSPECIFIC RISK CONSIDERATIONS:\n"
+                for i, flag in enumerate(risk_flags, 1):
+                    risk_description = self._get_risk_description(flag)
+                    management = self._get_risk_management(flag)
+                    body += f"{i}. {risk_description}\n   └─ Management: {management}\n"
+            else:
+                body += "\n✅ No significant risk factors identified - standard approach suitable\n"
+            
+            body += f"""
+═══════════════════════════════════════════════════════════
 
-behavioral response:
-{behavioral_response}
+🎯 THERAPEUTIC RECOMMENDATIONS
 
-secondary gains (what they might lose):
-{secondary_gains}
-
-INTERVENTION STRATEGY:
-{self._generate_intervention_strategy(presenting_problem, triggers, physical_response)}
-
-═══════════════════════════════════════════════════════
-
-DOMINANT BEHAVIORAL PATTERNS
-
-{self._format_pattern_analysis(dominant_patterns)}
-
-THERAPEUTIC APPROACH:
-{self._recommend_therapeutic_approach(dominant_patterns)}
+RECOMMENDED APPROACH: {self._get_recommended_approach(dominant_pattern, risk_flags)}
+ESTIMATED SESSIONS: {self._estimate_session_count(pattern_scores, risk_flags)}
+SUCCESS PROBABILITY: {self._estimate_success_probability(completion_rate, len(risk_flags))}
 
 SESSION 1 FOCUS:
-{self._recommend_session_1_focus(dominant_patterns, risk_flags)}
+{self._get_session_1_focus(dominant_pattern, primary_concern)}
 
-═══════════════════════════════════════════════════════
+SESSION 2 FOCUS:
+{self._get_session_2_focus(dominant_pattern, pattern_scores)}
 
-HYPNOTHERAPY SCRIPT GUIDANCE
+POTENTIAL RESISTANCE POINTS:
+{self._identify_resistance_points(pattern_scores, responses)}
 
-INDUCTION APPROACH:
-{self._recommend_induction_approach(responses, dominant_patterns)}
+HYPNOTHERAPY PROTOCOL:
+{self._generate_hypnotherapy_protocol(dominant_pattern, intensity_data)}
 
-PRIMARY SUGGESTIONS:
-{self._generate_primary_suggestions(dominant_patterns, presenting_problem)}
+═══════════════════════════════════════════════════════════
 
-THERAPEUTIC LANGUAGE TO USE:
-{self._recommend_therapeutic_language(dominant_patterns)}
+📊 DETAILED RESPONSE ANALYSIS
 
-LANGUAGE TO AVOID:
-{self._identify_language_to_avoid(dominant_patterns)}
+ASSESSMENT COMPLETION DATA:
+"""
+            
+            # Add key responses analysis
+            key_responses = self._extract_key_responses(responses)
+            if key_responses:
+                body += "\nKEY CLIENT RESPONSES:\n"
+                for question, response in key_responses.items():
+                    body += f"• {question}: {response}\n"
+            
+            # Intensity data
+            if intensity_data:
+                body += f"\nINTENSITY RATINGS PROVIDED: {len(intensity_data)} questions\n"
+                high_intensity = {k: v for k, v in intensity_data.items() if v >= 6}
+                if high_intensity:
+                    body += f"HIGH INTENSITY RESPONSES: {len(high_intensity)} items rated 6-7/7\n"
+            
+            body += f"""
+ADAPTIVE QUESTIONING TRIGGERED: {', '.join(adaptive_paths) if adaptive_paths else 'None'}
 
-═══════════════════════════════════════════════════════
+═══════════════════════════════════════════════════════════
 
-CLINICAL CONSIDERATIONS
-
-{self._format_clinical_considerations(risk_flags, urgency)}
-
-RESISTANCE FACTORS:
-{self._identify_resistance_factors(secondary_gains, dominant_patterns)}
-
-SAFETY PROTOCOLS:
-{self._recommend_safety_protocols(risk_flags)}
-
-═══════════════════════════════════════════════════════
-
-TREATMENT RECOMMENDATIONS
-
-ESTIMATED SESSIONS: {self._estimate_session_count(dominant_patterns, risk_flags)}
-RECOMMENDED FREQUENCY: {self._recommend_frequency(urgency, risk_flags)}
-PROGNOSIS: {self._assess_prognosis(dominant_patterns, completion_rate, risk_flags)}
-
-SESSION STRUCTURE:
-1. rapport building using {self._get_rapport_approach(dominant_patterns)}
-2. pattern interruption at: {self._identify_intervention_point(physical_response, emotions)}
-3. root cause transformation: {self._identify_root_focus(dominant_patterns)}
-4. new pattern installation and future pacing
-
-HOMEWORK PROTOCOL:
-{self._recommend_homework(dominant_patterns, responses)}
-
-═══════════════════════════════════════════════════════
-
-NEXT ACTIONS
+📞 IMMEDIATE ACTION PROTOCOL
 
 CONTACT TIMELINE: {self._get_contact_timeline(urgency, risk_flags)}
+RECOMMENDED RESPONSE: {self._get_recommended_response(next_step)}
 
-IMMEDIATE PRIORITIES:
-{self._generate_action_priorities(urgency, risk_flags, next_step)}
+PREPARATION CHECKLIST:
+1. Review complete client responses (attached below)
+2. Prepare pattern-specific approach for {self.pattern_descriptions.get(dominant_pattern, 'identified patterns')}
+3. {self._get_specific_preparation(dominant_pattern, risk_flags)}
+4. Set up appropriate session environment and materials
 
-PREPARATION NOTES:
-- review complete assessment responses before session
-- prepare {self._get_induction_type(responses)} induction approach
-- plan for potential resistance around {self._get_main_resistance_area(secondary_gains)}
-- have {self._get_safety_preparations(risk_flags)} ready
+═══════════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════════════
+💬 COMPLETE CLIENT RESPONSES TRANSCRIPT
 
-RAW ASSESSMENT DATA SUMMARY
-total responses: {len(responses)}
-text responses: {sum(1 for r in responses.values() if r.get('question_type') == 'text_completion')}
-intensity ratings: {len(intensity_data)}
-adaptive paths: {', '.join(adaptive_triggered) if adaptive_triggered else 'none'}
-risk indicators: {', '.join(risk_flags) if risk_flags else 'none'}
+FULL ASSESSMENT RESPONSES:
+"""
+            
+            # Add complete response transcript
+            if responses:
+                for q_id in sorted(responses.keys()):
+                    response_data = responses[q_id]
+                    question_text = response_data.get('question_text', f'Question {q_id}')
+                    response = response_data.get('response', 'No response')
+                    intensity = intensity_data.get(q_id)
+                    
+                    body += f"\n{q_id}. {question_text}\n"
+                    body += f"   Response: {response}\n"
+                    if intensity:
+                        body += f"   Intensity: {intensity}/7\n"
+                    body += f"   Timestamp: {response_data.get('timestamp', 'Unknown')}\n"
+            
+            body += f"""
 
-bangkok hypnotherapy clinic - clinical assessment system
-generated: {timestamp}
-clinical review required within: {self._get_review_timeline(urgency, risk_flags)}
+═══════════════════════════════════════════════════════════
+
+🔧 TECHNICAL ASSESSMENT METADATA
+
+Assessment Algorithm: Comprehensive Behavioral Pattern Analysis v2.0
+Completion Quality: {completion_rate:.0f}% ({total_questions} questions answered)
+Clinical Confidence: {self._assess_clinical_confidence(completion_rate, len(pattern_scores))}
+Data Integrity: {self._assess_data_integrity(responses)}
+
+Therapist Assignment Recommendation: {self._recommend_therapist_type(risk_flags, urgency)}
+Next Clinical Review: {self._get_next_review_date(urgency, risk_flags)}
+
+⚠️ CONFIDENTIAL CLINICAL DOCUMENT
+Contains sensitive psychological assessment data
+Licensed therapist review required before client contact
+
+═══════════════════════════════════════════════════════════
+Bangkok Hypnotherapy Clinic - Clinical Assessment System
+Generated: {timestamp}
+Client Reference: {name.replace(' ', '_')}_{datetime.now().strftime('%Y%m%d')}
             """
             
             return body
             
         except Exception as e:
-            print(f"[ERROR] error formatting clinical email: {e}")
-            import traceback
-            traceback.print_exc()
+            print(f"[ERROR] Error formatting clinical email: {e}")
+            # Return basic email with error info
             return f"""
 CLINICAL ASSESSMENT RESULTS - FORMATTING ERROR
 
-basic client information:
-name: {data.get('name', 'unknown')}
-email: {data.get('email', 'unknown')}
-urgency: {data.get('urgency', 'unknown')}
-timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Client: {data.get('contact_info', {}).get('name', 'Unknown')}
+Email: {data.get('contact_info', {}).get('email', 'Unknown')}
+Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
-error: {str(e)}
+Error Details: {str(e)}
 
-raw data preserved for manual review
-contact technical support for data recovery
+Raw assessment data available - manual review required.
+Complete responses preserved for clinical analysis.
 
-bangkok hypnotherapy clinic
+Bangkok Hypnotherapy Clinic - Clinical Assessment System
             """
-
-    def _extract_presenting_problem(self, responses):
-        """extract presenting problem from responses"""
-        for response_data in responses.values():
-            if 'transform' in response_data.get('question_text', '').lower():
-                return response_data.get('response', 'not specified')
-        return 'not provided in assessment'
-
-    def _extract_triggers(self, responses):
-        """extract triggering situations"""
-        for response_data in responses.values():
-            if 'typical situation that triggers' in response_data.get('question_text', '').lower():
-                return response_data.get('response', 'not specified')
-        return 'not identified in assessment'
-
-    def _extract_physical_response(self, responses):
-        """extract physical response patterns"""
-        for response_data in responses.values():
-            if 'first physical sensation' in response_data.get('question_text', '').lower():
-                response = response_data.get('response', 'not specified')
-                intensity = response_data.get('intensity', '')
-                if intensity:
-                    return f"{response} (intensity: {intensity}/7)"
-                return response
-        return 'not identified'
-
-    def _extract_emotions(self, responses):
-        """extract emotional response patterns"""
-        for response_data in responses.values():
-            if 'emotions surface' in response_data.get('question_text', '').lower():
-                response = response_data.get('response')
-                if isinstance(response, dict):
-                    # weighted multi-select response
-                    emotions = []
-                    for emotion, intensity in response.items():
-                        emotions.append(f"{emotion} ({intensity}/7)")
-                    return '; '.join(emotions)
-                elif isinstance(response, str):
-                    return response
-        return 'not identified'
-
-    def _extract_inner_voice(self, responses):
-        """extract automatic thoughts/inner voice"""
-        for response_data in responses.values():
-            if 'inner voice typically says' in response_data.get('question_text', '').lower():
-                response = response_data.get('response', 'not specified')
-                intensity = response_data.get('intensity', '')
-                if intensity:
-                    return f"{response} (intensity: {intensity}/7)"
-                return response
-        return 'not identified'
-
-    def _extract_behavioral_response(self, responses):
-        """extract behavioral response patterns"""
-        for response_data in responses.values():
-            if 'typical behavioral response' in response_data.get('question_text', '').lower():
-                return response_data.get('response', 'not specified')
-        return 'not identified'
-
-    def _extract_secondary_gains(self, responses):
-        """extract secondary gains"""
-        for response_data in responses.values():
-            if 'what would you lose if this pattern' in response_data.get('question_text', '').lower():
-                return response_data.get('response', 'not identified')
-        return 'not explored in assessment'
-
-    def _analyze_dominant_patterns(self, pattern_scores):
-        """analyze and return dominant patterns with scores"""
-        if not pattern_scores:
-            return []
-        
-        sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
-        
-        dominant_patterns = []
-        for pattern_id, score in sorted_patterns:
-            pattern_name = self.patterns.get(pattern_id, f'pattern {pattern_id}')
-            intensity = 'high' if score >= 5 else 'moderate' if score >= 3 else 'mild'
-            dominant_patterns.append({
-                'id': pattern_id,
-                'name': pattern_name,
-                'score': score,
-                'intensity': intensity
-            })
-        
-        return dominant_patterns
-
-    def _format_pattern_analysis(self, dominant_patterns):
-        """format pattern analysis for email"""
-        if not dominant_patterns:
-            return "no clear dominant patterns identified - general therapeutic approach recommended"
-        
-        analysis = []
-        for i, pattern in enumerate(dominant_patterns[:3]):  # top 3 patterns
-            level = ['PRIMARY', 'SECONDARY', 'TERTIARY'][i]
-            analysis.append(f"{level} PATTERN: {pattern['name']} (score: {pattern['score']:.1f} - {pattern['intensity']} intensity)")
-            analysis.append(f"  clinical focus: {self._get_pattern_focus(pattern['id'])}")
-            analysis.append("")
-        
-        if len(dominant_patterns) > 3:
-            analysis.append(f"additional patterns detected: {len(dominant_patterns) - 3}")
-            for pattern in dominant_patterns[3:]:
-                analysis.append(f"  • {pattern['name']}: {pattern['score']:.1f}")
-        
-        return '\n'.join(analysis)
-
-    def _get_pattern_focus(self, pattern_id):
-        """get clinical focus for each pattern"""
-        focuses = {
-            1: "permission for happiness and positive experiences",
-            2: "collaborative empowerment vs control needs", 
-            3: "trust building with evidence-based transparency",
-            4: "expanding either/or thinking to multiple possibilities",
-            5: "separating worth from achievement - being vs doing",
-            6: "authentic self expression across all contexts",
-            7: "healthy boundaries and balanced self-care",
-            8: "personal authenticity while honoring family values",
-            9: "consistent strength and boundaries across contexts"
-        }
-        return focuses.get(pattern_id, "pattern-specific identity transformation")
-
-    def _recommend_therapeutic_approach(self, dominant_patterns):
-        """recommend overall therapeutic approach"""
-        if not dominant_patterns:
-            return "standard collaborative hypnotherapy with pattern awareness"
-        
-        primary = dominant_patterns[0]
-        approaches = {
-            1: "permission-focused therapy - validate struggles before introducing positivity",
-            2: "collaborative non-directive approach - avoid authoritarian language",
-            3: "transparency-based trust building - explain all techniques clearly",
-            4: "integration-focused therapy - expand binary thinking to multiple options",
-            5: "being-centered approach - emphasize intrinsic worth over achievement",
-            6: "authenticity integration - consistent identity across contexts",
-            7: "balanced care approach - self-care as strength for service",
-            8: "family-honoring individuation - respect values while expanding choice",
-            9: "consistency training - maintaining boundaries across all situations"
-        }
-        
-        base_approach = approaches.get(primary['id'], "individualized pattern-specific approach")
-        
-        # modify based on secondary patterns
-        if len(dominant_patterns) > 1:
-            secondary = dominant_patterns[1]
-            if secondary['score'] >= 4:  # significant secondary pattern
-                base_approach += f" with attention to {self.patterns[secondary['id']]} patterns"
-        
-        return base_approach
-
-    def _recommend_session_1_focus(self, dominant_patterns, risk_flags):
-        """recommend focus for first session"""
-        if risk_flags:
-            return "rapport building with safety assessment and risk management protocols"
-        
-        if not dominant_patterns:
-            return "general assessment, rapport building, and initial pattern interruption"
-        
-        primary = dominant_patterns[0]
-        session_1_focuses = {
-            1: "validate current struggles, build permission for small positive experiences",
-            2: "establish collaborative therapeutic relationship, shared control of session",
-            3: "build trust through transparency, explain therapeutic rationale clearly",
-            4: "explore current either/or thinking, introduce possibility of multiple options",
-            5: "separate worth from performance, appreciate client for who they are",
-            6: "encourage authentic expression in session, model consistency",
-            7: "model balanced care, encourage attention to own needs during session",
-            8: "honor their values while gently exploring personal desires",
-            9: "establish consistent therapeutic boundaries as foundation"
-        }
-        
-        return session_1_focuses.get(primary['id'], "pattern assessment and initial intervention point identification")
-
-    def _recommend_induction_approach(self, responses, dominant_patterns):
-        """recommend induction approach based on trance capacity and patterns"""
-        # find trance capacity response
-        trance_capacity = "standard"
-        for response_data in responses.values():
-            if 'absorbed in movies' in response_data.get('question_text', '').lower():
-                response = response_data.get('response', '')
-                if 'very easily' in response.lower():
-                    trance_capacity = "high"
-                elif 'never' in response.lower():
-                    trance_capacity = "low"
-                break
-        
-        # adjust for patterns
-        if dominant_patterns:
-            primary = dominant_patterns[0]
-            if primary['id'] == 2:  # power struggles
-                return "permissive induction with client choice and control"
-            elif primary['id'] == 3:  # mistrust
-                return "transparent explained induction with clear rationale"
-        
-        if trance_capacity == "high":
-            return "standard progressive relaxation - client likely very responsive"
-        elif trance_capacity == "low":
-            return "conversational induction or mindfulness-based approach"
-        else:
-            return "standard progressive relaxation with responsiveness testing"
-
-    def _generate_primary_suggestions(self, dominant_patterns, presenting_problem):
-        """generate primary hypnotic suggestions"""
-        if not dominant_patterns:
-            return f"when [triggering situation] occurs, you naturally respond with strength and wisdom instead of {presenting_problem}"
-        
-        primary = dominant_patterns[0]
-        suggestions = {
-            1: "you give yourself full permission to experience happiness and positive emotions naturally",
-            2: "you find collaboration more satisfying than control, choosing cooperation naturally",
-            3: "you trust your ability to assess situations while remaining open to connection",
-            4: "you see multiple possibilities in every situation, finding creative solutions easily",
-            5: "your worth exists simply because you are - independent of any achievement",
-            6: "you express your authentic self consistently and confidently in every context",
-            7: "you care for yourself with the same love you show others, naturally and easily",
-            8: "you honor your family while confidently following your own authentic path",
-            9: "you maintain your strength and boundaries consistently in every situation"
-        }
-        
-        return suggestions.get(primary['id'], "you respond to challenging situations with natural confidence and wisdom")
-
-    def _recommend_therapeutic_language(self, dominant_patterns):
-        """recommend therapeutic language to use"""
-        if not dominant_patterns:
-            return "positive, supportive language focused on strength and capability"
-        
-        primary = dominant_patterns[0]
-        language_recommendations = {
-            1: "permission language: 'you can allow yourself...', 'it's safe to experience...'",
-            2: "invitation language: 'you might discover...', 'perhaps you'll find...'", 
-            3: "evidence-based language: 'as you notice...', 'you can see how...'",
-            4: "both/and language: 'you can have both...', 'multiple possibilities exist...'",
-            5: "being language: 'simply by being yourself...', 'your natural worth...'",
-            6: "consistency language: 'your authentic self...', 'naturally expressing...'",
-            7: "balanced language: 'caring for yourself strengthens...', 'healthy boundaries...'",
-            8: "honoring language: 'respecting your family while...', 'your authentic path...'",
-            9: "strength language: 'your consistent strength...', 'maintaining your values...'"
-        }
-        
-        return language_recommendations.get(primary['id'], "supportive, strength-based language")
-
-    def _identify_language_to_avoid(self, dominant_patterns):
-        """identify language to avoid based on patterns"""
-        if not dominant_patterns:
-            return "avoid negative language, focus on what they will do rather than what they won't"
-        
-        primary = dominant_patterns[0]
-        avoid_language = {
-            1: "avoid forced positivity: 'you should be happy', 'just think positive'",
-            2: "avoid commands: 'you will...', 'you must...', any directive language",
-            3: "avoid vague promises: 'trust me', 'just believe', unexplained techniques",
-            4: "avoid either/or language: 'you must choose', 'it's this or that'",
-            5: "avoid achievement pressure: 'you need to accomplish', 'prove yourself'",
-            6: "avoid role-based language: 'as a [role]', context-specific identities",
-            7: "avoid guilt language: 'you should care for others', 'selfishness'",
-            8: "avoid family guilt: 'disappoint your family', loyalty vs personal choice",
-            9: "avoid inconsistency: changing therapeutic approach or boundaries"
-        }
-        
-        return avoid_language.get(primary['id'], "avoid negative language and limiting statements")
-
-    def _format_clinical_considerations(self, risk_flags, urgency):
-        """format clinical considerations section"""
-        considerations = []
-        
-        if risk_flags:
-            considerations.append(f"RISK FACTORS IDENTIFIED: {len(risk_flags)}")
-            for flag in risk_flags:
-                considerations.append(f"  • {flag}")
-                considerations.append(f"    protocol: {self._get_risk_protocol(flag)}")
-        else:
-            considerations.append("no significant risk factors identified - standard protocols apply")
-        
-        if 'extremely urgent' in urgency.lower():
-            considerations.append("URGENCY: extremely urgent - prioritize immediate scheduling")
-        elif 'very urgent' in urgency.lower():
-            considerations.append("URGENCY: very urgent - expedite response and scheduling")
-        
-        return '\n'.join(considerations)
-
-    def _get_risk_protocol(self, flag):
-        """get protocol for specific risk flag"""
-        protocols = {
-            'risk_q_11': "monitor emotional regulation during session",
-            'risk_q_12': "use grounding techniques, avoid regression work",
-            'risk_q_13': "coordinate with medical care if needed"
-        }
-        return protocols.get(flag, "standard clinical precautions")
-
-    def _identify_resistance_factors(self, secondary_gains, dominant_patterns):
-        """identify potential resistance factors"""
-        factors = []
-        
-        if secondary_gains and 'not' not in secondary_gains.lower():
-            factors.append(f"secondary gains present: {secondary_gains[:100]}...")
-        
-        if dominant_patterns:
-            primary = dominant_patterns[0]
-            pattern_resistance = {
-                1: "may resist positive suggestions initially",
-                2: "likely to challenge therapeutic authority",
-                3: "will evaluate therapist trustworthiness carefully",
-                4: "may feel trapped by limited options",
-                5: "might try to 'perform' as good client",
-                6: "may present differently than in real life",
-                7: "may focus on therapist needs over own",
-                8: "could worry about disappointing therapist",
-                9: "may become compliant in session but not outside"
-            }
-            factors.append(pattern_resistance.get(primary['id'], "standard resistance patterns possible"))
-        
-        return '\n'.join(factors) if factors else "low resistance anticipated"
-
-    def _recommend_safety_protocols(self, risk_flags):
-        """recommend safety protocols"""
-        if not risk_flags:
-            return "standard clinical safety protocols sufficient"
-        
-        protocols = []
-        for flag in risk_flags:
-            if 'q_12' in flag:  # dissociation/panic/self-harm question
-                protocols.append("use grounding techniques, shorter sessions initially")
-            elif 'q_11' in flag:  # emotional intensity question
-                protocols.append("monitor emotional regulation, have calming techniques ready")
-        
-        return '; '.join(protocols) if protocols else "monitor closely, standard precautions"
-
-    def _calculate_average_intensity(self, intensity_data):
-        """calculate average intensity rating"""
-        if not intensity_data:
-            return "not measured"
-        
-        values = list(intensity_data.values())
-        if values:
-            avg = sum(values) / len(values)
-            return f"{avg:.1f}/7"
-        return "not available"
-
-    def _generate_intervention_strategy(self, presenting_problem, triggers, physical_response):
-        """generate intervention strategy based on behavioral chain"""
-        if 'not' in physical_response.lower():
-            return "cognitive intervention - focus on thought pattern interruption"
-        elif physical_response != 'not identified':
-            return f"somatic intervention - use physical awareness to interrupt pattern before {presenting_problem}"
-        elif triggers != 'not identified':
-            return "environmental intervention - modify response to triggering situations"
-        else:
-            return "general pattern interruption and response modification"
-
-    def _estimate_session_count(self, dominant_patterns, risk_flags):
-        """estimate number of sessions needed"""
-        base_sessions = 3  # standard rapid transformation
-        
-        if risk_flags:
-            base_sessions += 1  # additional session for safety
-        
-        if dominant_patterns and len(dominant_patterns) >= 2:
-            if dominant_patterns[1]['score'] >= 4:
-                base_sessions += 1  # significant secondary pattern
-        
-        return f"{base_sessions}-{base_sessions + 2} sessions"
-
-    def _recommend_frequency(self, urgency, risk_flags):
-        """recommend session frequency"""
-        if 'extremely urgent' in urgency.lower():
-            return "weekly initially, then bi-weekly"
-        elif risk_flags:
-            return "weekly with close monitoring"
-        else:
-            return "weekly for 3 sessions, then monthly maintenance"
-
-    def _assess_prognosis(self, dominant_patterns, completion_rate, risk_flags):
-        """assess treatment prognosis"""
-        prognosis_score = 0
-        
-        if completion_rate >= 0.9:
-            prognosis_score += 2
-        elif completion_rate >= 0.7:
-            prognosis_score += 1
-        
-        if not risk_flags:
-            prognosis_score += 1
-        
-        if dominant_patterns and len(dominant_patterns) <= 2:
-            prognosis_score += 1
-        
-        if prognosis_score >= 4:
-            return "excellent - expect rapid transformation"
-        elif prognosis_score >= 2:
-            return "good - expect steady progress"
-        else:
-            return "fair - may require longer treatment"
-
-    def _get_rapport_approach(self, dominant_patterns):
-        """get rapport building approach"""
-        if not dominant_patterns:
-            return "standard collaborative approach"
-        
-        primary = dominant_patterns[0]
-        approaches = {
-            1: "validate struggles genuinely",
-            2: "collaborative equal partnership",
-            3: "transparent trustworthy approach",
-            4: "flexible with multiple options",
-            5: "appreciate for who they are",
-            6: "authentic consistent presence",
-            7: "balanced professional boundaries",
-            8: "respectful of their values",
-            9: "reliable consistent approach"
-        }
-        
-        return approaches.get(primary['id'], "client-specific approach")
-
-    def _identify_intervention_point(self, physical_response, emotions):
-        """identify optimal intervention point"""
-        if physical_response and 'not identified' not in physical_response:
-            return "somatic awareness point - physical sensation"
-        elif emotions and 'not identified' not in emotions:
-            return "emotional awareness point - feeling state"
-        else:
-            return "cognitive level - thought patterns"
-
-    def _identify_root_focus(self, dominant_patterns):
-        """identify root cause focus"""
-        if not dominant_patterns:
-            return "general limiting belief transformation"
-        
-        primary = dominant_patterns[0]
-        root_focuses = {
-            1: "early messages about happiness being dangerous",
-            2: "early powerlessness leading to control needs",
-            3: "early trust violations or inconsistency",
-            4: "early forced either/or family dynamics",
-            5: "early conditional love based on performance",
-            6: "early need to be different for acceptance",
-            7: "early caretaker role beyond age capacity",
-            8: "early family expectations vs personal desires",
-            9: "early contexts where strength led to problems"
-        }
-        
-        return root_focuses.get(primary['id'], "core identity and belief system")
-
-    def _recommend_homework(self, dominant_patterns, responses):
-        """recommend homework based on patterns and trance capacity"""
-        if not dominant_patterns:
-            return "daily pattern awareness and basic self-hypnosis practice"
-        
-        primary = dominant_patterns[0]
-        homework = {
-            1: "daily happiness permission practice - notice positive moments without guilt",
-            2: "daily collaboration practice - choose cooperation over control once daily",
-            3: "daily trust calibration - practice appropriate trust with evidence",
-            4: "daily both/and thinking - expand either/or thoughts to possibilities",
-            5: "daily being practice - moments of worth not tied to doing",
-            6: "daily authenticity practice - consistent self across contexts",
-            7: "daily self-care practice - care for self as you would a friend",
-            8: "daily authentic desire check-in - separate from family expectations",
-            9: "daily boundary practice - consistent values across all contexts"
-        }
-        
-        base_homework = homework.get(primary['id'], "daily pattern awareness practice")
-        
-        # add self-hypnosis based on capacity
-        trance_capacity = "standard"
-        for response_data in responses.values():
-            if 'absorbed in movies' in response_data.get('question_text', '').lower():
-                response = response_data.get('response', '')
-                if 'very easily' in response.lower():
-                    trance_capacity = "high"
-                elif 'never' in response.lower():
-                    trance_capacity = "low"
-                break
-        
-        if trance_capacity == "high":
-            base_homework += "\nself-hypnosis: 15-20 minute daily practice with recorded session"
-        elif trance_capacity == "low":
-            base_homework += "\nmindfulness: 5-10 minute daily awareness practice"
-        else:
-            base_homework += "\nself-hypnosis: 10-15 minute daily practice with simple relaxation"
-        
-        return base_homework
-
-    def _get_contact_timeline(self, urgency, risk_flags):
-        """get contact timeline based on urgency and risk"""
-        if len(risk_flags) >= 3:
-            return "within 24 hours - multiple risk factors present"
-        elif 'extremely urgent' in urgency.lower():
-            return "within 24 hours - client urgency level"
-        elif 'very urgent' in urgency.lower():
-            return "within 48 hours - priority response"
-        else:
-            return "within 72 hours - standard response time"
-
-    def _generate_action_priorities(self, urgency, risk_flags, next_step):
-        """generate immediate action priorities"""
-    def _generate_action_priorities(self, urgency, risk_flags, next_step):
-        """generate immediate action priorities"""
-        priorities = []
-        
-        if risk_flags:
-            priorities.append("1. review risk factors and prepare safety protocols")
-        
-        if 'extremely urgent' in urgency.lower():
-            priorities.append("2. prioritize immediate scheduling - offer within 48-72 hours")
-        
-        if 'consultation' in next_step.lower():
-            priorities.append("3. schedule discovery call first per client preference")
-        elif 'analysis' in next_step.lower():
-            priorities.append("3. send analysis summary before scheduling session")
-        
-        priorities.append("4. prepare session materials based on dominant patterns")
-        priorities.append("5. review complete assessment data before contact")
-        
-        return '\n'.join(priorities)
-
-    def _get_induction_type(self, responses):
-        """get recommended induction type"""
-        for response_data in responses.values():
-            if 'absorbed in movies' in response_data.get('question_text', '').lower():
-                response = response_data.get('response', '')
-                if 'very easily' in response.lower():
-                    return "progressive relaxation"
-                elif 'never' in response.lower():
-                    return "conversational"
-                break
-        return "standard progressive relaxation"
-
-    def _get_main_resistance_area(self, secondary_gains):
-        """get main area of potential resistance"""
-        if secondary_gains and 'not' not in secondary_gains.lower():
-            if len(secondary_gains) > 50:
-                return "secondary gains from current pattern"
-            else:
-                return "change process in general"
-        return "minimal resistance expected"
-
-    def _get_safety_preparations(self, risk_flags):
-        """get safety preparations needed"""
-        if not risk_flags:
-            return "standard safety protocols"
-        
-        preparations = []
-        for flag in risk_flags:
-            if 'q_12' in flag:
-                preparations.append("grounding techniques")
-            elif 'q_11' in flag:
-                preparations.append("emotional regulation support")
-        
-        return ', '.join(preparations) if preparations else "standard precautions"
-
-    def _get_review_timeline(self, urgency, risk_flags):
-        """get clinical review timeline"""
-        if risk_flags:
-            return "24 hours for safety assessment"
-        elif 'extremely urgent' in urgency.lower():
-            return "24-48 hours for priority response"
-        else:
-            return "48-72 hours standard review"
-
-    def _build_email(self, subject, body):
-        """build email message"""
+    
+    # ================== STANDARD BOOKING EMAILS ==================
+    
+    def send_booking_email(self, name, email, concern, message, booking_type):
+        """Send standard booking notification (maintains compatibility)"""
         try:
+            print(f"[DEBUG] Sending {booking_type} booking email")
+            
+            subject = f"📞 New {booking_type} Request - {name}"
+            body = self._format_booking_email_body(name, email, concern, message, booking_type)
+            
+            return self._send_email(subject, body, booking_type)
+            
+        except Exception as e:
+            print(f"[ERROR] Booking email error: {e}")
+            return False
+    
+    def send_discovery_call_email(self, booking_data):
+        """Send discovery call booking notification"""
+        try:
+            name = booking_data.get('name', '')
+            email = booking_data.get('email', '')
+            concern = booking_data.get('concern', '')
+            message = booking_data.get('concern_description', '') or booking_data.get('message', '')
+            urgency = booking_data.get('urgency', '')
+            experience = booking_data.get('experience', '')
+            
+            subject = f"📞 New Discovery Call Request - {name}"
+            body = self._format_discovery_call_body(name, email, concern, message, urgency, experience)
+            
+            return self._send_email(subject, body, "Discovery Call")
+            
+        except Exception as e:
+            print(f"[ERROR] Discovery call email error: {e}")
+            return False
+    
+    def send_package_booking_email(self, booking_data):
+        """Send transformation package booking notification"""
+        try:
+            name = booking_data.get('name', '')
+            email = booking_data.get('email', '')
+            concern = booking_data.get('concern', '')
+            message = booking_data.get('message', '')
+            package_type = booking_data.get('package_type', '')
+            experience = booking_data.get('experience', '')
+            
+            subject = f"💰 New Transformation Package Booking - {name}"
+            body = self._format_package_booking_body(name, email, concern, message, package_type, experience)
+            
+            return self._send_email(subject, body, "Package Booking")
+            
+        except Exception as e:
+            print(f"[ERROR] Package booking email error: {e}")
+            return False
+    
+    def _format_booking_email_body(self, name, email, concern, message, booking_type):
+        """Format standard booking email (maintains compatibility)"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        return f"""
+📞 NEW {booking_type.upper()} REQUEST
+Received: {timestamp}
+
+═══════════════════════════════════════════
+
+👤 CONTACT INFORMATION:
+Name: {name}
+Email: {email}
+
+🎯 CONCERN DETAILS:
+Primary Concern: {concern}
+Message: {message}
+
+📞 NEXT STEPS:
+Please contact this person within 24-48 hours to schedule their {booking_type.lower()}.
+
+═══════════════════════════════════════════
+Bangkok Hypnotherapy Clinic
+Automated Booking System
+        """
+    
+    def _format_discovery_call_body(self, name, email, concern, message, urgency, experience):
+        """Format discovery call email with enhanced details"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Determine priority based on urgency
+        if 'extremely urgent' in urgency.lower():
+            priority = "🔴 HIGH PRIORITY"
+        elif 'very urgent' in urgency.lower():
+            priority = "🟡 PRIORITY"
+        else:
+            priority = "📋 STANDARD"
+        
+        return f"""
+{priority} DISCOVERY CALL REQUEST
+Received: {timestamp}
+
+═══════════════════════════════════════════
+
+👤 CLIENT INFORMATION:
+Name: {name}
+Email: {email}
+
+🎯 CONCERN DETAILS:
+Primary Concern: {concern}
+Urgency Level: {urgency}
+Previous Experience: {experience}
+
+💬 CLIENT MESSAGE:
+{message}
+
+📞 ACTION REQUIRED:
+Contact Timeline: {self._get_simple_contact_timeline(urgency)}
+
+RECOMMENDED APPROACH:
+1. {self._get_discovery_call_approach(concern, urgency)}
+2. Assess suitability for rapid transformation method
+3. Explain 2-session approach if appropriate
+4. Schedule Session 1 if client is ready to proceed
+
+═══════════════════════════════════════════
+Bangkok Hypnotherapy Clinic
+Discovery Call System
+        """
+    
+    def _format_package_booking_body(self, name, email, concern, message, package_type, experience):
+        """Format package booking email with enhanced details"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        return f"""
+💰 TRANSFORMATION PACKAGE BOOKING
+Received: {timestamp}
+
+═══════════════════════════════════════════
+
+👤 CLIENT INFORMATION:
+Name: {name}
+Email: {email}
+
+📦 PACKAGE DETAILS:
+Selected Package: {package_type}
+Primary Concern: {concern}
+Previous Experience: {experience}
+
+💬 CLIENT MESSAGE:
+{message}
+
+📞 HIGH PRIORITY ACTION REQUIRED:
+This client is ready to proceed with transformation package.
+
+IMMEDIATE STEPS:
+1. Send welcome email with package confirmation
+2. Schedule Session 1 within 48-72 hours
+3. Send pre-session preparation materials
+4. Confirm payment method and schedule
+
+💰 EXPECTED REVENUE: 3,000-4,000 THB
+
+═══════════════════════════════════════════
+Bangkok Hypnotherapy Clinic
+Package Booking System
+        """
+    
+    # ================== EMAIL SENDING INFRASTRUCTURE ==================
+    
+    def _send_email(self, subject, body, email_type):
+        """Send email via Gmail SMTP"""
+        try:
+            if not self.password:
+                print(f"[DEBUG] {email_type} email simulation (no password configured)")
+                print(f"[DEBUG] To: {self.recipient_email}")
+                print(f"[DEBUG] Subject: {subject}")
+                return True
+            
+            # Create message
             msg = MIMEMultipart()
             msg['From'] = self.sender_email
             msg['To'] = self.recipient_email
             msg['Subject'] = subject
             msg.attach(MIMEText(body, 'plain'))
-            return msg
-        except Exception as e:
-            print(f"[ERROR] error building email: {e}")
-            raise
-
-    def _dispatch(self, msg, data, email_type):
-        """dispatch email with error handling"""
-        try:
-            print(f"[DEBUG] dispatching {email_type} email")
             
-            if not self.password:
-                print(f"[DEBUG] {email_type} email would be sent (no password configured)")
-                return True
-            
-            if not self.sender_email or not self.recipient_email:
-                print(f"[ERROR] missing email configuration for {email_type}")
-                return False
-                
-            return self._send_email(msg)
-            
-        except Exception as e:
-            print(f"[ERROR] exception in _dispatch: {e}")
-            return False
-
-    def _send_email(self, msg):
-        """send email via gmail smtp"""
-        try:
-            print("[DEBUG] attempting to send email via smtp")
+            # Send email
             server = smtplib.SMTP(self.smtp_server, self.smtp_port)
             server.starttls()
             server.login(self.sender_email, self.password)
             server.sendmail(self.sender_email, self.recipient_email, msg.as_string())
             server.quit()
             
-            print(f"[SUCCESS] email sent from {self.sender_email} to {self.recipient_email}")
+            print(f"[SUCCESS] {email_type} email sent successfully")
             return True
             
         except Exception as e:
-            print(f"[ERROR] error sending email: {e}")
+            print(f"[ERROR] SMTP error for {email_type}: {e}")
             return False
+    
+    # ================== CLINICAL ANALYSIS HELPER METHODS ==================
+    
+    def _get_priority_flag(self, urgency, risk_flags):
+        """Determine clinical priority flag"""
+        if len(risk_flags) >= 3:
+            return "🔴 HIGH RISK"
+        elif 'extremely urgent' in urgency.lower():
+            return "🟠 URGENT"
+        elif 'very urgent' in urgency.lower():
+            return "🟡 PRIORITY"
+        else:
+            return "📋 ASSESSMENT"
+    
+    def _get_clinical_priority(self, urgency, risk_flags):
+        if len(risk_flags) >= 3:
+            return "HIGH RISK - Specialized approach required"
+        elif 'extremely urgent' in urgency.lower():
+            return "URGENT - Priority scheduling within 24 hours"
+        elif 'very urgent' in urgency.lower():
+            return "ELEVATED - Contact within 48 hours"
+        else:
+            return "STANDARD - Contact within 72 hours"
+    
+    def _get_intensity_level(self, score):
+        if score >= 8:
+            return "Very High"
+        elif score >= 6:
+            return "High"
+        elif score >= 4:
+            return "Moderate"
+        elif score >= 2:
+            return "Low"
+        else:
+            return "Minimal"
+    
+    def _get_clinical_significance(self, pattern_id, score):
+        base_significance = {
+            1: "Blocks positive therapeutic outcomes, requires permission-based approach",
+            2: "May resist directive techniques, needs collaborative framework",
+            3: "Trust-building essential before intervention, transparency required",
+            4: "Expand thinking flexibility, address either/or cognitive patterns",
+            5: "Separate self-worth from performance, emphasize being over doing",
+            6: "Identity integration work needed across contexts",
+            7: "Self-care resistance expected, reframe as strength for helping others",
+            8: "Family loyalty conflicts may emerge, honor while expanding choice",
+            9: "Context-dependent response patterns, strengthen consistent boundaries"
+        }.get(pattern_id, "Pattern-specific intervention required")
+        
+        if score >= 8:
+            return f"DOMINANT PATTERN: {base_significance}"
+        elif score >= 6:
+            return f"SIGNIFICANT PATTERN: {base_significance}"
+        else:
+            return f"SUPPORTING PATTERN: {base_significance}"
+    
+    def _get_therapeutic_approach(self, pattern_id):
+        approaches = {
+            1: "Permission installation, positive expectation building, success tolerance",
+            2: "Collaborative empowerment, shared control, non-directive language",
+            3: "Trust-first approach, transparent explanations, evidence-based interventions",
+            4: "Integration therapy, both/and thinking, possibility expansion",
+            5: "Being-centered work, inherent worth installation, performance separation",
+            6: "Authentic self integration across contexts, consistency building",
+            7: "Self-care strength reframing, boundary establishment, balanced care",
+            8: "Personal desire differentiation, respectful family honor, authentic vision",
+            9: "Context-independent strength, consistent boundary maintenance"
+        }
+        return approaches.get(pattern_id, "Pattern-specific individualized approach")
+    
+    def _get_session_priority(self, pattern_id, is_dominant):
+        if is_dominant:
+            priorities = {
+                1: "Session 1 Priority - Address happiness resistance, install permission",
+                2: "Session 1 Priority - Establish collaboration, avoid power dynamics",
+                3: "Session 1 Priority - Build trust foundation, transparent process",
+                4: "Session 1 Priority - Expand thinking flexibility, explore options",
+                5: "Session 1 Priority - Separate worth from doing, establish being value",
+                6: "Session 1 Priority - Support authentic consistency across contexts",
+                7: "Session 1 Priority - Reframe self-care as strength for service",
+                8: "Session 1 Priority - Honor family while supporting personal truth",
+                9: "Session 1 Priority - Strengthen consistent boundaries across contexts"
+            }
+            return priorities.get(pattern_id, "Session 1 Priority - Address dominant pattern")
+        else:
+            return "Session 2 Integration - Address as supporting pattern"
+    
+    def _assess_overall_risk_level(self, risk_flags):
+        if len(risk_flags) >= 4:
+            return "HIGH - Specialized clinical approach required"
+        elif len(risk_flags) >= 2:
+            return "ELEVATED - Modified approach with safety protocols"
+        elif len(risk_flags) >= 1:
+            return "MODERATE - Standard approach with precautions"
+        else:
+            return "LOW - Standard hypnotherapy approach suitable"
+    
+    def _get_risk_description(self, flag):
+        descriptions = {
+            'risk_q_10': "Current medical/mental health care - coordination required",
+            'risk_q_11': "Intense emotional states - emotional regulation concerns",
+            'risk_q_12': "Dissociation/panic/self-harm history - safety protocols needed",
+            'risk_q_13': "Substance use patterns - sobriety considerations"
+        }
+        return descriptions.get(flag, f"Risk factor identified - {flag}")
+    
+    def _get_risk_management(self, flag):
+        management = {
+            'risk_q_10': "Coordinate with existing care providers before sessions",
+            'risk_q_11': "Use grounding techniques, shorter sessions, emotion regulation",
+            'risk_q_12': "Safety assessment, crisis resources, modified approach",
+            'risk_q_13': "Address substance use, consider timing of intervention"
+        }
+        return management.get(flag, "Standard clinical precautions")
+    
+    def _get_recommended_approach(self, dominant_pattern, risk_flags):
+        if len(risk_flags) >= 2:
+            return "Modified hypnotherapy with specialized safety protocols"
+        elif dominant_pattern in [1, 2, 3]:
+            return "Collaborative, permission-based hypnotherapy approach"
+        elif dominant_pattern in [7, 8, 9]:
+            return "Gentle, supportive hypnotherapy with boundary work"
+        else:
+            return "Standard clinical hypnotherapy with pattern-specific modifications"
+    
+    def _estimate_session_count(self, pattern_scores, risk_flags):
+        if len(risk_flags) >= 2:
+            return "3-4 sessions (additional support needed)"
+        elif len(pattern_scores) >= 3:
+            return "2-3 sessions (complex pattern integration)"
+        else:
+            return "2 sessions (standard rapid transformation)"
+    
+    def _estimate_success_probability(self, completion_rate, risk_count):
+        if completion_rate >= 90 and risk_count == 0:
+            return "HIGH (85%+) - Excellent assessment quality, no risk factors"
+        elif completion_rate >= 75 and risk_count <= 1:
+            return "GOOD (70-85%) - Good assessment quality, minimal risk"
+        elif completion_rate >= 60:
+            return "MODERATE (55-70%) - Fair assessment, some complexity"
+        else:
+            return "VARIABLE - May need additional assessment for optimization"
+    
+    def _get_session_1_focus(self, dominant_pattern, concern):
+        if dominant_pattern:
+            pattern_name = self.pattern_descriptions.get(dominant_pattern, f"Pattern {dominant_pattern}")
+            return f"Address {pattern_name} - rapport building and initial pattern interruption"
+        else:
+            return f"Exploratory session focused on client's primary concern: {concern[:100]}"
+    
+    def _get_session_2_focus(self, dominant_pattern, pattern_scores):
+        if dominant_pattern and len(pattern_scores) >= 2:
+            return "Core transformation of dominant pattern with supporting pattern integration"
+        elif dominant_pattern:
+            return f"Deep transformation of {self.pattern_descriptions.get(dominant_pattern)}"
+        else:
+            return "Individualized transformation based on session 1 insights"
+    
+    def _identify_resistance_points(self, pattern_scores, responses):
+        resistance_patterns = []
+        
+        # Check for specific resistance indicators
+        if 1 in pattern_scores:  # Unhappiness culture
+            resistance_patterns.append("• May resist positive suggestions or success imagery")
+        if 2 in pattern_scores:  # Power struggles
+            resistance_patterns.append("• May challenge therapist authority or directive language")
+        if 3 in pattern_scores:  # Mistrust
+            resistance_patterns.append("• May question techniques or need extensive explanations")
+        
+        # Check secondary gain responses
+        secondary_gain_responses = [r for r in responses.values() 
+                                  if 'secondary_gain' in r.get('question_text', '').lower()]
+        if secondary_gain_responses:
+            resistance_patterns.append("• Secondary gains identified - address benefits of current pattern")
+        
+        return '\n'.join(resistance_patterns) if resistance_patterns else "• Minimal resistance predicted based on assessment"
+    
+    def _generate_hypnotherapy_protocol(self, dominant_pattern, intensity_data):
+        if not dominant_pattern:
+            return "Standard protocol with individualization based on session 1 findings"
+        
+        protocols = {
+            1: "Gentle permission-based induction, positive expectation installation, happiness tolerance",
+            2: "Collaborative induction, shared control language, empowerment suggestions",
+            3: "Transparent explanation of process, trust-building suggestions, evidence-based approach",
+            4: "Integration-focused suggestions, both/and language, possibility expansion",
+            5: "Being-centered induction, worth installation separate from doing, presence anchoring",
+            6: "Consistent identity suggestions across contexts, authenticity integration",
+            7: "Self-care strength installation, balanced care suggestions, boundary visualization",
+            8: "Family honor with personal truth, loyalty reframe, authentic path suggestions",
+            9: "Consistent strength installation, boundary integrity across all contexts"
+        }
+        
+        base_protocol = protocols.get(dominant_pattern, "Standard individualized approach")
+        
+        # Modify based on intensity data
+        if intensity_data and max(intensity_data.values()) >= 6:
+            base_protocol += " - High intensity responses require gentle pacing and grounding"
+        
+        return base_protocol
+    
+    def _extract_key_responses(self, responses):
+        """Extract the most clinically relevant responses"""
+        key_responses = {}
+        
+        for q_id, response_data in responses.items():
+            question = response_data.get('question_text', '')
+            response = response_data.get('response', '')
+            
+            # Include key assessment questions
+            if any(keyword in question.lower() for keyword in 
+                   ['specific behavior', 'trigger', 'physical sensation', 'inner voice', 'behavioral response']):
+                key_responses[question[:80] + "..."] = str(response)[:150]
+        
+        return dict(list(key_responses.items())[:5])  # Top 5 most relevant
+    
+    def _get_contact_timeline(self, urgency, risk_flags):
+        if len(risk_flags) >= 3:
+            return "IMMEDIATE - Within 12 hours for safety assessment"
+        elif 'extremely urgent' in urgency.lower():
+            return "PRIORITY - Within 24 hours for urgent scheduling"
+        elif 'very urgent' in urgency.lower():
+            return "ELEVATED - Within 48 hours for prompt response"
+        else:
+            return "STANDARD - Within 72 hours for routine follow-up"
+    
+    def _get_recommended_response(self, next_step):
+        if 'consultation' in next_step.lower():
+            return "Schedule free consultation call via provided contact information"
+        elif 'package' in next_step.lower():
+            return "Send transformation package information and pricing"
+        elif 'analysis' in next_step.lower():
+            return "Email detailed analysis with specific recommendations first"
+        else:
+            return "Contact client to discuss personalized next steps"
+    
+    def _get_specific_preparation(self, dominant_pattern, risk_flags):
+        if len(risk_flags) >= 2:
+            return "Prepare safety protocols and crisis resources"
+        elif dominant_pattern == 1:
+            return "Prepare permission-based language, avoid overwhelming positivity"
+        elif dominant_pattern == 2:
+            return "Prepare collaborative approach, avoid directive commands"
+        elif dominant_pattern == 3:
+            return "Prepare transparent explanations, evidence-based rationales"
+        else:
+            return f"Prepare pattern-specific approach for {self.pattern_descriptions.get(dominant_pattern, 'identified pattern')}"
+    
+    def _assess_clinical_confidence(self, completion_rate, pattern_count):
+        if completion_rate >= 90 and pattern_count >= 2:
+            return "HIGH - Comprehensive data for targeted intervention"
+        elif completion_rate >= 75:
+            return "GOOD - Adequate data for effective treatment planning"
+        else:
+            return "MODERATE - May benefit from supplemental assessment"
+    
+    def _assess_data_integrity(self, responses):
+        if len(responses) >= 20:
+            return "EXCELLENT - Comprehensive response set"
+        elif len(responses) >= 15:
+            return "GOOD - Adequate response coverage"
+        else:
+            return "FAIR - Limited responses, focus on quality of available data"
+    
+    def _recommend_therapist_type(self, risk_flags, urgency):
+        if len(risk_flags) >= 3:
+            return "Licensed clinical psychologist with hypnotherapy specialization"
+        elif len(risk_flags) >= 1:
+            return "Licensed clinical hypnotherapist with safety training"
+        elif 'extremely urgent' in urgency.lower():
+            return "Experienced rapid-change hypnotherapist"
+        else:
+            return "Certified clinical hypnotherapist"
+    
+    def _get_next_review_date(self, urgency, risk_flags):
+        if len(risk_flags) >= 2:
+            return "24-48 hours post-contact for safety monitoring"
+        elif 'extremely urgent' in urgency.lower():
+            return "1 week post-session for progress assessment"
+        else:
+            return "2 weeks post-completion for outcome tracking"
+    
+    # ================== BOOKING HELPER METHODS ==================
+    
+    def _get_simple_contact_timeline(self, urgency):
+        """Get simple contact timeline for booking emails"""
+        if 'extremely urgent' in urgency.lower():
+            return "Within 24 hours (high priority)"
+        elif 'very urgent' in urgency.lower():
+            return "Within 48 hours (priority)"
+        else:
+            return "Within 72 hours (standard)"
+    
+    def _get_discovery_call_approach(self, concern, urgency):
+        """Get recommended approach for discovery call"""
+        if 'anxiety' in concern.lower():
+            return "Use calm, reassuring approach - explain safety of hypnotherapy"
+        elif 'smoking' in concern.lower():
+            return "Focus on rapid cessation method - emphasize 2-session success rate"
+        elif 'habit' in concern.lower():
+            return "Explain pattern interruption approach - assess habit specifics"
+        elif 'extremely urgent' in urgency.lower():
+            return "Acknowledge urgency, assess suitability for immediate scheduling"
+        else:
+            return "Standard discovery call approach - assess suitability and explain method"
 
 
-# global instance and helper functions
-clinical_email_handler = ImprovedClinicalEmailHandler()
+# ================== GLOBAL INSTANCE AND HELPER FUNCTIONS ==================
 
-def send_clinical_assessment_results(data):
-    """send clinical assessment results email - main function called by assess.py"""
+# Global instance
+comprehensive_email_handler = ComprehensiveEmailHandler()
+
+# ====== MAIN ASSESSMENT FUNCTION ======
+def send_clinical_assessment_results(assessment_data):
+    """Send clinical assessment results - Main function for assess.py integration"""
     try:
-        print("[DEBUG] improved clinical email handler - send_clinical_assessment_results called")
-        return clinical_email_handler.send_clinical_assessment_results(data)
+        print("[DEBUG] Sending clinical assessment results via comprehensive handler")
+        return comprehensive_email_handler.send_clinical_assessment_results(assessment_data)
     except Exception as e:
-        print(f"[ERROR] exception in global send_clinical_assessment_results: {e}")
-        import traceback
-        traceback.print_exc()
+        print(f"[ERROR] Exception in clinical assessment email: {e}")
         return False
 
-# backward compatibility functions
-def send_assessment_results_email(data):
-    """backward compatibility for assessment results"""
-    return send_clinical_assessment_results(data)
+# ====== STANDARD BOOKING FUNCTIONS ======
+def send_booking_email(name, email, concern, message, booking_type):
+    """Send standard booking email - Maintains existing compatibility"""
+    try:
+        print(f"[DEBUG] Sending {booking_type} booking email")
+        return comprehensive_email_handler.send_booking_email(name, email, concern, message, booking_type)
+    except Exception as e:
+        print(f"[ERROR] Exception in booking email: {e}")
+        return False
 
-def send_discovery_call_email(data):
-    """backward compatibility for discovery calls"""  
+def send_discovery_call_email(booking_data):
+    """Send discovery call booking notification"""
+    try:
+        print("[DEBUG] Sending discovery call email")
+        return comprehensive_email_handler.send_discovery_call_email(booking_data)
+    except Exception as e:
+        print(f"[ERROR] Exception in discovery call email: {e}")
+        return False
+
+def send_package_booking_email(booking_data):
+    """Send package booking notification"""
+    try:
+        print("[DEBUG] Sending package booking email")
+        return comprehensive_email_handler.send_package_booking_email(booking_data)
+    except Exception as e:
+        print(f"[ERROR] Exception in package booking email: {e}")
+        return False
+
+# ====== BACKWARD COMPATIBILITY FUNCTIONS ======
+def send_assessment_results_email(data):
+    """Backward compatibility for assessment results"""
     return send_clinical_assessment_results(data)
 
 def send_contact_form_email(data):
-    """backward compatibility for contact forms"""
-    return send_clinical_assessment_results(data)
+    """Backward compatibility for contact forms"""
+    # Convert contact form data to booking format
+    booking_data = {
+        'name': data.get('name', ''),
+        'email': data.get('email', ''),
+        'concern': data.get('concern', ''),
+        'message': data.get('message', ''),
+        'urgency': data.get('urgency', ''),
+        'experience': data.get('experience', '')
+    }
+    return send_discovery_call_email(booking_data)
 
 def send_booking_confirmation_email(data):
-    """backward compatibility for booking confirmations"""
-    return send_clinical_assessment_results(data)
+    """Backward compatibility for booking confirmations"""
+    return send_discovery_call_email(data)
