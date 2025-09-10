@@ -2115,6 +2115,62 @@ class AdaptiveBehavioralAssessment:
     def _handle_response_types(self, qid, question):
         qtype = question['type']
         
+        if qtype == "single_choice":
+            for i, option in enumerate(question["options"]):
+                if st.button(option, key=f"opt_{qid}_{i}", use_container_width=True):
+                    self._save_response(qid, option, question)
+                    self._advance()
+                    st.experimental_rerun()
+    
+        elif qtype == "slider":
+            value = st.slider(
+                label=question.get("text", ""),
+                min_value=question.get("min", 0),
+                max_value=question.get("max", 10),
+                value=question.get("value", 5),
+                key=f"slider_{qid}",
+            )
+            if st.button(f"Continue {qid}", use_container_width=True):
+                self._save_response(qid, str(value), question)
+                self._advance()
+                st.experimental_rerun()
+    
+        elif qtype == "text_completion":
+            response = st.text_area(
+                label="",  # hidden label
+                placeholder=question.get("placeholder", "Your response..."),
+                key=f"text_{qid}",
+                height=80,
+                label_visibility="collapsed",
+            )
+            if st.button(f"Continue {qid}", use_container_width=True):
+                if response.strip():
+                    self._save_response(qid, response.strip(), question)
+                    self._advance()
+                    st.experimental_rerun()
+                else:
+                    # Optionally show nothing or a subtle separator instead of info message
+                    st.markdown("")
+    
+        elif qtype == "multi_select":
+            options = question.get("options", [])
+            selected = st.multiselect(
+                label="", 
+                options=options,
+                key=f"multi_{qid}",
+                label_visibility="collapsed"
+            )
+            if st.button(f"Continue {qid}", use_container_width=True):
+                if selected:
+                    self._save_response(qid, ", ".join(selected), question)
+                    self._advance()
+                    st.experimental_rerun()
+                else:
+                    # No message shown if nothing selected; user can try again
+                    st.markdown("")
+
+        qtype = question['type']
+        
         if qtype == 'single_choice':
             for i, option in enumerate(question['options']):
                 if st.button(option, key=f"q_{qid}_opt_{i}", use_container_width=True):
