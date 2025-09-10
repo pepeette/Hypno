@@ -871,7 +871,7 @@ class ComprehensiveBehavioralAssessment:
         if not st.session_state.assessment_completed:
             total_q = self._estimate_total_questions()
             time_remaining = self._estimate_time_remaining()
-            st.info(f"**Personalized hypnotherapy starts with understanding your unique patterns.** This clinical assessment identifies your specific behavioral patterns to create the most effective transformation approach. Estimated time: {time_remaining:.0f} minutes.")
+            st.info("Identify your unique neural and behavioral patterns to enable targeted, rapid-change hypnotherapy. Estimated time: {time_remaining:.0f} minutes.")
 
     def _render_current_question(self):
         current_q_id = self._get_current_question_id()
