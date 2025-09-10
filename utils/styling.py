@@ -702,7 +702,7 @@ def apply_global_styles():
     /* Assessment button styling - compact and left-aligned */
     .assess-button {
         margin: 0 !important;
-        margin-bottom: 2px !important;
+        margin-bottom: 1px !important;
         padding: 0 !important;
     }
     
