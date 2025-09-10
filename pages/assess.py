@@ -2130,7 +2130,7 @@ class AdaptiveBehavioralAssessment:
                     self._advance_question()
                     st.rerun()
             else:
-                continue
+                st.markdown("---")
 
     def _render_navigation(self, current_q_id):
         col1, col2, col3 = st.columns([1, 2, 1])
