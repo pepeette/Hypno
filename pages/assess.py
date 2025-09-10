@@ -1347,9 +1347,11 @@
 
 
 
+Keep the questioning and logic from the below code, but align the design with your last output 
+
 """
-Enhanced Clinical Behavioral Pattern Assessment - Mobile-Optimized UX
-Clean design with expert-level clinical questioning for rapid transformation
+Enhanced Clinical Behavioral Pattern Assessment - Expert-Level Hypnotherapy Focus
+Mobile-optimized with advanced clinical pattern detection for rapid transformation
 """
 import streamlit as st
 from datetime import datetime
@@ -1364,7 +1366,7 @@ except ImportError:
     print("Paywall component not available")
 
 class AdaptiveBehavioralAssessment:
-    """Mobile-optimized behavioral pattern assessment with clinical depth"""
+    """Clinical-grade behavioral pattern assessment with hypnotherapy optimization"""
     
     def __init__(self):
         self._init_session_state()
@@ -1462,7 +1464,8 @@ class AdaptiveBehavioralAssessment:
                 "type": "text_completion",
                 "placeholder": "Describe the exact behavior, feeling, or situation you want to change...",
                 "patterns": "presenting_problem",
-                "adaptive_triggers": ["behavioral_specificity"]
+                "adaptive_triggers": ["behavioral_specificity"],
+                "clinical_insight": "Primary therapeutic target identification"
             },
             
             2: {
@@ -1477,7 +1480,8 @@ class AdaptiveBehavioralAssessment:
                 ],
                 "patterns": "chronicity",
                 "weights": [1, 2, 3, 4, 5],
-                "adaptive_triggers": ["pattern_entrenchment"]
+                "adaptive_triggers": ["pattern_entrenchment"],
+                "clinical_insight": "Pattern entrenchment level assessment"
             },
             
             3: {
@@ -1486,7 +1490,8 @@ class AdaptiveBehavioralAssessment:
                 "min": 1,
                 "max": 10,
                 "value": 5,
-                "patterns": "interference_level"
+                "patterns": "interference_level",
+                "clinical_insight": "Functional impact measurement"
             },
             
             4: {
@@ -1494,7 +1499,8 @@ class AdaptiveBehavioralAssessment:
                 "type": "text_completion",
                 "placeholder": "What happens right before the pattern occurs? Who is involved? Where are you?",
                 "patterns": "trigger_mapping",
-                "adaptive_triggers": ["trigger_specificity"]
+                "adaptive_triggers": ["trigger_specificity"],
+                "clinical_insight": "Contextual trigger identification"
             },
             
             # Clinical Safety Integration (Questions 5-7)
@@ -1508,7 +1514,8 @@ class AdaptiveBehavioralAssessment:
                     "Yes, for both",
                     "Prefer not to say"
                 ],
-                "risk_assessment": True
+                "risk_assessment": True,
+                "clinical_insight": "Medical contraindication screening"
             },
             
             6: {
@@ -1522,7 +1529,8 @@ class AdaptiveBehavioralAssessment:
                     "Currently experiencing"
                 ],
                 "risk_assessment": True,
-                "weights": [0, 1, 2, 3, 4]
+                "weights": [0, 1, 2, 3, 4],
+                "clinical_insight": "Dissociation and crisis risk assessment"
             },
             
             7: {
@@ -1536,7 +1544,8 @@ class AdaptiveBehavioralAssessment:
                     "Recreational drugs"
                 ],
                 "risk_assessment": True,
-                "weights": [0, 1, 2, 1, 3]
+                "weights": [0, 1, 2, 1, 3],
+                "clinical_insight": "Substance use coping assessment"
             },
             
             # Behavioral Chain Mapping (Questions 8-12)
@@ -1545,7 +1554,8 @@ class AdaptiveBehavioralAssessment:
                 "type": "text_completion",
                 "placeholder": "e.g., chest tightness, stomach drop, heat flush, numbness...",
                 "patterns": "somatic_response",
-                "adaptive_triggers": ["somatic_awareness"]
+                "adaptive_triggers": ["somatic_awareness"],
+                "clinical_insight": "Somatic marker identification"
             },
             
             9: {
@@ -1555,7 +1565,8 @@ class AdaptiveBehavioralAssessment:
                     "Anxiety", "Anger", "Shame", "Sadness", "Fear",
                     "Guilt", "Frustration", "Overwhelm", "Numbness", "Other"
                 ],
-                "patterns": "emotional_chain"
+                "patterns": "emotional_chain",
+                "clinical_insight": "Emotional sequence mapping"
             },
             
             10: {
@@ -1563,7 +1574,8 @@ class AdaptiveBehavioralAssessment:
                 "type": "text_completion", 
                 "placeholder": "What does your inner voice say in these moments?",
                 "patterns": "cognitive_pattern",
-                "adaptive_triggers": ["core_beliefs"]
+                "adaptive_triggers": ["core_beliefs"],
+                "clinical_insight": "Automatic thought pattern identification"
             },
             
             11: {
@@ -1577,7 +1589,8 @@ class AdaptiveBehavioralAssessment:
                     "Overcompensation or perfectionism"
                 ],
                 "patterns": [7, 5, 3, 1, 5],
-                "weights": [2, 3, 2, 3, 2]
+                "weights": [2, 3, 2, 3, 2],
+                "clinical_insight": "Behavioral response pattern"
             },
             
             12: {
@@ -1590,7 +1603,8 @@ class AdaptiveBehavioralAssessment:
                     "Relationship conflict",
                     "Self-reinforcement of the pattern"
                 ],
-                "patterns": "consequence_chain"
+                "patterns": "consequence_chain",
+                "clinical_insight": "Pattern reinforcement analysis"
             },
             
             # Secondary Gain Exploration (Questions 13-15)
@@ -1599,14 +1613,16 @@ class AdaptiveBehavioralAssessment:
                 "type": "text_completion",
                 "placeholder": "Consider protection, identity, relationships, expectations...",
                 "patterns": "secondary_gain",
-                "adaptive_triggers": ["resistance_mapping"]
+                "adaptive_triggers": ["resistance_mapping"],
+                "clinical_insight": "Secondary gain identification"
             },
             
             14: {
                 "text": "How might your relationships change if this pattern were gone?",
                 "type": "text_completion",
                 "placeholder": "Think about family, friends, colleagues...",
-                "patterns": "relational_impact"
+                "patterns": "relational_impact",
+                "clinical_insight": "Relational system impact"
             },
             
             15: {
@@ -1617,7 +1633,8 @@ class AdaptiveBehavioralAssessment:
                     "Fear of rejection", "Fear of overwhelming emotions",
                     "Fear of losing identity", "Fear of disappointing others"
                 ],
-                "patterns": "change_resistance"
+                "patterns": "change_resistance",
+                "clinical_insight": "Transformation resistance mapping"
             },
             
             # Hypnotic Responsiveness (Questions 16-17)
@@ -1632,7 +1649,8 @@ class AdaptiveBehavioralAssessment:
                     "Almost never - always maintain full awareness"
                 ],
                 "patterns": "absorption_capacity",
-                "weights": [4, 3, 2, 1, 0]
+                "weights": [4, 3, 2, 1, 0],
+                "clinical_insight": "Natural trance capacity assessment"
             },
             
             17: {
@@ -1645,7 +1663,8 @@ class AdaptiveBehavioralAssessment:
                     "Collaborative and exploratory style",
                     "Scientific and logical explanation"
                 ],
-                "patterns": "therapeutic_preference"
+                "patterns": "therapeutic_preference",
+                "clinical_insight": "Therapeutic style optimization"
             },
             
             # Pattern Analysis (Questions 18-26)
@@ -1661,7 +1680,8 @@ class AdaptiveBehavioralAssessment:
                 ],
                 "patterns": [None, 1, 1, 1, 1],
                 "weights": [0, 3, 2, 2, 3],
-                "adaptive_triggers": ["unhappiness_deep"]
+                "adaptive_triggers": ["unhappiness_deep"],
+                "clinical_insight": "Pleasure permission capacity"
             },
             
             19: {
@@ -1676,7 +1696,8 @@ class AdaptiveBehavioralAssessment:
                 ],
                 "patterns": [None, 2, 2, 2, 7],
                 "weights": [0, 3, 2, 3, 2],
-                "adaptive_triggers": ["conflict_trauma"]
+                "adaptive_triggers": ["conflict_trauma"],
+                "clinical_insight": "Autonomic pattern mapping"
             },
             
             20: {
@@ -1691,7 +1712,8 @@ class AdaptiveBehavioralAssessment:
                 ],
                 "patterns": [None, 3, 3, 3, 3],
                 "weights": [0, 2, 3, 2, 1],
-                "adaptive_triggers": ["trust_trauma"]
+                "adaptive_triggers": ["trust_trauma"],
+                "clinical_insight": "Relational expectation patterns"
             },
             
             21: {
@@ -1706,7 +1728,8 @@ class AdaptiveBehavioralAssessment:
                 ],
                 "patterns": [None, 4, 4, 4, 4],
                 "weights": [0, 2, 3, 3, 2],
-                "adaptive_triggers": ["binary_thinking"]
+                "adaptive_triggers": ["binary_thinking"],
+                "clinical_insight": "Cognitive flexibility assessment"
             },
             
             22: {
@@ -1721,7 +1744,8 @@ class AdaptiveBehavioralAssessment:
                 ],
                 "patterns": [None, 5, 7, 5, 5],
                 "weights": [0, 2, 2, 3, 2],
-                "adaptive_triggers": ["performance_anxiety"]
+                "adaptive_triggers": ["performance_anxiety"],
+                "clinical_insight": "Self-worth conditioning"
             },
             
             23: {
@@ -1736,7 +1760,8 @@ class AdaptiveBehavioralAssessment:
                 ],
                 "patterns": [None, 6, 6, 6, 6],
                 "weights": [0, 2, 2, 3, 2],
-                "adaptive_triggers": ["identity_fragmentation"]
+                "adaptive_triggers": ["identity_fragmentation"],
+                "clinical_insight": "Identity consistency patterns"
             },
             
             24: {
@@ -1751,7 +1776,8 @@ class AdaptiveBehavioralAssessment:
                 ],
                 "patterns": [None, 7, 7, 7, 7],
                 "weights": [0, 2, 3, 3, 4],
-                "adaptive_triggers": ["self_neglect"]
+                "adaptive_triggers": ["self_neglect"],
+                "clinical_insight": "Self-care capacity assessment"
             },
             
             25: {
@@ -1766,7 +1792,8 @@ class AdaptiveBehavioralAssessment:
                 ],
                 "patterns": [None, 8, 8, 8, 8],
                 "weights": [0, 2, 3, 3, 2],
-                "adaptive_triggers": ["family_loyalty"]
+                "adaptive_triggers": ["family_loyalty"],
+                "clinical_insight": "Autonomy versus loyalty conflicts"
             },
             
             26: {
@@ -1781,7 +1808,8 @@ class AdaptiveBehavioralAssessment:
                 ],
                 "patterns": [None, 9, 9, 9, 9],
                 "weights": [0, 2, 3, 3, 4],
-                "adaptive_triggers": ["boundary_collapse"]
+                "adaptive_triggers": ["boundary_collapse"],
+                "clinical_insight": "Context-dependent self-regulation"
             }
         }
 
@@ -1792,72 +1820,72 @@ class AdaptiveBehavioralAssessment:
                 27: {
                     "text": "What family messages did you receive about happiness and success?",
                     "type": "text_completion",
-                    "placeholder": "Describe the messages you heard growing up...",
-                    "patterns": "family_scripts"
+                    "patterns": "family_scripts",
+                    "clinical_insight": "Intergenerational pattern tracing"
                 }
             },
             "conflict_trauma": {
                 28: {
                     "text": "Describe your earliest memory of conflict resolution modeling:",
                     "type": "text_completion",
-                    "placeholder": "What did you learn about handling conflict as a child?",
-                    "patterns": "early_modeling"
+                    "patterns": "early_modeling",
+                    "clinical_insight": "Developmental pattern origin"
                 }
             },
             "trust_trauma": {
                 29: {
                     "text": "What early experiences shaped your trust in others?",
                     "type": "text_completion",
-                    "placeholder": "Describe experiences that affected your ability to trust...",
-                    "patterns": "trust_formation"
+                    "patterns": "trust_formation",
+                    "clinical_insight": "Trust development history"
                 }
             },
             "binary_thinking": {
                 30: {
                     "text": "Where did you learn that choices must be either/or?",
                     "type": "text_completion", 
-                    "placeholder": "Describe where this thinking pattern originated...",
-                    "patterns": "cognitive_conditioning"
+                    "patterns": "cognitive_conditioning",
+                    "clinical_insight": "Cognitive pattern origins"
                 }
             },
             "performance_anxiety": {
                 31: {
                     "text": "What childhood experiences linked your worth to performance?",
                     "type": "text_completion",
-                    "placeholder": "Describe experiences that connected your value to achievement...",
-                    "patterns": "worth_conditioning"
+                    "patterns": "worth_conditioning",
+                    "clinical_insight": "Self-worth development"
                 }
             },
             "identity_fragmentation": {
                 32: {
                     "text": "When did you learn to show different selves to different people?",
                     "type": "text_completion",
-                    "placeholder": "Describe when you started adapting your personality...",
-                    "patterns": "identity_development"
+                    "patterns": "identity_development",
+                    "clinical_insight": "Identity formation patterns"
                 }
             },
             "self_neglect": {
                 33: {
                     "text": "Who modeled self-sacrifice as virtue in your upbringing?",
                     "type": "text_completion",
-                    "placeholder": "Describe who taught you to put others first...",
-                    "patterns": "caretaking_modeling"
+                    "patterns": "caretaking_modeling",
+                    "clinical_insight": "Caregiving pattern origins"
                 }
             },
             "family_loyalty": {
                 34: {
                     "text": "What unspoken family rules govern your choices?",
                     "type": "text_completion",
-                    "placeholder": "Describe the invisible rules that guide your decisions...",
-                    "patterns": "family_rules"
+                    "patterns": "family_rules",
+                    "clinical_insight": "Family system dynamics"
                 }
             },
             "boundary_collapse": {
                 35: {
                     "text": "When did you learn that others' needs come before your own?",
                     "type": "text_completion",
-                    "placeholder": "Describe when you learned to prioritize others over yourself...",
-                    "patterns": "boundary_development"
+                    "patterns": "boundary_development",
+                    "clinical_insight": "Boundary formation history"
                 }
             }
         }
@@ -1877,7 +1905,8 @@ class AdaptiveBehavioralAssessment:
                         "Not have anyone to reach out to"
                     ],
                     "risk_assessment": True,
-                    "weights": [0, 0, 1, 2, 3]
+                    "weights": [0, 0, 1, 2, 3],
+                    "clinical_insight": "Support system assessment"
                 }
             },
             "safety_planning": {
@@ -1892,7 +1921,8 @@ class AdaptiveBehavioralAssessment:
                         "No plan and often feel overwhelmed"
                     ],
                     "risk_assessment": True,
-                    "weights": [0, 0, 1, 2, 3]
+                    "weights": [0, 0, 1, 2, 3],
+                    "clinical_insight": "Emotional regulation capacity"
                 }
             }
         }
@@ -1911,7 +1941,8 @@ class AdaptiveBehavioralAssessment:
                         "Through logical understanding and analysis",
                         "Through metaphorical and symbolic meaning"
                     ],
-                    "patterns": "processing_style"
+                    "patterns": "processing_style",
+                    "clinical_insight": "Representational system preference"
                 }
             },
             "trance_experience": {
@@ -1926,313 +1957,11 @@ class AdaptiveBehavioralAssessment:
                         "Skeptical or apprehensive about it"
                     ],
                     "patterns": "trance_familiarity",
-                    "weights": [4, 3, 2, 1, 0]
+                    "weights": [4, 3, 2, 1, 0],
+                    "clinical_insight": "Hypnotic experience level"
                 }
             }
         }
-
-    def render(self):
-        """Render with clean, mobile-optimized UX"""
-        self._apply_clean_styles()
-        
-        self._render_header()
-        
-        if not st.session_state.contact_provided:
-            if not st.session_state.assessment_completed:
-                self._render_current_question()
-            else:
-                self._render_contact_form()
-        else:
-            self._render_results()
-
-    def _apply_clean_styles(self):
-        """Apply clean, minimal styles following styling.py guidelines"""
-        st.markdown("""
-        <style>
-        /* Remove all containers and colors behind questions */
-        .clinical-question, .safety-notice, .clinical-insight {
-            all: unset !important;
-        }
-        
-        /* Force light mode and clean typography */
-        html, body, [class*="st"] {
-            color-scheme: light !important;
-        }
-        
-        .main .block-container {
-            padding-top: 0.5rem !important;
-            padding-bottom: 0.5rem !important;
-            max-width: 100% !important;
-        }
-        
-        @media (min-width: 768px) {
-            .main .block-container {
-                max-width: 600px !important;
-                margin: 0 auto;
-            }
-        }
-        
-        /* Clean question text - no backgrounds, no colors */
-        .question-text {
-            font-size: 1rem !important;
-            line-height: 1.4 !important;
-            color: #273548 !important;
-            margin-bottom: 1rem !important;
-            font-weight: 400 !important;
-            text-shadow: none !important;
-        }
-        
-        /* Assessment buttons - clean and left-aligned */
-        .assess-button > button {
-            all: revert !important;
-            display: block !important;
-            width: 100% !important;
-            margin: 0 !important;
-            margin-bottom: 2px !important;
-            padding: 8px 12px !important;
-            font-size: 14px !important;
-            line-height: 1.2 !important;
-            text-align: left !important;
-            background-color: #F8FAFC !important;
-            border: 1px solid #E2E8F0 !important;
-            border-radius: 6px !important;
-            color: #374151 !important;
-            cursor: pointer !important;
-            box-sizing: border-box !important;
-            font-weight: 400 !important;
-            min-height: auto !important;
-            height: auto !important;
-            box-shadow: none !important;
-            transition: background-color 0.15s ease !important;
-        }
-        
-        .assess-button > button:hover {
-            background-color: #E1F0F0 !important;
-            border-color: #4CA1A3 !important;
-            color: #273548 !important;
-        }
-        
-        /* Progress bar styling */
-        .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            color: #556D7A;
-            padding: 0.5rem;
-        }
-        
-        .progress-bar {
-            flex: 1;
-            height: 4px;
-            background: #E2E8F0;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: #4CA1A3;
-            transition: width 0.3s ease;
-        }
-        
-        /* Text area styling */
-        .stTextArea textarea {
-            border: 1px solid #E2E8F0 !important;
-            border-radius: 6px !important;
-            padding: 0.75rem !important;
-            font-size: 0.95rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        /* Navigation buttons */
-        .stButton > button {
-            border-radius: 6px !important;
-            padding: 0.5rem 1rem !important;
-            font-size: 0.9rem !important;
-            margin-bottom: 0.25rem !important;
-        }
-        
-        /* Hide Streamlit elements */
-        header[data-testid="stHeader"] {
-            display: none !important;
-        }
-        
-        .stDeployButton {
-            display: none !important;
-        }
-        
-        /* Mobile optimization */
-        @media (max-width: 767px) {
-            .main .block-container {
-                padding-left: 0.5rem !important;
-                padding-right: 0.5rem !important;
-            }
-            
-            .question-text {
-                font-size: 0.95rem !important;
-                line-height: 1.3 !important;
-            }
-            
-            .assess-button > button {
-                padding: 6px 8px !important;
-                font-size: 13px !important;
-                margin-bottom: 1px !important;
-            }
-        }
-        </style>
-        """, unsafe_allow_html=True)
-
-    def _render_header(self):
-        """Render clean header"""
-        st.markdown("""
-        <div style="text-align: center; margin-bottom: 1rem;">
-            <h1 style="font-size: 1.8rem; margin-bottom: 0.25rem; color: #273548;">
-                Behavioral Pattern Assessment
-            </h1>
-            <p style="color: #556D7A; font-size: 0.9rem; margin: 0;">
-                Personalized analysis for transformation planning
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    def _render_current_question(self):
-        """Render current question with clean, mobile-optimized layout"""
-        current_q_id = self._get_current_question_id()
-        
-        if current_q_id is None:
-            st.session_state.assessment_completed = True
-            self._calculate_comprehensive_results()
-            st.rerun()
-            return
-
-        question = self._get_question_by_id(current_q_id)
-        if not question:
-            return
-
-        # Progress tracking
-        total_questions = self._estimate_total_questions()
-        completed = len(st.session_state.assessment_responses)
-        progress = completed / total_questions if total_questions > 0 else 0
-
-        # Compact progress bar
-        st.markdown(f"""
-        <div class="progress-container">
-            <span><strong>Q {completed + 1}/{total_questions}</strong></span>
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: {progress * 100}%"></div>
-            </div>
-            <span><strong>{int(progress * 100)}%</strong></span>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Safety notice for risk assessment questions
-        if question.get('risk_assessment'):
-            st.info("This question helps us ensure your safety and appropriate care level.")
-
-        # Question text - clean and simple
-        st.markdown(f"""
-        <div class="question-text">
-            {question["text"]}
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Handle different question types
-        if question['type'] == 'single_choice':
-            self._render_single_choice_clean(current_q_id, question)
-        elif question['type'] == 'multi_select':
-            self._render_multi_select(current_q_id, question)
-        elif question['type'] == 'text_completion':
-            self._render_text_completion(current_q_id, question)
-        elif question['type'] == 'slider':
-            self._render_slider(current_q_id, question)
-
-        # Navigation
-        self._render_navigation(current_q_id)
-
-    def _render_single_choice_clean(self, q_id, question):
-        """Render single choice with clean, mobile-optimized layout"""
-        options = question['options']
-        
-        for i, option in enumerate(options):
-            # Use assess-button class for proper styling
-            if st.button(
-                option, 
-                key=f"q_{q_id}_opt_{i}",
-                use_container_width=True
-            ):
-                self._save_response(q_id, option, question)
-                self._advance_question()
-                st.rerun()
-
-    def _render_multi_select(self, q_id, question):
-        """Render multi-select options"""
-        options = question['options']
-        selected = st.multiselect("Select all that apply:", options, key=f"multiselect_{q_id}")
-        
-        if selected:
-            if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-                self._save_response(q_id, ", ".join(selected), question)
-                self._advance_question()
-                st.rerun()
-
-    def _render_text_completion(self, q_id, question):
-        """Render text completion"""
-        response = st.text_area(
-            "",
-            placeholder=question.get('placeholder', 'Your response...'),
-            key=f"q_{q_id}_text",
-            height=80,
-            label_visibility="collapsed"
-        )
-        
-        if response.strip():
-            if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-                self._save_response(q_id, response.strip(), question)
-                self._advance_question()
-                st.rerun()
-        else:
-            st.info("Please provide your response to continue.")
-
-    def _render_slider(self, q_id, question):
-        """Render slider input"""
-        value = st.slider(
-            "",
-            min_value=question['min'],
-            max_value=question['max'],
-            value=question['value'],
-            key=f"slider_{q_id}"
-        )
-        
-        if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-            self._save_response(q_id, str(value), question)
-            self._advance_question()
-            st.rerun()
-
-    def _render_navigation(self, current_q_id):
-        """Render clean navigation"""
-        col1, col2, col3 = st.columns([1, 2, 1])
-        
-        with col1:
-            if len(st.session_state.assessment_responses) > 0:
-                if st.button("← Back", key="nav_back", use_container_width=True):
-                    self._go_back()
-                    st.rerun()
-        
-        with col2:
-            answered_count = len(st.session_state.assessment_responses)
-            st.markdown(f"""
-            <div style="text-align: center; padding: 0.25rem; color: #556D7A; font-size: 0.8rem;">
-                <strong>{answered_count}</strong> answered
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col3:
-            if st.button("Skip", key="nav_skip", use_container_width=True, help="If not applicable"):
-                self._save_response(current_q_id, "Not applicable", {"patterns": None, "weights": [0]})
-                self._advance_question()
-                st.rerun()
 
     def _get_current_question_id(self):
         """Get the ID of the current question to display"""
@@ -2570,143 +2299,246 @@ class AdaptiveBehavioralAssessment:
             self._render_comprehensive_results()
 
     def _apply_clean_styles(self):
-            """Apply clean, minimal styles following styling.py guidelines"""
-            st.markdown("""
-            <style>
-            /* Remove all containers and colors behind questions */
-            .clinical-question, .safety-notice, .clinical-insight {
-                all: unset !important;
-            }
-            
-            /* Force light mode and clean typography */
-            html, body, [class*="st"] {
-                color-scheme: light !important;
-            }
-            
+        """Apply clean, minimal styles following styling.py guidelines"""
+        st.markdown("""
+        <style>
+        /* Remove all containers and colors behind questions */
+        .clinical-question, .safety-notice, .clinical-insight {
+            all: unset !important;
+        }
+        
+        /* Force light mode and clean typography */
+        html, body, [class*="st"] {
+            color-scheme: light !important;
+        }
+        
+        .main .block-container {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+            max-width: 100% !important;
+        }
+        
+        @media (min-width: 768px) {
             .main .block-container {
-                padding-top: 0.5rem !important;
-                padding-bottom: 0.5rem !important;
-                max-width: 100% !important;
+                max-width: 600px !important;
+                margin: 0 auto;
+            }
+        }
+        
+        /* Clean question text - no backgrounds, no colors */
+        .question-text {
+            font-size: 1rem !important;
+            line-height: 1.4 !important;
+            color: #273548 !important;
+            margin-bottom: 1rem !important;
+            font-weight: 400 !important;
+            text-shadow: none !important;
+        }
+        
+        /* Assessment buttons - clean and left-aligned */
+        .assess-button > button {
+            all: revert !important;
+            display: block !important;
+            width: 100% !important;
+            margin: 0 !important;
+            margin-bottom: 2px !important;
+            padding: 8px 12px !important;
+            font-size: 14px !important;
+            line-height: 1.2 !important;
+            text-align: left !important;
+            background-color: #F8FAFC !important;
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 6px !important;
+            color: #374151 !important;
+            cursor: pointer !important;
+            box-sizing: border-box !important;
+            font-weight: 400 !important;
+            min-height: auto !important;
+            height: auto !important;
+            box-shadow: none !important;
+            transition: background-color 0.15s ease !important;
+        }
+        
+        .assess-button > button:hover {
+            background-color: #E1F0F0 !important;
+            border-color: #4CA1A3 !important;
+            color: #273548 !important;
+        }
+        
+        /* Progress bar styling */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #556D7A;
+            padding: 0.5rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: #E2E8F0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #4CA1A3;
+            transition: width 0.3s ease;
+        }
+        
+        /* Text area styling */
+        .stTextArea textarea {
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 6px !important;
+            padding: 0.75rem !important;
+            font-size: 0.95rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        /* Navigation buttons */
+        .stButton > button {
+            border-radius: 6px !important;
+            padding: 0.5rem 1rem !important;
+            font-size: 0.9rem !important;
+            margin-bottom: 0.25rem !important;
+        }
+        
+        /* Hide Streamlit elements */
+        header[data-testid="stHeader"] {
+            display: none !important;
+        }
+        
+        .stDeployButton {
+            display: none !important;
+        }
+        
+        /* Mobile optimization */
+        @media (max-width: 767px) {
+            .main .block-container {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
             }
             
-            @media (min-width: 768px) {
-                .main .block-container {
-                    max-width: 600px !important;
-                    margin: 0 auto;
-                }
-            }
-            
-            /* Clean question text - no backgrounds, no colors */
             .question-text {
-                font-size: 1rem !important;
-                line-height: 1.4 !important;
-                color: #273548 !important;
-                margin-bottom: 1rem !important;
-                font-weight: 400 !important;
-                text-shadow: none !important;
-            }
-            
-            /* Assessment buttons - clean and left-aligned */
-            .assess-button > button {
-                all: revert !important;
-                display: block !important;
-                width: 100% !important;
-                margin: 0 !important;
-                margin-bottom: 2px !important;
-                padding: 8px 12px !important;
-                font-size: 14px !important;
-                line-height: 1.2 !important;
-                text-align: left !important;
-                background-color: #F8FAFC !important;
-                border: 1px solid #E2E8F0 !important;
-                border-radius: 6px !important;
-                color: #374151 !important;
-                cursor: pointer !important;
-                box-sizing: border-box !important;
-                font-weight: 400 !important;
-                min-height: auto !important;
-                height: auto !important;
-                box-shadow: none !important;
-                transition: background-color 0.15s ease !important;
-            }
-            
-            .assess-button > button:hover {
-                background-color: #E1F0F0 !important;
-                border-color: #4CA1A3 !important;
-                color: #273548 !important;
-            }
-            
-            /* Progress bar styling */
-            .progress-container {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                margin-bottom: 1rem;
-                font-size: 0.85rem;
-                color: #556D7A;
-                padding: 0.5rem;
-            }
-            
-            .progress-bar {
-                flex: 1;
-                height: 4px;
-                background: #E2E8F0;
-                border-radius: 2px;
-                overflow: hidden;
-            }
-            
-            .progress-fill {
-                height: 100%;
-                background: #4CA1A3;
-                transition: width 0.3s ease;
-            }
-            
-            /* Text area styling */
-            .stTextArea textarea {
-                border: 1px solid #E2E8F0 !important;
-                border-radius: 6px !important;
-                padding: 0.75rem !important;
                 font-size: 0.95rem !important;
-                margin-bottom: 0.5rem !important;
+                line-height: 1.3 !important;
             }
             
-            /* Navigation buttons */
-            .stButton > button {
-                border-radius: 6px !important;
-                padding: 0.5rem 1rem !important;
-                font-size: 0.9rem !important;
-                margin-bottom: 0.25rem !important;
+            .assess-button > button {
+                padding: 6px 8px !important;
+                font-size: 13px !important;
+                margin-bottom: 1px !important;
             }
-            
-            /* Hide Streamlit elements */
-            header[data-testid="stHeader"] {
-                display: none !important;
-            }
-            
-            .stDeployButton {
-                display: none !important;
-            }
-            
-            /* Mobile optimization */
-            @media (max-width: 767px) {
-                .main .block-container {
-                    padding-left: 0.5rem !important;
-                    padding-right: 0.5rem !important;
-                }
-                
-                .question-text {
-                    font-size: 0.95rem !important;
-                    line-height: 1.3 !important;
-                }
-                
-                .assess-button > button {
-                    padding: 6px 8px !important;
-                    font-size: 13px !important;
-                    margin-bottom: 1px !important;
-                }
-            }
-            </style>
-            """, unsafe_allow_html=True)
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
+    # def _apply_clinical_styles(self):
+    #     """Apply clinical-grade styling"""
+    #     st.markdown("""
+    #     <style>
+    #     .main .block-container {
+    #         padding-top: 1rem !important;
+    #         padding-bottom: 1rem !important;
+    #         max-width: 100% !important;
+    #     }
+        
+    #     @media (min-width: 768px) {
+    #         .main .block-container {
+    #             max-width: 600px !important;
+    #             margin: 0 auto;
+    #         }
+    #     }
+        
+    #     .stButton > button {
+    #         width: 100% !important;
+    #         margin-bottom: 0.25rem !important;
+    #         padding: 0.6rem 1rem !important;
+    #         text-align: left !important;
+    #         background-color: #F8FAFC !important;
+    #         border: 1px solid #E2E8F0 !important;
+    #         border-radius: 6px !important;
+    #         color: #374151 !important;
+    #         font-size: 0.95rem !important;
+    #         transition: all 0.2s ease !important;
+    #         line-height: 1.3 !important;
+    #     }
+        
+    #     .stButton > button:hover {
+    #         background-color: #F1F5F9 !important;
+    #         border-color: #4CA1A3 !important;
+    #         transform: translateY(-1px) !important;
+    #     }
+        
+    #     .clinical-question {
+    #         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    #         padding: 1.5rem;
+    #         border-radius: 12px;
+    #         margin-bottom: 1.5rem;
+    #         color: white;
+    #     }
+        
+    #     .safety-notice {
+    #         background-color: #fff3cd;
+    #         border: 1px solid #ffeaa7;
+    #         border-radius: 8px;
+    #         padding: 1rem;
+    #         margin: 1rem 0;
+    #         font-size: 0.9rem;
+    #     }
+        
+    #     .clinical-insight {
+    #         background-color: #e3f2fd;
+    #         border-left: 4px solid #2196f3;
+    #         padding: 0.75rem;
+    #         margin: 0.5rem 0;
+    #         font-size: 0.85rem;
+    #     }
+        
+    #     .progress-container {
+    #         display: flex;
+    #         align-items: center;
+    #         gap: 0.5rem;
+    #         margin-bottom: 1.5rem;
+    #         font-size: 0.85rem;
+    #         color: #556D7A;
+    #         padding: 0.5rem;
+    #         border-radius: 6px;
+    #         border: 1px solid #E2E8F0;
+    #     }
+        
+    #     .progress-bar {
+    #         flex: 1;
+    #         height: 4px;
+    #         background: #E2E8F0;
+    #         border-radius: 2px;
+    #         overflow: hidden;
+    #     }
+        
+    #     .progress-fill {
+    #         height: 100%;
+    #         background: #4CA1A3;
+    #         transition: width 0.3s ease;
+    #     }
+    #     </style>
+    #     """, unsafe_allow_html=True)
+
+    def _render_header(self):
+        """Render compact header"""
+        st.markdown("""
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+            <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #273548;">
+                Clinical Pattern Assessment
+            </h1>
+            <p style="color: #556D7A; font-size: 1rem; margin: 0;">
+                Expert analysis for rapid transformation planning
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
     def _render_current_question(self):
         """Render current question with clinical context"""
