@@ -1095,7 +1095,7 @@ class ComprehensiveBehavioralAssessment:
             )
             
             submitted = st.form_submit_button("Get My Personalized Analysis", type="primary", use_container_width=True)
-            
+
             if submitted:
                 errors = []
                 if not name.strip(): 
@@ -1129,11 +1129,21 @@ class ComprehensiveBehavioralAssessment:
                         'timestamp': datetime.now().isoformat()
                     }
                     
-                    # Prepare comprehensive assessment data for email
+                    # FIXED: Build properly structured assessment data for email handler
+                    # Ensure all data is in the expected locations
+                    enhanced_assessment_results = {
+                        **st.session_state.get('assessment_results', {}),
+                        'risk_flags': st.session_state.get('risk_flags', []),
+                        'adaptive_paths_triggered': st.session_state.get('adaptive_triggered', []),
+                        'pattern_scores': st.session_state.get('pattern_scores', {}),
+                        'total_questions_answered': len(st.session_state.get('assessment_responses', {})),
+                        'completion_rate': st.session_state.get('assessment_results', {}).get('completion_rate', 1.0)
+                    }
+                    
                     assessment_data = {
                         'contact_info': st.session_state.contact_info,
-                        'assessment_results': st.session_state.assessment_results,
-                        'assessment_responses': st.session_state.assessment_responses,
+                        'assessment_results': enhanced_assessment_results,
+                        'assessment_responses': st.session_state.get('assessment_responses', {}),
                         'intensity_responses': st.session_state.get('intensity_responses', {}),
                         'adaptive_triggered': st.session_state.get('adaptive_triggered', []),
                         'risk_flags': st.session_state.get('risk_flags', []),
@@ -1145,6 +1155,14 @@ class ComprehensiveBehavioralAssessment:
                     # Send comprehensive clinical assessment email
                     try:
                         from utils.email_handler import send_clinical_assessment_results
+                        
+                        print(f"[DEBUG] Assessment data structure:")
+                        print(f"[DEBUG] - Contact info keys: {list(assessment_data['contact_info'].keys())}")
+                        print(f"[DEBUG] - Assessment results keys: {list(assessment_data['assessment_results'].keys())}")
+                        print(f"[DEBUG] - Risk flags count: {len(assessment_data['risk_flags'])}")
+                        print(f"[DEBUG] - Pattern scores count: {len(assessment_data['pattern_scores'])}")
+                        print(f"[DEBUG] - Responses count: {len(assessment_data['assessment_responses'])}")
+                        
                         email_success = send_clinical_assessment_results(assessment_data)
                         
                         if email_success:
@@ -1152,14 +1170,19 @@ class ComprehensiveBehavioralAssessment:
                             st.info("📧 Your detailed analysis has been sent to our clinical team for review.")
                         else:
                             st.warning("⚠️ Assessment saved, but email notification failed. Our team will still receive your results.")
-                    except ImportError:
-                        st.info("📋 Assessment completed! Our clinical team will review your results.")
+                    except ImportError as e:
+                        st.error(f"📋 Import error: {e}")
+                        st.info("Assessment completed! Our clinical team will review your results.")
                     except Exception as e:
                         st.error(f"❌ Email error: {str(e)}")
+                        import traceback
+                        st.text("Debug trace:")
+                        st.text(traceback.format_exc())
                     
                     st.session_state.contact_provided = True
                     st.rerun()
-                    
+
+    
     def _render_results(self):
         st.markdown("## Your Behavioral Pattern Analysis")
         
