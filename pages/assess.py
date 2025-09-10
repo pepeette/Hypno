@@ -2569,144 +2569,144 @@ class AdaptiveBehavioralAssessment:
         else:
             self._render_comprehensive_results()
 
-def _apply_clean_styles(self):
-        """Apply clean, minimal styles following styling.py guidelines"""
-        st.markdown("""
-        <style>
-        /* Remove all containers and colors behind questions */
-        .clinical-question, .safety-notice, .clinical-insight {
-            all: unset !important;
-        }
-        
-        /* Force light mode and clean typography */
-        html, body, [class*="st"] {
-            color-scheme: light !important;
-        }
-        
-        .main .block-container {
-            padding-top: 0.5rem !important;
-            padding-bottom: 0.5rem !important;
-            max-width: 100% !important;
-        }
-        
-        @media (min-width: 768px) {
-            .main .block-container {
-                max-width: 600px !important;
-                margin: 0 auto;
-            }
-        }
-        
-        /* Clean question text - no backgrounds, no colors */
-        .question-text {
-            font-size: 1rem !important;
-            line-height: 1.4 !important;
-            color: #273548 !important;
-            margin-bottom: 1rem !important;
-            font-weight: 400 !important;
-            text-shadow: none !important;
-        }
-        
-        /* Assessment buttons - clean and left-aligned */
-        .assess-button > button {
-            all: revert !important;
-            display: block !important;
-            width: 100% !important;
-            margin: 0 !important;
-            margin-bottom: 2px !important;
-            padding: 8px 12px !important;
-            font-size: 14px !important;
-            line-height: 1.2 !important;
-            text-align: left !important;
-            background-color: #F8FAFC !important;
-            border: 1px solid #E2E8F0 !important;
-            border-radius: 6px !important;
-            color: #374151 !important;
-            cursor: pointer !important;
-            box-sizing: border-box !important;
-            font-weight: 400 !important;
-            min-height: auto !important;
-            height: auto !important;
-            box-shadow: none !important;
-            transition: background-color 0.15s ease !important;
-        }
-        
-        .assess-button > button:hover {
-            background-color: #E1F0F0 !important;
-            border-color: #4CA1A3 !important;
-            color: #273548 !important;
-        }
-        
-        /* Progress bar styling */
-        .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            color: #556D7A;
-            padding: 0.5rem;
-        }
-        
-        .progress-bar {
-            flex: 1;
-            height: 4px;
-            background: #E2E8F0;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: #4CA1A3;
-            transition: width 0.3s ease;
-        }
-        
-        /* Text area styling */
-        .stTextArea textarea {
-            border: 1px solid #E2E8F0 !important;
-            border-radius: 6px !important;
-            padding: 0.75rem !important;
-            font-size: 0.95rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        /* Navigation buttons */
-        .stButton > button {
-            border-radius: 6px !important;
-            padding: 0.5rem 1rem !important;
-            font-size: 0.9rem !important;
-            margin-bottom: 0.25rem !important;
-        }
-        
-        /* Hide Streamlit elements */
-        header[data-testid="stHeader"] {
-            display: none !important;
-        }
-        
-        .stDeployButton {
-            display: none !important;
-        }
-        
-        /* Mobile optimization */
-        @media (max-width: 767px) {
-            .main .block-container {
-                padding-left: 0.5rem !important;
-                padding-right: 0.5rem !important;
+    def _apply_clean_styles(self):
+            """Apply clean, minimal styles following styling.py guidelines"""
+            st.markdown("""
+            <style>
+            /* Remove all containers and colors behind questions */
+            .clinical-question, .safety-notice, .clinical-insight {
+                all: unset !important;
             }
             
+            /* Force light mode and clean typography */
+            html, body, [class*="st"] {
+                color-scheme: light !important;
+            }
+            
+            .main .block-container {
+                padding-top: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+                max-width: 100% !important;
+            }
+            
+            @media (min-width: 768px) {
+                .main .block-container {
+                    max-width: 600px !important;
+                    margin: 0 auto;
+                }
+            }
+            
+            /* Clean question text - no backgrounds, no colors */
             .question-text {
-                font-size: 0.95rem !important;
-                line-height: 1.3 !important;
+                font-size: 1rem !important;
+                line-height: 1.4 !important;
+                color: #273548 !important;
+                margin-bottom: 1rem !important;
+                font-weight: 400 !important;
+                text-shadow: none !important;
             }
             
+            /* Assessment buttons - clean and left-aligned */
             .assess-button > button {
-                padding: 6px 8px !important;
-                font-size: 13px !important;
-                margin-bottom: 1px !important;
+                all: revert !important;
+                display: block !important;
+                width: 100% !important;
+                margin: 0 !important;
+                margin-bottom: 2px !important;
+                padding: 8px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.2 !important;
+                text-align: left !important;
+                background-color: #F8FAFC !important;
+                border: 1px solid #E2E8F0 !important;
+                border-radius: 6px !important;
+                color: #374151 !important;
+                cursor: pointer !important;
+                box-sizing: border-box !important;
+                font-weight: 400 !important;
+                min-height: auto !important;
+                height: auto !important;
+                box-shadow: none !important;
+                transition: background-color 0.15s ease !important;
             }
-        }
-        </style>
-        """, unsafe_allow_html=True)
+            
+            .assess-button > button:hover {
+                background-color: #E1F0F0 !important;
+                border-color: #4CA1A3 !important;
+                color: #273548 !important;
+            }
+            
+            /* Progress bar styling */
+            .progress-container {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+                font-size: 0.85rem;
+                color: #556D7A;
+                padding: 0.5rem;
+            }
+            
+            .progress-bar {
+                flex: 1;
+                height: 4px;
+                background: #E2E8F0;
+                border-radius: 2px;
+                overflow: hidden;
+            }
+            
+            .progress-fill {
+                height: 100%;
+                background: #4CA1A3;
+                transition: width 0.3s ease;
+            }
+            
+            /* Text area styling */
+            .stTextArea textarea {
+                border: 1px solid #E2E8F0 !important;
+                border-radius: 6px !important;
+                padding: 0.75rem !important;
+                font-size: 0.95rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            /* Navigation buttons */
+            .stButton > button {
+                border-radius: 6px !important;
+                padding: 0.5rem 1rem !important;
+                font-size: 0.9rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+            
+            /* Hide Streamlit elements */
+            header[data-testid="stHeader"] {
+                display: none !important;
+            }
+            
+            .stDeployButton {
+                display: none !important;
+            }
+            
+            /* Mobile optimization */
+            @media (max-width: 767px) {
+                .main .block-container {
+                    padding-left: 0.5rem !important;
+                    padding-right: 0.5rem !important;
+                }
+                
+                .question-text {
+                    font-size: 0.95rem !important;
+                    line-height: 1.3 !important;
+                }
+                
+                .assess-button > button {
+                    padding: 6px 8px !important;
+                    font-size: 13px !important;
+                    margin-bottom: 1px !important;
+                }
+            }
+            </style>
+            """, unsafe_allow_html=True)
 
     def _render_current_question(self):
         """Render current question with clinical context"""
