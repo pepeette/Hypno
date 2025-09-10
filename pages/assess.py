@@ -1973,26 +1973,26 @@ class AdaptiveBehavioralAssessment:
     def _get_current_question_id(self):
         answered = set(st.session_state.assessment_responses.keys())
     
-        # Check core questions
+        # Core questions
         for qid in sorted(self.core_questions.keys()):
             if qid not in answered:
                 return qid
     
-        # Check adaptive pools triggered
+        # Adaptive question pools triggered
         for pool_name in st.session_state.adaptive_triggered:
             pool = self.adaptive_pools.get(pool_name, {})
             for qid in sorted(pool.keys()):
                 if qid not in answered:
                     return qid
     
-        # Check safety questions if any risk flags
+        # Safety questions if risk flags are present
         if st.session_state.risk_flags:
             for pool_name, pool in self.safety_questions.items():
                 for qid in sorted(pool.keys()):
                     if qid not in answered:
                         return qid
     
-        # Check hypnotic questions (always asked)
+        # Hypnotic responsiveness questions always asked
         for pool_name, pool in self.hypnotic_questions.items():
             for qid in sorted(pool.keys()):
                 if qid not in answered:
@@ -2001,10 +2001,13 @@ class AdaptiveBehavioralAssessment:
         # All questions answered
         return None
 
+
     def _estimate_total_questions(self):
         base = len(self.core_questions)
-        adaptive = len(st.session_state.adaptive_triggered)
-        safety = len(st.session_state.risk_flags) * len(next(iter(self.safety_questions.values()), {}))
+        adaptive = sum(len(self.adaptive_pools.get(t, {})) for t in st.session_state.adaptive_triggered)
+        safety = 0
+        if st.session_state.risk_flags:
+            safety = sum(len(pool) for pool in self.safety_questions.values())
         hypnotic = sum(len(pool) for pool in self.hypnotic_questions.values())
         return base + adaptive + safety + hypnotic
 
@@ -2133,7 +2136,7 @@ class AdaptiveBehavioralAssessment:
                 st.markdown("---")
 
     def _render_navigation(self, current_q_id):
-        col1, col2, col3 = st.columns([1, 2, 1])
+        col1, col2 = st.columns([1, 1])
         with col1:
             if len(st.session_state.assessment_responses) > 0:
                 if st.button("← Back", key="nav_back", use_container_width=True):
@@ -2146,19 +2149,7 @@ class AdaptiveBehavioralAssessment:
                 <strong>{answered_count}</strong> answered
             </div>
             """, unsafe_allow_html=True)
-        with col3:
-            if st.button("Skip", key="nav_skip", use_container_width=True):
-                # Register a skip by saving "Skipped" or empty response without scoring
-                self._save_response(
-                    current_question_id,
-                    "Skipped",
-                    {
-                        "patterns": None,
-                        "weights": [0],  # zero weight to exclude from scoring
-                    },
-                )
-                self._advance()
-                st.experimental_rerun()  #
+
 
     # ---- Results + Paywall logic (from your commented code, unchanged) ----
     def _render_contact_form(self):
