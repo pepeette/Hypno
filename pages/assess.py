@@ -2160,7 +2160,7 @@ class ComprehensiveBehavioralAssessment:
                     errors.append("Name is required")
                 if not email.strip(): 
                     errors.append("Email is required")
-                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
+                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
                     errors.append("Valid email address is required")
                 if not concern.strip(): 
                     errors.append("Please describe what brought you here")
@@ -2873,7 +2873,7 @@ if __name__ == "__main__":
                     errors.append("Name is required")
                 if not email.strip(): 
                     errors.append("Email is required")
-                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
+                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
                     errors.append("Valid email address is required")
                 if not concern.strip(): 
                     errors.append("Please describe what brought you here")
