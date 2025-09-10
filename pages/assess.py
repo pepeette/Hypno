@@ -2074,11 +2074,7 @@ class AdaptiveBehavioralAssessment:
         """, unsafe_allow_html=True)
 
         # Question text
-        st.markdown(f"""
-        <div class="clinical-question">
-            <h3 style="margin: 0;">{question['text']}</h3>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"### {question['text']}")
 
         # Response logic
         self._handle_response_types(current_q_id, question)
