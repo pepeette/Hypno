@@ -2093,7 +2093,7 @@ class AdaptiveBehavioralAssessment:
                     st.rerun()
         elif question['type'] == 'text_completion':
             response = st.text_area(
-                "",
+                "response",
                 placeholder=question.get('placeholder', 'Your response...'),
                 key=f"q_{q_id}_text",
                 height=80,
