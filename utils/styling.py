@@ -520,6 +520,11 @@ def apply_global_styles():
         color: var(--text-secondary) !important;
         text-shadow: none !important;
     }
+    
+    /* Exclude buttons from global text color rule */
+    button, button * {
+        color: inherit !important;
+    }
 
     /* CTA Button Style - Primary (Accent background) */
     .cta-button {
@@ -671,11 +676,19 @@ def apply_global_styles():
         box-sizing: border-box;
     }
     
-    /* Primary Button - Specific targeting without nested button effects */
+    /* Primary Button - Force text color override */
     .stButton>button[kind="primary"] {
         background-color: var(--accent) !important;
         color: #FFFFFF !important;
         border: 2px solid var(--accent) !important;
+    }
+    
+    /* Force white text on primary buttons - highest specificity */
+    .stButton>button[kind="primary"],
+    .stButton>button[kind="primary"] span,
+    .stButton>button[kind="primary"] div,
+    .stButton>button[kind="primary"] p {
+        color: #FFFFFF !important;
     }
     
     .stButton>button[kind="primary"]:hover {
@@ -686,11 +699,27 @@ def apply_global_styles():
         box-shadow: 0 4px 12px rgba(243,246,248,0.6);
     }
     
-    /* Secondary Button - Specific targeting without nested button effects */
+    /* Force dark text on primary button hover */
+    .stButton>button[kind="primary"]:hover,
+    .stButton>button[kind="primary"]:hover span,
+    .stButton>button[kind="primary"]:hover div,
+    .stButton>button[kind="primary"]:hover p {
+        color: #273548 !important;
+    }
+    
+    /* Secondary Button - Force text color override */
     .stButton>button[kind="secondary"] {
         background-color: white !important;
         color: var(--text-primary) !important;
         border: 2px solid var(--border) !important;
+    }
+    
+    /* Force dark text on secondary buttons */
+    .stButton>button[kind="secondary"],
+    .stButton>button[kind="secondary"] span,
+    .stButton>button[kind="secondary"] div,
+    .stButton>button[kind="secondary"] p {
+        color: var(--text-primary) !important;
     }
     
     .stButton>button[kind="secondary"]:hover {
@@ -699,6 +728,14 @@ def apply_global_styles():
         border-color: var(--accent) !important;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(76, 161, 163, 0.3);
+    }
+    
+    /* Force white text on secondary button hover */
+    .stButton>button[kind="secondary"]:hover,
+    .stButton>button[kind="secondary"]:hover span,
+    .stButton>button[kind="secondary"]:hover div,
+    .stButton>button[kind="secondary"]:hover p {
+        color: #FFFFFF !important;
     }
     
     /* Form Elements with improved spacing */
