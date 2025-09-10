@@ -699,23 +699,66 @@ def apply_global_styles():
        ASSESSMENT PAGE EXCEPTIONS START HERE
        ========================================== */
     
-    /* EXCEPTION: Skip global button styling for assessment containers */
-    .assessment-container .stButton > button,
-    .question-options .stButton > button {
-        /* These will be styled by assessment page CSS */
-        all: revert !important;
+    /* ASSESSMENT PAGE: Completely different button styling */
+    body[data-page="assessment"] .stButton > button,
+    [data-testid="stApp"]:has([data-page="assessment"]) .stButton > button,
+    .assessment-page .stButton > button {
+        all: unset !important;
+        display: block !important;
+        width: 100% !important;
+        margin: 0.05rem 0 !important;
+        padding: 0.4rem 0.6rem !important;
+        font-size: 0.9rem !important;
+        line-height: 1.2 !important;
+        text-align: left !important;
+        background-color: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 4px !important;
+        color: #374151 !important;
+        cursor: pointer !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* ASSESSMENT PAGE: Button hover states */
+    body[data-page="assessment"] .stButton > button:hover,
+    [data-testid="stApp"]:has([data-page="assessment"]) .stButton > button:hover,
+    .assessment-page .stButton > button:hover {
+        background-color: #E1F0F0 !important;
+        border-color: #4CA1A3 !important;
+        color: #273548 !important;
+    }
+    
+    /* ASSESSMENT PAGE: Navigation buttons (keep centered) */
+    body[data-page="assessment"] .nav-buttons .stButton > button,
+    [data-testid="stApp"]:has([data-page="assessment"]) .nav-buttons .stButton > button,
+    .assessment-page .nav-buttons .stButton > button {
+        text-align: center !important;
+        background-color: white !important;
+        border: 1px solid #D1D5DB !important;
+    }
+    
+    /* ASSESSMENT PAGE: Primary buttons (keep centered) */
+    body[data-page="assessment"] .stButton > button[kind="primary"],
+    [data-testid="stApp"]:has([data-page="assessment"]) .stButton > button[kind="primary"],
+    .assessment-page .stButton > button[kind="primary"] {
+        background-color: #4CA1A3 !important;
+        color: white !important;
+        text-align: center !important;
+        border-color: #4CA1A3 !important;
     }
     
     /* ==========================================
        GLOBAL BUTTON STYLES (NON-ASSESSMENT)
        ========================================== */
     
-    /* Button System - Apply to all buttons EXCEPT assessment containers */
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) {
+    /* Button System - Apply to all buttons EXCEPT when body has assessment marker */
+    body:not([data-page="assessment"]) .stButton,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton {
         margin: var(--space-xs) 0;
     }
     
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button {
+    body:not([data-page="assessment"]) .stButton > button,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button {
         border-radius: var(--radius-sm) !important;
         transition: var(--transition) !important;
         font-weight: 600 !important;
@@ -733,21 +776,27 @@ def apply_global_styles():
     }
     
     /* Primary Button - Force text color override (EXCEPT assessment) */
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"] {
+    body:not([data-page="assessment"]) .stButton > button[kind="primary"],
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"] {
         background-color: var(--accent) !important;
         color: #FFFFFF !important;
         border: 2px solid var(--accent) !important;
     }
     
     /* Force white text on primary buttons - highest specificity (EXCEPT assessment) */
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"],
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"] span,
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"] div,
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"] p {
+    body:not([data-page="assessment"]) .stButton > button[kind="primary"],
+    body:not([data-page="assessment"]) .stButton > button[kind="primary"] span,
+    body:not([data-page="assessment"]) .stButton > button[kind="primary"] div,
+    body:not([data-page="assessment"]) .stButton > button[kind="primary"] p,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"],
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"] span,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"] div,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"] p {
         color: #FFFFFF !important;
     }
     
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"]:hover {
+    body:not([data-page="assessment"]) .stButton > button[kind="primary"]:hover,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"]:hover {
         background-color: #E1F0F0 !important;
         color: #273548 !important;
         border-color: #E1F0F0 !important;
@@ -756,29 +805,39 @@ def apply_global_styles():
     }
     
     /* Force dark text on primary button hover (EXCEPT assessment) */
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"]:hover,
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"]:hover span,
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"]:hover div,
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"]:hover p {
+    body:not([data-page="assessment"]) .stButton > button[kind="primary"]:hover,
+    body:not([data-page="assessment"]) .stButton > button[kind="primary"]:hover span,
+    body:not([data-page="assessment"]) .stButton > button[kind="primary"]:hover div,
+    body:not([data-page="assessment"]) .stButton > button[kind="primary"]:hover p,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"]:hover,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"]:hover span,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"]:hover div,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"]:hover p {
         color: #273548 !important;
     }
     
     /* Secondary Button - Force text color override (EXCEPT assessment) */
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"] {
+    body:not([data-page="assessment"]) .stButton > button[kind="secondary"],
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"] {
         background-color: white !important;
         color: var(--text-primary) !important;
         border: 2px solid var(--border) !important;
     }
     
     /* Force dark text on secondary buttons (EXCEPT assessment) */
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"],
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"] span,
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"] div,
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"] p {
+    body:not([data-page="assessment"]) .stButton > button[kind="secondary"],
+    body:not([data-page="assessment"]) .stButton > button[kind="secondary"] span,
+    body:not([data-page="assessment"]) .stButton > button[kind="secondary"] div,
+    body:not([data-page="assessment"]) .stButton > button[kind="secondary"] p,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"],
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"] span,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"] div,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"] p {
         color: var(--text-primary) !important;
     }
     
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"]:hover {
+    body:not([data-page="assessment"]) .stButton > button[kind="secondary"]:hover,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"]:hover {
         background-color: var(--accent) !important;
         color: #FFFFFF !important;
         border-color: var(--accent) !important;
@@ -787,10 +846,14 @@ def apply_global_styles():
     }
     
     /* Force white text on secondary button hover (EXCEPT assessment) */
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"]:hover,
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"]:hover span,
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"]:hover div,
-    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"]:hover p {
+    body:not([data-page="assessment"]) .stButton > button[kind="secondary"]:hover,
+    body:not([data-page="assessment"]) .stButton > button[kind="secondary"]:hover span,
+    body:not([data-page="assessment"]) .stButton > button[kind="secondary"]:hover div,
+    body:not([data-page="assessment"]) .stButton > button[kind="secondary"]:hover p,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"]:hover,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"]:hover span,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"]:hover div,
+    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"]:hover p {
         color: #FFFFFF !important;
     }
     
