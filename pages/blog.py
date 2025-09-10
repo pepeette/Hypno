@@ -234,16 +234,16 @@ class BlogArticles:
             
             with col_meta:
                 st.markdown(f"""
-                <div style="text-align: center; padding: 1rem;">
-                    <div style="background: #4CA1A3; color: #FFFFFF; padding: 0.5rem 1rem; 
-                               border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;">
-                        {article['category']}
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="background: #E1F0F0; color: #273548; padding: 0.5rem 1rem; 
+                                   border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;">
+                            {article['category']}
+                        </div>
+                        <div style="color: #556D7A; font-size: 0.85rem;">
+                            {article['read_time']}
+                        </div>
                     </div>
-                    <div style="color: #556D7A; font-size: 0.85rem;">
-                        {article['read_time']}
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
             
             with col_content:
                 st.markdown(f"### {article['title']}")
