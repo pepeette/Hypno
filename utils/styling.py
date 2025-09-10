@@ -225,7 +225,7 @@ def apply_global_styles():
         box-shadow: var(--shadow-sm);
     }
     
-    /* Button System with better spacing and matching hover effect */
+    /* Button System - Matching CTA button styles exactly */
     .stButton {
         margin: var(--space-xs) 0;
     }
@@ -236,37 +236,44 @@ def apply_global_styles():
         font-weight: 600 !important;
         padding: var(--space-sm) var(--space-md) !important;
         cursor: pointer !important;
-        border: none !important;
         font-size: var(--font-size-normal) !important;
         margin: var(--space-xs) 0 !important;
         min-height: 2.5rem;
         vertical-align: middle;
         line-height: 1.6;
+        box-shadow: var(--shadow-sm);
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
     }
     
+    /* Primary Button - Matching cta-button primary */
     .stButton>button[kind="primary"] {
         background-color: var(--accent) !important;
         color: #FFFFFF !important;
+        border: 2px solid var(--accent) !important;
     }
     
     .stButton>button[kind="primary"]:hover {
         background-color: #E1F0F0 !important;
-        color: #FFFFFF !important;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(243,246,248,0.6);
-    }
-    
-    .stButton>button[kind="secondary"] {
-        background-color: transparent !important;
-        color: var(--accent) !important;
-        border: 2px solid var(--accent) !important;
-    }
-    
-    .stButton>button[kind="secondary"]:hover {
-        background-color: #E1F0F0 !important;
         color: #273548 !important;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(243,246,248,0.6);
+    }
+    
+    /* Secondary Button - Matching cta-button secondary */
+    .stButton>button[kind="secondary"] {
+        background-color: white !important;
+        color: var(--text-primary) !important;
+        border: 2px solid var(--border) !important;
+    }
+    
+    .stButton>button[kind="secondary"]:hover {
+        background-color: var(--accent) !important;
+        color: #FFFFFF !important;
+        border-color: var(--accent) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(76, 161, 163, 0.3);
     }
     
     /* Form Elements with improved spacing */
