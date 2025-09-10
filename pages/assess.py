@@ -2068,9 +2068,12 @@ class AdaptiveBehavioralAssessment:
             self._render_results()
 
     def _render_header(self):
-        st.header("Behavioral pattern assessment")
+        st.markdown(
+            "<h1 style='text-align: center;'>Behavioral pattern assessment</h1>",
+            unsafe_allow_html=True
+        )
         st.info(
-            "Why this matters: Most hypnotherapy uses general scripts. "
+            "**Why this matters**: Most hypnotherapy uses general scripts. "
             "This assessment finds your habits and triggers to build a plan that fits your needs. "
             "The assessment matches your behavior with the best hypnotherapy for you."
         )
@@ -2127,7 +2130,10 @@ class AdaptiveBehavioralAssessment:
                     self._advance_question()
                     st.rerun()
             else:
-                st.info("Please provide your response to continue.")
+                if st.button("Skip", key=f"q_{q_id}_skip", use_container_width=True):
+                self._save_response(q_id, "Skipped", {"patterns": None, "weights": [0]})
+                self._advance_question()
+                st.rerun()
 
     def _render_navigation(self, current_q_id):
         col1, col2, col3 = st.columns([1, 2, 1])
