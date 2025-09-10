@@ -1358,8 +1358,8 @@
 
 
 """
-Enhanced Behavioral Pattern Assessment - Mobile-Optimized UX
-Compact design with full viewport utilization and responsive layout
+Enhanced Behavioral Pattern Assessment - FIXED Mobile-Optimized UX
+Compact design with proper button rendering and responsive layout
 """
 import streamlit as st
 from datetime import datetime
@@ -1373,7 +1373,7 @@ except ImportError:
     print("Paywall component not available")
 
 class AdaptiveBehavioralAssessment:
-    """Mobile-optimized behavioral pattern assessment with compact UX"""
+    """FIXED Mobile-optimized behavioral pattern assessment"""
     
     def __init__(self):
         self._init_session_state()
@@ -1794,7 +1794,7 @@ class AdaptiveBehavioralAssessment:
         }
 
     def _get_adaptive_question_pools(self):
-        """Simplified adaptive pools with mobile-friendly options"""
+        """Simplified adaptive pools"""
         return {
             "unhappiness_deep": {
                 26: {
@@ -1809,24 +1809,11 @@ class AdaptiveBehavioralAssessment:
                     ],
                     "patterns": [None, 1, 1, 1, None],
                     "weights": [0, 2, 3, 2, 0]
-                },
-                27: {
-                    "text": "'I don't deserve this' most often comes up when:",
-                    "type": "single_choice",
-                    "options": [
-                        "It rarely comes up for me",
-                        "I'm receiving love or affection",
-                        "I'm achieving success or recognition",
-                        "Someone is being kind to me",
-                        "Not applicable"
-                    ],
-                    "patterns": [None, 1, 1, 1, None],
-                    "weights": [0, 3, 3, 2, 0]
                 }
             },
 
             "conflict_trauma": {
-                28: {
+                27: {
                     "text": "Growing up, family conflicts usually ended with:",
                     "type": "single_choice",
                     "options": [
@@ -1842,7 +1829,7 @@ class AdaptiveBehavioralAssessment:
             },
 
             "family_loyalty": {
-                29: {
+                28: {
                     "text": "If you lived authentically, which relationship most threatened:",
                     "type": "single_choice",
                     "options": [
@@ -1858,7 +1845,7 @@ class AdaptiveBehavioralAssessment:
             },
 
             "self_neglect": {
-                30: {
+                29: {
                     "text": "When thinking about taking time for yourself:",
                     "type": "single_choice",
                     "options": [
@@ -1878,7 +1865,7 @@ class AdaptiveBehavioralAssessment:
         """Safety assessment questions"""
         return {
             "support_assessment": {
-                31: {
+                30: {
                     "text": "If you were in crisis right now, you have:",
                     "type": "single_choice",
                     "options": [
@@ -1894,9 +1881,9 @@ class AdaptiveBehavioralAssessment:
         }
 
     def render(self):
-        """Render with mobile-optimized UX"""
-        # Apply mobile-first CSS
-        self._apply_mobile_styles()
+        """Render with FIXED mobile-optimized UX"""
+        # Apply WORKING mobile styles
+        self._apply_working_mobile_styles()
         
         self._render_header()
         
@@ -1908,25 +1895,118 @@ class AdaptiveBehavioralAssessment:
         else:
             self._render_results()
 
-    def _apply_mobile_styles(self):
-        """Apply mobile-optimized CSS styles"""
+    def _apply_working_mobile_styles(self):
+        """Apply WORKING mobile-optimized CSS styles"""
         st.markdown("""
         <style>
-        /* Mobile-first compact styles */
+        /* Remove default Streamlit padding */
         .main .block-container {
             padding-top: 1rem !important;
             padding-bottom: 1rem !important;
             max-width: 100% !important;
         }
         
-        /* Compact progress bar */
+        /* Responsive container */
+        @media (min-width: 768px) {
+            .main .block-container {
+                max-width: 600px !important;
+                margin: 0 auto;
+            }
+        }
+        
+        /* Style Streamlit buttons to be mobile-friendly */
+        .stButton > button {
+            width: 100% !important;
+            margin-bottom: 0.5rem !important;
+            padding: 0.75rem 1rem !important;
+            text-align: left !important;
+            background-color: #F8FAFC !important;
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 6px !important;
+            color: #374151 !important;
+            font-size: 0.95rem !important;
+            transition: all 0.2s ease !important;
+        }
+        
+        .stButton > button:hover {
+            background-color: #F1F5F9 !important;
+            border-color: #4CA1A3 !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        .stButton > button:focus {
+            background-color: #E1F0F0 !important;
+            border-color: #4CA1A3 !important;
+            outline: none !important;
+        }
+        
+        /* Two-column layout for larger screens */
+        @media (min-width: 768px) {
+            .question-options {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 0.5rem !important;
+            }
+            
+            .question-options .stButton {
+                margin-bottom: 0 !important;
+            }
+        }
+        
+        /* Text area styling */
+        .stTextArea textarea {
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 6px !important;
+            padding: 0.75rem !important;
+            font-size: 0.95rem !important;
+        }
+        
+        /* Navigation button styling */
+        .nav-buttons .stButton > button {
+            background-color: white !important;
+            border: 1px solid #D1D5DB !important;
+            color: #374151 !important;
+            text-align: center !important;
+            padding: 0.5rem 1rem !important;
+        }
+        
+        .nav-buttons .stButton > button:hover {
+            background-color: #F9FAFB !important;
+            border-color: #9CA3AF !important;
+        }
+        
+        /* Primary button styling */
+        .stButton > button[kind="primary"] {
+            background-color: #4CA1A3 !important;
+            color: white !important;
+            border-color: #4CA1A3 !important;
+        }
+        
+        .stButton > button[kind="primary"]:hover {
+            background-color: #3B7A7A !important;
+        }
+        
+        /* Hide Streamlit elements */
+        header[data-testid="stHeader"] {
+            display: none !important;
+        }
+        
+        .stDeployButton {
+            display: none !important;
+        }
+        
+        /* Progress bar styling */
         .progress-container {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             font-size: 0.85rem;
             color: #556D7A;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #E2E8F0;
         }
         
         .progress-bar {
@@ -1941,128 +2021,6 @@ class AdaptiveBehavioralAssessment:
             height: 100%;
             background: #4CA1A3;
             transition: width 0.3s ease;
-        }
-        
-        /* Compact question card */
-        .question-card {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem 1rem;
-            border: 1px solid #E2E8F0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 1rem;
-        }
-        
-        /* Question text styling */
-        .question-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #273548;
-            margin-bottom: 1rem;
-            line-height: 1.4;
-        }
-        
-        /* Compact button styling */
-        .option-button {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            background: #F8FAFC;
-            border: 1px solid #E2E8F0;
-            border-radius: 6px;
-            text-align: left;
-            font-size: 0.95rem;
-            color: #374151;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .option-button:hover {
-            background: #F1F5F9;
-            border-color: #4CA1A3;
-            transform: translateY(-1px);
-        }
-        
-        .option-button:active {
-            background: #E1F0F0;
-            border-color: #4CA1A3;
-        }
-        
-        /* Navigation buttons */
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1rem;
-            gap: 0.5rem;
-        }
-        
-        .nav-button {
-            padding: 0.5rem 1rem;
-            border: 1px solid #D1D5DB;
-            background: white;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .nav-button:hover {
-            background: #F9FAFB;
-            border-color: #9CA3AF;
-        }
-        
-        .nav-button.primary {
-            background: #4CA1A3;
-            color: white;
-            border-color: #4CA1A3;
-        }
-        
-        .nav-button.primary:hover {
-            background: #3B7A7A;
-        }
-        
-        /* Responsive design */
-        @media (min-width: 768px) {
-            .main .block-container {
-                max-width: 600px !important;
-                margin: 0 auto;
-            }
-            
-            .question-card {
-                padding: 2rem;
-            }
-            
-            .options-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 0.5rem;
-            }
-            
-            .option-button {
-                margin-bottom: 0;
-            }
-        }
-        
-        /* Text input styling */
-        .stTextArea textarea {
-            border: 1px solid #E2E8F0 !important;
-            border-radius: 6px !important;
-            padding: 0.75rem !important;
-            font-size: 0.95rem !important;
-        }
-        
-        /* Hide Streamlit elements */
-        .stButton > button {
-            display: none !important;
-        }
-        
-        header[data-testid="stHeader"] {
-            display: none !important;
-        }
-        
-        .stDeployButton {
-            display: none !important;
         }
         </style>
         """, unsafe_allow_html=True)
@@ -2081,7 +2039,7 @@ class AdaptiveBehavioralAssessment:
         """, unsafe_allow_html=True)
 
     def _render_current_question(self):
-        """Render current question with mobile-optimized layout"""
+        """Render current question with WORKING mobile layout"""
         current_q_id = self._get_current_question_id()
         
         if current_q_id is None:
@@ -2100,68 +2058,58 @@ class AdaptiveBehavioralAssessment:
         completed = len(st.session_state.assessment_responses)
         progress = completed / total_questions if total_questions > 0 else 0
 
-        # Compact progress bar
+        # COMPACT progress bar - FIXED
         st.markdown(f"""
         <div class="progress-container">
-            <span>Q {completed + 1}/{total_questions}</span>
+            <span><strong>Q {completed + 1}/{total_questions}</strong></span>
             <div class="progress-bar">
                 <div class="progress-fill" style="width: {progress * 100}%"></div>
             </div>
-            <span>{int(progress * 100)}%</span>
+            <span><strong>{int(progress * 100)}%</strong></span>
         </div>
         """, unsafe_allow_html=True)
 
-        # Question card
-        st.markdown('<div class="question-card">', unsafe_allow_html=True)
-        
-        # Question text
-        st.markdown(f'<div class="question-text">{question["text"]}</div>', unsafe_allow_html=True)
+        # Question text - larger and clear
+        st.markdown(f"""
+        <div style="margin-bottom: 1.5rem;">
+            <h3 style="color: #273548; font-size: 1.2rem; line-height: 1.4; margin-bottom: 1rem;">
+                {question["text"]}
+            </h3>
+        </div>
+        """, unsafe_allow_html=True)
 
-        # Handle different question types
+        # Handle different question types with WORKING logic
         if question['type'] == 'single_choice':
-            self._render_single_choice_compact(current_q_id, question)
+            self._render_single_choice_WORKING(current_q_id, question)
         elif question['type'] == 'text_completion':
-            self._render_text_completion_compact(current_q_id, question)
+            self._render_text_completion_WORKING(current_q_id, question)
 
         # Navigation
-        self._render_navigation_compact(current_q_id)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+        self._render_navigation_WORKING(current_q_id)
 
-    def _render_single_choice_compact(self, q_id, question):
-        """Render single choice with compact mobile layout"""
-        # Use CSS grid for larger screens, single column for mobile
-        is_mobile = len(question['options']) <= 4
+    def _render_single_choice_WORKING(self, q_id, question):
+        """Render single choice with WORKING Streamlit buttons"""
+        options = question['options']
         
-        if is_mobile:
-            # Single column for mobile
-            for i, option in enumerate(question['options']):
-                button_html = f"""
-                <button class="option-button" onclick="selectOption({q_id}, {i}, '{option}')">
-                    {option}
-                </button>
-                """
-                if st.button(option, key=f"q_{q_id}_opt_{i}", help=None):
+        # For larger screens, use columns for 2-column layout
+        if len(options) <= 5:
+            # Desktop: 2 columns, Mobile: 1 column (handled by CSS)
+            st.markdown('<div class="question-options">', unsafe_allow_html=True)
+            
+            for i, option in enumerate(options):
+                if st.button(
+                    option, 
+                    key=f"q_{q_id}_opt_{i}",
+                    use_container_width=True
+                ):
                     self._save_response(q_id, option, question)
                     self._advance_question()
                     st.rerun()
-        else:
-            # Two columns for larger screens
-            st.markdown('<div class="options-grid">', unsafe_allow_html=True)
-            cols = st.columns(2)
-            
-            for i, option in enumerate(question['options']):
-                col_index = i % 2
-                with cols[col_index]:
-                    if st.button(option, key=f"q_{q_id}_opt_{i}", use_container_width=True):
-                        self._save_response(q_id, option, question)
-                        self._advance_question()
-                        st.rerun()
             
             st.markdown('</div>', unsafe_allow_html=True)
 
-    def _render_text_completion_compact(self, q_id, question):
-        """Render text completion with compact styling"""
+    def _render_text_completion_WORKING(self, q_id, question):
+        """Render text completion with WORKING Streamlit components"""
         response = st.text_area(
             "",
             placeholder=question.get('placeholder', 'Your response...'),
@@ -2170,31 +2118,44 @@ class AdaptiveBehavioralAssessment:
             label_visibility="collapsed"
         )
         
+        # Continue button
         if response.strip():
             if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
                 self._save_response(q_id, response.strip(), question)
                 self._advance_question()
                 st.rerun()
+        else:
+            st.info("Please provide your response to continue.")
 
-    def _render_navigation_compact(self, current_q_id):
-        """Render compact navigation"""
+    def _render_navigation_WORKING(self, current_q_id):
+        """Render WORKING navigation"""
+        # Navigation buttons in columns
         col1, col2, col3 = st.columns([1, 2, 1])
         
         with col1:
             if len(st.session_state.assessment_responses) > 0:
+                st.markdown('<div class="nav-buttons">', unsafe_allow_html=True)
                 if st.button("← Back", key="nav_back", use_container_width=True):
                     self._go_back()
                     st.rerun()
+                st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
+            # Progress info
             answered_count = len(st.session_state.assessment_responses)
-            st.markdown(f'<div style="text-align: center; padding: 0.5rem; color: #556D7A; font-size: 0.9rem;">{answered_count} answered</div>', unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style="text-align: center; padding: 0.5rem; color: #556D7A; font-size: 0.9rem;">
+                <strong>{answered_count}</strong> answered
+            </div>
+            """, unsafe_allow_html=True)
         
         with col3:
+            st.markdown('<div class="nav-buttons">', unsafe_allow_html=True)
             if st.button("Skip", key="nav_skip", use_container_width=True, help="If not applicable"):
                 self._save_response(current_q_id, "Not applicable", {"patterns": None, "weights": [0]})
                 self._advance_question()
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
     def _get_current_question_id(self):
         """Get the ID of the current question to display"""
@@ -2369,7 +2330,7 @@ class AdaptiveBehavioralAssessment:
     def _estimate_total_questions(self):
         """Estimate total questions based on current triggers"""
         base_questions = 25
-        adaptive_questions = len(st.session_state.adaptive_triggered) * 2
+        adaptive_questions = len(st.session_state.adaptive_triggered) * 1  # 1 per pool
         safety_questions = len(st.session_state.risk_flags) * 1
         
         return base_questions + adaptive_questions + safety_questions
@@ -2503,7 +2464,7 @@ class AdaptiveBehavioralAssessment:
             errors.append("Name is required")
         if not email.strip():
             errors.append("Email is required")
-        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
             errors.append("Valid email required")
         if not concern.strip():
             errors.append("Primary concern required")
@@ -2707,7 +2668,7 @@ ADAPTIVE POOLS: {len(results.get('adaptive_triggered', []))}
 
 
 class AssessPage:
-    """Mobile-optimized assessment page"""
+    """FIXED Mobile-optimized assessment page"""
     
     def __init__(self):
         self.assessment = AdaptiveBehavioralAssessment()
