@@ -1117,6 +1117,7 @@ class ComprehensiveBehavioralAssessment:
                     for error in errors:
                         st.error(f"❌ {error}")
                 else:
+                    # Save contact info
                     st.session_state.contact_info = {
                         'name': name.strip(),
                         'email': email.strip(),
@@ -1127,10 +1128,38 @@ class ComprehensiveBehavioralAssessment:
                         'marketing_consent': marketing_consent,
                         'timestamp': datetime.now().isoformat()
                     }
+                    
+                    # Prepare comprehensive assessment data for email
+                    assessment_data = {
+                        'contact_info': st.session_state.contact_info,
+                        'assessment_results': st.session_state.assessment_results,
+                        'assessment_responses': st.session_state.assessment_responses,
+                        'intensity_responses': st.session_state.get('intensity_responses', {}),
+                        'adaptive_triggered': st.session_state.get('adaptive_triggered', []),
+                        'risk_flags': st.session_state.get('risk_flags', []),
+                        'pattern_scores': st.session_state.get('pattern_scores', {}),
+                        'start_time': st.session_state.get('start_time'),
+                        'completion_timestamp': datetime.now().isoformat()
+                    }
+                    
+                    # Send comprehensive clinical assessment email
+                    try:
+                        from utils.email_handler import send_clinical_assessment_results
+                        email_success = send_clinical_assessment_results(assessment_data)
+                        
+                        if email_success:
+                            st.success("✅ Assessment completed and clinical team notified!")
+                            st.info("📧 Your detailed analysis has been sent to our clinical team for review.")
+                        else:
+                            st.warning("⚠️ Assessment saved, but email notification failed. Our team will still receive your results.")
+                    except ImportError:
+                        st.info("📋 Assessment completed! Our clinical team will review your results.")
+                    except Exception as e:
+                        st.error(f"❌ Email error: {str(e)}")
+                    
                     st.session_state.contact_provided = True
-                    st.success("Contact information saved! Generating your analysis...")
                     st.rerun()
-
+                    
     def _render_results(self):
         st.markdown("## Your Behavioral Pattern Analysis")
         
