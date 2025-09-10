@@ -696,19 +696,23 @@ def apply_global_styles():
     }
     
     /* ==========================================
-       ASSESSMENT PAGE EXCEPTIONS START HERE
+       ASSESSMENT PAGE SPECIFIC BUTTON CLASSES
        ========================================== */
     
-    /* ASSESSMENT PAGE: Completely different button styling */
-    body[data-page="assessment"] .stButton > button,
-    [data-testid="stApp"]:has([data-page="assessment"]) .stButton > button,
-    .assessment-page .stButton > button {
-        all: unset !important;
+    /* Assessment button styling - compact and left-aligned */
+    .assess-button {
+        margin: 0 !important;
+        margin-bottom: 2px !important;
+        padding: 0 !important;
+    }
+    
+    .assess-button > button {
+        all: revert !important;
         display: block !important;
         width: 100% !important;
-        margin: 0.05rem 0 !important;
-        padding: 0.4rem 0.6rem !important;
-        font-size: 0.9rem !important;
+        margin: 0 !important;
+        padding: 6px 8px !important;
+        font-size: 14px !important;
         line-height: 1.2 !important;
         text-align: left !important;
         background-color: #F8FAFC !important;
@@ -717,48 +721,95 @@ def apply_global_styles():
         color: #374151 !important;
         cursor: pointer !important;
         box-sizing: border-box !important;
+        font-weight: 400 !important;
+        min-height: auto !important;
+        height: auto !important;
+        box-shadow: none !important;
+        transition: background-color 0.15s ease !important;
     }
     
-    /* ASSESSMENT PAGE: Button hover states */
-    body[data-page="assessment"] .stButton > button:hover,
-    [data-testid="stApp"]:has([data-page="assessment"]) .stButton > button:hover,
-    .assessment-page .stButton > button:hover {
+    .assess-button > button:hover {
         background-color: #E1F0F0 !important;
         border-color: #4CA1A3 !important;
         color: #273548 !important;
     }
     
-    /* ASSESSMENT PAGE: Navigation buttons (keep centered) */
-    body[data-page="assessment"] .nav-buttons .stButton > button,
-    [data-testid="stApp"]:has([data-page="assessment"]) .nav-buttons .stButton > button,
-    .assessment-page .nav-buttons .stButton > button {
+    /* Force text alignment for assess buttons */
+    .assess-button > button *,
+    .assess-button > button span,
+    .assess-button > button div,
+    .assess-button > button p {
+        text-align: left !important;
+        color: #374151 !important;
+        font-size: 14px !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-weight: 400 !important;
+    }
+    
+    /* Assessment navigation buttons - keep centered */
+    .assess-nav-button > button {
         text-align: center !important;
         background-color: white !important;
         border: 1px solid #D1D5DB !important;
+        padding: 8px 12px !important;
     }
     
-    /* ASSESSMENT PAGE: Primary buttons (keep centered) */
-    body[data-page="assessment"] .stButton > button[kind="primary"],
-    [data-testid="stApp"]:has([data-page="assessment"]) .stButton > button[kind="primary"],
-    .assessment-page .stButton > button[kind="primary"] {
+    .assess-nav-button > button *,
+    .assess-nav-button > button span,
+    .assess-nav-button > button div,
+    .assess-nav-button > button p {
+        text-align: center !important;
+        color: #374151 !important;
+    }
+    
+    /* Assessment primary buttons - keep centered */
+    .assess-primary-button > button {
+        text-align: center !important;
         background-color: #4CA1A3 !important;
         color: white !important;
-        text-align: center !important;
         border-color: #4CA1A3 !important;
     }
     
+    .assess-primary-button > button *,
+    .assess-primary-button > button span,
+    .assess-primary-button > button div,
+    .assess-primary-button > button p {
+        text-align: center !important;
+        color: white !important;
+    }
+    
+    /* Assessment page layout */
+    .assess-container {
+        padding: 8px !important;
+        max-width: 100% !important;
+    }
+    
+    @media (min-width: 768px) {
+        .assess-container {
+            max-width: 600px !important;
+            margin: 0 auto;
+            padding: 16px !important;
+        }
+        
+        .assess-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+    }
+    
     /* ==========================================
-       GLOBAL BUTTON STYLES (NON-ASSESSMENT)
+       GLOBAL BUTTON STYLES (DEFAULT)
        ========================================== */
     
-    /* Button System - Apply to all buttons EXCEPT when body has assessment marker */
-    body:not([data-page="assessment"]) .stButton,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton {
+    /* Default button styling for all other pages */
+    .stButton {
         margin: var(--space-xs) 0;
     }
     
-    body:not([data-page="assessment"]) .stButton > button,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button {
+    .stButton > button {
         border-radius: var(--radius-sm) !important;
         transition: var(--transition) !important;
         font-weight: 600 !important;
@@ -775,28 +826,22 @@ def apply_global_styles():
         box-sizing: border-box;
     }
     
-    /* Primary Button - Force text color override (EXCEPT assessment) */
-    body:not([data-page="assessment"]) .stButton > button[kind="primary"],
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"] {
+    /* Primary Button styling */
+    .stButton > button[kind="primary"] {
         background-color: var(--accent) !important;
         color: #FFFFFF !important;
         border: 2px solid var(--accent) !important;
     }
     
-    /* Force white text on primary buttons - highest specificity (EXCEPT assessment) */
-    body:not([data-page="assessment"]) .stButton > button[kind="primary"],
-    body:not([data-page="assessment"]) .stButton > button[kind="primary"] span,
-    body:not([data-page="assessment"]) .stButton > button[kind="primary"] div,
-    body:not([data-page="assessment"]) .stButton > button[kind="primary"] p,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"],
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"] span,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"] div,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"] p {
+    /* Force white text on primary buttons */
+    .stButton > button[kind="primary"],
+    .stButton > button[kind="primary"] span,
+    .stButton > button[kind="primary"] div,
+    .stButton > button[kind="primary"] p {
         color: #FFFFFF !important;
     }
     
-    body:not([data-page="assessment"]) .stButton > button[kind="primary"]:hover,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"]:hover {
+    .stButton > button[kind="primary"]:hover {
         background-color: #E1F0F0 !important;
         color: #273548 !important;
         border-color: #E1F0F0 !important;
@@ -804,40 +849,30 @@ def apply_global_styles():
         box-shadow: 0 4px 12px rgba(243,246,248,0.6);
     }
     
-    /* Force dark text on primary button hover (EXCEPT assessment) */
-    body:not([data-page="assessment"]) .stButton > button[kind="primary"]:hover,
-    body:not([data-page="assessment"]) .stButton > button[kind="primary"]:hover span,
-    body:not([data-page="assessment"]) .stButton > button[kind="primary"]:hover div,
-    body:not([data-page="assessment"]) .stButton > button[kind="primary"]:hover p,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"]:hover,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"]:hover span,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"]:hover div,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="primary"]:hover p {
+    /* Force dark text on primary button hover */
+    .stButton > button[kind="primary"]:hover,
+    .stButton > button[kind="primary"]:hover span,
+    .stButton > button[kind="primary"]:hover div,
+    .stButton > button[kind="primary"]:hover p {
         color: #273548 !important;
     }
     
-    /* Secondary Button - Force text color override (EXCEPT assessment) */
-    body:not([data-page="assessment"]) .stButton > button[kind="secondary"],
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"] {
+    /* Secondary Button styling */
+    .stButton > button[kind="secondary"] {
         background-color: white !important;
         color: var(--text-primary) !important;
         border: 2px solid var(--border) !important;
     }
     
-    /* Force dark text on secondary buttons (EXCEPT assessment) */
-    body:not([data-page="assessment"]) .stButton > button[kind="secondary"],
-    body:not([data-page="assessment"]) .stButton > button[kind="secondary"] span,
-    body:not([data-page="assessment"]) .stButton > button[kind="secondary"] div,
-    body:not([data-page="assessment"]) .stButton > button[kind="secondary"] p,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"],
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"] span,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"] div,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"] p {
+    /* Force dark text on secondary buttons */
+    .stButton > button[kind="secondary"],
+    .stButton > button[kind="secondary"] span,
+    .stButton > button[kind="secondary"] div,
+    .stButton > button[kind="secondary"] p {
         color: var(--text-primary) !important;
     }
     
-    body:not([data-page="assessment"]) .stButton > button[kind="secondary"]:hover,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"]:hover {
+    .stButton > button[kind="secondary"]:hover {
         background-color: var(--accent) !important;
         color: #FFFFFF !important;
         border-color: var(--accent) !important;
@@ -845,15 +880,11 @@ def apply_global_styles():
         box-shadow: 0 4px 12px rgba(76, 161, 163, 0.3);
     }
     
-    /* Force white text on secondary button hover (EXCEPT assessment) */
-    body:not([data-page="assessment"]) .stButton > button[kind="secondary"]:hover,
-    body:not([data-page="assessment"]) .stButton > button[kind="secondary"]:hover span,
-    body:not([data-page="assessment"]) .stButton > button[kind="secondary"]:hover div,
-    body:not([data-page="assessment"]) .stButton > button[kind="secondary"]:hover p,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"]:hover,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"]:hover span,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"]:hover div,
-    [data-testid="stApp"]:not(:has([data-page="assessment"])) .stButton > button[kind="secondary"]:hover p {
+    /* Force white text on secondary button hover */
+    .stButton > button[kind="secondary"]:hover,
+    .stButton > button[kind="secondary"]:hover span,
+    .stButton > button[kind="secondary"]:hover div,
+    .stButton > button[kind="secondary"]:hover p {
         color: #FFFFFF !important;
     }
     
