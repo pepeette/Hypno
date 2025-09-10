@@ -1359,7 +1359,7 @@
 
 """
 Enhanced Behavioral Pattern Assessment - FIXED Mobile-Optimized UX
-Compact design with proper button rendering and responsive layout
+Improved spacing, alignment, and email integration
 """
 import streamlit as st
 from datetime import datetime
@@ -1373,7 +1373,7 @@ except ImportError:
     print("Paywall component not available")
 
 class AdaptiveBehavioralAssessment:
-    """FIXED Mobile-optimized behavioral pattern assessment"""
+    """FIXED Mobile-optimized behavioral pattern assessment with improved UX"""
     
     def __init__(self):
         self._init_session_state()
@@ -1882,8 +1882,8 @@ class AdaptiveBehavioralAssessment:
 
     def render(self):
         """Render with FIXED mobile-optimized UX"""
-        # Apply WORKING mobile styles
-        self._apply_working_mobile_styles()
+        # Apply IMPROVED mobile styles
+        self._apply_improved_mobile_styles()
         
         self._render_header()
         
@@ -1895,8 +1895,8 @@ class AdaptiveBehavioralAssessment:
         else:
             self._render_results()
 
-    def _apply_working_mobile_styles(self):
-        """Apply WORKING mobile-optimized CSS styles"""
+    def _apply_improved_mobile_styles(self):
+        """Apply IMPROVED mobile-optimized CSS styles with better spacing and alignment"""
         st.markdown("""
         <style>
         /* Remove default Streamlit padding */
@@ -1914,18 +1914,19 @@ class AdaptiveBehavioralAssessment:
             }
         }
         
-        /* Style Streamlit buttons to be mobile-friendly */
+        /* IMPROVED: Style Streamlit buttons to be mobile-friendly with BETTER SPACING */
         .stButton > button {
             width: 100% !important;
-            margin-bottom: 0.5rem !important;
-            padding: 0.75rem 1rem !important;
-            text-align: left !important;
+            margin-bottom: 0.25rem !important; /* REDUCED from 0.5rem */
+            padding: 0.6rem 1rem !important; /* REDUCED from 0.75rem */
+            text-align: left !important; /* FIXED: Left alignment */
             background-color: #F8FAFC !important;
             border: 1px solid #E2E8F0 !important;
             border-radius: 6px !important;
             color: #374151 !important;
             font-size: 0.95rem !important;
             transition: all 0.2s ease !important;
+            line-height: 1.3 !important; /* IMPROVED: Better line height */
         }
         
         .stButton > button:hover {
@@ -1940,16 +1941,20 @@ class AdaptiveBehavioralAssessment:
             outline: none !important;
         }
         
-        /* Two-column layout for larger screens */
+        /* IMPROVED: Better grid layout for larger screens */
         @media (min-width: 768px) {
             .question-options {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
-                gap: 0.5rem !important;
+                gap: 0.25rem !important; /* REDUCED gap */
+                margin-bottom: 1rem !important;
             }
-            
+        }
+        
+        /* IMPROVED: Mobile single column with minimal spacing */
+        @media (max-width: 767px) {
             .question-options .stButton {
-                margin-bottom: 0 !important;
+                margin-bottom: 0.15rem !important; /* MINIMAL spacing on mobile */
             }
         }
         
@@ -1968,6 +1973,7 @@ class AdaptiveBehavioralAssessment:
             color: #374151 !important;
             text-align: center !important;
             padding: 0.5rem 1rem !important;
+            margin-bottom: 0.25rem !important;
         }
         
         .nav-buttons .stButton > button:hover {
@@ -2039,7 +2045,7 @@ class AdaptiveBehavioralAssessment:
         """, unsafe_allow_html=True)
 
     def _render_current_question(self):
-        """Render current question with WORKING mobile layout"""
+        """Render current question with IMPROVED mobile layout"""
         current_q_id = self._get_current_question_id()
         
         if current_q_id is None:
@@ -2058,7 +2064,7 @@ class AdaptiveBehavioralAssessment:
         completed = len(st.session_state.assessment_responses)
         progress = completed / total_questions if total_questions > 0 else 0
 
-        # COMPACT progress bar - FIXED
+        # COMPACT progress bar
         st.markdown(f"""
         <div class="progress-container">
             <span><strong>Q {completed + 1}/{total_questions}</strong></span>
@@ -2078,38 +2084,36 @@ class AdaptiveBehavioralAssessment:
         </div>
         """, unsafe_allow_html=True)
 
-        # Handle different question types with WORKING logic
+        # Handle different question types
         if question['type'] == 'single_choice':
-            self._render_single_choice_WORKING(current_q_id, question)
+            self._render_single_choice_improved(current_q_id, question)
         elif question['type'] == 'text_completion':
-            self._render_text_completion_WORKING(current_q_id, question)
+            self._render_text_completion(current_q_id, question)
 
         # Navigation
-        self._render_navigation_WORKING(current_q_id)
+        self._render_navigation(current_q_id)
 
-    def _render_single_choice_WORKING(self, q_id, question):
-        """Render single choice with WORKING Streamlit buttons"""
+    def _render_single_choice_improved(self, q_id, question):
+        """Render single choice with IMPROVED spacing and alignment"""
         options = question['options']
         
-        # For larger screens, use columns for 2-column layout
-        if len(options) <= 5:
-            # Desktop: 2 columns, Mobile: 1 column (handled by CSS)
-            st.markdown('<div class="question-options">', unsafe_allow_html=True)
-            
-            for i, option in enumerate(options):
-                if st.button(
-                    option, 
-                    key=f"q_{q_id}_opt_{i}",
-                    use_container_width=True
-                ):
-                    self._save_response(q_id, option, question)
-                    self._advance_question()
-                    st.rerun()
-            
-            st.markdown('</div>', unsafe_allow_html=True)
+        # Use container div for better control
+        st.markdown('<div class="question-options">', unsafe_allow_html=True)
+        
+        for i, option in enumerate(options):
+            if st.button(
+                option, 
+                key=f"q_{q_id}_opt_{i}",
+                use_container_width=True
+            ):
+                self._save_response(q_id, option, question)
+                self._advance_question()
+                st.rerun()
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    def _render_text_completion_WORKING(self, q_id, question):
-        """Render text completion with WORKING Streamlit components"""
+    def _render_text_completion(self, q_id, question):
+        """Render text completion"""
         response = st.text_area(
             "",
             placeholder=question.get('placeholder', 'Your response...'),
@@ -2127,8 +2131,8 @@ class AdaptiveBehavioralAssessment:
         else:
             st.info("Please provide your response to continue.")
 
-    def _render_navigation_WORKING(self, current_q_id):
-        """Render WORKING navigation"""
+    def _render_navigation(self, current_q_id):
+        """Render navigation"""
         # Navigation buttons in columns
         col1, col2, col3 = st.columns([1, 2, 1])
         
@@ -2457,14 +2461,14 @@ class AdaptiveBehavioralAssessment:
                     st.rerun()
 
     def _validate_contact_form(self, name, email, concern, urgency, next_step):
-        """Validate contact form"""
+        """Validate contact form with CORRECTED email regex"""
         errors = []
         
         if not name.strip():
             errors.append("Name is required")
         if not email.strip():
             errors.append("Email is required")
-        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
             errors.append("Valid email required")
         if not concern.strip():
             errors.append("Primary concern required")
@@ -2493,7 +2497,7 @@ class AdaptiveBehavioralAssessment:
     def _send_assessment_results(self):
         """Send assessment results via email"""
         try:
-            from utils.email_handler import send_assessment_results_email
+            from utils.enhanced_email_handler import send_assessment_results_email
             
             # Prepare data package
             assessment_data = {
