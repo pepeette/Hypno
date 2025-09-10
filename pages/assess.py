@@ -2375,7 +2375,7 @@ if __name__ == "__main__":
     )
     
     assessment_page = create_assess_page()
-    assessment_page.render(), email):
+    assessment_page.render(), email:
                     errors.append("valid email address is required")
                 if not concern.strip(): 
                     errors.append("please describe what brought you here")
