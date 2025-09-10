@@ -2295,144 +2295,106 @@ class AdaptiveBehavioralAssessment:
         else:
             self._render_comprehensive_results()
 
-    def _apply_clean_styles(self):
-        """Apply clean, minimal styles following styling.py guidelines"""
+    def apply_clinical_styles():
+        """Apply clinical-grade styling that harmonizes with global theme variables."""
         st.markdown("""
         <style>
-        /* Remove all containers and colors behind questions */
-        .clinical-question, .safety-notice, .clinical-insight {
-            all: unset !important;
+        /* -------------- Clinical Container Styles ----------------- */
+        .clinical-question {
+            background: linear-gradient(135deg, var(--accent) 0%, #764ba2 100%);
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            color: #FFFFFF !important;
+            font-size: var(--font-size-normal) !important;
+            font-weight: 500 !important;
+            line-height: var(--line-height-normal) !important;
+            box-shadow: var(--shadow-sm);
         }
-        
-        /* Force light mode and clean typography */
-        html, body, [class*="st"] {
-            color-scheme: light !important;
+        .safety-notice {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: var(--radius-sm);
+            padding: var(--space-md);
+            margin: var(--space-sm) 0;
+            font-size: 0.95rem !important;
+            color: var(--text-secondary) !important;
+            box-shadow: var(--shadow-sm);
         }
-        
-        .main .block-container {
-            padding-top: 0.5rem !important;
-            padding-bottom: 0.5rem !important;
-            max-width: 100% !important;
+        .clinical-insight {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: var(--space-sm);
+            margin: var(--space-xs) 0;
+            font-size: 0.9rem !important;
+            color: var(--text-secondary) !important;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm);
         }
-        
-        @media (min-width: 768px) {
-            .main .block-container {
-                max-width: 600px !important;
-                margin: 0 auto;
-            }
-        }
-        
-        /* Clean question text - no backgrounds, no colors */
-        .question-text {
-            font-size: 1rem !important;
-            line-height: 1.4 !important;
-            color: #273548 !important;
-            margin-bottom: 1rem !important;
-            font-weight: 400 !important;
-            text-shadow: none !important;
-        }
-        
-        /* Assessment buttons - clean and left-aligned */
-        .assess-button > button {
-            all: revert !important;
-            display: block !important;
-            width: 100% !important;
-            margin: 0 !important;
-            margin-bottom: 2px !important;
-            padding: 8px 12px !important;
-            font-size: 14px !important;
-            line-height: 1.2 !important;
-            text-align: left !important;
-            background-color: #F8FAFC !important;
-            border: 1px solid #E2E8F0 !important;
-            border-radius: 6px !important;
-            color: #374151 !important;
-            cursor: pointer !important;
-            box-sizing: border-box !important;
-            font-weight: 400 !important;
-            min-height: auto !important;
-            height: auto !important;
-            box-shadow: none !important;
-            transition: background-color 0.15s ease !important;
-        }
-        
-        .assess-button > button:hover {
-            background-color: #E1F0F0 !important;
-            border-color: #4CA1A3 !important;
-            color: #273548 !important;
-        }
-        
-        /* Progress bar styling */
+        /* -------------- Clinical Progress Styles ----------------- */
         .progress-container {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            color: #556D7A;
-            padding: 0.5rem;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
+            font-size: 0.85rem !important;
+            color: var(--text-secondary) !important;
+            padding: var(--space-xs);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: #F8FAFC;
         }
-        
         .progress-bar {
             flex: 1;
             height: 4px;
-            background: #E2E8F0;
+            background: var(--border);
             border-radius: 2px;
             overflow: hidden;
         }
-        
         .progress-fill {
             height: 100%;
-            background: #4CA1A3;
+            background: var(--accent);
             transition: width 0.3s ease;
         }
-        
-        /* Text area styling */
-        .stTextArea textarea {
+        /* -------------- Override Container Max-Width for Clinical ----------------- */
+        .main .block-container.clinical-container {
+            max-width: 600px !important;
+            margin: 0 auto;
+            padding-top: var(--space-sm) !important;
+            padding-bottom: var(--space-sm) !important;
+        }
+        /* -------------- Clinical Button Styles ----------------- */
+        .stButton.clinical > button {
+            width: 100% !important;
+            margin-bottom: var(--space-xs) !important;
+            padding: 0.6rem 1rem !important;
+            text-align: left !important;
+            background-color: #F8FAFC !important;
             border: 1px solid #E2E8F0 !important;
-            border-radius: 6px !important;
-            padding: 0.75rem !important;
+            border-radius: var(--radius-sm) !important;
+            color: #374151 !important;
             font-size: 0.95rem !important;
-            margin-bottom: 0.5rem !important;
+            font-weight: 500 !important;
+            transition: var(--transition) !important;
+            line-height: 1.3 !important;
         }
-        
-        /* Navigation buttons */
-        .stButton > button {
-            border-radius: 6px !important;
-            padding: 0.5rem 1rem !important;
-            font-size: 0.9rem !important;
-            margin-bottom: 0.25rem !important;
+        .stButton.clinical > button:hover {
+            background-color: #F1F5F9 !important;
+            border-color: var(--accent) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: var(--shadow-sm);
         }
-        
-        /* Hide Streamlit elements */
-        header[data-testid="stHeader"] {
-            display: none !important;
-        }
-        
-        .stDeployButton {
-            display: none !important;
-        }
-        
-        /* Mobile optimization */
-        @media (max-width: 767px) {
-            .main .block-container {
-                padding-left: 0.5rem !important;
-                padding-right: 0.5rem !important;
-            }
-            
-            .question-text {
-                font-size: 0.95rem !important;
-                line-height: 1.3 !important;
-            }
-            
-            .assess-button > button {
-                padding: 6px 8px !important;
-                font-size: 13px !important;
-                margin-bottom: 1px !important;
+        /* -------------- Mobile Responsive Override for Clinical Container ----------------- */
+        @media (max-width: 768px) {
+            .main .block-container.clinical-container {
+                max-width: 100% !important;
+                padding-left: var(--space-sm);
+                padding-right: var(--space-sm);
             }
         }
         </style>
         """, unsafe_allow_html=True)
+
         
     # def _apply_clinical_styles(self):
     #     """Apply clinical-grade styling"""
