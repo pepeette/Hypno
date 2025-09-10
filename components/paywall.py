@@ -260,10 +260,14 @@ class ClinicalAnalysisPaywall:
             st.error("Access denied. Please complete payment first.")
             return
         
-        st.success("🔓 Premium Clinical Analysis Unlocked")
+        st.success("Premium Clinical Analysis Unlocked")
         
-        # Extract analysis results
+        # Extract analysis results safely
         assessment_results = assessment_data.get('assessment_results', {})
+        if not assessment_results:
+            st.error("No assessment results found. Please complete the assessment first.")
+            return
+            
         pattern_scores = assessment_results.get('pattern_scores', {})
         clinical_insights = assessment_results.get('clinical_insights', {})
         
