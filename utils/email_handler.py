@@ -1271,23 +1271,46 @@ class ComprehensiveEmailHandler:
     def send_clinical_assessment_results(self, assessment_data):
         """Send comprehensive clinical assessment with therapeutic analysis"""
         try:
-            print("[DEBUG] Sending clinical assessment results")
+            print("[DEBUG] Starting clinical assessment email process")
+            print(f"[DEBUG] Assessment data keys: {list(assessment_data.keys())}")
             
             # Extract key information
             contact_info = assessment_data.get('contact_info', {})
             results = assessment_data.get('assessment_results', {})
+            
+            if not contact_info:
+                print("[ERROR] No contact_info found in assessment_data")
+                return False
+            
+            if not results and not assessment_data.get('pattern_scores'):
+                print("[ERROR] No assessment_results or pattern_scores found")
+                return False
+            
             urgency = contact_info.get('urgency', 'Standard priority')
+            risk_flags = results.get('risk_flags', []) or assessment_data.get('risk_flags', [])
+            
+            print(f"[DEBUG] Found {len(risk_flags)} risk flags")
+            print(f"[DEBUG] Urgency level: {urgency}")
             
             # Determine priority flag
-            priority_flag = self._get_priority_flag(urgency, results.get('risk_flags', []))
+            priority_flag = self._get_priority_flag(urgency, risk_flags)
             
             subject = f"{priority_flag} Clinical Assessment - {contact_info.get('name', 'Client')}"
+            print(f"[DEBUG] Email subject: {subject}")
+            
             body = self._format_clinical_email_body(assessment_data)
             
+            if not body or len(body) < 100:
+                print("[ERROR] Email body generation failed or too short")
+                return False
+            
+            print(f"[DEBUG] Email body length: {len(body)} characters")
             return self._send_email(subject, body, "Clinical Assessment")
             
         except Exception as e:
             print(f"[ERROR] Clinical assessment email error: {e}")
+            import traceback
+            print(f"[ERROR] Traceback: {traceback.format_exc()}")
             return False
     
     def _format_clinical_email_body(self, data):
