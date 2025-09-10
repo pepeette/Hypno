@@ -1969,14 +1969,44 @@ class AdaptiveBehavioralAssessment:
         }
 
     # --- Navigation and Response saving ---
+
     def _get_current_question_id(self):
-        # [Use the logic from your new questionnaire implementation, not the commented out version.]
-        # Try core, then adaptive, then safety, then hypnotic.
-        answered_questions = set(st.session_state.assessment_responses.keys())
-        for q_id in self.core_questions:
-            if q_id not in answered_questions:
-                return q_id
+        answered = set(st.session_state.assessment_responses.keys())
+    
+        # Check core questions
+        for qid in sorted(self.core_questions.keys()):
+            if qid not in answered:
+                return qid
+    
+        # Check adaptive pools triggered
+        for pool_name in st.session_state.adaptive_triggered:
+            pool = self.adaptive_pools.get(pool_name, {})
+            for qid in sorted(pool.keys()):
+                if qid not in answered:
+                    return qid
+    
+        # Check safety questions if any risk flags
+        if st.session_state.risk_flags:
+            for pool_name, pool in self.safety_questions.items():
+                for qid in sorted(pool.keys()):
+                    if qid not in answered:
+                        return qid
+    
+        # Check hypnotic questions (always asked)
+        for pool_name, pool in self.hypnotic_questions.items():
+            for qid in sorted(pool.keys()):
+                if qid not in answered:
+                    return qid
+    
+        # All questions answered
         return None
+
+    def _estimate_total_questions(self):
+        base = len(self.core_questions)
+        adaptive = len(st.session_state.adaptive_triggered)
+        safety = len(st.session_state.risk_flags) * len(next(iter(self.safety_questions.values()), {}))
+        hypnotic = sum(len(pool) for pool in self.hypnotic_questions.values())
+        return base + adaptive + safety + hypnotic
 
     def _get_question_by_id(self, q_id):
         # [Use the logic from your new questionnaire implementation]
@@ -2058,7 +2088,7 @@ class AdaptiveBehavioralAssessment:
         if not question:
             st.error("Question not found")
             return
-        total_questions = 2 # Replace with estimated calculation if needed
+        total_questions = self._estimate_total_questions() # Replace with estimated calculation if needed
         completed = len(st.session_state.assessment_responses)
         progress = completed / total_questions if total_questions > 0 else 0
 
