@@ -1990,7 +1990,6 @@ class AdaptiveBehavioralAssessment:
             font-size: 0.85rem;
             color: #556D7A;
             padding: 0.5rem;
-            background: white;
             border-radius: 6px;
             border: 1px solid #E2E8F0;
         }
