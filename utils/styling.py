@@ -97,6 +97,11 @@
 #         color: var(--text-secondary) !important;
 #         text-shadow: none !important;
 #     }
+    
+#     /* Exclude buttons from global text color rule */
+#     button, button * {
+#         color: inherit !important;
+#     }
 
 #     /* CTA Button Style - Primary (Accent background) */
 #     .cta-button {
@@ -248,25 +253,50 @@
 #         box-sizing: border-box;
 #     }
     
-#     /* Primary Button - Matching cta-button primary */
+#     /* Primary Button - Force text color override */
 #     .stButton>button[kind="primary"] {
 #         background-color: var(--accent) !important;
 #         color: #FFFFFF !important;
 #         border: 2px solid var(--accent) !important;
 #     }
     
+#     /* Force white text on primary buttons - highest specificity */
+#     .stButton>button[kind="primary"],
+#     .stButton>button[kind="primary"] span,
+#     .stButton>button[kind="primary"] div,
+#     .stButton>button[kind="primary"] p {
+#         color: #FFFFFF !important;
+#     }
+    
 #     .stButton>button[kind="primary"]:hover {
 #         background-color: #E1F0F0 !important;
 #         color: #273548 !important;
+#         border-color: #E1F0F0 !important;
 #         transform: translateY(-1px);
 #         box-shadow: 0 4px 12px rgba(243,246,248,0.6);
 #     }
     
-#     /* Secondary Button - Matching cta-button secondary */
+#     /* Force dark text on primary button hover */
+#     .stButton>button[kind="primary"]:hover,
+#     .stButton>button[kind="primary"]:hover span,
+#     .stButton>button[kind="primary"]:hover div,
+#     .stButton>button[kind="primary"]:hover p {
+#         color: #273548 !important;
+#     }
+    
+#     /* Secondary Button - Force text color override */
 #     .stButton>button[kind="secondary"] {
 #         background-color: white !important;
 #         color: var(--text-primary) !important;
 #         border: 2px solid var(--border) !important;
+#     }
+    
+#     /* Force dark text on secondary buttons */
+#     .stButton>button[kind="secondary"],
+#     .stButton>button[kind="secondary"] span,
+#     .stButton>button[kind="secondary"] div,
+#     .stButton>button[kind="secondary"] p {
+#         color: var(--text-primary) !important;
 #     }
     
 #     .stButton>button[kind="secondary"]:hover {
@@ -275,6 +305,14 @@
 #         border-color: var(--accent) !important;
 #         transform: translateY(-1px);
 #         box-shadow: 0 4px 12px rgba(76, 161, 163, 0.3);
+#     }
+    
+#     /* Force white text on secondary button hover */
+#     .stButton>button[kind="secondary"]:hover,
+#     .stButton>button[kind="secondary"]:hover span,
+#     .stButton>button[kind="secondary"]:hover div,
+#     .stButton>button[kind="secondary"]:hover p {
+#         color: #FFFFFF !important;
 #     }
     
 #     /* Form Elements with improved spacing */
@@ -421,14 +459,17 @@
 
 
 
+
+
 """
 Enhanced styling module for the Hypnotherapy website
 Improved spacing, typography, and visual hierarchy
+WITH ASSESSMENT PAGE EXCEPTIONS
 """
 import streamlit as st
 
 def apply_global_styles():
-    """Apply all global styles with improved spacing and typography"""
+    """Apply all global styles with improved spacing and typography - WITH ASSESSMENT PAGE EXCEPTIONS"""
     
     st.markdown("""
     <style>
@@ -654,12 +695,27 @@ def apply_global_styles():
         box-shadow: var(--shadow-sm);
     }
     
-    /* Button System - Matching CTA button styles exactly */
-    .stButton {
+    /* ==========================================
+       ASSESSMENT PAGE EXCEPTIONS START HERE
+       ========================================== */
+    
+    /* EXCEPTION: Skip global button styling for assessment containers */
+    .assessment-container .stButton > button,
+    .question-options .stButton > button {
+        /* These will be styled by assessment page CSS */
+        all: revert !important;
+    }
+    
+    /* ==========================================
+       GLOBAL BUTTON STYLES (NON-ASSESSMENT)
+       ========================================== */
+    
+    /* Button System - Apply to all buttons EXCEPT assessment containers */
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) {
         margin: var(--space-xs) 0;
     }
     
-    .stButton>button {
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button {
         border-radius: var(--radius-sm) !important;
         transition: var(--transition) !important;
         font-weight: 600 !important;
@@ -676,22 +732,22 @@ def apply_global_styles():
         box-sizing: border-box;
     }
     
-    /* Primary Button - Force text color override */
-    .stButton>button[kind="primary"] {
+    /* Primary Button - Force text color override (EXCEPT assessment) */
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"] {
         background-color: var(--accent) !important;
         color: #FFFFFF !important;
         border: 2px solid var(--accent) !important;
     }
     
-    /* Force white text on primary buttons - highest specificity */
-    .stButton>button[kind="primary"],
-    .stButton>button[kind="primary"] span,
-    .stButton>button[kind="primary"] div,
-    .stButton>button[kind="primary"] p {
+    /* Force white text on primary buttons - highest specificity (EXCEPT assessment) */
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"],
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"] span,
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"] div,
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"] p {
         color: #FFFFFF !important;
     }
     
-    .stButton>button[kind="primary"]:hover {
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"]:hover {
         background-color: #E1F0F0 !important;
         color: #273548 !important;
         border-color: #E1F0F0 !important;
@@ -699,30 +755,30 @@ def apply_global_styles():
         box-shadow: 0 4px 12px rgba(243,246,248,0.6);
     }
     
-    /* Force dark text on primary button hover */
-    .stButton>button[kind="primary"]:hover,
-    .stButton>button[kind="primary"]:hover span,
-    .stButton>button[kind="primary"]:hover div,
-    .stButton>button[kind="primary"]:hover p {
+    /* Force dark text on primary button hover (EXCEPT assessment) */
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"]:hover,
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"]:hover span,
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"]:hover div,
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="primary"]:hover p {
         color: #273548 !important;
     }
     
-    /* Secondary Button - Force text color override */
-    .stButton>button[kind="secondary"] {
+    /* Secondary Button - Force text color override (EXCEPT assessment) */
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"] {
         background-color: white !important;
         color: var(--text-primary) !important;
         border: 2px solid var(--border) !important;
     }
     
-    /* Force dark text on secondary buttons */
-    .stButton>button[kind="secondary"],
-    .stButton>button[kind="secondary"] span,
-    .stButton>button[kind="secondary"] div,
-    .stButton>button[kind="secondary"] p {
+    /* Force dark text on secondary buttons (EXCEPT assessment) */
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"],
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"] span,
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"] div,
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"] p {
         color: var(--text-primary) !important;
     }
     
-    .stButton>button[kind="secondary"]:hover {
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"]:hover {
         background-color: var(--accent) !important;
         color: #FFFFFF !important;
         border-color: var(--accent) !important;
@@ -730,13 +786,18 @@ def apply_global_styles():
         box-shadow: 0 4px 12px rgba(76, 161, 163, 0.3);
     }
     
-    /* Force white text on secondary button hover */
-    .stButton>button[kind="secondary"]:hover,
-    .stButton>button[kind="secondary"]:hover span,
-    .stButton>button[kind="secondary"]:hover div,
-    .stButton>button[kind="secondary"]:hover p {
+    /* Force white text on secondary button hover (EXCEPT assessment) */
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"]:hover,
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"]:hover span,
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"]:hover div,
+    .stButton:not(.assessment-container .stButton):not(.question-options .stButton) > button[kind="secondary"]:hover p {
         color: #FFFFFF !important;
     }
+    
+    /* ==========================================
+       ASSESSMENT PAGE EXCEPTIONS END HERE
+       REST OF GLOBAL STYLES CONTINUE
+       ========================================== */
     
     /* Form Elements with improved spacing */
     .stForm {
