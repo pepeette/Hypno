@@ -2130,10 +2130,7 @@ class AdaptiveBehavioralAssessment:
                     self._advance_question()
                     st.rerun()
             else:
-                if st.button("Skip", key=f"q_{q_id}_skip", use_container_width=True):
-                    self._save_response(q_id, "Skipped", {"patterns": None, "weights": [0]})
-                    self._advance_question()
-                    st.rerun()
+                continue
 
     def _render_navigation(self, current_q_id):
         col1, col2, col3 = st.columns([1, 2, 1])
