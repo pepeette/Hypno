@@ -1346,9 +1346,6 @@
 
 
 
-
-Keep the questioning and logic from the below code, but align the design with your last output 
-
 """
 Enhanced Clinical Behavioral Pattern Assessment - Expert-Level Hypnotherapy Focus
 Mobile-optimized with advanced clinical pattern detection for rapid transformation
