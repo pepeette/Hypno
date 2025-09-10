@@ -2464,7 +2464,7 @@ class AdaptiveBehavioralAssessment:
             errors.append("Name is required")
         if not email.strip():
             errors.append("Email is required")
-        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
+        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
             errors.append("Valid email required")
         if not concern.strip():
             errors.append("Primary concern required")
