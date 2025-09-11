@@ -2472,7 +2472,7 @@ class ComprehensiveBehavioralAssessment:
         
         if not st.session_state.assessment_completed:
             time_remaining = self._estimate_time_remaining()
-            st.info(f"Discover your unique behavioral patterns for targeted rapid-change hypnotherapy. Estimated time: {time_remaining:.0f} minutes.")
+            st.info(f"Understanding **your unique behavioral patterns** is the key to **targeted, effective hypnotherapy** that brings rapid, lasting change. This assessment takes about {time_remaining:.0f} minutes to complete.")
 
     def _render_current_question(self):
         """Render the current question with progress tracking"""
@@ -2500,7 +2500,7 @@ class ComprehensiveBehavioralAssessment:
             </div>
             <span><strong>{int(progress * 100)}%</strong></span>
         </div>
-        <div class="time-estimate">About {time_remaining:.0f} minutes remaining | Phase: {st.session_state.current_phase.replace('_', ' ').title()}</div>
+        <div class="time-estimate"> ~ {time_remaining:.0f} minutes remaining</div>
         """, unsafe_allow_html=True)
 
         # Question display
