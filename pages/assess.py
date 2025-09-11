@@ -2653,7 +2653,8 @@ class ComprehensiveBehavioralAssessment:
                     
                     # Send comprehensive clinical assessment email
                     try:
-                        from utils.email_handler import send_clinical_assessment_results
+                        #from utils.email_handler import send_clinical_assessment_results
+                        from utils.email_assess import send_clinical_assessment_results
                         
                         email_success = send_clinical_assessment_results(assessment_data)
                         
