@@ -1573,7 +1573,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "If this issue completely resolved, what would be different about your daily life?",
                 "type": "text_completion",
                 "placeholder": "Describe what you'd be doing differently in 6 months - be as specific as possible about the changes you'd see...",
-                "min_chars": 50,
+                "min_chars": 5,
                 "pattern_analysis": True,
                 "keywords": {
                     "productivity": [5], "relationships": [2, 3, 6, 7], "peace": [1], 
@@ -1627,7 +1627,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "Thinking of the most recent time, what was happening in the 30 seconds right before this pattern kicked in?",
                 "type": "text_completion",
                 "placeholder": "Be specific: Where were you? Who was present? What was being discussed or happening? What did you see, hear, or notice?",
-                "min_chars": 40,
+                "min_chars": 5,
                 "trigger_analysis": True,
                 "phase": "trigger_mapping"
             },
@@ -1667,7 +1667,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "What thought automatically appears when you feel that physical sensation?",
                 "type": "text_completion",
                 "placeholder": "The actual words that go through your mind - even if they seem harsh or unreasonable. What does your inner voice say?",
-                "min_chars": 10,
+                "min_chars": 5,
                 "pattern_keywords": {
                     "not good enough": [1], "fight": [2], "can't trust": [3], 
                     "either or": [4], "must do": [5], "can't be real": [6],
@@ -1777,7 +1777,7 @@ class ComprehensiveBehavioralAssessment:
                     "text": "What would you lose if you allowed yourself to be genuinely happy?",
                     "type": "text_completion",
                     "placeholder": "Think about identity, relationships, what others might think, or what might change...",
-                    "min_chars": 20,
+                    "min_chars": 5,
                     "pattern": 1
                 }
             },
@@ -1814,7 +1814,7 @@ class ComprehensiveBehavioralAssessment:
                     "text": "What are you most afraid would happen if you stopped fighting for your position?",
                     "type": "text_completion",
                     "placeholder": "Consider what you might lose, how others might treat you, or what might change...",
-                    "min_chars": 20,
+                    "min_chars": 5,
                     "pattern": 2
                 }
             },
@@ -1851,7 +1851,7 @@ class ComprehensiveBehavioralAssessment:
                     "text": "What's the worst thing that could happen if you trusted someone completely?",
                     "type": "text_completion",
                     "placeholder": "What specific betrayal, hurt, or loss do you fear most?",
-                    "min_chars": 15,
+                    "min_chars": ,
                     "pattern": 3
                 }
             },
@@ -1875,14 +1875,14 @@ class ComprehensiveBehavioralAssessment:
                     "text": "Complete this sentence: 'If I don't choose perfectly, then...'",
                     "type": "text_completion",
                     "placeholder": "What catastrophic outcome do you imagine?",
-                    "min_chars": 10,
+                    "min_chars": 5,
                     "pattern": 4
                 },
                 25: {
                     "text": "What would become possible if you could embrace 'both/and' instead of 'either/or'?",
                     "type": "text_completion",
                     "placeholder": "Imagine having more options and flexibility in your choices...",
-                    "min_chars": 20,
+                    "min_chars": 5,
                     "pattern": 4
                 }
             },
@@ -1906,14 +1906,14 @@ class ComprehensiveBehavioralAssessment:
                     "text": "If you stopped being productive for a month, you'd worry that:",
                     "type": "text_completion",
                     "placeholder": "Complete the thought: you'd worry that others would think... or that you would...",
-                    "min_chars": 15,
+                    "min_chars": 5,
                     "pattern": 5
                 },
                 28: {
                     "text": "Who first taught you that your value depends on what you produce?",
                     "type": "text_completion",
                     "placeholder": "Think about early messages from family, school, or society...",
-                    "min_chars": 15,
+                    "min_chars": 5,
                     "pattern": 5
                 }
             },
@@ -1950,7 +1950,7 @@ class ComprehensiveBehavioralAssessment:
                     "text": "What would you risk losing if you showed up authentically everywhere?",
                     "type": "text_completion",
                     "placeholder": "Consider relationships, opportunities, safety, or acceptance you might lose...",
-                    "min_chars": 20,
+                    "min_chars": 5,
                     "pattern": 6
                 }
             },
@@ -1987,7 +1987,7 @@ class ComprehensiveBehavioralAssessment:
                     "text": "What would others lose if you started prioritizing your own wellbeing?",
                     "type": "text_completion",
                     "placeholder": "Think about who depends on your self-sacrifice and what they'd have to give up...",
-                    "min_chars": 20,
+                    "min_chars": 5,
                     "pattern": 7
                 }
             },
@@ -2024,7 +2024,7 @@ class ComprehensiveBehavioralAssessment:
                     "text": "What would pursuing your own path cost your family relationships?",
                     "type": "text_completion",
                     "placeholder": "Consider how they might react, what they might lose, or how relationships might change...",
-                    "min_chars": 20,
+                    "min_chars": 5,
                     "pattern": 8
                 }
             },
@@ -2061,7 +2061,7 @@ class ComprehensiveBehavioralAssessment:
                     "text": "What is it about these specific contexts that overwhelms your usual coping?",
                     "type": "text_completion",
                     "placeholder": "Think about the people, environments, or dynamics that make you lose yourself...",
-                    "min_chars": 20,
+                    "min_chars": 5,
                     "pattern": 9
                 }
             }
@@ -2088,7 +2088,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "What would need to be true for you to feel completely safe changing this pattern?",
                 "type": "text_completion",
                 "placeholder": "Think about what guarantees, support, or conditions you'd need to feel safe letting go...",
-                "min_chars": 25,
+                "min_chars": 5,
                 "safety_assessment": True,
                 "phase": "integration"
             },
@@ -2123,7 +2123,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "Imagine you've completely transformed this pattern. What's the first thing you'd do that you can't do now?",
                 "type": "text_completion",
                 "placeholder": "Be specific about the first action, conversation, or decision you'd make...",
-                "min_chars": 30,
+                "min_chars": 5,
                 "outcome_visualization": True,
                 "phase": "integration"
             }
@@ -2359,7 +2359,7 @@ class ComprehensiveBehavioralAssessment:
 
     def _handle_text_completion(self, q_id, question):
         """Handle text completion questions"""
-        min_chars = question.get('min_chars', 10)
+        min_chars = question.get('min_chars', 5)
         response = st.text_area(
             "Your response:",
             placeholder=question.get('placeholder', 'Please share your thoughts...'),
@@ -2371,7 +2371,7 @@ class ComprehensiveBehavioralAssessment:
         if char_count > 0:
             sufficient = char_count >= min_chars
             color_class = "sufficient" if sufficient else "insufficient"
-            st.markdown(f"<div class='char-counter {color_class}'>{char_count}/{min_chars} characters minimum</div>", unsafe_allow_html=True)
+            #st.markdown(f"<div class='char-counter {color_class}'>{char_count}/{min_chars} characters minimum</div>", unsafe_allow_html=True)
         
         if char_count >= min_chars:
             if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
@@ -2379,7 +2379,7 @@ class ComprehensiveBehavioralAssessment:
                 self._advance_question()
                 st.rerun()
         elif char_count > 0:
-            st.info(f"Please provide at least {min_chars - char_count} more characters for a complete response.")
+            #st.info(f"Please provide at least {min_chars - char_count} more characters for a complete response.")
 
     def _handle_scale_10(self, q_id, question):
         """Handle 1-10 scale questions"""
@@ -2510,11 +2510,11 @@ class ComprehensiveBehavioralAssessment:
             top_pattern = max(st.session_state.pattern_scores.items(), key=lambda x: x[1])
             if top_pattern[1] >= 2.0:
                 pattern_name = self.patterns.get(top_pattern[0], "Unknown Pattern")
-                st.markdown(f"""
-                <div class="pattern-hint">
-                Pattern emerging: {pattern_name} - this helps us customize your approach
-                </div>
-                """, unsafe_allow_html=True)
+                # st.markdown(f"""
+                # <div class="pattern-hint">
+                # Pattern emerging: {pattern_name} - this helps us customize your approach
+                # </div>
+                # """, unsafe_allow_html=True)
 
         # Handle different question types
         q_type = question['type']
