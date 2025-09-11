@@ -2774,14 +2774,6 @@ class ComprehensiveBehavioralAssessment:
                     remaining = len(sorted_patterns) - 1
                     st.write(f"**2. ...** *Plus {remaining} additional pattern{'s' if remaining > 1 else ''} identified*")
         
-        # Collapsed expander for clinical analysis
-        with st.expander("🔓 Unlock complete clinical analysis", expanded=False):
-            st.info("**Complete analysis includes:** Detailed pattern breakdowns, root cause analysis, personalized hypnotherapy protocol, session planning, and progress tracking recommendations.")
-            
-            risk_count = len(results.get('risk_flags', []))
-            if risk_count > 0:
-                st.markdown(f"**⚠️ Clinical considerations:** {risk_count} factors requiring specialized approach")
-        
         # Info section outside the expander
         st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
 
