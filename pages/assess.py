@@ -2591,7 +2591,7 @@ class ComprehensiveBehavioralAssessment:
                     errors.append("Name is required")
                 if not email.strip(): 
                     errors.append("Email is required")
-                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
+                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
                     errors.append("Valid email address is required")
                 if not concern.strip(): 
                     errors.append("Please describe what brought you here")
@@ -2922,14 +2922,14 @@ def get_hypnotherapy_recommendations():
     })
 
 
-# ---- Main Execution ----
-if __name__ == "__main__":
-    st.set_page_config(
-        page_title="Behavioral Pattern Assessment",
-        page_icon="🧠",
-        layout="centered",
-        initial_sidebar_state="collapsed"
-    )
+# # ---- Main Execution ----
+# if __name__ == "__main__":
+#     st.set_page_config(
+#         page_title="Behavioral Pattern Assessment",
+#         page_icon="🧠",
+#         layout="centered",
+#         initial_sidebar_state="collapsed"
+#     )
     
-    assessment_page = create_assess_page()
-    assessment_page.render()
+#     assessment_page = create_assess_page()
+#     assessment_page.render()
