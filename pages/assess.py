@@ -1851,7 +1851,7 @@ class ComprehensiveBehavioralAssessment:
                     "text": "What's the worst thing that could happen if you trusted someone completely?",
                     "type": "text_completion",
                     "placeholder": "What specific betrayal, hurt, or loss do you fear most?",
-                    "min_chars": ,
+                    "min_chars": 5,
                     "pattern": 3
                 }
             },
