@@ -2472,7 +2472,7 @@ class ComprehensiveBehavioralAssessment:
         
         if not st.session_state.assessment_completed:
             time_remaining = self._estimate_time_remaining()
-            st.info(f"🧠 Discover your unique behavioral patterns for targeted rapid-change hypnotherapy. Estimated time: {time_remaining:.0f} minutes.")
+            st.info(f"Discover your unique behavioral patterns for targeted rapid-change hypnotherapy. Estimated time: {time_remaining:.0f} minutes.")
 
     def _render_current_question(self):
         """Render the current question with progress tracking"""
@@ -2513,7 +2513,7 @@ class ComprehensiveBehavioralAssessment:
                 pattern_name = self.patterns.get(top_pattern[0], "Unknown Pattern")
                 st.markdown(f"""
                 <div class="pattern-hint">
-                💡 Pattern emerging: {pattern_name} - this helps us customize your approach
+                Pattern emerging: {pattern_name} - this helps us customize your approach
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -2557,10 +2557,10 @@ class ComprehensiveBehavioralAssessment:
                 self._save_response(current_q_id, "Skipped", skip_question)
                 self._advance_question()
                 st.rerun()
-
+    
     def _render_contact_form(self):
         """Render contact form for results"""
-        st.markdown("### Assessment Complete! 🎉")
+        st.markdown("### Assessment Complete!")
         st.success("Your comprehensive behavioral pattern analysis is ready!")
         
         results = st.session_state.assessment_results
@@ -2572,30 +2572,33 @@ class ComprehensiveBehavioralAssessment:
         with col3:
             completion_rate = results.get('completion_rate', 1.0)
             st.metric("Completion", f"{completion_rate*100:.0f}%", "Rate")
-
-        st.markdown("**Enter your details to receive your personalized analysis and next steps:**")
+    
+        st.markdown("**Enter your email to receive your personalized analysis and next steps:**")
         
         with st.form("contact_form"):
-            name = st.text_input("Full Name*", placeholder="Your full name")
+            # ONLY EMAIL IS MANDATORY
             email = st.text_input("Email*", placeholder="your@email.com")
+            
+            # ALL OTHER FIELDS ARE OPTIONAL
+            name = st.text_input("Full name (optional)", placeholder="Your full name")
             phone = st.text_input("Phone (optional)", placeholder="+1 xxx xxx xxxx")
             
             urgency = st.selectbox(
-                "How urgent is addressing this pattern?*",
-                ["Select urgency level...", "Extremely urgent - significantly impacting life", 
+                "How urgent is addressing this pattern? (optional)",
+                ["Not specified", "Extremely urgent - significantly impacting life", 
                  "Very urgent - causing daily distress", "Moderately urgent - noticeable impact", 
                  "Somewhat urgent - want to address soon", "Not urgent - exploring options"]
             )
             
             concern = st.text_area(
-                "What brought you to this assessment?*",
+                "What brought you to this assessment? (optional)",
                 placeholder="Brief description of what motivated you to take this assessment...",
                 height=100
             )
             
             next_step = st.selectbox(
-                "Preferred next step:*",
-                ["Select your preference...", "Schedule free consultation call", 
+                "Preferred next step (optional)",
+                ["Not specified", "Schedule free consultation call", 
                  "Information about transformation packages", "Receive analysis and recommendations first", 
                  "Connect with clinical team directly"]
             )
@@ -2605,21 +2608,17 @@ class ComprehensiveBehavioralAssessment:
             )
             
             submitted = st.form_submit_button("Get My Personalized Analysis", type="primary", use_container_width=True)
-
+    
             if submitted:
                 errors = []
-                if not name.strip(): 
-                    errors.append("Name is required")
+                
+                # ONLY EMAIL VALIDATION IS REQUIRED
                 if not email.strip(): 
                     errors.append("Email is required")
-                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
                     errors.append("Valid email address is required")
-                if not concern.strip(): 
-                    errors.append("Please describe what brought you here")
-                if urgency == "Select urgency level...": 
-                    errors.append("Please select urgency level")
-                if next_step == "Select your preference...": 
-                    errors.append("Please select your preferred next step")
+                
+                # MARKETING CONSENT CHECK
                 if not marketing_consent:
                     errors.append("Please consent to follow-up communications to receive your results")
                 
@@ -2627,14 +2626,14 @@ class ComprehensiveBehavioralAssessment:
                     for error in errors:
                         st.error(f"❌ {error}")
                 else:
-                    # Save contact info
+                    # Save contact info with optional fields defaulting to empty/not specified
                     st.session_state.contact_info = {
-                        'name': name.strip(),
+                        'name': name.strip() if name.strip() else 'Not provided',
                         'email': email.strip(),
-                        'phone': phone.strip(),
-                        'urgency': urgency,
-                        'primary_concern': concern.strip(),
-                        'next_step': next_step,
+                        'phone': phone.strip() if phone.strip() else 'Not provided',
+                        'urgency': urgency if urgency != 'Not specified' else 'Not specified',
+                        'primary_concern': concern.strip() if concern.strip() else 'Not provided',
+                        'next_step': next_step if next_step != 'Not specified' else 'Not specified',
                         'marketing_consent': marketing_consent,
                         'timestamp': datetime.now().isoformat()
                     }
@@ -2797,6 +2796,7 @@ class ComprehensiveBehavioralAssessment:
         
         st.info("**Complete analysis includes:** Detailed pattern breakdowns, root cause analysis, personalized hypnotherapy protocol, session planning, and progress tracking recommendations.")
 
+
 # ---- Main Application Classes ----
 class AssessPage:
     """Main application wrapper maintaining compatibility with original interface"""
@@ -2943,16 +2943,3 @@ def get_hypnotherapy_recommendations():
         "avoid": "Generic approaches without personalization",
         "induction": "Tailored to client's response patterns"
     })
-
-
-# # ---- Main Execution ----
-# if __name__ == "__main__":
-#     st.set_page_config(
-#         page_title="Behavioral Pattern Assessment",
-#         page_icon="🧠",
-#         layout="centered",
-#         initial_sidebar_state="collapsed"
-#     )
-    
-#     assessment_page = create_assess_page()
-#     assessment_page.render()
