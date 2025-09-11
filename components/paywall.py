@@ -13,7 +13,7 @@ class ClinicalAnalysisPaywall:
     
     def __init__(self):
         # Pricing configuration
-        self.analysis_price = 1500  # THB
+        self.analysis_price = 1000  # THB
         self.currency = "thb"
         
         # Session state keys
@@ -53,7 +53,7 @@ class ClinicalAnalysisPaywall:
     
     def render_paywall_interface(self, assessment_data):
         """Render the paywall interface for clinical analysis"""
-        st.markdown("### 🔒 Premium Clinical Analysis")
+        st.markdown("### 🔒 Premium behavioral analysis")
         
         # Show what's included
         self._render_premium_features()
@@ -69,15 +69,15 @@ class ClinicalAnalysisPaywall:
         st.markdown("""
         **Unlock your complete behavioral pattern analysis:**
         
-        ✨ **Detailed Pattern Breakdown** - See exactly which of the 9 core patterns are most active in your life
+        ✨ **Detailed pattern breakdown** - See exactly which of the 9 core patterns are most active in your life
         
-        🎯 **Therapeutic Priorities** - Ranked list of which patterns to address first for maximum impact
+        🎯 **Therapeutic priorities** - Ranked list of which patterns to address first for maximum impact
         
-        🧠 **Clinical Insights** - Professional interpretation of your responses with psychological context
+        🧠 **Clinical insights** - Professional interpretation of your responses with psychological context
         
-        📋 **Session Planning** - Specific recommendations for how to structure your hypnotherapy sessions
+        📋 **Session planning** - Specific recommendations for how to structure your hypnotherapy sessions
         
-        💬 **Personalized Approach** - Communication and learning style adaptations for your sessions
+        💬 **Personalized approach** - Communication and learning style adaptations for your sessions
         """)
         
         # Pricing
@@ -163,8 +163,8 @@ class ClinicalAnalysisPaywall:
         **Bank Transfer Details**
         
         **Account Name:** Bangkok Hypnotherapy Clinic  
-        **Bank:** Kasikorn Bank  
-        **Account Number:** 123-456-7890  
+        **Bank:** KrungSri Bank  
+        **Account Number:** 119674532 
         **Amount:** ฿{self.analysis_price}  
         **Reference:** {reference}
         
@@ -311,13 +311,13 @@ class ClinicalAnalysisPaywall:
         
         # Clinical insights
         if clinical_insights:
-            st.markdown("### 🔍 Clinical Insights")
+            st.markdown("### 🔍 Clinical insights")
             
             priority_insights = [
-                ('limiting_belief', 'Core Limiting Belief'),
-                ('change_fear', 'Primary Change Fear'),
-                ('secondary_gain', 'Hidden Benefits'),
-                ('family_origin', 'Family Origin Pattern')
+                ('limiting_belief', 'Core limiting belief'),
+                ('change_fear', 'Primary change fear'),
+                ('secondary_gain', 'Hidden benefits'),
+                ('family_origin', 'Family origin pattern')
             ]
             
             for insight_key, insight_label in priority_insights:
@@ -333,7 +333,7 @@ class ClinicalAnalysisPaywall:
                         """, unsafe_allow_html=True)
         
         # Session recommendations
-        st.markdown("### 📋 Personalized Session Plan")
+        st.markdown("### 📋 Personalized session plan")
         
         if pattern_scores:
             sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
@@ -343,12 +343,12 @@ class ClinicalAnalysisPaywall:
                 secondary_pattern = pattern_names.get(sorted_patterns[1][0], "Secondary Pattern")
                 
                 st.markdown(f"""
-                **Session 1: Pattern Mapping & Initial Programming**
+                **Session 1: Pattern mapping & initial programming**
                 - Primary focus: {primary_pattern}
                 - Secondary assessment: {secondary_pattern}
                 - Initial positive programming to provide immediate relief
                 
-                **Session 2: Deep Neural Rewiring**
+                **Session 2: Deep neural rewiring**
                 - Target {primary_pattern} for complete transformation
                 - Install new automatic responses
                 - Create positive anchors for lasting change
@@ -360,7 +360,7 @@ class ClinicalAnalysisPaywall:
                 """)
         
         # Download option
-        if st.button("📄 Download Full Analysis Report", use_container_width=True):
+        if st.button("📄 Download full analysis report", use_container_width=True):
             self._generate_downloadable_report(assessment_data)
     
     def _generate_downloadable_report(self, assessment_data):
