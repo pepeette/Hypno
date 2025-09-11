@@ -2379,7 +2379,7 @@ class ComprehensiveBehavioralAssessment:
                 self._advance_question()
                 st.rerun()
         elif char_count > 0:
-            #st.info(f"Please provide at least {min_chars - char_count} more characters for a complete response.")
+            st.info(f"Please provide at least {min_chars - char_count} more characters for a complete response.")
 
     def _handle_scale_10(self, q_id, question):
         """Handle 1-10 scale questions"""
