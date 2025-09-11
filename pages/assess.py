@@ -2557,8 +2557,126 @@ class ComprehensiveBehavioralAssessment:
                 self._advance_question()
                 st.rerun()
     
+    # def _render_contact_form(self):
+    #     """Render contact form for results"""
+    #     st.markdown("### Assessment Complete!")
+    #     st.success("Your comprehensive behavioral pattern analysis is ready!")
+        
+    #     results = st.session_state.assessment_results
+    #     col1, col2, col3 = st.columns(3)
+    #     with col1:
+    #         st.metric("Questions", results['total_questions_answered'], "Answered")
+    #     with col2:
+    #         st.metric("Patterns", len(results.get('pattern_scores', {})), "Detected")
+    #     with col3:
+    #         completion_rate = results.get('completion_rate', 1.0)
+    #         st.metric("Completion", f"{completion_rate*100:.0f}%", "Rate")
+    
+    #     st.markdown("**Enter your email to receive your personalized analysis and next steps:**")
+        
+    #     with st.form("contact_form"):
+    #         # ONLY EMAIL IS MANDATORY
+    #         email = st.text_input("Email*", placeholder="your@email.com")
+            
+    #         # ALL OTHER FIELDS ARE OPTIONAL
+    #         name = st.text_input("Full name (optional)", placeholder="Your full name")
+    #         phone = st.text_input("Phone (optional)", placeholder="+1 xxx xxx xxxx")
+            
+    #         urgency = st.selectbox(
+    #             "How urgent is addressing this pattern? (optional)",
+    #             ["Not specified", "Extremely urgent - significantly impacting life", 
+    #              "Very urgent - causing daily distress", "Moderately urgent - noticeable impact", 
+    #              "Somewhat urgent - want to address soon", "Not urgent - exploring options"]
+    #         )
+            
+    #         concern = st.text_area(
+    #             "What brought you to this assessment? (optional)",
+    #             placeholder="Brief description of what motivated you to take this assessment...",
+    #             height=100
+    #         )
+            
+    #         next_step = st.selectbox(
+    #             "Preferred next step (optional)",
+    #             ["Not specified", "Schedule free consultation call", 
+    #              "Information about transformation packages", "Receive analysis and recommendations first", 
+    #              "Connect with clinical team directly"]
+    #         )
+            
+    #         marketing_consent = st.checkbox(
+    #             "I consent to receiving follow-up communications about my assessment results and relevant therapeutic services."
+    #         )
+            
+    #         submitted = st.form_submit_button("Get my personalized analysis", type="primary", use_container_width=True)
+    
+    #         if submitted:
+    #             errors = []
+                
+    #             # ONLY EMAIL VALIDATION IS REQUIRED
+    #             if not email.strip(): 
+    #                 errors.append("Email is required")
+    #             elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+    #                 errors.append("Valid email address is required")
+                
+    #             # MARKETING CONSENT CHECK
+    #             if not marketing_consent:
+    #                 errors.append("Please consent to follow-up communications to receive your results")
+                
+    #             if errors:
+    #                 for error in errors:
+    #                     st.error(f"❌ {error}")
+    #             else:
+    #                 # Save contact info with optional fields defaulting to empty/not specified
+    #                 st.session_state.contact_info = {
+    #                     'name': name.strip() if name.strip() else 'Not provided',
+    #                     'email': email.strip(),
+    #                     'phone': phone.strip() if phone.strip() else 'Not provided',
+    #                     'urgency': urgency if urgency != 'Not specified' else 'Not specified',
+    #                     'primary_concern': concern.strip() if concern.strip() else 'Not provided',
+    #                     'next_step': next_step if next_step != 'Not specified' else 'Not specified',
+    #                     'marketing_consent': marketing_consent,
+    #                     'timestamp': datetime.now().isoformat()
+    #                 }
+                    
+    #                 # Prepare assessment data for email
+    #                 assessment_data = {
+    #                     'contact_info': st.session_state.contact_info,
+    #                     'assessment_results': st.session_state.assessment_results,
+    #                     'assessment_responses': st.session_state.assessment_responses,
+    #                     'intensity_responses': st.session_state.intensity_responses,
+    #                     'adaptive_triggered': st.session_state.adaptive_paths,
+    #                     'risk_flags': st.session_state.risk_flags,
+    #                     'pattern_scores': st.session_state.pattern_scores,
+    #                     'trigger_chain': st.session_state.trigger_chain,
+    #                     'start_time': st.session_state.start_time,
+    #                     'completion_timestamp': datetime.now().isoformat()
+    #                 }
+                    
+    #                 # Send comprehensive clinical assessment email
+    #                 try:
+    #                     from utils.email_handler import send_clinical_assessment_results
+    #                     #from utils.email_assess import send_clinical_assessment_results
+                        
+    #                     email_success = send_clinical_assessment_results(assessment_data)
+                        
+    #                     if email_success:
+    #                         st.success("✅ Assessment completed and clinical team notified!")
+    #                         st.info("📧 Your detailed analysis has been sent to our clinical team for review.")
+    #                     else:
+    #                         st.warning("⚠️ Assessment saved, but email notification failed. Our team will still receive your results.")
+                            
+    #                 except ImportError as e:
+    #                     st.error(f"Email system unavailable: {e}")
+    #                     st.info("Assessment completed! Our clinical team will review your results.")
+    #                 except Exception as e:
+    #                     st.error(f"Email error: {str(e)}")
+                    
+    #                 st.session_state.contact_provided = True
+    #                 st.rerun()
+
+    
+    
     def _render_contact_form(self):
-        """Render contact form for results"""
+        """Render contact form for results with enhanced clinical data"""
         st.markdown("### Assessment Complete!")
         st.success("Your comprehensive behavioral pattern analysis is ready!")
         
@@ -2637,7 +2755,10 @@ class ComprehensiveBehavioralAssessment:
                         'timestamp': datetime.now().isoformat()
                     }
                     
-                    # Prepare assessment data for email
+                    # GENERATE CLINICAL TEMPLATE
+                    clinical_template = self._format_clinical_template()
+                    
+                    # Prepare assessment data for email with clinical template
                     assessment_data = {
                         'contact_info': st.session_state.contact_info,
                         'assessment_results': st.session_state.assessment_results,
@@ -2647,6 +2768,7 @@ class ComprehensiveBehavioralAssessment:
                         'risk_flags': st.session_state.risk_flags,
                         'pattern_scores': st.session_state.pattern_scores,
                         'trigger_chain': st.session_state.trigger_chain,
+                        'clinical_template': clinical_template,  # ADD THIS LINE
                         'start_time': st.session_state.start_time,
                         'completion_timestamp': datetime.now().isoformat()
                     }
@@ -2654,7 +2776,6 @@ class ComprehensiveBehavioralAssessment:
                     # Send comprehensive clinical assessment email
                     try:
                         from utils.email_handler import send_clinical_assessment_results
-                        #from utils.email_assess import send_clinical_assessment_results
                         
                         email_success = send_clinical_assessment_results(assessment_data)
                         
@@ -2778,6 +2899,401 @@ class ComprehensiveBehavioralAssessment:
         # Info section outside the expander
         st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
 
+    
+    
+    #Enhanced Clinical Analysis Methods for assess.py
+    #Add these methods to the ComprehensiveBehavioralAssessment class
+    
+    
+    def _extract_clinical_insights(self):
+        """Extract comprehensive clinical insights from assessment responses"""
+        results = st.session_state.assessment_results
+        responses = st.session_state.assessment_responses
+        pattern_scores = st.session_state.pattern_scores
+        
+        # Initialize clinical insights
+        clinical_insights = {}
+        
+        # Extract Core Limiting Belief
+        clinical_insights['core_limiting_belief'] = self._extract_core_limiting_belief(responses, pattern_scores)
+        
+        # Extract Hidden Benefits (Secondary Gains)
+        clinical_insights['hidden_benefits'] = self._extract_hidden_benefits(responses)
+        
+        # Extract Systemic Resistance
+        clinical_insights['systemic_resistance'] = self._extract_systemic_resistance(responses, pattern_scores)
+        
+        # Extract Identity Threat
+        clinical_insights['identity_threat'] = self._extract_identity_threat(responses, pattern_scores)
+        
+        # Extract Intervention Keywords
+        clinical_insights['intervention_keywords'] = self._extract_intervention_keywords(pattern_scores)
+        
+        # Extract Language to Avoid
+        clinical_insights['avoid_language'] = self._extract_avoid_language(pattern_scores)
+        
+        # Extract Predicted Resistance Points
+        clinical_insights['resistance_points'] = self._extract_resistance_points(responses, pattern_scores)
+        
+        return clinical_insights
+    
+    def _extract_core_limiting_belief(self, responses, pattern_scores):
+        """Extract the core limiting belief from text responses"""
+        belief_indicators = {
+            "not good enough": "I am fundamentally inadequate/unworthy",
+            "can't trust": "Others will inevitably betray or harm me", 
+            "must be perfect": "Any mistake proves my worthlessness",
+            "others first": "My needs and wants are less important than others'",
+            "can't handle": "I am too weak/fragile to cope with life's challenges",
+            "should": "I must meet external expectations to be acceptable",
+            "either or": "Life offers only extreme choices with no middle ground",
+            "not real": "Showing my true self will lead to rejection",
+            "must do": "My value depends entirely on what I accomplish"
+        }
+        
+        # Analyze text responses for belief patterns
+        text_responses = []
+        for response_data in responses.values():
+            if isinstance(response_data.get('response'), str):
+                text_responses.append(response_data['response'].lower())
+        
+        combined_text = ' '.join(text_responses)
+        
+        # Check for belief indicators
+        for indicator, belief in belief_indicators.items():
+            if indicator in combined_text:
+                return belief
+        
+        # Fallback based on dominant pattern
+        if pattern_scores:
+            dominant_pattern = max(pattern_scores.items(), key=lambda x: x[1])[0]
+            pattern_beliefs = {
+                1: "Happiness and positive emotions are dangerous or undeserved",
+                2: "I must fight to maintain control or I'll be powerless",
+                3: "Others cannot be trusted with my vulnerability or truth",
+                4: "Life is black and white - there are no good compromises",
+                5: "I am only valuable when I'm being productive or achieving",
+                6: "Showing my real self will result in rejection or judgment",
+                7: "Others' needs matter more than my own wellbeing",
+                8: "I must fulfill family expectations to maintain love/belonging",
+                9: "I am powerless in certain situations or with certain people"
+            }
+            return pattern_beliefs.get(dominant_pattern, "Core belief requires further exploration")
+        
+        return "Core belief requires further exploration"
+    
+    def _extract_hidden_benefits(self, responses):
+        """Extract secondary gains and hidden benefits of the pattern"""
+        # Look for responses about what would be lost if pattern changed
+        benefit_keywords = {
+            "safe": "Maintains emotional safety and predictability",
+            "control": "Provides sense of control over outcomes",
+            "protect": "Protects from emotional pain or vulnerability", 
+            "avoid": "Avoids confronting deeper fears or truths",
+            "belonging": "Maintains connection/belonging to family/group",
+            "identity": "Preserves familiar sense of self/identity",
+            "attention": "Ensures attention and care from others",
+            "excuse": "Provides excuse for not taking risks",
+            "blame": "Allows blame of others rather than self-responsibility"
+        }
+        
+        text_responses = []
+        for response_data in responses.values():
+            if isinstance(response_data.get('response'), str):
+                text_responses.append(response_data['response'].lower())
+        
+        combined_text = ' '.join(text_responses)
+        
+        found_benefits = []
+        for keyword, benefit in benefit_keywords.items():
+            if keyword in combined_text:
+                found_benefits.append(benefit)
+        
+        if found_benefits:
+            return " | ".join(found_benefits[:3])  # Top 3 benefits
+        else:
+            return "Pattern provides emotional protection and familiar identity structure"
+    
+    def _extract_systemic_resistance(self, responses, pattern_scores):
+        """Extract family/system resistance to change"""
+        resistance_indicators = {
+            "family": "Family system may resist change to maintain homeostasis",
+            "disappoint": "Fear of disappointing family members or authority figures",
+            "loyalty": "Conflicted loyalty between personal growth and family expectations",
+            "tradition": "Challenge to cultural or generational traditions",
+            "role": "Change threatens established family role or identity",
+            "guilt": "Guilt about changing when others haven't changed",
+            "betrayal": "Fear that personal change represents betrayal of family values"
+        }
+        
+        text_responses = []
+        for response_data in responses.values():
+            if isinstance(response_data.get('response'), str):
+                text_responses.append(response_data['response'].lower())
+        
+        combined_text = ' '.join(text_responses)
+        
+        for indicator, resistance in resistance_indicators.items():
+            if indicator in combined_text:
+                return resistance
+        
+        # Pattern-based resistance
+        if pattern_scores:
+            dominant_pattern = max(pattern_scores.items(), key=lambda x: x[1])[0]
+            pattern_resistance = {
+                7: "Family may resist if client stops over-giving and care-taking",
+                8: "Strong family pressure to maintain traditional expectations",
+                2: "Others may escalate conflict when client stops engaging in power struggles",
+                9: "Certain people may resist client's newfound boundaries and strength"
+            }
+            return pattern_resistance.get(dominant_pattern, "Minimal systemic resistance expected")
+        
+        return "Minimal systemic resistance expected"
+    
+    def _extract_identity_threat(self, responses, pattern_scores):
+        """Extract identity threats associated with change"""
+        if not pattern_scores:
+            return "Identity shift requires exploration during sessions"
+        
+        dominant_pattern = max(pattern_scores.items(), key=lambda x: x[1])[0]
+        
+        identity_threats = {
+            1: "Fear: 'If I'm happy, I won't be the deep/thoughtful person I am'",
+            2: "Fear: 'If I stop fighting, I'll become weak and people will walk all over me'", 
+            3: "Fear: 'If I trust, I'll become naive and people will take advantage of me'",
+            4: "Fear: 'If I see nuance, I'll lose my moral clarity and convictions'",
+            5: "Fear: 'If I stop doing, I'll become lazy and worthless'",
+            6: "Fear: 'If I'm consistent, I'll be boring and people will lose interest'",
+            7: "Fear: 'If I prioritize myself, I'll become selfish and people will leave'",
+            8: "Fear: 'If I follow my path, I'll lose my family's love and belonging'",
+            9: "Fear: 'If I'm strong everywhere, I'll lose the special care and understanding I get'"
+        }
+        
+        return identity_threats.get(dominant_pattern, "Identity evolution requires careful navigation")
+    
+    def _extract_intervention_keywords(self, pattern_scores):
+        """Extract keywords that will be effective in hypnotherapy"""
+        if not pattern_scores:
+            return "Collaborative, gentle, permissive"
+        
+        dominant_pattern = max(pattern_scores.items(), key=lambda x: x[1])[0]
+        
+        intervention_keywords = {
+            1: "Permission, gentle, allowing, natural, ease, comfort, safe joy",
+            2: "Collaboration, choice, partnership, respect, empowerment, mutual",
+            3: "Transparency, evidence, clear, step-by-step, gradual, your pace",
+            4: "Integration, both/and, possibilities, options, flexibility, nuance",
+            5: "Being, presence, inherent worth, natural value, simply existing",
+            6: "Authentic, genuine, consistent, true self, unified, wholeness",
+            7: "Balance, strength through self-care, energy, sustainable, healthy boundaries",
+            8: "Personal truth, individual path, respectful autonomy, honoring both",
+            9: "Consistent strength, reliable self, universal power, steady boundaries"
+        }
+        
+        return intervention_keywords.get(dominant_pattern, "Adaptive, responsive, individualized")
+    
+    def _extract_avoid_language(self, pattern_scores):
+        """Extract language patterns to avoid in therapy"""
+        if not pattern_scores:
+            return "Authoritarian commands, pressure, criticism"
+        
+        dominant_pattern = max(pattern_scores.items(), key=lambda x: x[1])[0]
+        
+        avoid_language = {
+            1: "Forced positivity, 'just be happy', minimizing pain, overwhelming enthusiasm",
+            2: "Commands, authority, 'you must', domination, control, surrender completely",
+            3: "Hidden agendas, unclear processes, 'trust me', unexplained techniques",
+            4: "Either/or choices, black/white thinking, 'you have to choose', extremes",
+            5: "Performance pressure, achievement focus, productivity language, 'earn it'",
+            6: "Role expectations, 'be consistent', contextual shoulds, fitting in",
+            7: "Guilt about self-focus, 'be selfish', minimizing others' needs",
+            8: "Family rejection themes, 'disappointing others', complete rebellion",
+            9: "Universal weakness, 'you're always', situational helplessness"
+        }
+        
+        return avoid_language.get(dominant_pattern, "Pressure, criticism, one-size-fits-all approaches")
+    
+    def _extract_resistance_points(self, responses, pattern_scores):
+        """Extract predicted resistance points during therapy"""
+        resistance_points = []
+        
+        # Check readiness score
+        readiness_responses = [r for r in responses.values() if 'rating' in str(r.get('response', {}))]
+        if readiness_responses:
+            try:
+                readiness_data = readiness_responses[0]['response']
+                if isinstance(readiness_data, dict) and readiness_data.get('rating', 0) < 7:
+                    resistance_points.append("Low change readiness - may require motivation building")
+            except:
+                pass
+        
+        # Pattern-specific resistance
+        if pattern_scores:
+            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            for pattern_id, score in sorted_patterns[:2]:
+                pattern_resistance = {
+                    1: "May resist positive suggestions as 'fake' or temporary",
+                    2: "May challenge therapist authority or collaborative process",
+                    3: "May question therapist motives or seek excessive explanations",
+                    4: "May get stuck in perfectionist analysis of 'right' choice",
+                    5: "May resist 'being' focused work as unproductive",
+                    6: "May present differently in therapy than in assessment",
+                    7: "May prioritize therapist's needs over their own growth",
+                    8: "May feel guilty about changing family dynamics",
+                    9: "May lose boundaries/strength when triggered during session"
+                }
+                if pattern_id in pattern_resistance:
+                    resistance_points.append(pattern_resistance[pattern_id])
+        
+        # Default resistance points if none found
+        if not resistance_points:
+            resistance_points = [
+                "Standard change resistance - fear of unknown",
+                "Possible skepticism about hypnotherapy effectiveness"
+            ]
+        
+        return resistance_points[:3]  # Maximum 3 points
+    
+    def _generate_session_plan(self, pattern_scores, clinical_insights):
+        """Generate detailed session planning recommendations"""
+        if not pattern_scores:
+            return {
+                'session_1_focus': "Comprehensive pattern assessment and initial rapport building",
+                'session_2_target': "Core pattern transformation and positive programming", 
+                'session_3_need': "Standard reinforcement if needed"
+            }
+        
+        sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+        primary_pattern = sorted_patterns[0][0] if sorted_patterns else 1
+        
+        session_plans = {
+            1: {
+                'session_1_focus': "Unhappiness Culture mapping + permission for joy + gentle positive anchoring",
+                'session_2_target': "Deep joy permission installation + reframe happiness beliefs + positive emotion anchors",
+                'session_3_need': "Joy maintenance if relapse into pessimism or guilt about happiness"
+            },
+            2: {
+                'session_1_focus': "Power struggle pattern analysis + collaboration establishment + shared control",
+                'session_2_target': "Transform win/lose to win/win mindset + install collaboration reflexes + peace anchors", 
+                'session_3_need': "Conflict de-escalation if old fighting patterns resurface"
+            },
+            3: {
+                'session_1_focus': "Trust violation history + safety establishment + graduated vulnerability",
+                'session_2_target': "Install healthy discernment vs. systematic mistrust + trust capacity building",
+                'session_3_need': "Trust maintenance if cynicism returns or trust betrayal occurs"
+            },
+            4: {
+                'session_1_focus': "Binary thinking identification + both/and introduction + cognitive flexibility",
+                'session_2_target': "Install nuanced thinking + creative option generation + decision confidence",
+                'session_3_need': "Flexibility maintenance if black/white thinking resurfaces under stress"
+            },
+            5: {
+                'session_1_focus': "Achievement addiction mapping + inherent worth establishment + being practice",
+                'session_2_target': "Install worth independence from productivity + being/doing balance + rest permission",
+                'session_3_need': "Worth maintenance if productivity pressure returns or achievement addiction resurfaces"
+            },
+            6: {
+                'session_1_focus': "Authentic self identification + consistency across contexts + integration work",
+                'session_2_target': "Install unified authentic self + consistent expression + context independence",
+                'session_3_need': "Authenticity maintenance if compartmentalization returns under social pressure"
+            },
+            7: {
+                'session_1_focus': "Self-sacrifice pattern mapping + self-care as strength reframe + boundary establishment",
+                'session_2_target': "Install healthy balance + self-care habits + boundary maintenance reflexes",
+                'session_3_need': "Balance maintenance if caretaking patterns resurface or guilt about self-care"
+            },
+            8: {
+                'session_1_focus': "Family mission identification + personal desire differentiation + loyalty vs. autonomy",
+                'session_2_target': "Install personal path confidence + family respect integration + autonomous choice",
+                'session_3_need': "Autonomy maintenance if family pressure increases or guilt about independence"
+            },
+            9: {
+                'session_1_focus': "Context-dependent weakness mapping + universal strength identification + boundary work",
+                'session_2_target': "Install consistent boundaries + context-independent strength + situational confidence",
+                'session_3_need': "Strength maintenance if old contexts trigger boundary collapse"
+            }
+        }
+        
+        return session_plans.get(primary_pattern, session_plans[1])
+    
+    def _format_clinical_template(self):
+        """Format comprehensive clinical template for email"""
+        # Extract all clinical insights
+        clinical_insights = self._extract_clinical_insights()
+        
+        # Get pattern scores and session planning
+        pattern_scores = st.session_state.pattern_scores
+        session_plan = self._generate_session_plan(pattern_scores, clinical_insights)
+        
+        # Get top 3 patterns
+        if pattern_scores:
+            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            
+            dominant_pattern = self.patterns.get(sorted_patterns[0][0], "Unknown") if sorted_patterns else "Unknown"
+            dominant_score = sorted_patterns[0][1] if sorted_patterns else 0
+            
+            primary_pattern = self.patterns.get(sorted_patterns[1][0], "Unknown") if len(sorted_patterns) > 1 else "None detected"
+            primary_score = sorted_patterns[1][1] if len(sorted_patterns) > 1 else 0
+            
+            secondary_pattern = self.patterns.get(sorted_patterns[2][0], "Unknown") if len(sorted_patterns) > 2 else "None detected"
+            secondary_score = sorted_patterns[2][1] if len(sorted_patterns) > 2 else 0
+        else:
+            dominant_pattern = primary_pattern = secondary_pattern = "Assessment incomplete"
+            dominant_score = primary_score = secondary_score = 0
+        
+        # Get change readiness
+        readiness_score = 5  # Default
+        for response_data in st.session_state.assessment_responses.values():
+            if isinstance(response_data.get('response'), dict) and 'rating' in response_data['response']:
+                readiness_score = response_data['response']['rating']
+                break
+        
+        # Format resistance points
+        resistance_points = clinical_insights.get('resistance_points', [])
+        resistance_text = ""
+        for i, point in enumerate(resistance_points[:3], 1):
+            resistance_text += f"{i}. {point}\n"
+        if not resistance_text:
+            resistance_text = "1. Standard change resistance\n2. Possible skepticism about process\n"
+        
+        # Build comprehensive template
+        template = f"""
+    ╔══════════════════════════════════════════════════════════════╗
+    ║                    CLINICAL ANALYSIS TEMPLATE                ║
+    ║                   Behavioral Pattern Assessment              ║
+    ╚══════════════════════════════════════════════════════════════╝
+    
+    **PATTERN ANALYSIS:**
+    Dominant Pattern: {dominant_pattern} (Score: {dominant_score:.1f}/10)
+    Primary Pattern: {primary_pattern} (Score: {primary_score:.1f}/10) 
+    Secondary Pattern: {secondary_pattern} (Score: {secondary_score:.1f}/10)
+    
+    **PSYCHOLOGICAL PROFILE:**
+    Core Limiting Belief: {clinical_insights.get('core_limiting_belief', 'Requires session exploration')}
+    Hidden Benefits: {clinical_insights.get('hidden_benefits', 'Emotional protection and familiar identity')}
+    Systemic Resistance: {clinical_insights.get('systemic_resistance', 'Minimal resistance expected')}
+    Identity Threat: {clinical_insights.get('identity_threat', 'Identity evolution requires navigation')}
+    
+    **SESSION PLANNING:**
+    Session 1 Focus: {session_plan.get('session_1_focus', 'Pattern analysis and rapport building')}
+    Session 2 Target: {session_plan.get('session_2_target', 'Core transformation and positive programming')}
+    Potential Session 3 Need: {session_plan.get('session_3_need', 'Reinforcement if needed')}
+    
+    **THERAPEUTIC APPROACH:**
+    Change Readiness Score: {readiness_score}/10
+    Predicted Resistance Points:
+    {resistance_text}
+    Intervention Keywords: {clinical_insights.get('intervention_keywords', 'Collaborative, gentle, permissive')}
+    Avoid Language: {clinical_insights.get('avoid_language', 'Pressure, criticism, commands')}
+    
+    ╔══════════════════════════════════════════════════════════════╗
+    ║                     CLINICAL NOTES                          ║
+    ╚══════════════════════════════════════════════════════════════╝
+    
+    This comprehensive analysis provides the therapeutic framework for rapid, effective hypnotherapy intervention based on the client's unique behavioral pattern constellation.
+    """
+        
+        return template
 
 # ---- Main Application Classes ----
 class AssessPage:
