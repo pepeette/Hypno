@@ -169,7 +169,7 @@ class ComprehensiveBehavioralAssessment:
                 "type": "text_completion",
                 "placeholder": "Describe the exact behavior, feeling, or situation you want to change (e.g., 'procrastination on important tasks', 'anxiety in social situations', 'perfectionism that prevents me from finishing projects')...",
                 "patterns": "presenting_problem",
-                "min_chars": 40,
+                "min_chars": 5,
                 "adaptive_triggers": ["behavioral_specificity"],
                 "clinical_insight": "Primary therapeutic target identification"
             },
@@ -200,7 +200,7 @@ class ComprehensiveBehavioralAssessment:
                 "type": "text_completion",
                 "placeholder": "What happens right before the pattern occurs? Who is involved? Where are you? What time of day? Be specific about the context...",
                 "patterns": "trigger_mapping",
-                "min_chars": 50,
+                "min_chars": 5,
                 "adaptive_triggers": ["trigger_specificity"],
                 "clinical_insight": "Environmental trigger identification"
             },
@@ -477,7 +477,7 @@ class ComprehensiveBehavioralAssessment:
                 "type": "text_completion",
                 "placeholder": "Consider: What protection does it provide? What identity might change? How might relationships shift?",
                 "patterns": "secondary_gain",
-                "min_chars": 40,
+                "min_chars": 5,
                 "adaptive_triggers": ["resistance_mapping"],
                 "clinical_insight": "Secondary gain identification"
             },
@@ -567,7 +567,7 @@ class ComprehensiveBehavioralAssessment:
                     "type": "text_completion",
                     "placeholder": "Consider family rules, religious teachings, school experiences...",
                     "patterns": "cognitive_conditioning",
-                    "min_chars": 30,
+                    "min_chars": 5,
                     "clinical_insight": "Rigid thinking pattern origins"
                 }
             },
@@ -577,7 +577,7 @@ class ComprehensiveBehavioralAssessment:
                     "type": "text_completion",
                     "placeholder": "Think about school, activities, family expectations...",
                     "patterns": "worth_conditioning",
-                    "min_chars": 30,
+                    "min_chars": 5,
                     "clinical_insight": "Performance-based worth conditioning"
                 }
             },
@@ -587,7 +587,7 @@ class ComprehensiveBehavioralAssessment:
                     "type": "text_completion",
                     "placeholder": "Consider family dynamics, social groups, safety concerns...",
                     "patterns": "identity_development",
-                    "min_chars": 30,
+                    "min_chars": 5,
                     "clinical_insight": "Authentic self-expression patterns"
                 }
             },
@@ -613,7 +613,7 @@ class ComprehensiveBehavioralAssessment:
                     "type": "text_completion",
                     "placeholder": "Consider career expectations, relationship choices, values...",
                     "patterns": "family_rules",
-                    "min_chars": 30,
+                    "min_chars": 5,
                     "clinical_insight": "Family system dynamics"
                 }
             },
@@ -623,7 +623,7 @@ class ComprehensiveBehavioralAssessment:
                     "type": "text_completion",
                     "placeholder": "Think about early caretaking roles, family dynamics...",
                     "patterns": "boundary_development",
-                    "min_chars": 30,
+                    "min_chars": 5,
                     "clinical_insight": "Boundary formation history"
                 }
             }
@@ -981,7 +981,7 @@ class ComprehensiveBehavioralAssessment:
                     st.rerun()
                     
         elif q_type == 'text_completion':
-            min_chars = question.get('min_chars', 20)
+            min_chars = question.get('min_chars', 5)
             response = st.text_area(
                 "Your response:",
                 placeholder=question.get('placeholder', 'Please provide your response...'),
