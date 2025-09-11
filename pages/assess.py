@@ -2468,11 +2468,11 @@ class ComprehensiveBehavioralAssessment:
             self._render_results()
 
     def _render_header(self):
-        st.markdown("<h1 style='text-align: center;'>Behavioral Pattern Assessment</h1>", unsafe_allow_html=True)
-        
         if not st.session_state.assessment_completed:
             time_remaining = self._estimate_time_remaining()
             st.info(f"Understanding **your unique behavioral patterns** is the key to **targeted, effective hypnotherapy** that brings rapid, lasting change. This assessment takes about {time_remaining:.0f} minutes to complete.")
+
+        st.markdown("<h1 style='text-align: center;'>Behavioral Pattern Assessment</h1>", unsafe_allow_html=True)
 
     def _render_current_question(self):
         """Render the current question with progress tracking"""
