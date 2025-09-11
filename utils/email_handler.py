@@ -877,6 +877,11 @@
 
 
 
+"""
+Complete Email Handler for Hypnotherapy Website
+Supports both clinical assessment analysis AND standard booking workflows
+Maintains backward compatibility while adding enhanced clinical features
+"""
 import smtplib
 import os
 import re
@@ -885,7 +890,7 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 
 class ComprehensiveEmailHandler:
-    """Complete email handler for all website needs, with enhanced assessment email."""
+    """Complete email handler supporting both clinical assessments and standard bookings"""
 
     def __init__(self):
         # SMTP setup: Gmail as default
@@ -911,44 +916,53 @@ class ComprehensiveEmailHandler:
             6: "Compartmentalized Authenticity - Inconsistent identity",
             7: "Self-Sacrifice - Prioritizing others over self-care",
             8: "Inherited Missions - Life goals shaped by family expectations",
-            9: "Contextual Weakness - Loss of boundaries situationally"
+            9: "Context Dependent Weakness - Loss of boundaries situationally"
         }
 
-    # -- Assessment Email Handling --
+    # ==========================================
+    # CLINICAL ASSESSMENT EMAIL METHODS
+    # ==========================================
 
     def send_clinical_assessment_results(self, assessment_data):
-        """Compose and send the clinical assessment email, returns True on success."""
+        """Send comprehensive clinical assessment with therapeutic analysis"""
         try:
-            if not assessment_data.get('contact_info'):
-                print("[ERROR] Missing contact_info in assessment data")
-                return False
+            print("[DEBUG] Starting clinical assessment email process")
             
+            # Extract key information
+            contact_info = assessment_data.get('contact_info', {})
             results = assessment_data.get('assessment_results', {})
-            pattern_scores = results.get('pattern_scores', {}) or assessment_data.get('pattern_scores', {})
-            if not results and not pattern_scores:
-                print("[ERROR] Missing assessment results or pattern scores")
+            
+            if not contact_info:
+                print("[ERROR] No contact_info found in assessment_data")
                 return False
             
-            urgency = assessment_data['contact_info'].get('urgency', '')
+            if not results and not assessment_data.get('pattern_scores'):
+                print("[ERROR] No assessment_results or pattern_scores found")
+                return False
+            
+            urgency = contact_info.get('urgency', 'Standard priority')
             risk_flags = results.get('risk_flags', []) or assessment_data.get('risk_flags', [])
+            
+            # Determine priority flag
             priority_flag = self._get_priority_flag(urgency, risk_flags)
-            subject = f"{priority_flag} Clinical Assessment - {assessment_data['contact_info'].get('name', 'Client')}"
-
+            subject = f"{priority_flag} Clinical Assessment - {contact_info.get('name', 'Client')}"
+            
             body = self._format_clinical_email_body(assessment_data)
+            
             if not body or len(body) < 100:
-                print("[ERROR] Email body is empty or too short")
+                print("[ERROR] Email body generation failed or too short")
                 return False
             
             return self._send_email(subject, body, "Clinical Assessment")
-
+            
         except Exception as e:
+            print(f"[ERROR] Clinical assessment email error: {e}")
             import traceback
-            print(f"[ERROR] Exception sending clinical assessment email: {e}")
-            print(traceback.format_exc())
+            print(f"[ERROR] Traceback: {traceback.format_exc()}")
             return False
 
     def _format_clinical_email_body(self, data):
-        """Generates detailed assessment email text from data dict."""
+        """Generate detailed assessment email text from data dict"""
         try:
             ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             contact = data.get('contact_info', {})
@@ -988,27 +1002,19 @@ Preferred Next Step: {next_step}
 Completion: {completion:.1f}% ({total_questions} questions answered)
 Adaptive Paths Triggered: {len(adaptive_paths)}
 
---- PHASE COMPLETION ---
-Engagement: {phase_completion.get('engagement', 'N/A')} questions
-Trigger Mapping: {phase_completion.get('trigger_mapping', 'N/A')}
-Pattern Specific: {phase_completion.get('pattern_specific', 'N/A')}
-Integration: {phase_completion.get('integration', 'N/A')}
-
 --- BEHAVIORAL PATTERNS IDENTIFIED ---
 """
-            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
-            for i, (pid, score) in enumerate(sorted_patterns[:5]):
-                desc = self.pattern_descriptions.get(pid, f"Pattern {pid}")
-                intensity_lbl = self._score_to_intensity(score)
-                rank = "DOMINANT" if i == 0 else f"Secondary #{i}"
-                triggered_lbl = "TRIGGERED" if pid in triggered else "DETECTED"
-                body += f"{rank}: {desc} ({triggered_lbl})\n"
-                body += f"  Score: {score:.2f} ({intensity_lbl} intensity)\n"
-                body += f"  Clinical Note: {self._pattern_clinical_note(pid, score)}\n"
-                body += f"  Therapy Approach: {self._pattern_therapy_approach(pid)}\n"
-                body += f"  Session Priority: {self._session_priority(pid, i == 0)}\n\n"
-            if len(sorted_patterns) > 5:
-                body += f"... plus {len(sorted_patterns) - 5} additional patterns detected\n"
+            if pattern_scores:
+                sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+                for i, (pid, score) in enumerate(sorted_patterns[:5]):
+                    desc = self.pattern_descriptions.get(pid, f"Pattern {pid}")
+                    intensity_lbl = self._score_to_intensity(score)
+                    rank = "DOMINANT" if i == 0 else f"Secondary #{i}"
+                    triggered_lbl = "TRIGGERED" if pid in triggered else "DETECTED"
+                    body += f"{rank}: {desc} ({triggered_lbl})\n"
+                    body += f"  Score: {score:.2f} ({intensity_lbl} intensity)\n"
+                    body += f"  Clinical Note: {self._pattern_clinical_note(pid, score)}\n"
+                    body += f"  Therapy Approach: {self._pattern_therapy_approach(pid)}\n\n"
 
             if chain:
                 body += "--- BEHAVIORAL CHAIN ---\n"
@@ -1017,90 +1023,248 @@ Integration: {phase_completion.get('integration', 'N/A')}
                 for step in steps:
                     if step in chain:
                         body += f"{step.replace('_',' ').title()}: {chain[step]}\n"
-                body += f"Primary Intervention: {self._primary_intervention_point(chain)}\n"
-                body += f"Secondary Intervention: {self._secondary_intervention_point(chain)}\n"
 
             body += "\n--- RISK ASSESSMENT ---\n"
             risk_level = self._overall_risk_level(risk_flags)
             body += f"Risk Level: {risk_level}\n"
             if risk_flags:
-                body += "Risk Factors & Recommended Management:\n"
+                body += "Risk Factors & Management:\n"
                 for idx, risk in enumerate(risk_flags, 1):
                     body += f"{idx}. {self._risk_description(risk)}\n"
                     body += f"   Management: {self._risk_management(risk)}\n"
             else:
                 body += "No significant risk factors detected.\n"
 
-            body += "\n--- THERAPY RECOMMENDATIONS ---\n"
+            body += f"\n--- THERAPY RECOMMENDATIONS ---\n"
             body += f"Recommended Approach: {self._therapy_recommendation(dominant_pattern, risk_flags)}\n"
             body += f"Expected Sessions: {self._expected_sessions(pattern_scores, risk_flags)}\n"
             body += f"Success Probability: {self._success_probability(completion, len(risk_flags))}\n"
-            body += f"Session 1 Focus:\n{self._session_one_focus(dominant_pattern, primary_concern, chain)}\n"
-            body += f"Session 2 Focus:\n{self._session_two_focus(dominant_pattern, pattern_scores)}\n"
-            body += f"Potential Resistance:\n{self._resistance_factors(pattern_scores, responses)}\n"
-            body += f"Hypnotherapy Protocol:\n{self._hypnotherapy_protocol(dominant_pattern, intensity, chain)}\n"
 
-            body += "\n--- CLIENT RESPONSES (Top 8) ---\n"
-            key_resps = self._extract_key_responses(responses)
-            for k, v in key_resps.items():
-                body += f"{k}: {v}\n"
-
-            if intensity:
-                high_intensities = {k:v for k,v in intensity.items() if v>=6}
-                if high_intensities:
-                    avg_inten = sum(high_intensities.values())/len(high_intensities)
-                    body += f"\nHigh intensity responses: {len(high_intensities)} (avg {avg_inten:.1f}/7)\n"
-
-            body += f"\nAdaptive Paths Triggered: {', '.join(adaptive_paths) or 'None'}\n"
-            body += f"Patterns with Deep Dives: {', '.join(self.pattern_descriptions.get(p, f'Pattern {p}') for p in triggered) or 'None'}\n"
-
-            body += "\n--- IMMEDIATE ACTION ---\n"
+            body += f"\n--- IMMEDIATE ACTION ---\n"
             body += f"Contact Timeline: {self._contact_timeline(urgency, risk_flags)}\n"
             body += f"Recommended Response: {self._response_recommendation(next_step)}\n"
-            body += "Preparation Checklist:\n"
-            body += f" 1. Review client data\n"
-            body += f" 2. Plan session focusing on {self.pattern_descriptions.get(dominant_pattern, 'patterns')}\n"
-            body += f" 3. {self._session_preparation(dominant_pattern, risk_flags)}\n"
-            body += " 4. Ready environment and materials\n"
-            if chain:
-                body += f" 5. Target interventions at chain points: {', '.join(chain.keys())}\n"
 
-            body += "\n--- FULL CLIENT INTERVIEW TRANSCRIPT ---\n"
-            last_phase = None
+            body += f"\n--- FULL CLIENT RESPONSES ---\n"
             for qid in sorted(responses.keys()):
                 resp = responses[qid]
-                phase = resp.get('phase','')
-                if phase != last_phase:
-                    last_phase = phase
-                    body += f"\n== {phase.upper()} Phase ==\n"
                 body += f"{qid}. {resp.get('question_text', f'Question {qid}')}\n"
                 body += f"   Response: {resp.get('response','')}\n"
                 if qid in intensity:
                     body += f"   Intensity: {intensity[qid]}/7\n"
-                body += f"   Timestamp: {resp.get('timestamp','')}\n"
 
             body += f"""
---- TECHNICAL AND CONFIDENTIALITY ---
-
-Confidence Level: {self._confidence_level(completion, len(pattern_scores))}
-Data Quality: {self._data_quality(responses)}
-Chain Completeness: {self._chain_completeness(chain)}
-
-Assigned Therapist: {self._assigned_therapist(urgency, risk_flags)}
-Review Timing: {self._review_schedule(urgency, risk_flags)}
-
+--- CONFIDENTIALITY ---
 CONFIDENTIAL: For licensed clinical use only.
 Generated by Bangkok Hypnotherapy Clinic System at {ts}
 """
             return body
 
         except Exception as e:
-            import traceback
             print(f"[ERROR] Formatting clinical email failed: {e}")
-            print(traceback.format_exc())
-            return f"Error formatting clinical assessment email. Please review data manually."
+            return f"Clinical assessment completed. Manual review required. Error: {str(e)}"
 
-    # --- Helper Methods for assessment email ---
+    # ==========================================
+    # STANDARD BOOKING EMAIL METHODS  
+    # ==========================================
+
+    def send_discovery_call_email(self, booking_data):
+        """Send discovery call booking notification - CALLED BY booking_form.py"""
+        try:
+            print("[DEBUG] Sending discovery call email")
+            
+            name = booking_data.get('name', '')
+            email = booking_data.get('email', '')
+            concern = booking_data.get('concern', '')
+            message = booking_data.get('concern_description', '') or booking_data.get('message', '')
+            urgency = booking_data.get('urgency', '')
+            selected_package = booking_data.get('selected_package', '')
+            
+            subject = f"📞 New Discovery Call Request - {name}"
+            body = self._format_discovery_call_body(name, email, concern, message, urgency, selected_package)
+            
+            return self._send_email(subject, body, "Discovery Call")
+            
+        except Exception as e:
+            print(f"[ERROR] Discovery call email error: {e}")
+            return False
+
+    def _format_discovery_call_body(self, name, email, concern, message, urgency, selected_package):
+        """Format discovery call email with standard booking details"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Determine priority based on urgency
+        if urgency and 'extremely urgent' in urgency.lower():
+            priority = "🔴 HIGH PRIORITY"
+        elif urgency and 'very urgent' in urgency.lower():
+            priority = "🟡 PRIORITY"
+        else:
+            priority = "📋 STANDARD"
+        
+        return f"""
+{priority} DISCOVERY CALL REQUEST
+Received: {timestamp}
+
+═══════════════════════════════════════════
+
+👤 CLIENT INFORMATION:
+Name: {name}
+Email: {email}
+
+🎯 CONCERN DETAILS:
+Primary Concern: {concern}
+Urgency Level: {urgency or 'Not specified'}
+Selected Package: {selected_package or 'None'}
+
+💬 CLIENT MESSAGE:
+{message or 'No additional message provided'}
+
+📞 ACTION REQUIRED:
+Contact Timeline: {self._get_contact_timeline_simple(urgency)}
+
+RECOMMENDED APPROACH:
+1. {self._get_discovery_approach(concern, urgency)}
+2. Assess suitability for rapid transformation method
+3. Explain 2-session approach if appropriate
+4. Schedule Session 1 if client is ready to proceed
+
+═══════════════════════════════════════════
+Bangkok Hypnotherapy Clinic
+Discovery Call System
+        """
+
+    def send_booking_email(self, name, email, concern, message, booking_type):
+        """Send standard booking notification - MAINTAINS COMPATIBILITY"""
+        try:
+            print(f"[DEBUG] Sending {booking_type} booking email")
+            
+            subject = f"📞 New {booking_type} Request - {name}"
+            body = self._format_standard_booking_body(name, email, concern, message, booking_type)
+            
+            return self._send_email(subject, body, booking_type)
+            
+        except Exception as e:
+            print(f"[ERROR] Booking email error: {e}")
+            return False
+
+    def _format_standard_booking_body(self, name, email, concern, message, booking_type):
+        """Format standard booking email - maintains compatibility"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        return f"""
+📞 NEW {booking_type.upper()} REQUEST
+Received: {timestamp}
+
+═══════════════════════════════════════════
+
+👤 CONTACT INFORMATION:
+Name: {name}
+Email: {email}
+
+🎯 CONCERN DETAILS:
+Primary Concern: {concern}
+Message: {message}
+
+📞 NEXT STEPS:
+Please contact this person within 24-48 hours to schedule their {booking_type.lower()}.
+
+═══════════════════════════════════════════
+Bangkok Hypnotherapy Clinic
+Automated Booking System
+        """
+
+    def send_package_booking_email(self, booking_data):
+        """Send transformation package booking notification"""
+        try:
+            name = booking_data.get('name', '')
+            email = booking_data.get('email', '')
+            concern = booking_data.get('concern', '')
+            message = booking_data.get('message', '')
+            package_type = booking_data.get('package_type', '')
+            
+            subject = f"💰 New Transformation Package Booking - {name}"
+            body = self._format_package_booking_body(name, email, concern, message, package_type)
+            
+            return self._send_email(subject, body, "Package Booking")
+            
+        except Exception as e:
+            print(f"[ERROR] Package booking email error: {e}")
+            return False
+
+    def _format_package_booking_body(self, name, email, concern, message, package_type):
+        """Format package booking email"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        return f"""
+💰 TRANSFORMATION PACKAGE BOOKING
+Received: {timestamp}
+
+═══════════════════════════════════════════
+
+👤 CLIENT INFORMATION:
+Name: {name}
+Email: {email}
+
+📦 PACKAGE DETAILS:
+Selected Package: {package_type}
+Primary Concern: {concern}
+
+💬 CLIENT MESSAGE:
+{message}
+
+📞 HIGH PRIORITY ACTION REQUIRED:
+This client is ready to proceed with transformation package.
+
+IMMEDIATE STEPS:
+1. Send welcome email with package confirmation
+2. Schedule Session 1 within 48-72 hours
+3. Send pre-session preparation materials
+4. Confirm payment method and schedule
+
+💰 EXPECTED REVENUE: 3,000-4,000 THB
+
+═══════════════════════════════════════════
+Bangkok Hypnotherapy Clinic
+Package Booking System
+        """
+
+    # ==========================================
+    # EMAIL SENDING INFRASTRUCTURE
+    # ==========================================
+
+    def _send_email(self, subject, body, email_type):
+        """Send email via Gmail SMTP"""
+        try:
+            if not self.password:
+                print(f"[SIMULATE] {email_type} email (no password configured)")
+                print(f"[SIMULATE] To: {self.recipient_email}")
+                print(f"[SIMULATE] Subject: {subject}")
+                print(f"[SIMULATE] Body preview: {body[:200]}...")
+                return True
+            
+            # Create message
+            msg = MIMEMultipart()
+            msg['From'] = self.sender_email
+            msg['To'] = self.recipient_email
+            msg['Subject'] = subject
+            msg.attach(MIMEText(body, 'plain'))
+            
+            # Send email
+            server = smtplib.SMTP(self.smtp_server, self.smtp_port)
+            server.starttls()
+            server.login(self.sender_email, self.password)
+            server.sendmail(self.sender_email, self.recipient_email, msg.as_string())
+            server.quit()
+            
+            print(f"[SUCCESS] {email_type} email sent successfully")
+            return True
+            
+        except Exception as e:
+            print(f"[ERROR] SMTP error for {email_type}: {e}")
+            return False
+
+    # ==========================================
+    # CLINICAL HELPER METHODS
+    # ==========================================
 
     def _get_priority_flag(self, urgency, risks):
         if len(risks) >= 3:
@@ -1155,38 +1319,7 @@ Generated by Bangkok Hypnotherapy Clinic System at {ts}
             1: "Permission and tolerance installation",
             2: "Empowerment and collaboration",
             3: "Transparent evidence-based approach",
-            4: "Facilitate ‘both/and’ cognition",
-            5: "Install inherent worth separate from doing",
-            6: "Strengthen authentic identity",
-            7: "Balance self-care with service",
-            8: "Support personal autonomy with respect",
-            9: "Anchor boundary integrity"
-        }
-        return therapy.get(pid, "Individualized protocol")
-
-    def _session_priority(self, pid, dominant):
-        if dominant:
-            priority = {
-                1: "Session 1 focus on permission and acceptance",
-                2: "Session 1 focus on power rebalancing",
-                3: "Session 1 focus on trust-building",
-                4: "Session 1 focus on cognitive expansion",
-                5: "Session 1 focus on worth installation",
-                6: "Session 1 focus on identity integration",
-                7: "Session 1 focus on self-care installation",
-                8: "Session 1 focus on autonomy support",
-                9: "Session 1 focus on boundary work"
-            }
-            return priority.get(pid, "Session 1 priority")
-        else:
-            return "Secondary pattern: integration in later sessions"
-
-    def _pattern_therapy_approach(self, pid):
-        therapy = {
-            1: "Permission and tolerance installation",
-            2: "Empowerment and collaboration",
-            3: "Transparent evidence-based approach",
-            4: "Facilitate ‘both/and’ cognition",
+            4: "Facilitate 'both/and' cognition",
             5: "Install inherent worth separate from doing",
             6: "Strengthen authentic identity",
             7: "Balance self-care with service",
@@ -1247,213 +1380,116 @@ Generated by Bangkok Hypnotherapy Clinic System at {ts}
             return "Moderate (55-70%)"
         return "Variable - monitor progress carefully"
 
-    def _session_one_focus(self, dominant, concern, chain):
-        base = ""
-        if dominant:
-            desc = self.pattern_descriptions.get(dominant, f"Pattern {dominant}")
-            base = f"Focus on {desc} and initial rapport building."
-        else:
-            base = f"Exploratory session focusing on: {concern[:100]}"
-        if chain:
-            if 'automatic_thought' in chain:
-                base += f"\nTarget cognitive restructuring of: {chain['automatic_thought'][:50]}..."
-            elif 'physical_response' in chain:
-                base += f"\nIncorporate somatic focus on: {chain['physical_response'][:50]}..."
-        return base
-
-    def _session_two_focus(self, dominant, scores):
-        if dominant:
-            if len(scores) > 1:
-                return f"Integrate treatment of {self.pattern_descriptions.get(dominant)} with secondary patterns."
-            else:
-                return f"Deepen transformation of {self.pattern_descriptions.get(dominant)}."
-        return "Personalized continuation based on session 1."
-
-    def _resistance_factors(self, scores, responses):
-        factors = []
-        if 1 in scores:
-            factors.append("Possible resistance to positive imagery.")
-        if 2 in scores:
-            factors.append("Potential power struggle with therapist authority.")
-        if 3 in scores:
-            factors.append("Need for clear information due to mistrust.")
-        # Look for secondary gain text hints in responses (simplified)
-        for resp in responses.values():
-            text = resp.get('question_text','').lower()
-            if 'secondary gain' in text or 'would lose' in text:
-                factors.append("Secondary gain identified; may impede change.")
-                break
-        return "\n".join(factors) if factors else "No significant resistance anticipated."
-
-    def _hypnotherapy_protocol(self, dominant, intensity, chain):
-        protos = {
-            1: "Gentle permission, install success tolerance.",
-            2: "Empowerment and shared control induction.",
-            3: "Trust-building, explain process thoroughly.",
-            4: "Encourage integrative flexibility and creativity.",
-            5: "Separate worth from behavior; reinforce being.",
-            6: "Build authenticity and consistency.",
-            7: "Install balanced self-care and boundaries.",
-            8: "Honor family ties while empowering autonomy.",
-            9: "Strengthen boundaries across contexts."
-        }
-        proto = protos.get(dominant, "Standard individualized protocol.")
-        if intensity and max(intensity.values()) >= 6:
-            proto += " Adjust pace for high emotional intensity."
-        if chain:
-            if 'physical_response' in chain:
-                proto += f" Include somatic work on: {chain['physical_response'][:30]}."
-            if 'automatic_thought' in chain:
-                proto += f" Address cognitive frames: {chain['automatic_thought'][:40]}."
-        return proto
-
-    def _extract_key_responses(self, responses):
-        keys = []
-        for qid, resp in sorted(responses.items()):
-            question = resp.get('question_text','').lower()
-            if any(x in question for x in ['behavior', 'trigger', 'thought', 'feeling']):
-                keys.append((qid, resp.get('question_text',''), resp.get('response','')))
-            if len(keys) >=8:
-                break
-        return {f"Q{qid} {qtxt[:60]}...": rtxt[:150] for qid,qtxt,rtxt in keys}
-
-    def _primary_intervention_point(self, chain):
-        if 'automatic_thought' in chain:
-            return "Focus cognitive restructuring on automatic thought."
-        if 'physical_response' in chain:
-            return "Intervene somatically at physical sensation."
-        if 'emotional_response' in chain:
-            return "Modulate emotional response emerging."
-        return "Interrupt behavioral pattern where possible."
-
-    def _secondary_intervention_point(self, chain):
-        if 'behavioral_response' in chain:
-            return "Modify choices at behavioral response."
-        if 'immediate_consequence' in chain:
-            return "Reframe immediate consequences."
-        return "Alter environment or triggers."
-
-    def _chain_completeness(self, chain):
-        elements = ['awareness_point', 'physical_response', 'automatic_thought', 'emotional_response', 'behavioral_response', 'immediate_consequence']
-        found = sum(1 for e in elements if e in chain)
-        percent = (found / len(elements)) * 100
-        if percent >= 80:
-            return f"Excellent ({percent:.0f}%) comprehensive chain documented."
-        if percent >= 60:
-            return f"Good ({percent:.0f}%) chain coverage."
-        return f"Partial ({percent:.0f}%) chain documented."
-
-    def _confidence_level(self, completion, num_patterns):
-        if completion >= 90 and num_patterns >= 2:
-            return "High confidence in data quality."
-        if completion >= 75:
-            return "Moderate confidence."
-        return "Limited confidence; supplement assessment recommended."
-
-    def _data_quality(self, responses):
-        n = len(responses)
-        if n >= 20:
-            return "Excellent data coverage."
-        if n >=15:
-            return "Adequate data coverage."
-        return "Limited responses."
-
-    def _assigned_therapist(self, urgency, risk_flags):
-        if len(risk_flags) >=3:
-            return "Assign licensed clinical psychologist with hypnotherapy specialization."
-        if len(risk_flags) >=1:
-            return "Assign experienced clinical hypnotherapist with safety training."
-        if 'extremely' in urgency.lower():
-            return "Experienced rapid change hypnotherapist."
-        return "Certified clinical hypnotherapist."
-
-    def _review_schedule(self, urgency, risk_flags):
-        if len(risk_flags) >=2:
-            return "Review within 24-48 hours after initial contact."
-        if 'extremely' in urgency.lower():
-            return "Review within 1 week of contact."
-        return "Review 2 weeks post completion."
-
     def _contact_timeline(self, urgency, risk_flags):
         if len(risk_flags) >= 3:
-            return "Immediate - contact within 12 hours."
+            return "Immediate - contact within 12 hours"
         if 'extremely' in urgency.lower():
-            return "Within 24 hours."
+            return "Within 24 hours"
         if 'very' in urgency.lower():
-            return "Within 48 hours."
-        return "Within 72 hours."
+            return "Within 48 hours"
+        return "Within 72 hours"
 
     def _response_recommendation(self, next_step):
         nl = next_step.lower() if next_step else ""
         if 'consult' in nl:
-            return "Schedule free consultation call."
+            return "Schedule free consultation call"
         if 'package' in nl:
-            return "Send package info and pricing."
+            return "Send package info and pricing"
         if 'analysis' in nl:
-            return "Send detailed assessment analysis."
-        return "Initiate contact per client preference."
+            return "Send detailed assessment analysis"
+        return "Initiate contact per client preference"
 
-    def _session_preparation(self, pattern, risk_flags):
-        if len(risk_flags) >= 2:
-            return "Prepare safety strategies and crisis management."
-        if pattern == 1:
-            return "Prepare permission based modalities."
-        if pattern == 2:
-            return "Prepare collaborative empowerment techniques."
-        if pattern == 3:
-            return "Ensure transparency and clarity in protocol."
-        return "Standard session preparation."
+    # ==========================================
+    # BOOKING HELPER METHODS
+    # ==========================================
 
-    # ---- Email sending infrastructure ----
+    def _get_contact_timeline_simple(self, urgency):
+        """Get simple contact timeline for booking emails"""
+        if urgency and 'extremely urgent' in urgency.lower():
+            return "Within 24 hours (high priority)"
+        elif urgency and 'very urgent' in urgency.lower():
+            return "Within 48 hours (priority)"
+        else:
+            return "Within 72 hours (standard)"
 
-    def _send_email(self, subject, body, email_type):
-        try:
-            if not self.password:
-                print(f"[SIMULATE] Email sending disabled. Subject: {subject}")
-                print(body[:500])  # Print snippet
-                return True
-            msg = MIMEMultipart()
-            msg['From'] = self.sender_email
-            msg['To'] = self.recipient_email
-            msg['Subject'] = subject
-            msg.attach(MIMEText(body, "plain"))
-            server = smtplib.SMTP(self.smtp_server, self.smtp_port)
-            server.starttls()
-            server.login(self.sender_email, self.password)
-            server.sendmail(self.sender_email, self.recipient_email, msg.as_string())
-            server.quit()
-            print(f"[SUCCESS] Sent {email_type} email: {subject}")
-            return True
-        except Exception as e:
-            print(f"[ERROR] SMTP error sending {email_type} email: {e}")
-            return False
+    def _get_discovery_approach(self, concern, urgency):
+        """Get recommended approach for discovery call"""
+        if concern and 'anxiety' in concern.lower():
+            return "Use calm, reassuring approach - explain safety of hypnotherapy"
+        elif concern and 'smoking' in concern.lower():
+            return "Focus on rapid cessation method - emphasize 2-session success rate"
+        elif concern and 'habit' in concern.lower():
+            return "Explain pattern interruption approach - assess habit specifics"
+        elif urgency and 'extremely urgent' in urgency.lower():
+            return "Acknowledge urgency, assess suitability for immediate scheduling"
+        else:
+            return "Standard discovery call approach - assess suitability and explain method"
 
-# Global instance to use for callback
+
+# ==========================================
+# GLOBAL INSTANCE AND API FUNCTIONS
+# ==========================================
+
+# Global instance
 comprehensive_email_handler = ComprehensiveEmailHandler()
 
-# API functions called by other modules
+# ====== MAIN FUNCTIONS CALLED BY OTHER MODULES ======
 
-def send_clinical_assessment_results(data):
-    return comprehensive_email_handler.send_clinical_assessment_results(data)
+def send_clinical_assessment_results(assessment_data):
+    """Send clinical assessment results - MAIN FUNCTION for assess.py"""
+    try:
+        print("[DEBUG] Sending clinical assessment results via comprehensive handler")
+        return comprehensive_email_handler.send_clinical_assessment_results(assessment_data)
+    except Exception as e:
+        print(f"[ERROR] Exception in clinical assessment email: {e}")
+        return False
+
+def send_discovery_call_email(booking_data):
+    """Send discovery call booking notification - CALLED BY booking_form.py"""
+    try:
+        print("[DEBUG] Sending discovery call email via comprehensive handler")
+        return comprehensive_email_handler.send_discovery_call_email(booking_data)
+    except Exception as e:
+        print(f"[ERROR] Exception in discovery call email: {e}")
+        return False
 
 def send_booking_email(name, email, concern, message, booking_type):
-    # Unchanged: pass through to handler's method
+    """Send standard booking email - MAINTAINS COMPATIBILITY"""
     try:
+        print(f"[DEBUG] Sending {booking_type} booking email")
         return comprehensive_email_handler.send_booking_email(name, email, concern, message, booking_type)
     except Exception as e:
-        print(f"[ERROR] Booking email sending error: {e}")
+        print(f"[ERROR] Exception in booking email: {e}")
         return False
 
-def send_discovery_email(data):
+def send_package_booking_email(booking_data):
+    """Send package booking notification"""
     try:
-        return comprehensive_email_handler.send_discovery_email(data)
+        print("[DEBUG] Sending package booking email")
+        return comprehensive_email_handler.send_package_booking_email(booking_data)
     except Exception as e:
-        print(f"[ERROR] Discovery email sending error: {e}")
+        print(f"[ERROR] Exception in package booking email: {e}")
         return False
 
-def send_package_email(data):
-    try:
-        return comprehensive_email_handler.send_package_email(data)
-    except Exception as e:
-        print(f"[ERROR] Package email sending error: {e}")
-        return False
+# ====== BACKWARD COMPATIBILITY FUNCTIONS ======
+
+def send_assessment_results_email(data):
+    """Backward compatibility for assessment results"""
+    return send_clinical_assessment_results(data)
+
+def send_contact_form_email(data):
+    """Backward compatibility for contact forms"""
+    # Convert contact form data to booking format
+    booking_data = {
+        'name': data.get('name', ''),
+        'email': data.get('email', ''),
+        'concern': data.get('concern', ''),
+        'message': data.get('message', ''),
+        'urgency': data.get('urgency', ''),
+        'experience': data.get('experience', '')
+    }
+    return send_discovery_call_email(booking_data)
+
+def send_booking_confirmation_email(data):
+    """Backward compatibility for booking confirmations"""
+    return send_discovery_call_email(data)
