@@ -2677,28 +2677,12 @@ class ComprehensiveBehavioralAssessment:
         """Render final results page"""
         st.markdown("## Your behavioral pattern analysis")
         
-        contact_info = st.session_state.get('contact_info', {})
-        st.success(f"Thank you, {contact_info.get('name', 'there')}! Your comprehensive analysis has been generated.")
-        
-        results = st.session_state.assessment_results
-        
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("Questions", results['total_questions_answered'], "Answered")
-        with col2:
-            patterns_count = len(results.get('pattern_scores', {}))
-            st.metric("Patterns", patterns_count, "Detected")
-        with col3:
-            risk_count = len(results.get('risk_flags', []))
-            st.metric("Risk factors", risk_count, "Identified")
-        with col4:
-            completion_rate = results.get('completion_rate', 1.0)
-            st.metric("Completeness", f"{completion_rate*100:.0f}%", "Assessment")
-    
+        # Direct to clinical analysis without success message or metrics
         self._render_clinical_analysis_section()
     
         st.markdown("### Your next steps")
         
+        contact_info = st.session_state.get('contact_info', {})
         next_step = contact_info.get('next_step', '')
         urgency = contact_info.get('urgency', '')
         
@@ -2730,8 +2714,6 @@ class ComprehensiveBehavioralAssessment:
 
     def _render_clinical_analysis_section(self):
         """Render clinical analysis with paywall integration"""
-        st.markdown("### Clinical pattern analysis")
-        
         if PAYWALL_AVAILABLE:
             try:
                 paywall = create_clinical_paywall()
