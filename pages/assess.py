@@ -2615,7 +2615,7 @@ class ComprehensiveBehavioralAssessment:
                 # ONLY EMAIL VALIDATION IS REQUIRED
                 if not email.strip(): 
                     errors.append("Email is required")
-                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
                     errors.append("Valid email address is required")
                 
                 # MARKETING CONSENT CHECK
@@ -2777,24 +2777,32 @@ class ComprehensiveBehavioralAssessment:
                 9: "Context-dependent loss of personal boundaries"
             }
             
-            for i, (pattern_id, score) in enumerate(sorted_patterns[:3]):
+            # Show only the top pattern
+            if sorted_patterns:
+                pattern_id, score = sorted_patterns[0]
                 pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
                 strength = "High" if score >= 6 else "Moderate" if score >= 3 else "Emerging"
                 
-                st.markdown(f"**{i+1}. {pattern_name}** - *{strength} intensity pattern detected*")
+                st.markdown(f"**1. {pattern_name}** - *{strength} intensity pattern detected*")
                 
                 if pattern_id in descriptions:
                     st.caption(descriptions[pattern_id])
+                
+                # Show indication of additional patterns if there are more
+                if len(sorted_patterns) > 1:
+                    remaining = len(sorted_patterns) - 1
+                    st.write(f"**2. ...** *Plus {remaining} additional pattern{'s' if remaining > 1 else ''} identified*")
+        
+        # Collapsed expander for clinical analysis
+        with st.expander("🔓 Unlock complete clinical analysis", expanded=False):
+            st.info("**Complete analysis includes:** Detailed pattern breakdowns, root cause analysis, personalized hypnotherapy protocol, session planning, and progress tracking recommendations.")
             
-            if len(sorted_patterns) > 3:
-                remaining = len(sorted_patterns) - 3
-                st.write(f"*Plus {remaining} additional patterns identified...*")
+            risk_count = len(results.get('risk_flags', []))
+            if risk_count > 0:
+                st.markdown(f"**⚠️ Clinical considerations:** {risk_count} factors requiring specialized approach")
         
-        risk_count = len(results.get('risk_flags', []))
-        if risk_count > 0:
-            st.markdown(f"**⚠️ Clinical considerations:** {risk_count} factors requiring specialized approach")
-        
-        st.info("**Complete analysis includes:** Detailed pattern breakdowns, root cause analysis, personalized hypnotherapy protocol, session planning, and progress tracking recommendations.")
+        # Info section outside the expander
+        st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
 
 
 # ---- Main Application Classes ----
