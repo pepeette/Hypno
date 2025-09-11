@@ -1437,11 +1437,10 @@ def apply_clinical_styles():
         align-items: center;
         gap: 0.5rem;
         margin-bottom: 1.5rem;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
+        font-weight: normal; 
         color: #556D7A;
         padding: 0.5rem;
-        border-radius: 6px;
-        border: 1px solid #E2E8F0;
     }
     .progress-bar {
         flex: 1;
