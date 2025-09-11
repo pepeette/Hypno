@@ -1480,6 +1480,26 @@ def apply_clinical_styles():
         font-size: 0.85rem;
         font-style: italic;
     }
+    .cta-button {
+        display: inline-block;
+        background: linear-gradient(135deg, #4CA1A3 0%, #357a7c 100%);
+        color: white !important;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        margin: 20px auto;
+        text-align: center;
+        transition: transform 0.2s ease;
+    }
+    .cta-button:hover {
+        transform: translateY(-2px);
+        text-decoration: none;
+        color: white !important;
+    }
+    .text-center {
+        text-align: center;
+    }
     @media (max-width: 768px) {
         .main .block-container {
             padding-left: 1rem;
@@ -1496,6 +1516,7 @@ class ComprehensiveBehavioralAssessment:
     
     def __init__(self):
         self._init_session_state()
+        self.discovery_url = "https://calendly.com/laetitiasheppard/discovery"
         self.patterns = {
             1: "Unhappiness Culture", 2: "Power Struggles", 3: "Systematic Mistrust", 
             4: "Separation and Division", 5: "Doing versus Being", 6: "Compartmentalized Authenticity", 
@@ -2655,7 +2676,7 @@ class ComprehensiveBehavioralAssessment:
 
     def _render_results(self):
         """Render final results page"""
-        st.markdown("## Your Behavioral Pattern Analysis")
+        st.markdown("## Your behavioral pattern analysis")
         
         contact_info = st.session_state.get('contact_info', {})
         st.success(f"Thank you, {contact_info.get('name', 'there')}! Your comprehensive analysis has been generated.")
@@ -2670,44 +2691,47 @@ class ComprehensiveBehavioralAssessment:
             st.metric("Patterns", patterns_count, "Detected")
         with col3:
             risk_count = len(results.get('risk_flags', []))
-            st.metric("Risk Factors", risk_count, "Identified")
+            st.metric("Risk factors", risk_count, "Identified")
         with col4:
             completion_rate = results.get('completion_rate', 1.0)
             st.metric("Completeness", f"{completion_rate*100:.0f}%", "Assessment")
-
+    
         self._render_clinical_analysis_section()
-
-        st.markdown("### Your Next Steps")
+    
+        st.markdown("### Your next steps")
         
         next_step = contact_info.get('next_step', '')
         urgency = contact_info.get('urgency', '')
         
         if 'extremely urgent' in urgency.lower() or 'very urgent' in urgency.lower():
-            st.warning("⚠️ **Priority Contact**: Given your urgency level, our clinical team will contact you within 24 hours.")
-        
-        if 'consultation' in next_step.lower():
-            st.info("📅 **Consultation Scheduling**: We'll contact you within 48 hours to schedule your free consultation call.")
-        elif 'package' in next_step.lower():
-            st.success("📋 **Transformation Packages**: We'll send you detailed information about our personalized programs.")
-        elif 'analysis' in next_step.lower():
-            st.info("📊 **Analysis First**: We'll email your detailed analysis and specific recommendations.")
-        else:
-            st.info("🤝 **Clinical Team Contact**: Our team will reach out with personalized next steps.")
+            st.warning("⚠️ **Priority contact**: Given your urgency level, our clinical team will contact you within 24 hours.")
         
         st.markdown("""
         **What happens next:**
-
-        1. **Clinical Review** (24-48 hours): Licensed therapist analyzes your responses
-        2. **Personalized Protocol** (48-72 hours): Custom hypnotherapy approach designed for your patterns  
-        3. **Initial Contact** (48-72 hours): We'll reach out via your preferred method
-        4. **Transformation Planning** (1 week): Develop your individualized program
+    
+        1. **Clinical review** (24-48 hours): Licensed therapist analyzes your responses
+        2. **Personalized protocol** (48-72 hours): Custom hypnotherapy approach designed for your patterns  
+        3. **Initial contact** (within 72 hours): We'll reach out via your preferred method
+        
+        **Want to understand our proven method?** Visit [hypnotherapy.streamlit.app](https://hypnotherapy.streamlit.app) to learn about our rapid transformation hypnotherapy approach.
         
         **Questions?** Reply to any email from us or contact our clinical team directly.
         """)
+        
+        # Add bottom CTA button
+        st.markdown(f"""
+        <div class="text-center">
+            <a href="{self.discovery_url}" 
+               target="_blank" 
+               class="cta-button">
+               📞 Schedule your session
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
 
     def _render_clinical_analysis_section(self):
         """Render clinical analysis with paywall integration"""
-        st.markdown("### Clinical Pattern Analysis")
+        st.markdown("### Clinical pattern analysis")
         
         if PAYWALL_AVAILABLE:
             try:
@@ -2724,13 +2748,13 @@ class ComprehensiveBehavioralAssessment:
                     paywall.render_premium_analysis(assessment_data)
                 else:
                     self._render_analysis_preview()
-                    with st.expander("🔓 Unlock Complete Clinical Analysis", expanded=True):
+                    with st.expander("🔓 Unlock complete clinical analysis", expanded=False):
                         paywall.render_paywall_interface(assessment_data)
             except Exception as e:
                 st.error(f"Error loading premium analysis: {str(e)}")
                 self._render_analysis_preview()
         else:
-            st.info("💡 **Premium Analysis Available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
+            st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
             self._render_analysis_preview()
 
     def _render_analysis_preview(self):
@@ -2739,7 +2763,7 @@ class ComprehensiveBehavioralAssessment:
         pattern_scores = results.get('pattern_scores', {})
         
         if pattern_scores:
-            st.markdown("**🎯 Your Top Behavioral Patterns:**")
+            st.markdown("**🎯 Your top behavioral patterns:**")
             sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
             
             descriptions = {
@@ -2769,10 +2793,9 @@ class ComprehensiveBehavioralAssessment:
         
         risk_count = len(results.get('risk_flags', []))
         if risk_count > 0:
-            st.markdown(f"**⚠️ Clinical Considerations:** {risk_count} factors requiring specialized approach")
+            st.markdown(f"**⚠️ Clinical considerations:** {risk_count} factors requiring specialized approach")
         
         st.info("**Complete analysis includes:** Detailed pattern breakdowns, root cause analysis, personalized hypnotherapy protocol, session planning, and progress tracking recommendations.")
-
 
 # ---- Main Application Classes ----
 class AssessPage:
