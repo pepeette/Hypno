@@ -355,6 +355,94 @@ Estimated session success probability: {self._calculate_success_probability(sort
         
         return section
     
+    def _build_assessment_transcript_section(self, assessment_data):
+        """Build complete assessment transcript section"""
+        responses = assessment_data.get('assessment_responses', {})
+        
+        if not responses:
+            return "\n📝 ASSESSMENT TRANSCRIPT:\nNo response data available\n"
+        
+        section = f"\n📝 COMPLETE ASSESSMENT TRANSCRIPT:\n"
+        section += "═" * 60 + "\n"
+        section += "Full client responses for clinical review and session preparation\n\n"
+        
+        # Sort responses by question ID
+        sorted_responses = sorted(responses.items(), key=lambda x: int(str(x[0])))
+        
+        for q_id, response_data in sorted_responses:
+            question_text = response_data.get('question_text', 'Unknown question')
+            response = response_data.get('response', 'No response')
+            intensity = response_data.get('intensity', None)
+            timestamp = response_data.get('timestamp', 'Unknown time')
+            question_type = response_data.get('question_type', 'Unknown type')
+            phase = response_data.get('phase', 'Unknown phase')
+            
+            section += f"Question {q_id} [{phase.upper()}] - {question_type}:\n"
+            section += f"   Q: {question_text}\n"
+            
+            # Format response based on type
+            if isinstance(response, dict):
+                if 'rating' in response:
+                    # Scale response
+                    section += f"   A: Rating: {response['rating']}/10\n"
+                    if response.get('follow_up'):
+                        section += f"      Follow-up: {response['follow_up']}\n"
+                else:
+                    # Multi-select weighted response
+                    section += f"   A: Multiple selections with intensities:\n"
+                    for item, item_intensity in response.items():
+                        section += f"      - {item}: {item_intensity}/7\n"
+            elif isinstance(response, list):
+                # Multi-select response
+                section += f"   A: {', '.join(response)}\n"
+            else:
+                # Text or single choice response
+                section += f"   A: {response}\n"
+            
+            # Add intensity if available
+            if intensity:
+                section += f"   Intensity: {intensity}/7\n"
+            
+            # Add timestamp
+            try:
+                from datetime import datetime
+                dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                formatted_time = dt.strftime("%Y-%m-%d %H:%M:%S")
+                section += f"   Completed: {formatted_time}\n"
+            except:
+                section += f"   Completed: {timestamp}\n"
+            
+            section += "\n"
+        
+        # Add summary statistics
+        section += f"TRANSCRIPT SUMMARY:\n"
+        section += f"Total Questions: {len(responses)}\n"
+        
+        # Count by phase
+        phase_counts = {}
+        for response_data in responses.values():
+            phase = response_data.get('phase', 'unknown')
+            phase_counts[phase] = phase_counts.get(phase, 0) + 1
+        
+        section += f"Responses by Phase: {phase_counts}\n"
+        
+        # Count text vs choice responses
+        text_responses = sum(1 for r in responses.values() if isinstance(r.get('response'), str) and len(r.get('response', '')) > 50)
+        choice_responses = len(responses) - text_responses
+        
+        section += f"Text Responses: {text_responses}\n"
+        section += f"Choice Responses: {choice_responses}\n"
+        
+        # Intensity data summary
+        intensity_responses = assessment_data.get('intensity_responses', {})
+        if intensity_responses:
+            avg_intensity = sum(intensity_responses.values()) / len(intensity_responses)
+            section += f"Average Response Intensity: {avg_intensity:.1f}/7\n"
+        
+        section += "\n"
+        
+        return section
+
     def _build_raw_data_section(self, assessment_data):
         """Build raw data section for clinical review"""
         section = f"\n📊 RAW ASSESSMENT DATA:\n"
@@ -708,112 +796,6 @@ System Status: Operational | Data Quality: Verified | Action Required: Review Ab
         # Ensure reasonable bounds
         return max(40, min(95, probability))
     
-    def _send_email(self, msg):
-        """Send email via Gmail SMTP"""
-        try:
-            server = smtplib.SMTP(self.smtp_server, self.smtp_port)
-            server.starttls()
-            server.login(self.sender_email, self.password)
-            
-            text = msg.as_string()
-            server.sendmail(self.sender_email, self.recipient_email, text)
-            server.quit()
-            
-            print("✅ Clinical assessment email sent successfully")
-            return True
-            
-        except Exception as e:
-            print(f"❌ SMTP error: {e}")
-            return False
-
-    def _build_assessment_transcript_section(self, assessment_data):
-        """Build complete assessment transcript section"""
-        responses = assessment_data.get('assessment_responses', {})
-        
-        if not responses:
-            return "\n📝 ASSESSMENT TRANSCRIPT:\nNo response data available\n"
-        
-        section = f"\n📝 COMPLETE ASSESSMENT TRANSCRIPT:\n"
-        section += "═" * 60 + "\n"
-        section += "Full client responses for clinical review and session preparation\n\n"
-        
-        # Sort responses by question ID
-        sorted_responses = sorted(responses.items(), key=lambda x: int(str(x[0])))
-        
-        for q_id, response_data in sorted_responses:
-            question_text = response_data.get('question_text', 'Unknown question')
-            response = response_data.get('response', 'No response')
-            intensity = response_data.get('intensity', None)
-            timestamp = response_data.get('timestamp', 'Unknown time')
-            question_type = response_data.get('question_type', 'Unknown type')
-            phase = response_data.get('phase', 'Unknown phase')
-            
-            section += f"Question {q_id} [{phase.upper()}] - {question_type}:\n"
-            section += f"   Q: {question_text}\n"
-            
-            # Format response based on type
-            if isinstance(response, dict):
-                if 'rating' in response:
-                    # Scale response
-                    section += f"   A: Rating: {response['rating']}/10\n"
-                    if response.get('follow_up'):
-                        section += f"      Follow-up: {response['follow_up']}\n"
-                else:
-                    # Multi-select weighted response
-                    section += f"   A: Multiple selections with intensities:\n"
-                    for item, item_intensity in response.items():
-                        section += f"      - {item}: {item_intensity}/7\n"
-            elif isinstance(response, list):
-                # Multi-select response
-                section += f"   A: {', '.join(response)}\n"
-            else:
-                # Text or single choice response
-                section += f"   A: {response}\n"
-            
-            # Add intensity if available
-            if intensity:
-                section += f"   Intensity: {intensity}/7\n"
-            
-            # Add timestamp
-            try:
-                from datetime import datetime
-                dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
-                formatted_time = dt.strftime("%Y-%m-%d %H:%M:%S")
-                section += f"   Completed: {formatted_time}\n"
-            except:
-                section += f"   Completed: {timestamp}\n"
-            
-            section += "\n"
-        
-        # Add summary statistics
-        section += f"TRANSCRIPT SUMMARY:\n"
-        section += f"Total Questions: {len(responses)}\n"
-        
-        # Count by phase
-        phase_counts = {}
-        for response_data in responses.values():
-            phase = response_data.get('phase', 'unknown')
-            phase_counts[phase] = phase_counts.get(phase, 0) + 1
-        
-        section += f"Responses by Phase: {phase_counts}\n"
-        
-        # Count text vs choice responses
-        text_responses = sum(1 for r in responses.values() if isinstance(r.get('response'), str) and len(r.get('response', '')) > 50)
-        choice_responses = len(responses) - text_responses
-        
-        section += f"Text Responses: {text_responses}\n"
-        section += f"Choice Responses: {choice_responses}\n"
-        
-        # Intensity data summary
-        intensity_responses = assessment_data.get('intensity_responses', {})
-        if intensity_responses:
-            avg_intensity = sum(intensity_responses.values()) / len(intensity_responses)
-            section += f"Average Response Intensity: {avg_intensity:.1f}/7\n"
-        
-        section += "\n"
-        
-        return section
-
     def _analyze_somatic_response(self, response):
         """Analyze somatic response for clinical notes"""
         response_lower = response.lower()
@@ -881,9 +863,28 @@ System Status: Operational | Data Quality: Verified | Action Required: Review Ab
             'emotional_response': "Cannot design emotional regulation strategies",
             'behavioral_response': "Cannot create alternative response patterns",
             'immediate_consequence': "Cannot address reinforcement mechanisms",
-            'longer_term_impact': "Cannot break pattern maintenance cycles"
+            'longer_term_impact': "Limits intervention precision and effectiveness"
         }
         return impacts.get(component_key, "Limits intervention precision and effectiveness")
+    
+    def _send_email(self, msg):
+        """Send email via Gmail SMTP"""
+        try:
+            server = smtplib.SMTP(self.smtp_server, self.smtp_port)
+            server.starttls()
+            server.login(self.sender_email, self.password)
+            
+            text = msg.as_string()
+            server.sendmail(self.sender_email, self.recipient_email, text)
+            server.quit()
+            
+            print("✅ Clinical assessment email sent successfully")
+            return True
+            
+        except Exception as e:
+            print(f"❌ SMTP error: {e}")
+            return False
+
 
 # Global instance and convenience function
 clinical_email_handler = ClinicalAssessmentEmailHandler()
@@ -1051,7 +1052,147 @@ Avoid Language: Forced positivity, overwhelming enthusiasm
     return result
 
 
+def debug_assessment_data(assessment_data):
+    """Debug function to examine assessment data structure"""
+    print("🔍 DEBUGGING ASSESSMENT DATA STRUCTURE:")
+    print("=" * 50)
+    
+    # Check main sections
+    main_sections = ['contact_info', 'assessment_results', 'pattern_scores', 'trigger_chain']
+    for section in main_sections:
+        if section in assessment_data:
+            print(f"✅ {section}: Present")
+            if isinstance(assessment_data[section], dict):
+                print(f"   Keys: {list(assessment_data[section].keys())}")
+            else:
+                print(f"   Type: {type(assessment_data[section])}")
+        else:
+            print(f"❌ {section}: Missing")
+    
+    # Check assessment responses
+    responses = assessment_data.get('assessment_responses', {})
+    print(f"\n📝 Assessment Responses: {len(responses)} questions")
+    
+    # Check pattern scores
+    pattern_scores = assessment_data.get('pattern_scores', {})
+    if pattern_scores:
+        print(f"\n🎯 Pattern Scores:")
+        for pattern_id, score in sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True):
+            pattern_name = clinical_email_handler.pattern_names.get(int(pattern_id), f"Pattern {pattern_id}")
+            print(f"   {pattern_name}: {score:.1f}")
+    else:
+        print(f"\n🎯 Pattern Scores: None detected")
+    
+    # Check trigger chain
+    trigger_chain = assessment_data.get('trigger_chain', {})
+    if trigger_chain:
+        print(f"\n🔗 Trigger Chain Components:")
+        components = ['awareness_point', 'physical_response', 'automatic_thought', 
+                     'emotional_response', 'behavioral_response', 'immediate_consequence']
+        for component in components:
+            status = "✅" if trigger_chain.get(component) and trigger_chain[component] != 'Not captured' else "❌"
+            print(f"   {status} {component}: {trigger_chain.get(component, 'Missing')}")
+    
+    print("\n" + "=" * 50)
+
+
+def extract_assessment_insights(assessment_data):
+    """Extract key insights from assessment data for quick review"""
+    insights = {
+        'completion_rate': 0,
+        'dominant_pattern': 'None',
+        'urgency_level': 'Not specified',
+        'readiness_score': 'Not assessed',
+        'chain_completeness': 0,
+        'recommended_action': 'Standard approach'
+    }
+    
+    try:
+        # Extract completion rate
+        assessment_results = assessment_data.get('assessment_results', {})
+        insights['completion_rate'] = int(assessment_results.get('completion_rate', 0) * 100)
+        
+        # Extract dominant pattern
+        pattern_scores = assessment_data.get('pattern_scores', {})
+        if pattern_scores:
+            dominant_id = max(pattern_scores.items(), key=lambda x: x[1])[0]
+            insights['dominant_pattern'] = clinical_email_handler.pattern_names.get(int(dominant_id), f"Pattern {dominant_id}")
+        
+        # Extract urgency
+        contact_info = assessment_data.get('contact_info', {})
+        insights['urgency_level'] = contact_info.get('urgency', 'Not specified')
+        
+        # Extract readiness score
+        responses = assessment_data.get('assessment_responses', {})
+        for response_data in responses.values():
+            response = response_data.get('response', {})
+            if isinstance(response, dict) and 'rating' in response:
+                insights['readiness_score'] = f"{response['rating']}/10"
+                break
+        
+        # Calculate chain completeness
+        trigger_chain = assessment_data.get('trigger_chain', {})
+        if trigger_chain:
+            total_components = 6
+            completed = sum(1 for comp in ['awareness_point', 'physical_response', 'automatic_thought', 
+                                         'emotional_response', 'behavioral_response', 'immediate_consequence']
+                           if trigger_chain.get(comp) and trigger_chain[comp] != 'Not captured')
+            insights['chain_completeness'] = int((completed / total_components) * 100)
+        
+        # Determine recommended action
+        if insights['completion_rate'] >= 80 and len(pattern_scores) >= 3:
+            insights['recommended_action'] = "Proceed with targeted intervention"
+        elif insights['completion_rate'] >= 60:
+            insights['recommended_action'] = "Brief discovery call + targeted approach"
+        else:
+            insights['recommended_action'] = "Full discovery call required"
+            
+    except Exception as e:
+        print(f"❌ Error extracting insights: {e}")
+    
+    return insights
+
+
+def format_clinical_summary(assessment_data):
+    """Format a concise clinical summary for quick review"""
+    insights = extract_assessment_insights(assessment_data)
+    contact_info = assessment_data.get('contact_info', {})
+    
+    summary = f"""
+📋 CLINICAL SUMMARY - {contact_info.get('name', 'Unknown Client')}
+{'=' * 60}
+
+👤 Client: {contact_info.get('email', 'Unknown')}
+⏰ Urgency: {insights['urgency_level']}
+📊 Completion: {insights['completion_rate']}%
+🎯 Dominant Pattern: {insights['dominant_pattern']}
+🔗 Chain Completeness: {insights['chain_completeness']}%
+📈 Readiness: {insights['readiness_score']}
+💡 Recommendation: {insights['recommended_action']}
+
+{'=' * 60}
+    """
+    
+    return summary
+
+
+# Export main functions for use by assessment system
+__all__ = [
+    'send_clinical_assessment_results',
+    'ClinicalAssessmentEmailHandler',
+    'format_pattern_summary',
+    'validate_assessment_data',
+    'generate_assessment_report_id',
+    'log_assessment_completion',
+    'test_email_handler',
+    'debug_assessment_data',
+    'extract_assessment_insights',
+    'format_clinical_summary'
+]
+
 
 if __name__ == "__main__":
     # Run test when script is executed directly
+    print("🧠 Clinical Assessment Email Handler")
+    print("=" * 40)
     test_email_handler()
