@@ -494,8 +494,8 @@ class EnhancedQuizSection:
         self.discovery_url = "https://calendly.com/laetitiasheppard/discovery"
 
     def render(self):
-        st.subheader("30-second self-assessment: is hypnotherapy right for you?")
-        st.write("quickly assess if hypnotherapy can help you transform emotional patterns and subconscious blocks.")
+        st.subheader("30 second self-assessment: Is hypnotherapy right for you?")
+        st.write("Quickly assess if hypnotherapy can help you transform emotional patterns and subconscious blocks.")
 
         if not st.session_state.quiz_completed:
             self._render_all_questions()
@@ -507,7 +507,7 @@ class EnhancedQuizSection:
 
         # question 1 (two-column layout, as before)
         q1_expanded = (current_step == 1) or (1 not in st.session_state.quiz_answers)
-        with st.expander("question 1: which issue most interferes with your daily wellbeing?", expanded=q1_expanded):
+        with st.expander("question 1: Which issue most interferes with your daily wellbeing?", expanded=q1_expanded):
             if 1 not in st.session_state.quiz_answers:
                 col1, col2 = st.columns(2)
                 choices = [
@@ -533,12 +533,11 @@ class EnhancedQuizSection:
                     )
             else:
                 st.success(f"✅ selected: {st.session_state.quiz_answers[1]}")
-                st.info("these issues often have subconscious triggers hypnotherapy can effectively address.")
 
         # expert expanded question 2: broader relatable triggers, two columns, button single click
         if len(st.session_state.quiz_answers) >= 1:
             q2_expanded = (current_step == 2) and (2 not in st.session_state.quiz_answers)
-            with st.expander("question 2: which inner experience or mindset most often keeps you from lasting change?", expanded=q2_expanded):
+            with st.expander("question 2: Which inner experience or mindset most often keeps you from lasting change?", expanded=q2_expanded):
                 if 2 not in st.session_state.quiz_answers:
                     col1, col2 = st.columns(2)
                     q2_choices = [
@@ -562,12 +561,11 @@ class EnhancedQuizSection:
                         )
                 else:
                     st.success(f"✅ selected: {st.session_state.quiz_answers[2]}")
-                    st.info("recognizing your limited beliefs opens the way to lasting transformation.")
 
         # question 3 unchanged
         if len(st.session_state.quiz_answers) >= 2:
             q3_expanded = (current_step == 3) and (3 not in st.session_state.quiz_answers)
-            with st.expander("question 3: how ready are you to fully commit to inner transformation?", expanded=q3_expanded):
+            with st.expander("question 3: How ready are you to fully commit to inner transformation?", expanded=q3_expanded):
                 if 3 not in st.session_state.quiz_answers:
                     col1, col2 = st.columns(2)
                     col1.button(
