@@ -381,6 +381,7 @@ class HypnotherapyApp:
                 options=options,
                 icons=icons,
                 default_index=0,
+                key="main_navigation",
                 orientation="horizontal",
                 styles={
                     "container": {"padding": "0", "margin": "0 0 2rem 0"},
