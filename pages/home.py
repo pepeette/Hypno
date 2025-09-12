@@ -1,29 +1,17 @@
 # """
-# Fixed Home page component with better styling and readability
+# Complete Home page with enhanced 4-question quiz built-in
+# Hero → Quiz → Method Teaser → CTA
 # """
 # import streamlit as st
-# from utils.config import AppConstants
 
 # class HeroSection:
-#     """Hero section using Streamlit components"""
+#     """Hero section with value proposition and comparison"""
     
 #     def render(self):
-#         """Render hero section with Streamlit components"""
-#         # Break free from limitations... Experience transformative change...
-#         # Hero container using Streamlit container
-#         # with st.container():
-#         #     st.markdown("""
-#         #     <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
-#         #                 border-radius: 16px; padding: 4rem 2rem; text-align: center; margin: 2rem 0;">
-#         #         <h1 style="color: white;">Stop Fighting Your Mind.<br>Start Working With It.</h1>
-#         #         # <p style="color: white; opacity: 0.95; max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
-#         #         #     Most people try to change using willpower. That's why 95% fail. <br>
-#         #         #     We bypass your conscious resistance and reprogram your subconscious patterns directly.
-#         #         # </p>
-#         #     </div>
-#         #     """, unsafe_allow_html=True)
+#         """Render hero section with comparison"""
 #         with st.container():
-#             st.markdown(f"""
+#             # Hero banner image
+#             st.markdown("""
 #             <div style="display: flex; justify-content: center; align-items: center; margin: 2rem 0;">
 #                 <img src="https://raw.githubusercontent.com/pepeette/Hypno/main/img/herobanner.jpg" 
 #                      alt="Stop Fighting Your Mind. Start Working With It." 
@@ -31,209 +19,65 @@
 #             </div>
 #             """, unsafe_allow_html=True)
             
-
-#             # # Logo and Info message on same row with responsive design
-#             # col1, col2 = st.columns([1, 2], gap="medium")
-            
-#             # with col1:
-#             #     # Logo with same height as info box
-#             #     st.markdown("""
-#             #     <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-#             #         <img src="https://github.com/pepeette/Hypno/blob/main/img/logo.jpg?raw=true" 
-#             #              alt="Hypnotherapy Logo" 
-#             #              style="max-width: 100%; height: auto; border-radius: 8px; 
-#             #                     max-height: 80px; object-fit: contain;">
-#             #     </div>
-#             #     """, unsafe_allow_html=True)
-            
-#             # with col2:
-#             #     # Info box - will automatically size to content
-#             #     st.info("💡 True change begins when you stop resisting yourself and start rewiring the patterns controlling your behavior.
-#                             # → Book your hypnotherapy at our new address in BANGKOK to break free from unwanted habits. 2 sessions only needed.")
-
-
-#             # Starting lines 
+#             # Key message and value proposition
 #             st.write("Most people try to change using willpower. That's why 95% fail. We bypass your conscious resistance and reprogram your subconscious patterns directly.")
-
-#             # Add compelling message using Streamlit info box
-#             st.write("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
-#             st.info("→ Book your hypnotherapy at our new address in BANGKOK to break free from unwanted habits. 2 sessions only needed.")
             
-#             # # OR Logo and Info message forced to stay on same row even on mobile
-#             # st.markdown("""
-#             # <div style="display: flex; gap: 1rem; margin: 1rem 0; align-items: stretch; flex-wrap: nowrap;">
-#             #     <div style="flex: 0 0 auto; display: flex; align-items: center; justify-content: center; min-width: 120px;">
-#             #         <img src="https://github.com/pepeette/Hypno/blob/main/img/logo.png?raw=true" 
-#             #              alt="Hypnotherapy Logo" 
-#             #              style="max-width: 100%; height: auto; border-radius: 8px; 
-#             #                     max-height: 80px; object-fit: contain;">
-#             #     </div>
-#             #     <div style="flex: 1; display: flex; align-items: center;">
-#             #         <div style="background: rgba(76, 161, 163, 0.1); border: 1px solid #4CA1A3; 
-#             #                     border-radius: 8px; padding: 1rem; width: 100%;">
-#             #             <p style="margin: 0; color: #273548; font-size: 1rem; line-height: 1.6;">
-#             #                 💡 True change begins when you stop resisting yourself and start rewiring the patterns controlling your behavior.<br>
-#             #                 → Book your hypnotherapy at our new address in BANGKOK to break free from unwanted habits. 2 sessions only needed.
-#             #             </p>
-#             #         </div>
-#             #     </div>
-#             # </div>
-#             # """, unsafe_allow_html=True)
-                
-# class QuizSection:
-#     # """Quiz section using Streamlit components with better UX"""
-    
-#     # def __init__(self):
-#     #     # Initialize session state using Streamlit
-#     #     if 'quiz_answers' not in st.session_state:
-#     #         st.session_state.quiz_answers = {}
-#     #     if 'quiz_step' not in st.session_state:
-#     #         st.session_state.quiz_step = 1
-#     #     if 'quiz_completed' not in st.session_state:
-#     #         st.session_state.quiz_completed = False
-#     #     if 'quiz_score' not in st.session_state:
-#     #         st.session_state.quiz_score = 0
-#     #     if 'primary_pattern' not in st.session_state:
-#     #         st.session_state.primary_pattern = ""
-    
-#     # def render(self):
-#     #     """Render quiz using Streamlit components"""
-#     #     # Section header
-#     #     st.subheader("Are you ready for your hypnotherapy rapid change?")
-#     #     st.write("3 questions to assess your potential for transformation: (click on the most suited option)")
-        
-#     #     if not st.session_state.quiz_completed:
-#     #         self._render_all_questions()
-#     #     else:
-#     #         self._render_results()
-    
-#     # def _render_all_questions(self):
-#     #     """Show all questions with proper collapsing - Q1 expanded by default"""
-#     #     current_step = st.session_state.quiz_step
-        
-#     #     # Question 1 - Expanded by default, collapsed after answering
-#     #     q1_expanded = (current_step == 1) or (1 not in st.session_state.quiz_answers)
-#     #     with st.expander("Question 1: What would you most like to change?", expanded=q1_expanded):
-#     #         if 1 not in st.session_state.quiz_answers:
-#     #             col1, col2 = st.columns(2)
-#     #             with col1:
-#     #                 if st.button("🚭 Quit Smoking", key="q1_smoking", use_container_width=True):
-#     #                     self._answer_question(1, "Quit Smoking")
-#     #                 if st.button("😴 Improve Sleep", key="q1_sleep", use_container_width=True):
-#     #                     self._answer_question(1, "Improve Sleep")
-#     #             with col2:
-#     #                 if st.button("😌 Reduce Anxiety", key="q1_anxiety", use_container_width=True):
-#     #                     self._answer_question(1, "Reduce Anxiety")
-#     #                 if st.button("🔄 Break Bad Habits", key="q1_habits", use_container_width=True):
-#     #                     self._answer_question(1, "Break Bad Habits")
-#     #         else:
-#     #             st.success(f"✅ Selected: {st.session_state.quiz_answers[1]}")
-        
-#     #     # Question 2 - Show only if Q1 answered, expand when active
-#     #     if len(st.session_state.quiz_answers) >= 1:
-#     #         q2_expanded = (current_step == 2) and (2 not in st.session_state.quiz_answers)
-#     #         with st.expander("Question 2: How long have you been dealing with this?", expanded=q2_expanded):
-#     #             if 2 not in st.session_state.quiz_answers:
-#     #                 if st.button("🆕 Less than 6 months", key="q2_new", use_container_width=True):
-#     #                     self._answer_question(2, "Less than 6 months")
-#     #                 if st.button("📅 6 months to 2 years", key="q2_mod", use_container_width=True):
-#     #                     self._answer_question(2, "6 months to 2 years")
-#     #                 if st.button("⏳ More than 2 years", key="q2_long", use_container_width=True):
-#     #                     self._answer_question(2, "More than 2 years")
-#     #             else:
-#     #                 st.success(f"✅ Selected: {st.session_state.quiz_answers[2]}")
-        
-#     #     # Question 3 - Show only if Q2 answered, expand when active
-#     #     if len(st.session_state.quiz_answers) >= 2:
-#     #         q3_expanded = (current_step == 3) and (3 not in st.session_state.quiz_answers)
-#     #         with st.expander("Question 3: How ready are you to make this change?", expanded=q3_expanded):
-#     #             if 3 not in st.session_state.quiz_answers:
-#     #                 if st.button("🤔 Just exploring options", key="q3_explore", use_container_width=True):
-#     #                     self._answer_question(3, "Just exploring options")
-#     #                 if st.button("💪 Very ready - I'm committed", key="q3_ready", use_container_width=True):
-#     #                     self._answer_question(3, "Very ready - I'm committed")
-#     #                 if st.button("🔥 Desperate for change", key="q3_determined", use_container_width=True):
-#     #                     self._answer_question(3, "Desperate for change")
-#     #             else:
-#     #                 st.success(f"✅ Selected: {st.session_state.quiz_answers[3]}")
-        
-#     #     # Progress using Streamlit progress bar
-#     #     progress = len(st.session_state.quiz_answers) / 3
-#     #     if progress > 0:
-#     #         st.progress(progress)
-#     #         if progress < 1:
-#     #             st.caption(f"Question {len(st.session_state.quiz_answers) + 1} of 3")
-#     #         else:
-#     #             st.caption("Complete!")
-    
-#     # def _answer_question(self, question_id, answer):
-#     #     """Handle question answer"""
-#     #     st.session_state.quiz_answers[question_id] = answer
-#     #     if question_id < 3:
-#     #         st.session_state.quiz_step = question_id + 1
-#     #     else:
-#     #         st.session_state.quiz_completed = True
-#     #         st.session_state.quiz_score = self._calculate_score()
-#     #     st.rerun()
-    
-#     # def _calculate_score(self):
-#     #     """Calculate suitability score"""
-#     #     scoring = {
-#     #         1: {"Quit Smoking": 40, "Reduce Anxiety": 35, "Improve Sleep": 30, "Break Bad Habits": 35},
-#     #         2: {"Less than 6 months": 20, "6 months to 2 years": 25, "More than 2 years": 30},
-#     #         3: {"Just exploring options": 10, "Very ready - I'm committed": 30, "Desperate for change": 25}
-#     #     }
-        
-#     #     total_score = 0
-#     #     for q_id, answer in st.session_state.quiz_answers.items():
-#     #         if q_id in scoring and answer in scoring[q_id]:
-#     #             total_score += scoring[q_id][answer]
-        
-#     #     return min(total_score, 100)
-    
-#     # def _render_results(self):
-#     #     """Render quiz results using Streamlit components"""
-#     #     score = st.session_state.quiz_score
-#     #     primary_pattern = st.session_state.primary_pattern
-        
-#     #     # Determine message based on score
-#     #     if score >= 70:
-#     #         st.success("🌟 Excellent candidate! You have strong indicators for rapid transformation.")
-#     #         st.info("You're ready to book your transformation package or start with a discovery call.")
-#     #     elif score >= 55:
-#     #         st.warning("🎯 Good potential! Hypnotherapy can definitely help with the right approach.")
-#     #         st.info("A discovery call would help us create the perfect strategy for your situation.")
-#     #     else:
-#     #         st.info("💬 Let's talk! Every situation is unique, and a conversation will help us determine the best path forward.")
-#     #         st.info("A free discovery call will help us understand how to best support your goals.")
-        
-#     #     # Display score using st.metric with combined value/delta
-#     #     col1, col2, col3 = st.columns([1, 2, 1])
-#     #     with col2:
-#     #         st.metric("", f"{score}% Suitability Match", "Transformation Readiness")
-        
-#     #     # Action buttons using Streamlit columns
-#     #     col1, col2 = st.columns(2)
-#     #     with col1:
-#     #         if st.button("🔄 Retake Assessment", use_container_width=True):
-#     #             self._reset_quiz()
-#     #     with col2:
-#     #         if st.button("📞 Book Discovery Call", type="primary", use_container_width=True):
-#     #             st.success("Perfect! Scroll down to book your call.")
-    
-#     # def _reset_quiz(self):
-#     #     """Reset quiz state"""
-#     #     st.session_state.quiz_answers = {}
-#     #     st.session_state.quiz_step = 1
-#     #     st.session_state.quiz_completed = False
-#     #     st.session_state.quiz_score = 0
-#     #     st.rerun()
-    
-    
-#     """Quiz section identifying internal blocking mechanisms and positioning hypnotherapy as solution"""
+#             st.write("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
+            
+#             st.info("→ Book your hypnotherapy at our new address in Bangkok to break free from unwanted habits. 2 sessions only needed.")
+
+#             # Value proposition with comparison
+#             st.markdown("## Transform in 2 sessions what takes traditional therapy longer")
+            
+#             # 3-column comparison
+#             col1, col2, col3 = st.columns([1, 1, 1])
+            
+#             with col1:
+#                 st.markdown("""
+#                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                             padding: 2rem; margin: 1rem 0; border-left: 4px solid #ef4444; height: 100%;">
+#                     <h2 style="color: #dc2626; margin-bottom: 1rem; text-align: center;">❌ Traditional Methods</h2>
+#                     <p><strong>Talk therapy:</strong> Analyzes problems but rarely creates lasting change</p>
+#                     <p><strong>Willpower:</strong> Requires constant effort and usually fails within weeks</p>
+#                     <p><strong>Medications:</strong> Manage symptoms but don't address root causes</p>
+#                     <p><strong>Self-help:</strong> Gives you tools but can't change deep programming</p>
+#                     <p style="margin: 0; font-weight: 600; color: #dc2626; text-align: center;">
+#                         Result: You know what to do but can't consistently do it
+#                     </p>
+#                 </div>
+#                 """, unsafe_allow_html=True)
+            
+#             with col2:
+#                 st.markdown("""
+#                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                             margin: 1rem 0; height: 100%; padding: 0; overflow: hidden;
+#                             display: flex; align-items: center; justify-content: center;">
+#                     <img src="https://github.com/pepeette/Hypno/blob/main/img/Hypnotherapy_compa.jpg?raw=true" 
+#                          alt="Hypnotherapy Comparison" 
+#                          style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+#                 </div>
+#                 """, unsafe_allow_html=True)
+            
+#             with col3:
+#                 st.markdown("""
+#                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
+#                             padding: 2rem; margin: 1rem 0; border-left: 4px solid #22c55e; height: 100%;">
+#                     <h2 style="color: #16a34a; margin-bottom: 1rem; text-align: center;">✅ Hypnotherapy</h2>
+#                     <p><strong>Session 1:</strong> Map your unique subconscious triggers and patterns</p>
+#                     <p><strong>Session 2:</strong> Rewire those patterns at the subconscious level</p>
+#                     <p><strong>Session 3:</strong> Optional reinforcement if needed (15% of clients)</p>
+#                     <p><strong>Follow-up:</strong> Permanent change that feels natural and effortless</p>
+#                     <p style="margin: 0; font-weight: 600; color: #16a34a; text-align: center;">
+#                         Result: Your subconscious now supports your goals automatically
+#                     </p>
+#                 </div>
+#                 """, unsafe_allow_html=True)
+
+# class EnhancedQuizSection:
+#     """Complete 4-question quiz with proper styling and blocking mechanisms"""
     
 #     def __init__(self):
-#         # Initialize session state
+#         # Initialize session state for quiz
 #         if 'quiz_answers' not in st.session_state:
 #             st.session_state.quiz_answers = {}
 #         if 'quiz_step' not in st.session_state:
@@ -242,125 +86,164 @@
 #             st.session_state.quiz_completed = False
 #         if 'quiz_score' not in st.session_state:
 #             st.session_state.quiz_score = 0
-#         if 'dominant_blocking_mechanism' not in st.session_state:
-#             st.session_state.dominant_blocking_mechanism = ""
+#         if 'unwanted_pattern' not in st.session_state:
+#             st.session_state.unwanted_pattern = ""
+#         if 'pattern_duration' not in st.session_state:
+#             st.session_state.pattern_duration = ""
+#         if 'blocking_mechanism' not in st.session_state:
+#             st.session_state.blocking_mechanism = ""
+#         if 'readiness_level' not in st.session_state:
+#             st.session_state.readiness_level = ""
         
-#         # Get discovery URL from config
-#         self.discovery_url = AppConstants.CONTACT_INFO.get("discovery_call_url", "https://calendly.com/laetitiasheppard/discovery")
+#         # Discovery URL
+#         self.discovery_url = "https://calendly.com/laetitiasheppard/discovery"
     
 #     def render(self):
 #         """Render the complete quiz experience"""
-#         # Section header
-#         st.subheader("Test : Do you want rapid change?")
-#         st.write("3 questions to assess your thought system patterns:")
+#         st.subheader("Test: Are you ready for your rapid change with hypnotherapy?")
+#         st.write("4 questions to assess if our method is right for your situation:")
         
 #         if not st.session_state.quiz_completed:
 #             self._render_all_questions()
 #         else:
-#             self._render_transformation_results()
+#             self._render_quiz_results()
     
 #     def _render_all_questions(self):
-#         """Show all questions with proper progression"""
+#         """Show all 4 questions with proper progression"""
 #         current_step = st.session_state.quiz_step
         
-#         # Question 1 - Identify dominant blocking mechanism
+#         # Question 1 - Unwanted pattern
 #         q1_expanded = (current_step == 1) or (1 not in st.session_state.quiz_answers)
-#         with st.expander("Question 1: which internal pattern most limits your growth?", expanded=q1_expanded):
+#         with st.expander("Question 1: What unwanted pattern would you most like to eliminate?", expanded=q1_expanded):
 #             if 1 not in st.session_state.quiz_answers:
 #                 col1, col2 = st.columns(2)
 #                 with col1:
-#                     if st.button("⚔️ Force and control\n'I must push through resistance'", key="q1_force", use_container_width=True):
-#                         self._answer_question(1, "Force and control")
-#                     if st.button("🔒 Mistrust and defensiveness\n'I can't let my guard down'", key="q1_mistrust", use_container_width=True):
-#                         self._answer_question(1, "Mistrust and defensiveness")
+#                     if st.button("🚭 Quit smoking\nBreak nicotine addiction permanently", key="q1_smoking", use_container_width=True, type="secondary"):
+#                         self._answer_question(1, "Quit smoking")
+#                     if st.button("😰 Reduce anxiety\nStop panic attacks and overthinking", key="q1_anxiety", use_container_width=True, type="secondary"):
+#                         self._answer_question(1, "Reduce anxiety")
+#                     if st.button("🍷 Control drinking\nHealthy relationship with alcohol", key="q1_drinking", use_container_width=True, type="secondary"):
+#                         self._answer_question(1, "Control drinking")
 #                 with col2:
-#                     if st.button("⚖️ All-or-nothing thinking\n'It's either perfect or failure'", key="q1_binary", use_container_width=True):
-#                         self._answer_question(1, "All-or-nothing thinking")
-#                     if st.button("🏃 Doing addiction\n'My worth depends on productivity'", key="q1_doing", use_container_width=True):
-#                         self._answer_question(1, "Doing addiction")
+#                     if st.button("😴 Improve sleep\nEnd insomnia and sleep anxiety", key="q1_sleep", use_container_width=True, type="secondary"):
+#                         self._answer_question(1, "Improve sleep")
+#                     if st.button("🍕 Stop overeating\nBreak emotional eating patterns", key="q1_eating", use_container_width=True, type="secondary"):
+#                         self._answer_question(1, "Stop overeating")
+#                     if st.button("📱 Break bad habits\nEliminate destructive behaviors", key="q1_habits", use_container_width=True, type="secondary"):
+#                         self._answer_question(1, "Break bad habits")
 #             else:
 #                 st.success(f"✅ Selected: {st.session_state.quiz_answers[1]}")
         
-#         # Question 2 - Change attempts and frustration
+#         # Question 2 - Duration
 #         if len(st.session_state.quiz_answers) >= 1:
 #             q2_expanded = (current_step == 2) and (2 not in st.session_state.quiz_answers)
-#             with st.expander("Question 2: how do you typically try to create change?", expanded=q2_expanded):
+#             with st.expander("Question 2: How long have you been dealing with this pattern?", expanded=q2_expanded):
 #                 if 2 not in st.session_state.quiz_answers:
-#                     col1, col2 = st.columns(2)
-#                     with col1:
-#                         if st.button("💪 Push harder with willpower and discipline", key="q2_willpower", use_container_width=True):
-#                             self._answer_question(2, "Push harder with willpower")
-#                         if st.button("📚 Learn more techniques and strategies", key="q2_techniques", use_container_width=True):
-#                             self._answer_question(2, "Learn more techniques")
-#                     with col2:
-#                         if st.button("🔄 Change external circumstances or people", key="q2_external", use_container_width=True):
-#                             self._answer_question(2, "Change external circumstances")
-#                         if st.button("😤 Get frustrated and give up temporarily", key="q2_frustrated", use_container_width=True):
-#                             self._answer_question(2, "Get frustrated and give up")
+#                     if st.button("🆕 Less than 6 months - Recent development", key="q2_recent", use_container_width=True, type="secondary"):
+#                         self._answer_question(2, "Less than 6 months")
+#                     if st.button("📅 6 months to 2 years - Established pattern", key="q2_established", use_container_width=True, type="secondary"):
+#                         self._answer_question(2, "6 months to 2 years")
+#                     if st.button("⏳ More than 2 years - Deep-rooted habit", key="q2_deeprooted", use_container_width=True, type="secondary"):
+#                         self._answer_question(2, "More than 2 years")
 #                 else:
 #                     st.success(f"✅ Selected: {st.session_state.quiz_answers[2]}")
         
-#         # Question 3 - Readiness for internal transformation
+#         # Question 3 - Blocking mechanism
 #         if len(st.session_state.quiz_answers) >= 2:
 #             q3_expanded = (current_step == 3) and (3 not in st.session_state.quiz_answers)
-#             with st.expander("Question 3: how ready are you to examine your thought system?", expanded=q3_expanded):
+#             with st.expander("Question 3: Which internal pattern most blocks your progress?", expanded=q3_expanded):
 #                 if 3 not in st.session_state.quiz_answers:
 #                     col1, col2 = st.columns(2)
 #                     with col1:
-#                         if st.button("🤔 Curious but cautious about internal work", key="q3_curious", use_container_width=True):
-#                             self._answer_question(3, "Curious but cautious")
-#                         if st.button("🎯 Ready to explore how my thinking creates problems", key="q3_ready", use_container_width=True):
-#                             self._answer_question(3, "Ready to explore thinking")
+#                         if st.button("⚔️ Force and control\n'I must push through resistance'", key="q3_force", use_container_width=True, type="secondary"):
+#                             self._answer_question(3, "Force and control")
+#                         if st.button("🔒 Mistrust and defensiveness\n'I can't let my guard down'", key="q3_mistrust", use_container_width=True, type="secondary"):
+#                             self._answer_question(3, "Mistrust and defensiveness")
 #                     with col2:
-#                         if st.button("🔥 Desperate for a different approach to change", key="q3_desperate", use_container_width=True):
-#                             self._answer_question(3, "Desperate for different approach")
-#                         if st.button("🛡️ Prefer focusing on external solutions first", key="q3_external", use_container_width=True):
-#                             self._answer_question(3, "Prefer external solutions")
+#                         if st.button("⚖️ All-or-nothing thinking\n'It's either perfect or failure'", key="q3_binary", use_container_width=True, type="secondary"):
+#                             self._answer_question(3, "All-or-nothing thinking")
+#                         if st.button("🏃 Doing addiction\n'My worth depends on productivity'", key="q3_doing", use_container_width=True, type="secondary"):
+#                             self._answer_question(3, "Doing addiction")
 #                 else:
 #                     st.success(f"✅ Selected: {st.session_state.quiz_answers[3]}")
         
+#         # Question 4 - Readiness
+#         if len(st.session_state.quiz_answers) >= 3:
+#             q4_expanded = (current_step == 4) and (4 not in st.session_state.quiz_answers)
+#             with st.expander("Question 4: How ready are you to transform this pattern?", expanded=q4_expanded):
+#                 if 4 not in st.session_state.quiz_answers:
+#                     col1, col2 = st.columns(2)
+#                     with col1:
+#                         if st.button("🤔 Curious but cautious\nWant to understand the approach first", key="q4_curious", use_container_width=True, type="secondary"):
+#                             self._answer_question(4, "Curious but cautious")
+#                         if st.button("🎯 Ready to commit\nPrepared to do the inner work", key="q4_ready", use_container_width=True, type="secondary"):
+#                             self._answer_question(4, "Ready to commit")
+#                     with col2:
+#                         if st.button("🔥 Desperate for change\nThis pattern must end now", key="q4_desperate", use_container_width=True, type="secondary"):
+#                             self._answer_question(4, "Desperate for change")
+#                         if st.button("🛡️ Prefer gradual approach\nWant to try other methods first", key="q4_gradual", use_container_width=True, type="secondary"):
+#                             self._answer_question(4, "Prefer gradual approach")
+#                 else:
+#                     st.success(f"✅ Selected: {st.session_state.quiz_answers[4]}")
+        
 #         # Progress indicator
-#         progress = len(st.session_state.quiz_answers) / 3
+#         progress = len(st.session_state.quiz_answers) / 4
 #         if progress > 0:
 #             st.progress(progress)
 #             if progress < 1:
-#                 st.caption(f"Question {len(st.session_state.quiz_answers) + 1} of 3")
+#                 st.caption(f"Question {len(st.session_state.quiz_answers) + 1} of 4")
 #             else:
-#                 st.caption("Complete!")
+#                 st.caption("Assessment complete!")
     
 #     def _answer_question(self, question_id, answer):
-#         """Handle question answers and progression"""
+#         """Handle question answers and store patterns"""
 #         st.session_state.quiz_answers[question_id] = answer
-#         if question_id == 1:
-#             st.session_state.dominant_blocking_mechanism = answer
         
-#         if question_id < 3:
+#         # Store specific patterns for results
+#         if question_id == 1:
+#             st.session_state.unwanted_pattern = answer
+#         elif question_id == 2:
+#             st.session_state.pattern_duration = answer
+#         elif question_id == 3:
+#             st.session_state.blocking_mechanism = answer
+#         elif question_id == 4:
+#             st.session_state.readiness_level = answer
+        
+#         # Progress through quiz
+#         if question_id < 4:
 #             st.session_state.quiz_step = question_id + 1
 #         else:
 #             st.session_state.quiz_completed = True
-#             st.session_state.quiz_score = self._calculate_transformation_readiness()
+#             st.session_state.quiz_score = self._calculate_score()
 #         st.rerun()
     
-#     def _calculate_transformation_readiness(self):
-#         """Calculate readiness based on d'Ansembourg principles"""
+#     def _calculate_score(self):
+#         """Calculate transformation readiness score"""
 #         scoring = {
-#             1: {  # Blocking mechanism awareness
-#                 "Force and control": 25,
-#                 "Mistrust and defensiveness": 20,
-#                 "All-or-nothing thinking": 30,
-#                 "Doing addiction": 35
+#             1: {  # Unwanted patterns
+#                 "Quit smoking": 30,
+#                 "Reduce anxiety": 25,
+#                 "Improve sleep": 20,
+#                 "Control drinking": 25,
+#                 "Stop overeating": 20,
+#                 "Break bad habits": 25
 #             },
-#             2: {  # Change approach recognition
-#                 "Push harder with willpower": 15,
-#                 "Learn more techniques": 25,
-#                 "Change external circumstances": 10,
-#                 "Get frustrated and give up": 30  # Paradoxically high - shows awareness of futility
+#             2: {  # Duration
+#                 "Less than 6 months": 15,
+#                 "6 months to 2 years": 20,
+#                 "More than 2 years": 25
 #             },
-#             3: {  # Internal transformation readiness
-#                 "Curious but cautious": 25,
-#                 "Ready to explore thinking": 35,
-#                 "Desperate for different approach": 30,
-#                 "Prefer external solutions": 10
+#             3: {  # Blocking mechanisms
+#                 "Force and control": 20,
+#                 "Mistrust and defensiveness": 15,
+#                 "All-or-nothing thinking": 25,
+#                 "Doing addiction": 30
+#             },
+#             4: {  # Readiness levels
+#                 "Curious but cautious": 15,
+#                 "Ready to commit": 30,
+#                 "Desperate for change": 25,
+#                 "Prefer gradual approach": 5
 #             }
 #         }
         
@@ -371,298 +254,160 @@
         
 #         return min(total_score, 100)
     
-#     def _render_transformation_results(self):
-#         """Render results focusing on internal transformation readiness"""
-        
-#         # White container wrapper
-#         with st.container():
-#             st.markdown("""
-#             <style>
-#             .stContainer > div {
-#                 background-color: white !important;
-#                 padding: 2rem !important;
-#                 border-radius: 12px !important;
-#                 border: 1px solid #e2e8f0 !important;
-#                 margin: 1rem 0 !important;
-#                 box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
-#             }
-#             </style>
-#             """, unsafe_allow_html=True)
-    
+#     def _render_quiz_results(self):
+#         """Render results using Streamlit components with proper styling"""
 #         score = st.session_state.quiz_score
-#         blocking_mechanism = st.session_state.dominant_blocking_mechanism
         
-#         # Blocking mechanism insights
-#         mechanism_insights = {
-#             "Force and control": {
-#                 "description": "You tend to use force when resistance appears, creating internal battles that exhaust you. True change happens through alignment, not overpowering.",
-#                 "transformation": "Hypnotherapy helps you access cooperation from your subconscious mind instead of fighting it. When all parts of you want the same thing, change becomes effortless.",
-#                 "journey": "Moving from binary thinking (fueled by ego) to genuine inner meeting and collaboration."
-#             },
-#             "Mistrust and defensiveness": {
-#                 "description": "Your internal security system stays hyperactive, treating change as potential danger. This prevents the vulnerability needed for transformation.",
-#                 "transformation": "Hypnotherapy creates a safe space for your subconscious to update its threat assessment. When you feel internally secure, change becomes an adventure rather than a threat.",
-#                 "journey": "Transforming systematic mistrust into grounded confidence and inner security."
-#             },
-#             "All-or-nothing thinking": {
-#                 "description": "Your mind divides experience into perfect/failure, good/bad, which eliminates the middle ground where growth actually happens.",
-#                 "transformation": "Hypnotherapy rewires binary thinking into flexible, nuanced responses. You learn to embrace progress over perfection and growth over fixed outcomes.",
-#                 "journey": "Healing the separation and division that fragments your experience of life."
-#             },
-#             "Doing addiction": {
-#                 "description": "Your worth feels tied to constant productivity and achievement. This creates exhausting cycles where rest feels like failure.",
-#                 "transformation": "Hypnotherapy separates your inherent value from your actions. You discover that being yourself naturally generates inspired action without compulsive doing.",
-#                 "journey": "Shifting from 'doing for validation' to 'being that naturally expresses through action.'"
-#             }
-#         }
-
-                
-#         # Display transformation readiness score
-#         col1, col2, col3 = st.columns([1, 2, 1])
-#         with col2:
-#             st.metric("", f"{score}% Internal transformation readiness", "")
-            
-#         # Results display
+#         # Results header
+#         st.success("✅ Assessment Complete!")
+        
+#         # Results based on score with proper styling
 #         if score >= 75:
-#             st.success("🌟 High readiness for authentic transformation! Your awareness of internal patterns indicates excellent potential for rapid, lasting change.")
-#             readiness_level = "high"
+#             st.success("🌟 High suitability for rapid transformation!")
+#             recommendation = "You show strong indicators for success with our 2-session method."
+#             action = "Book your transformation package or start with a discovery call."
 #         elif score >= 55:
-#             st.warning("🎯 Good transformation potential! You show strong indicators for successful internal pattern rewiring with proper support.")
-#             readiness_level = "moderate"
+#             st.warning("🎯 Good potential for transformation!")
+#             recommendation = "You have solid foundations for change with proper support."
+#             action = "A discovery call will help us tailor the approach to your situation."
 #         elif score >= 35:
-#             st.info("💬 Guided transformation recommended. Your situation would benefit from professional support to navigate internal resistance safely.")
-#             readiness_level = "guided"
+#             st.info("💭 Assessment recommended")
+#             recommendation = "Your situation would benefit from personalized evaluation."
+#             action = "A free discovery call will determine the best path forward."
 #         else:
-#             st.info("🌱 Preparation phase recommended. Building awareness and readiness will optimize your transformation when you're ready.")
-#             readiness_level = "preparation"
+#             st.info("🌱 Preparation phase suggested")
+#             recommendation = "Building readiness first may optimize your success."
+#             action = "Let's discuss your situation and explore when you might be ready."
         
-#         # Mechanism-specific insight
-#         if blocking_mechanism in mechanism_insights:
-#             insight = mechanism_insights[blocking_mechanism]
-            
-#             st.markdown("#### Your dominant internal pattern")
-#             st.info(f"**{blocking_mechanism}:** {insight['description']}")
-            
-#             #st.markdown("#### How hypnotherapy transforms this pattern")
-#             st.write(insight['transformation'])
-            
-#             st.markdown("#### Your transformation could start by")
-#             st.success(f"*{insight['journey']}*")
-        
-#         # Customized recommendations based on readiness       
-#         if readiness_level == "high":
-#             st.write("You demonstrate strong awareness of how internal thought systems create external problems. This insight positions you perfectly for the 2-session hypnotherapy method that rewires thinking patterns at their source.")
-            
-#         elif readiness_level == "moderate":
-#             st.write("You recognize that change requires more than willpower, which is crucial wisdom. A discovery call would help determine the best approach for transforming your specific thought patterns into supportive ones.")
-            
-#         elif readiness_level == "guided":
-#             st.write("You're beginning to see how internal patterns might be influencing your experience. Professional guidance can help you explore this safely and effectively, building confidence in your ability to change from within.")
-            
-#         else:
-#             st.write("Developing awareness of internal patterns is the first step toward authentic change. A discovery call can help you understand how hypnotherapy works and whether you're ready for internal transformation.")
-        
-#         # Action buttons
+#         # Display metrics using Streamlit components
 #         col1, col2 = st.columns(2)
 #         with col1:
-#             st.markdown("  ")
+#             st.metric("Transformation Readiness", f"{score}%", "Suitability Score")
+#         with col2:
+#             st.metric("Focus Area", st.session_state.unwanted_pattern, "Primary Pattern")
+        
+#         # Pattern insights using clean text
+#         pattern_insights = {
+#             "Quit smoking": "Smoking is one of our highest success areas. Most clients become smoke-free after 2 sessions.",
+#             "Reduce anxiety": "Anxiety responds well to subconscious pattern work. We address root triggers, not just symptoms.",
+#             "Improve sleep": "Sleep issues often stem from subconscious stress patterns we can identify and resolve.",
+#             "Control drinking": "Drinking patterns usually have deeper emotional triggers that hypnotherapy addresses effectively.",
+#             "Stop overeating": "Emotional eating involves subconscious reward patterns that respond well to our method.",
+#             "Break bad habits": "Most habits run on autopilot from the subconscious - exactly where we work."
+#         }
+        
+#         mechanism_insights = {
+#             "Force and control": "You tend to use force when resistance appears, creating internal battles. Our method works with your mind, not against it.",
+#             "Mistrust and defensiveness": "Your security system stays hyperactive, treating change as danger. We create safety for transformation.",
+#             "All-or-nothing thinking": "Your mind categorizes everything as perfect or failure. We help you find the middle ground where growth happens.",
+#             "Doing addiction": "Your worth feels tied to productivity. We help you find value in being, not just doing."
+#         }
+        
+#         # Display insights using standard Streamlit components
+#         if st.session_state.unwanted_pattern in pattern_insights:
+#             st.write(f"**Your pattern:** {pattern_insights[st.session_state.unwanted_pattern]}")
+            
+#         if st.session_state.blocking_mechanism in mechanism_insights:
+#             st.write(f"**Your approach:** {mechanism_insights[st.session_state.blocking_mechanism]}")
+        
+#         # Recommendation and action using info box
+#         st.info(f"**Recommendation:** {recommendation}")
+#         st.write(f"**Next step:** {action}")
+        
+#         # Action buttons using proper styling
+#         col1, col2 = st.columns(2)
+#         with col1:
 #             st.markdown(f"""
 #                 <a href="{self.discovery_url}" 
 #                    target="_blank" 
 #                    class="cta-button">
-#                    📞 Book discovery call
+#                    📞 Book Discovery Call
 #                 </a>
 #                 """, unsafe_allow_html=True)
 #         with col2:
-#             if st.button("🔄 Retake assessment", use_container_width=True):
+#             if st.button("🔄 Retake Assessment", use_container_width=True, type="secondary"):
 #                 self._reset_quiz()
-        
+    
 #     def _reset_quiz(self):
 #         """Reset all quiz state"""
 #         st.session_state.quiz_answers = {}
 #         st.session_state.quiz_step = 1
 #         st.session_state.quiz_completed = False
 #         st.session_state.quiz_score = 0
-#         st.session_state.dominant_blocking_mechanism = ""
+#         st.session_state.unwanted_pattern = ""
+#         st.session_state.pattern_duration = ""
+#         st.session_state.blocking_mechanism = ""
+#         st.session_state.readiness_level = ""
 #         st.rerun()
-
-# class PatternChangeMethod:
-#     """Pattern change method explanation using Streamlit components"""
+        
+# class MethodTeaserWithVideo:
+#     """Method overview with video and link to method page"""
     
 #     def render(self):
-#         """Render method explanation using Streamlit components"""
+#         """Render method teaser"""
 #         st.subheader("Why hypnotherapy succeeds where others haven't")
         
-#         # Opening explanation using Streamlit info box
-#         st.write("""
-#         Every unwanted behavior is driven by subconscious patterns you learned years ago. 
-#         Traditional therapy tries to override these patterns with willpower. We change the patterns themselves.
-#         When your subconscious programming supports your goals instead of fighting them, 
-#         change becomes effortless and permanent.
-#         """)
+#         # Video and explanation side by side
+#         col1, col2 = st.columns([1, 2])
         
-#         # Success rate using custom metrics with combined value/delta
-#         with st.container():
-#             # Force 3 columns to stay in one row even on mobile
-#             st.markdown("""
-#             <div style="display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: nowrap; 
-#                         justify-content: space-between;">
-#                 <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
-#                             border-radius: 8px; padding: 1rem; text-align: center;">
-#                     <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
-#                         Success Rate
-#                     </div>
-#                     <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
-#                         85% in 2 sessions
-#                     </div>
-#                 </div>
-#                 <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
-#                             border-radius: 8px; padding: 1rem; text-align: center;">
-#                     <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
-#                         3rd Session Optional
-#                     </div>
-#                     <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
-#                         15% need Reinforcing
-#                     </div>
-#                 </div>
-#                 <div style="flex: 1; min-width: 0; background: white; border: 1px solid #CBD5E1; 
-#                             border-radius: 8px; padding: 1rem; text-align: center;">
-#                     <div style="color: #556D7A; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">
-#                         Rapid pattern rewiring
-#                     </div>
-#                     <div style="color: #4CA1A3; font-size: 1.5rem; font-weight: 700; line-height: 1.2;">
-#                         for Lasting change
-#                     </div>
-#                 </div>
-#             </div>
-#             """, unsafe_allow_html=True)
-            
-#             st.success("Most clients achieve complete transformation in two 90-minute sessions. About 15% choose an optional reinforcement session a few weeks later for additional confidence.")
-        
-#         # Method comparison using 3-column layout with image in center
-#         st.write("### The key is in the method")
-        
-#         # Desktop: 3 columns, Mobile: stacked
-#         col1, col2, col3 = st.columns([1, 1, 1])
-        
-#         # Column 1: Traditional Methods Card
 #         with col1:
-#             st.markdown("""
-#             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-#                         padding: 2rem; margin: 1rem 0; border-left: 4px solid #ef4444; height: 100%;">
-#                 <h2 style="color: #dc2626; margin-bottom: 1rem; text-align: center;">❌ Traditional Methods</h2>
-#                 <p><strong>Talk therapy:</strong> Analyzes problems but rarely creates lasting change</p>
-#                 <p><strong>Willpower:</strong> Requires constant effort and usually fails within weeks</p>
-#                 <p><strong>Medications:</strong> Manage symptoms but don't address root causes</p>
-#                 <p><strong>Self-help:</strong> Gives you tools but can't change deep programming</p>
-#                 <p style="margin: 0; font-weight: 600; color: #dc2626; text-align: center;">
-#                     Result: You know what to do but can't consistently do it
-#                 </p>
-#             </div>
-#             """, unsafe_allow_html=True)
+#             st.video("https://youtu.be/5ORz1-LWrjo?feature=shared")
         
-#         # Column 2: Comparison Image - Full image, no text
+#         with col2:
+#             st.write("""
+#             **The problem:** Your conscious mind (5% of decisions) fights your subconscious programming (95% of decisions). 
+#             The subconscious always wins.
+#             """)
+            
+#             st.write("""
+#             **Our breakthrough:** Instead of fighting your subconscious, we work directly with it. 
+#             We identify your specific patterns and rewire them at the source.
+#             """)
+            
+#             st.info("When your subconscious programming supports your goals instead of fighting them, change becomes effortless and permanent.")
+        
+#         # Call to action for method page
+#         st.markdown("---")
+        
+#         col1, col2 = st.columns([3, 1])
+        
+#         with col1:
+#             st.write("**Want to understand the complete neuroscience behind our method?** ")
+#             st.write("See the detailed breakdown of how neuroplasticity creates lasting change, brain wave states, and clinical evidence.")
+        
 #         with col2:
 #             st.markdown("""
-#             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-#                         margin: 1rem 0; height: 100%; padding: 0; overflow: hidden;
-#                         display: flex; align-items: center; justify-content: center;">
-#                 <img src="https://github.com/pepeette/Hypno/blob/main/img/Hypnotherapy_compa.jpg?raw=true" 
-#                      alt="Hypnotherapy Comparison" 
-#                      style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
-#             </div>
-#             """, unsafe_allow_html=True)
-        
-#         # Column 3: Pattern Change Hypnotherapy Card  
-#         with col3:
-#             st.markdown("""
-#             <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-#                         padding: 2rem; margin: 1rem 0; border-left: 4px solid #22c55e; height: 100%;">
-#                 <h2 style="color: #16a34a; margin-bottom: 1rem; text-align: center;">✅ Hypnotherapy</h2>
-#                 <p><strong>Session 1:</strong> Map your unique subconscious triggers and patterns</p>
-#                 <p><strong>Session 2:</strong> Rewire those patterns at the subconscious level</p>
-#                 <p><strong>Session 3:</strong> Optional reinforcement if needed (15% of clients)</p>
-#                 <p><strong>Follow-up:</strong> Permanent change that feels natural and effortless</p>
-#                 <p style="margin: 0; font-weight: 600; color: #16a34a; text-align: center;">
-#                     Result: Your subconscious now supports your goals automatically
-#                 </p>
-#             </div>
-#             """, unsafe_allow_html=True)
-        
-#         # How it works using simple columns instead of tabs (avoid background colors)
-#         with st.container():
-#             st.write("### How the method works : 2 + 1")
-            
-#             col1, col2, col3 = st.columns(3)
-            
-#             with col1:
-#                 st.markdown("""
-#                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-#                             padding: 2rem; text-align: center; margin: 1rem 0;">
-#                     <div style="background: #4CA1A3; color: white; width: 60px; height: 60px; 
-#                                 border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-#                                 font-weight: bold; font-size: 1.5rem; margin: 0 auto 1rem;">1</div>
-#                     <h2 style="color: #273548;">Deep pattern analysis</h2>
-#                     <p style="color: #556D7A;">We map exactly what triggers your unwanted behavior at the subconscious level - 
-#                     often patterns you learned in childhood that no longer serve you.</p>
-#                 </div>
+#                 <a href="https://hypnotherapy.streamlit.app/#deep-pattern-analysis" 
+#                    target="_blank" 
+#                    class="cta-button">
+#                    👉 swipe to 2+1 Method page
+#                 </a>
 #                 """, unsafe_allow_html=True)
-            
-#             with col2:
-#                 st.markdown("""
-#                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-#                             padding: 2rem; text-align: center; margin: 1rem 0;">
-#                     <div style="background: #4CA1A3; color: white; width: 60px; height: 60px; 
-#                                 border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-#                                 font-weight: bold; font-size: 1.5rem; margin: 0 auto 1rem;">2</div>
-#                     <h2 style="color: #273548;">Neural Reset Hypnosis</h2>
-#                     <p style="color: #556D7A;">Using clinical hypnosis, we access your subconscious mind and install new, 
-#                     empowering patterns that automatically support your goals.</p>
-#                 </div>
-#                 """, unsafe_allow_html=True)
-            
-#             with col3:
-#                 st.markdown("""
-#                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
-#                             padding: 2rem; text-align: center; margin: 1rem 0;">
-#                     <div style="background: #4CA1A3; color: white; width: 60px; height: 60px; 
-#                                 border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-#                                 font-weight: bold; font-size: 1.5rem; margin: 0 auto 1rem;">3</div>
-#                     <h2 style="color: #273548;">Live the change</h2>
-#                     <p style="color: #556D7A;">The old urges and compulsions simply disappear. You naturally make choices 
-#                     that align with your goals without effort or struggle.</p>
-#                 </div>
-#                 """, unsafe_allow_html=True)
-#         st.markdown("""
-#         <p>* "we" clearly indicates that it is a binding work between the client and the therapist, throughout each session.</p>
-#         """, unsafe_allow_html=True)
-        
 
 # class HomePage:
-#     """Complete home page using Streamlit components"""
+#     """Complete home page with integrated 4-question quiz"""
     
 #     def __init__(self):
 #         self.hero = HeroSection()
-#         self.quiz = QuizSection()
-#         self.method = PatternChangeMethod()
-#         # Initialize discovery URL from config
-#         self.discovery_url = AppConstants.CONTACT_INFO.get("discovery_call_url", "https://calendly.com/laetitiasheppard/discovery")
+#         self.quiz = EnhancedQuizSection()
+#         self.method_teaser = MethodTeaserWithVideo()
     
 #     def render(self):
-#         """Render complete home page using Streamlit layout"""
-#         # Use Streamlit containers for clean layout
+#         """Render complete home page"""
+#         # Hero - value proposition and comparison
 #         with st.container():
 #             self.hero.render()
 #             st.markdown("    ")
-            
+        
+#         # Quiz - 4-question assessment with blocking mechanisms
 #         with st.container():
 #             self.quiz.render()
 #             st.markdown("    ")
         
+#         # Method teaser - credibility and next steps
 #         with st.container():
-#             self.method.render()
+#             self.method_teaser.render()
 #             st.markdown("    ")
-        
 
 # # Factory function for clean import
 # def create_home_page():
@@ -671,10 +416,6 @@
 
 
 
-"""
-Complete Home page with enhanced 4-question quiz built-in
-Hero → Quiz → Method Teaser → CTA
-"""
 import streamlit as st
 
 class HeroSection:
@@ -683,7 +424,6 @@ class HeroSection:
     def render(self):
         """Render hero section with comparison"""
         with st.container():
-            # Hero banner image
             st.markdown("""
             <div style="display: flex; justify-content: center; align-items: center; margin: 2rem 0;">
                 <img src="https://raw.githubusercontent.com/pepeette/Hypno/main/img/herobanner.jpg" 
@@ -692,19 +432,15 @@ class HeroSection:
             </div>
             """, unsafe_allow_html=True)
             
-            # Key message and value proposition
             st.write("Most people try to change using willpower. That's why 95% fail. We bypass your conscious resistance and reprogram your subconscious patterns directly.")
             
             st.write("💡 Real change happens when you stop fighting yourself and start changing the patterns that drive your behavior.")
             
             st.info("→ Book your hypnotherapy at our new address in Bangkok to break free from unwanted habits. 2 sessions only needed.")
-
-            # Value proposition with comparison
+            
             st.markdown("## Transform in 2 sessions what takes traditional therapy longer")
             
-            # 3-column comparison
             col1, col2, col3 = st.columns([1, 1, 1])
-            
             with col1:
                 st.markdown("""
                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
@@ -719,7 +455,6 @@ class HeroSection:
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
-            
             with col2:
                 st.markdown("""
                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
@@ -730,7 +465,6 @@ class HeroSection:
                          style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
                 </div>
                 """, unsafe_allow_html=True)
-            
             with col3:
                 st.markdown("""
                 <div style="background: white; border: 1px solid #CBD5E1; border-radius: 12px; 
@@ -747,153 +481,66 @@ class HeroSection:
                 """, unsafe_allow_html=True)
 
 class EnhancedQuizSection:
-    """Complete 4-question quiz with proper styling and blocking mechanisms"""
+    """Improved quiz with single question display, radio inputs and navigation"""
     
     def __init__(self):
-        # Initialize session state for quiz
-        if 'quiz_answers' not in st.session_state:
+        if "quiz_answers" not in st.session_state:
             st.session_state.quiz_answers = {}
-        if 'quiz_step' not in st.session_state:
-            st.session_state.quiz_step = 1
-        if 'quiz_completed' not in st.session_state:
+        if "quiz_step" not in st.session_state:
+            st.session_state.quiz_step = 0  # zero-based index
+        if "quiz_completed" not in st.session_state:
             st.session_state.quiz_completed = False
-        if 'quiz_score' not in st.session_state:
+        if "quiz_score" not in st.session_state:
             st.session_state.quiz_score = 0
-        if 'unwanted_pattern' not in st.session_state:
-            st.session_state.unwanted_pattern = ""
-        if 'pattern_duration' not in st.session_state:
-            st.session_state.pattern_duration = ""
-        if 'blocking_mechanism' not in st.session_state:
-            st.session_state.blocking_mechanism = ""
-        if 'readiness_level' not in st.session_state:
-            st.session_state.readiness_level = ""
         
-        # Discovery URL
         self.discovery_url = "https://calendly.com/laetitiasheppard/discovery"
-    
-    def render(self):
-        """Render the complete quiz experience"""
-        st.subheader("Test: Are you ready for your rapid change with hypnotherapy?")
-        st.write("4 questions to assess if our method is right for your situation:")
         
-        if not st.session_state.quiz_completed:
-            self._render_all_questions()
-        else:
-            self._render_quiz_results()
-    
-    def _render_all_questions(self):
-        """Show all 4 questions with proper progression"""
-        current_step = st.session_state.quiz_step
+        self.questions = [
+            {
+                "id": 1,
+                "text": "What unwanted pattern would you most like to eliminate?",
+                "options": [
+                    "Quit smoking",
+                    "Reduce anxiety",
+                    "Control drinking",
+                    "Improve sleep",
+                    "Stop overeating",
+                    "Break bad habits",
+                ],
+            },
+            {
+                "id": 2,
+                "text": "How long have you been dealing with this pattern?",
+                "options": [
+                    "Less than 6 months",
+                    "6 months to 2 years",
+                    "More than 2 years",
+                ],
+            },
+            {
+                "id": 3,
+                "text": "Which internal pattern most blocks your progress?",
+                "options": [
+                    "Force and control",
+                    "Mistrust and defensiveness",
+                    "All-or-nothing thinking",
+                    "Doing addiction",
+                ],
+            },
+            {
+                "id": 4,
+                "text": "How ready are you to transform this pattern?",
+                "options": [
+                    "Curious but cautious",
+                    "Ready to commit",
+                    "Desperate for change",
+                    "Prefer gradual approach",
+                ],
+            }
+        ]
         
-        # Question 1 - Unwanted pattern
-        q1_expanded = (current_step == 1) or (1 not in st.session_state.quiz_answers)
-        with st.expander("Question 1: What unwanted pattern would you most like to eliminate?", expanded=q1_expanded):
-            if 1 not in st.session_state.quiz_answers:
-                col1, col2 = st.columns(2)
-                with col1:
-                    if st.button("🚭 Quit smoking\nBreak nicotine addiction permanently", key="q1_smoking", use_container_width=True, type="secondary"):
-                        self._answer_question(1, "Quit smoking")
-                    if st.button("😰 Reduce anxiety\nStop panic attacks and overthinking", key="q1_anxiety", use_container_width=True, type="secondary"):
-                        self._answer_question(1, "Reduce anxiety")
-                    if st.button("🍷 Control drinking\nHealthy relationship with alcohol", key="q1_drinking", use_container_width=True, type="secondary"):
-                        self._answer_question(1, "Control drinking")
-                with col2:
-                    if st.button("😴 Improve sleep\nEnd insomnia and sleep anxiety", key="q1_sleep", use_container_width=True, type="secondary"):
-                        self._answer_question(1, "Improve sleep")
-                    if st.button("🍕 Stop overeating\nBreak emotional eating patterns", key="q1_eating", use_container_width=True, type="secondary"):
-                        self._answer_question(1, "Stop overeating")
-                    if st.button("📱 Break bad habits\nEliminate destructive behaviors", key="q1_habits", use_container_width=True, type="secondary"):
-                        self._answer_question(1, "Break bad habits")
-            else:
-                st.success(f"✅ Selected: {st.session_state.quiz_answers[1]}")
-        
-        # Question 2 - Duration
-        if len(st.session_state.quiz_answers) >= 1:
-            q2_expanded = (current_step == 2) and (2 not in st.session_state.quiz_answers)
-            with st.expander("Question 2: How long have you been dealing with this pattern?", expanded=q2_expanded):
-                if 2 not in st.session_state.quiz_answers:
-                    if st.button("🆕 Less than 6 months - Recent development", key="q2_recent", use_container_width=True, type="secondary"):
-                        self._answer_question(2, "Less than 6 months")
-                    if st.button("📅 6 months to 2 years - Established pattern", key="q2_established", use_container_width=True, type="secondary"):
-                        self._answer_question(2, "6 months to 2 years")
-                    if st.button("⏳ More than 2 years - Deep-rooted habit", key="q2_deeprooted", use_container_width=True, type="secondary"):
-                        self._answer_question(2, "More than 2 years")
-                else:
-                    st.success(f"✅ Selected: {st.session_state.quiz_answers[2]}")
-        
-        # Question 3 - Blocking mechanism
-        if len(st.session_state.quiz_answers) >= 2:
-            q3_expanded = (current_step == 3) and (3 not in st.session_state.quiz_answers)
-            with st.expander("Question 3: Which internal pattern most blocks your progress?", expanded=q3_expanded):
-                if 3 not in st.session_state.quiz_answers:
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        if st.button("⚔️ Force and control\n'I must push through resistance'", key="q3_force", use_container_width=True, type="secondary"):
-                            self._answer_question(3, "Force and control")
-                        if st.button("🔒 Mistrust and defensiveness\n'I can't let my guard down'", key="q3_mistrust", use_container_width=True, type="secondary"):
-                            self._answer_question(3, "Mistrust and defensiveness")
-                    with col2:
-                        if st.button("⚖️ All-or-nothing thinking\n'It's either perfect or failure'", key="q3_binary", use_container_width=True, type="secondary"):
-                            self._answer_question(3, "All-or-nothing thinking")
-                        if st.button("🏃 Doing addiction\n'My worth depends on productivity'", key="q3_doing", use_container_width=True, type="secondary"):
-                            self._answer_question(3, "Doing addiction")
-                else:
-                    st.success(f"✅ Selected: {st.session_state.quiz_answers[3]}")
-        
-        # Question 4 - Readiness
-        if len(st.session_state.quiz_answers) >= 3:
-            q4_expanded = (current_step == 4) and (4 not in st.session_state.quiz_answers)
-            with st.expander("Question 4: How ready are you to transform this pattern?", expanded=q4_expanded):
-                if 4 not in st.session_state.quiz_answers:
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        if st.button("🤔 Curious but cautious\nWant to understand the approach first", key="q4_curious", use_container_width=True, type="secondary"):
-                            self._answer_question(4, "Curious but cautious")
-                        if st.button("🎯 Ready to commit\nPrepared to do the inner work", key="q4_ready", use_container_width=True, type="secondary"):
-                            self._answer_question(4, "Ready to commit")
-                    with col2:
-                        if st.button("🔥 Desperate for change\nThis pattern must end now", key="q4_desperate", use_container_width=True, type="secondary"):
-                            self._answer_question(4, "Desperate for change")
-                        if st.button("🛡️ Prefer gradual approach\nWant to try other methods first", key="q4_gradual", use_container_width=True, type="secondary"):
-                            self._answer_question(4, "Prefer gradual approach")
-                else:
-                    st.success(f"✅ Selected: {st.session_state.quiz_answers[4]}")
-        
-        # Progress indicator
-        progress = len(st.session_state.quiz_answers) / 4
-        if progress > 0:
-            st.progress(progress)
-            if progress < 1:
-                st.caption(f"Question {len(st.session_state.quiz_answers) + 1} of 4")
-            else:
-                st.caption("Assessment complete!")
-    
-    def _answer_question(self, question_id, answer):
-        """Handle question answers and store patterns"""
-        st.session_state.quiz_answers[question_id] = answer
-        
-        # Store specific patterns for results
-        if question_id == 1:
-            st.session_state.unwanted_pattern = answer
-        elif question_id == 2:
-            st.session_state.pattern_duration = answer
-        elif question_id == 3:
-            st.session_state.blocking_mechanism = answer
-        elif question_id == 4:
-            st.session_state.readiness_level = answer
-        
-        # Progress through quiz
-        if question_id < 4:
-            st.session_state.quiz_step = question_id + 1
-        else:
-            st.session_state.quiz_completed = True
-            st.session_state.quiz_score = self._calculate_score()
-        st.rerun()
-    
-    def _calculate_score(self):
-        """Calculate transformation readiness score"""
-        scoring = {
-            1: {  # Unwanted patterns
+        self.scoring = {
+            1: {
                 "Quit smoking": 30,
                 "Reduce anxiety": 25,
                 "Improve sleep": 20,
@@ -901,40 +548,79 @@ class EnhancedQuizSection:
                 "Stop overeating": 20,
                 "Break bad habits": 25
             },
-            2: {  # Duration
+            2: {
                 "Less than 6 months": 15,
                 "6 months to 2 years": 20,
                 "More than 2 years": 25
             },
-            3: {  # Blocking mechanisms
+            3: {
                 "Force and control": 20,
                 "Mistrust and defensiveness": 15,
                 "All-or-nothing thinking": 25,
                 "Doing addiction": 30
             },
-            4: {  # Readiness levels
+            4: {
                 "Curious but cautious": 15,
                 "Ready to commit": 30,
                 "Desperate for change": 25,
                 "Prefer gradual approach": 5
             }
         }
+    
+    def render(self):
+        st.subheader("Test: Are you ready for your rapid change with hypnotherapy?")
+        st.write("4 questions to assess if our method is right for your situation:")
         
+        if st.session_state.quiz_completed:
+            self._render_quiz_results()
+        else:
+            self._render_single_question()
+    
+    def _render_single_question(self):
+        step = st.session_state.quiz_step
+        question = self.questions[step]
+        qid = question["id"]
+        
+        st.markdown(f"#### Question {step+1} of {len(self.questions)}")
+        st.write(f"**{question['text']}**")
+        
+        prev_answer = st.session_state.quiz_answers.get(qid, None)
+        selected = st.radio("Choose one:", question['options'], index=question['options'].index(prev_answer) if prev_answer in question['options'] else 0, key=f"radio_{qid}")
+        
+        col1, col2, col3 = st.columns([1,6,1])
+        
+        with col1:
+            if step > 0:
+                if st.button("← Back", key="back_button"):
+                    st.session_state.quiz_step -= 1
+                    st.experimental_rerun()
+        with col3:
+            if st.button("Next →", key="next_button"):
+                st.session_state.quiz_answers[qid] = selected
+                if step + 1 == len(self.questions):
+                    st.session_state.quiz_completed = True
+                    st.session_state.quiz_score = self._calculate_score()
+                else:
+                    st.session_state.quiz_step += 1
+                st.experimental_rerun()
+        
+        progress = (step) / (len(self.questions))
+        st.progress(progress if progress > 0 else 0.01)
+    
+    def _calculate_score(self):
         total_score = 0
-        for q_id, answer in st.session_state.quiz_answers.items():
-            if q_id in scoring and answer in scoring[q_id]:
-                total_score += scoring[q_id][answer]
-        
+        for q in self.questions:
+            qid = q["id"]
+            answer = st.session_state.quiz_answers.get(qid, None)
+            if answer and qid in self.scoring and answer in self.scoring[qid]:
+                total_score += self.scoring[qid][answer]
         return min(total_score, 100)
     
     def _render_quiz_results(self):
-        """Render results using Streamlit components with proper styling"""
         score = st.session_state.quiz_score
         
-        # Results header
         st.success("✅ Assessment Complete!")
         
-        # Results based on score with proper styling
         if score >= 75:
             st.success("🌟 High suitability for rapid transformation!")
             recommendation = "You show strong indicators for success with our 2-session method."
@@ -952,14 +638,14 @@ class EnhancedQuizSection:
             recommendation = "Building readiness first may optimize your success."
             action = "Let's discuss your situation and explore when you might be ready."
         
-        # Display metrics using Streamlit components
         col1, col2 = st.columns(2)
         with col1:
             st.metric("Transformation Readiness", f"{score}%", "Suitability Score")
         with col2:
-            st.metric("Focus Area", st.session_state.unwanted_pattern, "Primary Pattern")
+            first_qid = self.questions[0]["id"]
+            first_answer = st.session_state.quiz_answers.get(first_qid, "")
+            st.metric("Focus Area", first_answer or "N/A", "Primary Pattern")
         
-        # Pattern insights using clean text
         pattern_insights = {
             "Quit smoking": "Smoking is one of our highest success areas. Most clients become smoke-free after 2 sessions.",
             "Reduce anxiety": "Anxiety responds well to subconscious pattern work. We address root triggers, not just symptoms.",
@@ -968,7 +654,6 @@ class EnhancedQuizSection:
             "Stop overeating": "Emotional eating involves subconscious reward patterns that respond well to our method.",
             "Break bad habits": "Most habits run on autopilot from the subconscious - exactly where we work."
         }
-        
         mechanism_insights = {
             "Force and control": "You tend to use force when resistance appears, creating internal battles. Our method works with your mind, not against it.",
             "Mistrust and defensiveness": "Your security system stays hyperactive, treating change as danger. We create safety for transformation.",
@@ -976,18 +661,17 @@ class EnhancedQuizSection:
             "Doing addiction": "Your worth feels tied to productivity. We help you find value in being, not just doing."
         }
         
-        # Display insights using standard Streamlit components
-        if st.session_state.unwanted_pattern in pattern_insights:
-            st.write(f"**Your pattern:** {pattern_insights[st.session_state.unwanted_pattern]}")
-            
-        if st.session_state.blocking_mechanism in mechanism_insights:
-            st.write(f"**Your approach:** {mechanism_insights[st.session_state.blocking_mechanism]}")
+        unwanted_pattern = st.session_state.quiz_answers.get(1, "")
+        blocking_mechanism = st.session_state.quiz_answers.get(3, "")
         
-        # Recommendation and action using info box
+        if unwanted_pattern in pattern_insights:
+            st.write(f"**Your pattern:** {pattern_insights[unwanted_pattern]}")
+        if blocking_mechanism in mechanism_insights:
+            st.write(f"**Your approach:** {mechanism_insights[blocking_mechanism]}")
+        
         st.info(f"**Recommendation:** {recommendation}")
         st.write(f"**Next step:** {action}")
         
-        # Action buttons using proper styling
         col1, col2 = st.columns(2)
         with col1:
             st.markdown(f"""
@@ -996,31 +680,24 @@ class EnhancedQuizSection:
                    class="cta-button">
                    📞 Book Discovery Call
                 </a>
-                """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
         with col2:
             if st.button("🔄 Retake Assessment", use_container_width=True, type="secondary"):
                 self._reset_quiz()
-    
+
     def _reset_quiz(self):
-        """Reset all quiz state"""
         st.session_state.quiz_answers = {}
-        st.session_state.quiz_step = 1
+        st.session_state.quiz_step = 0
         st.session_state.quiz_completed = False
         st.session_state.quiz_score = 0
-        st.session_state.unwanted_pattern = ""
-        st.session_state.pattern_duration = ""
-        st.session_state.blocking_mechanism = ""
-        st.session_state.readiness_level = ""
-        st.rerun()
-        
+        st.experimental_rerun()
+
 class MethodTeaserWithVideo:
     """Method overview with video and link to method page"""
     
     def render(self):
-        """Render method teaser"""
         st.subheader("Why hypnotherapy succeeds where others haven't")
-        
-        # Video and explanation side by side
+
         col1, col2 = st.columns([1, 2])
         
         with col1:
@@ -1039,7 +716,6 @@ class MethodTeaserWithVideo:
             
             st.info("When your subconscious programming supports your goals instead of fighting them, change becomes effortless and permanent.")
         
-        # Call to action for method page
         st.markdown("---")
         
         col1, col2 = st.columns([3, 1])
@@ -1055,10 +731,10 @@ class MethodTeaserWithVideo:
                    class="cta-button">
                    👉 swipe to 2+1 Method page
                 </a>
-                """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
 
 class HomePage:
-    """Complete home page with integrated 4-question quiz"""
+    """Complete home page with integrated improved quiz"""
     
     def __init__(self):
         self.hero = HeroSection()
@@ -1066,22 +742,15 @@ class HomePage:
         self.method_teaser = MethodTeaserWithVideo()
     
     def render(self):
-        """Render complete home page"""
-        # Hero - value proposition and comparison
         with st.container():
             self.hero.render()
             st.markdown("    ")
-        
-        # Quiz - 4-question assessment with blocking mechanisms
         with st.container():
             self.quiz.render()
             st.markdown("    ")
-        
-        # Method teaser - credibility and next steps
         with st.container():
             self.method_teaser.render()
             st.markdown("    ")
 
-# Factory function for clean import
 def create_home_page():
     return HomePage()
