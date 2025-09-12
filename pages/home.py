@@ -507,7 +507,7 @@ class EnhancedQuizSection:
 
         # question 1 (two-column layout, as before)
         q1_expanded = (current_step == 1) or (1 not in st.session_state.quiz_answers)
-        with st.expander("question 1: which issue most interferes with your daily wellbeing?", expanded=q1_expanded):
+        with st.expander("question 1: which issue most interferes with your daily wellbeing?", expanded=False): #q1_expanded):
             if 1 not in st.session_state.quiz_answers:
                 col1, col2 = st.columns(2)
                 choices = [
