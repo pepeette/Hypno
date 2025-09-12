@@ -131,6 +131,9 @@ class ClinicalAssessmentEmailHandler:
         # Detailed analysis section
         body += self._build_detailed_analysis_section(assessment_data)
         
+        # Assessment transcript section
+        body += self._build_assessment_transcript_section(assessment_data)
+        
         # Raw data section
         body += self._build_raw_data_section(assessment_data)
         
@@ -273,7 +276,7 @@ Estimated session success probability: {self._calculate_success_probability(sort
 """
     
     def _build_detailed_analysis_section(self, assessment_data):
-        """Build detailed pattern analysis section"""
+        """Build detailed pattern analysis section with behavioral sequence"""
         pattern_scores = assessment_data.get('pattern_scores', {})
         trigger_chain = assessment_data.get('trigger_chain', {})
         
@@ -295,11 +298,60 @@ Estimated session success probability: {self._calculate_success_probability(sort
             section += f"   Therapeutic Priority: {self._get_therapeutic_priority(score)}\n"
             section += f"   Clinical Significance: {self._get_clinical_significance(int(pattern_id), score)}\n"
         
-        # Trigger chain analysis
+        # Enhanced trigger chain analysis
         if trigger_chain:
-            section += f"\n🔗 BEHAVIORAL TRIGGER CHAIN:\n"
-            for stage, response in trigger_chain.items():
-                section += f"   {stage.replace('_', ' ').title()}: {response}\n"
+            section += f"\n🔗 COMPLETE BEHAVIORAL SEQUENCE ANALYSIS:\n"
+            section += "Trigger → Physical → Thought → Emotion → Behavior → Consequence\n\n"
+            
+            sequence_components = {
+                'awareness_point': '🎯 TRIGGER',
+                'physical_response': '💓 PHYSICAL RESPONSE', 
+                'automatic_thought': '💭 AUTOMATIC THOUGHT',
+                'emotional_response': '❤️ EMOTIONAL RESPONSE',
+                'behavioral_response': '🏃 BEHAVIORAL RESPONSE',
+                'immediate_consequence': '⚡ IMMEDIATE CONSEQUENCE',
+                'longer_term_impact': '📈 LONGER-TERM IMPACT'
+            }
+            
+            captured_count = 0
+            total_count = len(sequence_components)
+            
+            for component_key, component_name in sequence_components.items():
+                response = trigger_chain.get(component_key, 'Not captured')
+                
+                section += f"{component_name}:\n"
+                
+                if response and response != 'Not captured' and response != 'Skipped':
+                    captured_count += 1
+                    section += f"   ✅ CAPTURED: \"{response}\"\n"
+                    
+                    # Add analysis based on component type
+                    if component_key == 'physical_response':
+                        section += f"   Clinical Notes: Somatic response indicates {self._analyze_somatic_response(response)}\n"
+                    elif component_key == 'automatic_thought':
+                        section += f"   Clinical Notes: Thought pattern shows {self._analyze_thought_pattern(response)}\n"
+                    elif component_key == 'behavioral_response':
+                        section += f"   Clinical Notes: Behavioral pattern indicates {self._analyze_behavioral_pattern_clinical(response)}\n"
+                    elif component_key == 'immediate_consequence':
+                        section += f"   Clinical Notes: Consequence pattern shows {self._analyze_consequence_pattern(response)}\n"
+                else:
+                    section += f"   ❌ NOT CAPTURED - Session 1 priority\n"
+                    section += f"   Clinical Impact: {self._get_missing_component_impact(component_key)}\n"
+                
+                section += "\n"
+            
+            # Chain completeness assessment
+            completeness_percentage = int((captured_count / total_count) * 100)
+            section += f"BEHAVIORAL CHAIN COMPLETENESS: {completeness_percentage}% ({captured_count}/{total_count} components)\n"
+            
+            if completeness_percentage >= 70:
+                section += "✅ SUFFICIENT for targeted intervention design\n"
+            elif completeness_percentage >= 50:
+                section += "⚠️ PARTIAL - Can proceed with Session 1 gap-filling focus\n"
+            else:
+                section += "❌ INSUFFICIENT - Discovery call essential for intervention design\n"
+            
+            section += "\n"
         
         return section
     
@@ -674,6 +726,164 @@ System Status: Operational | Data Quality: Verified | Action Required: Review Ab
             print(f"❌ SMTP error: {e}")
             return False
 
+    def _build_assessment_transcript_section(self, assessment_data):
+        """Build complete assessment transcript section"""
+        responses = assessment_data.get('assessment_responses', {})
+        
+        if not responses:
+            return "\n📝 ASSESSMENT TRANSCRIPT:\nNo response data available\n"
+        
+        section = f"\n📝 COMPLETE ASSESSMENT TRANSCRIPT:\n"
+        section += "═" * 60 + "\n"
+        section += "Full client responses for clinical review and session preparation\n\n"
+        
+        # Sort responses by question ID
+        sorted_responses = sorted(responses.items(), key=lambda x: int(str(x[0])))
+        
+        for q_id, response_data in sorted_responses:
+            question_text = response_data.get('question_text', 'Unknown question')
+            response = response_data.get('response', 'No response')
+            intensity = response_data.get('intensity', None)
+            timestamp = response_data.get('timestamp', 'Unknown time')
+            question_type = response_data.get('question_type', 'Unknown type')
+            phase = response_data.get('phase', 'Unknown phase')
+            
+            section += f"Question {q_id} [{phase.upper()}] - {question_type}:\n"
+            section += f"   Q: {question_text}\n"
+            
+            # Format response based on type
+            if isinstance(response, dict):
+                if 'rating' in response:
+                    # Scale response
+                    section += f"   A: Rating: {response['rating']}/10\n"
+                    if response.get('follow_up'):
+                        section += f"      Follow-up: {response['follow_up']}\n"
+                else:
+                    # Multi-select weighted response
+                    section += f"   A: Multiple selections with intensities:\n"
+                    for item, item_intensity in response.items():
+                        section += f"      - {item}: {item_intensity}/7\n"
+            elif isinstance(response, list):
+                # Multi-select response
+                section += f"   A: {', '.join(response)}\n"
+            else:
+                # Text or single choice response
+                section += f"   A: {response}\n"
+            
+            # Add intensity if available
+            if intensity:
+                section += f"   Intensity: {intensity}/7\n"
+            
+            # Add timestamp
+            try:
+                from datetime import datetime
+                dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                formatted_time = dt.strftime("%Y-%m-%d %H:%M:%S")
+                section += f"   Completed: {formatted_time}\n"
+            except:
+                section += f"   Completed: {timestamp}\n"
+            
+            section += "\n"
+        
+        # Add summary statistics
+        section += f"TRANSCRIPT SUMMARY:\n"
+        section += f"Total Questions: {len(responses)}\n"
+        
+        # Count by phase
+        phase_counts = {}
+        for response_data in responses.values():
+            phase = response_data.get('phase', 'unknown')
+            phase_counts[phase] = phase_counts.get(phase, 0) + 1
+        
+        section += f"Responses by Phase: {phase_counts}\n"
+        
+        # Count text vs choice responses
+        text_responses = sum(1 for r in responses.values() if isinstance(r.get('response'), str) and len(r.get('response', '')) > 50)
+        choice_responses = len(responses) - text_responses
+        
+        section += f"Text Responses: {text_responses}\n"
+        section += f"Choice Responses: {choice_responses}\n"
+        
+        # Intensity data summary
+        intensity_responses = assessment_data.get('intensity_responses', {})
+        if intensity_responses:
+            avg_intensity = sum(intensity_responses.values()) / len(intensity_responses)
+            section += f"Average Response Intensity: {avg_intensity:.1f}/7\n"
+        
+        section += "\n"
+        
+        return section
+
+    def _analyze_somatic_response(self, response):
+        """Analyze somatic response for clinical notes"""
+        response_lower = response.lower()
+        if any(word in response_lower for word in ['chest', 'heart', 'breathing']):
+            return "anxiety/stress activation in cardiac/respiratory system"
+        elif any(word in response_lower for word in ['stomach', 'nausea', 'digestive']):
+            return "gut-brain connection activation - deep emotional processing"
+        elif any(word in response_lower for word in ['muscle', 'tension', 'jaw']):
+            return "muscular system activation - fight/flight preparation"
+        elif any(word in response_lower for word in ['numb', 'disconnect', 'freeze']):
+            return "dorsal vagal shutdown - dissociative protection response"
+        else:
+            return "complex somatic activation requiring exploration"
+    
+    def _analyze_thought_pattern(self, thought):
+        """Analyze thought pattern for clinical notes"""
+        thought_lower = thought.lower()
+        if any(phrase in thought_lower for phrase in ['not good enough', 'inadequate', 'failure']):
+            return "core inadequacy belief system activation"
+        elif any(phrase in thought_lower for phrase in ['must', 'should', 'have to']):
+            return "perfectionist/demanding cognitive schema"
+        elif any(phrase in thought_lower for phrase in ['danger', 'threat', 'bad']):
+            return "threat detection and safety-seeking cognitive pattern"
+        elif any(phrase in thought_lower for phrase in ['always', 'never', 'everyone']):
+            return "all-or-nothing thinking with cognitive rigidity"
+        else:
+            return "complex cognitive pattern requiring deeper analysis"
+    
+    def _analyze_behavioral_pattern_clinical(self, behavior):
+        """Analyze behavioral pattern for clinical notes"""
+        behavior_lower = behavior.lower()
+        if any(word in behavior_lower for word in ['avoid', 'withdraw', 'escape']):
+            return "avoidance/withdrawal pattern - flight response activation"
+        elif any(word in behavior_lower for word in ['busy', 'active', 'productive']):
+            return "hyperactivity/doing addiction - emotional regulation through action"
+        elif any(word in behavior_lower for word in ['argue', 'fight', 'defend']):
+            return "confrontation/defense pattern - fight response activation"
+        elif any(word in behavior_lower for word in ['help', 'others', 'care']):
+            return "caretaking/self-sacrifice pattern - fawn response"
+        elif any(word in behavior_lower for word in ['shut down', 'numb', 'disconnect']):
+            return "emotional shutdown pattern - freeze response"
+        else:
+            return "complex behavioral response requiring pattern analysis"
+    
+    def _analyze_consequence_pattern(self, consequence):
+        """Analyze consequence pattern for clinical notes"""
+        consequence_lower = consequence.lower()
+        if any(word in consequence_lower for word in ['worse', 'agitated', 'escalate']):
+            return "escalating pattern - behavior increases distress (paradoxical reinforcement)"
+        elif any(word in consequence_lower for word in ['relief', 'better', 'calm']):
+            return "reinforcing pattern - behavior provides temporary relief (maintains cycle)"
+        elif any(word in consequence_lower for word in ['numb', 'empty', 'nothing']):
+            return "numbing pattern - behavior creates emotional disconnection"
+        elif any(word in consequence_lower for word in ['guilt', 'shame', 'regret']):
+            return "self-punishment pattern - behavior triggers self-criticism cycle"
+        else:
+            return "complex consequence pattern requiring cycle analysis"
+    
+    def _get_missing_component_impact(self, component_key):
+        """Get clinical impact of missing component"""
+        impacts = {
+            'awareness_point': "Cannot design trigger-specific interventions",
+            'physical_response': "Cannot implement somatic regulation techniques",
+            'automatic_thought': "Cannot target cognitive restructuring effectively",
+            'emotional_response': "Cannot design emotional regulation strategies",
+            'behavioral_response': "Cannot create alternative response patterns",
+            'immediate_consequence': "Cannot address reinforcement mechanisms",
+            'longer_term_impact': "Cannot break pattern maintenance cycles"
+        }
+        return impacts.get(component_key, "Limits intervention precision and effectiveness")
 
 # Global instance and convenience function
 clinical_email_handler = ClinicalAssessmentEmailHandler()
@@ -839,6 +1049,7 @@ Avoid Language: Forced positivity, overwhelming enthusiasm
         print("❌ Test failed - check email handler configuration")
     
     return result
+
 
 
 if __name__ == "__main__":
