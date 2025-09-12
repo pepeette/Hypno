@@ -505,12 +505,11 @@ class EnhancedQuizSection:
     def _render_all_questions(self):
         current_step = st.session_state.quiz_step
 
+        # question 1 (two-column layout, as before)
         q1_expanded = (current_step == 1) or (1 not in st.session_state.quiz_answers)
-        with st.expander(
-            "question 1: which issue most interferes with your daily wellbeing?",
-            expanded=q1_expanded,
-        ):
+        with st.expander("question 1: which issue most interferes with your daily wellbeing?", expanded=q1_expanded):
             if 1 not in st.session_state.quiz_answers:
+                col1, col2 = st.columns(2)
                 choices = [
                     ("😰 chronic stress or anxiety limiting peace and calm", "chronic stress or anxiety"),
                     ("🔄 repetitive negative habits or addictions (including smoking)", "repetitive negative habits or addictions"),
@@ -521,48 +520,88 @@ class EnhancedQuizSection:
                     ("🚭 want to quit smoking/permanent nicotine addiction break", "quit smoking"),
                     ("😞 feelings of overwhelm or stuckness", "feeling stuck or overwhelmed"),
                 ]
+                half = len(choices) // 2
                 for i, (label, value) in enumerate(choices):
-                    if st.button(label, key=f"q1_{i}", use_container_width=True, type="secondary"):
-                        self._answer_question(1, value)
-                        break
+                    container = col1 if i < half else col2
+                    container.button(
+                        label,
+                        key=f"q1_{i}",
+                        use_container_width=True,
+                        type="secondary",
+                        on_click=self._answer_question,
+                        args=(1, value)
+                    )
             else:
                 st.success(f"✅ selected: {st.session_state.quiz_answers[1]}")
                 st.info("these issues often have subconscious triggers hypnotherapy can effectively address.")
 
+        # expert expanded question 2: broader relatable triggers, two columns, button single click
         if len(st.session_state.quiz_answers) >= 1:
             q2_expanded = (current_step == 2) and (2 not in st.session_state.quiz_answers)
-            with st.expander("question 2: which subconscious trigger most often holds you back?", expanded=q2_expanded):
+            with st.expander("question 2: which inner experience or mindset most often keeps you from lasting change?", expanded=q2_expanded):
                 if 2 not in st.session_state.quiz_answers:
                     col1, col2 = st.columns(2)
-                    with col1:
-                        if st.button("⚔️ force and control\ntrying to push through resistance", key="q2_force", use_container_width=True, type="secondary"):
-                            self._answer_question(2, "force and control")
-                        if st.button("🔒 defensive mistrust\nfeeling unsafe to change", key="q2_mistrust", use_container_width=True, type="secondary"):
-                            self._answer_question(2, "defensive mistrust")
-                    with col2:
-                        if st.button("⚖️ all-or-nothing thinking\nperfectionism blocks progress", key="q2_binary", use_container_width=True, type="secondary"):
-                            self._answer_question(2, "all-or-nothing thinking")
-                        if st.button("🏃 doing addiction\nneeding to prove your worth", key="q2_doing", use_container_width=True, type="secondary"):
-                            self._answer_question(2, "doing addiction")
+                    q2_choices = [
+                        ("⚔️ trying to force change through sheer willpower, leaving you exhausted", "force and control"),
+                        ("🔒 feeling unsafe or guarded, finding it hard to trust change or others", "defensive mistrust"),
+                        ("⚖️ viewing things in black and white: perfectionism or all-or-nothing", "all-or-nothing thinking"),
+                        ("🏃 driven to constantly prove worth by doing, often leading to burnout", "doing addiction"),
+                        ("🗣 persistent self-critical thoughts that undermine confidence", "self-critical inner voice"),
+                        ("🚪 avoidance or numbness towards difficult feelings, blocking progress", "emotional avoidance")
+                    ]
+                    half = len(q2_choices) // 2
+                    for i, (label, value) in enumerate(q2_choices):
+                        container = col1 if i < half else col2
+                        container.button(
+                            label,
+                            key=f"q2_{i}",
+                            use_container_width=True,
+                            type="secondary",
+                            on_click=self._answer_question,
+                            args=(2, value)
+                        )
                 else:
                     st.success(f"✅ selected: {st.session_state.quiz_answers[2]}")
-                    st.info("identifying these patterns helps unlock lasting behavioral change.")
+                    st.info("recognizing these internal mindsets opens the way to lasting transformation.")
 
+        # question 3 unchanged
         if len(st.session_state.quiz_answers) >= 2:
             q3_expanded = (current_step == 3) and (3 not in st.session_state.quiz_answers)
             with st.expander("question 3: how ready are you to fully commit to inner transformation?", expanded=q3_expanded):
                 if 3 not in st.session_state.quiz_answers:
                     col1, col2 = st.columns(2)
-                    with col1:
-                        if st.button("🤔 curious but cautious\nwant to learn more before committing", key="q3_curious", use_container_width=True, type="secondary"):
-                            self._answer_question(3, "curious but cautious")
-                        if st.button("🎯 ready to commit\nprepared to do the inner work", key="q3_ready", use_container_width=True, type="secondary"):
-                            self._answer_question(3, "ready to commit")
-                    with col2:
-                        if st.button("🔥 desperate for change\nthis must end now", key="q3_desperate", use_container_width=True, type="secondary"):
-                            self._answer_question(3, "desperate for change")
-                        if st.button("🛡️ prefer gradual approach\nwant to try other methods first", key="q3_gradual", use_container_width=True, type="secondary"):
-                            self._answer_question(3, "prefer gradual approach")
+                    col1.button(
+                        "🤔 curious but cautious\nwant to learn more before committing",
+                        key="q3_curious",
+                        use_container_width=True,
+                        type="secondary",
+                        on_click=self._answer_question,
+                        args=(3, "curious but cautious"),
+                    )
+                    col1.button(
+                        "🎯 ready to commit\nprepared to do the inner work",
+                        key="q3_ready",
+                        use_container_width=True,
+                        type="secondary",
+                        on_click=self._answer_question,
+                        args=(3, "ready to commit"),
+                    )
+                    col2.button(
+                        "🔥 desperate for change\nthis must end now",
+                        key="q3_desperate",
+                        use_container_width=True,
+                        type="secondary",
+                        on_click=self._answer_question,
+                        args=(3, "desperate for change"),
+                    )
+                    col2.button(
+                        "🛡️ prefer gradual approach\nwant to try other methods first",
+                        key="q3_gradual",
+                        use_container_width=True,
+                        type="secondary",
+                        on_click=self._answer_question,
+                        args=(3, "prefer gradual approach"),
+                    )
                 else:
                     st.success(f"✅ selected: {st.session_state.quiz_answers[3]}")
                     st.info("readiness strongly influences hypnotherapy success.")
@@ -595,20 +634,22 @@ class EnhancedQuizSection:
                 "procrastination": 20,
                 "vertigo or physical discomfort": 15,
                 "quit smoking": 30,
-                "feeling stuck or overwhelmed": 25
+                "feeling stuck or overwhelmed": 25,
             },
             2: {
                 "force and control": 25,
                 "defensive mistrust": 20,
                 "all-or-nothing thinking": 25,
-                "doing addiction": 30
+                "doing addiction": 30,
+                "self-critical inner voice": 20,
+                "emotional avoidance": 20
             },
             3: {
                 "curious but cautious": 10,
                 "ready to commit": 30,
                 "desperate for change": 30,
-                "prefer gradual approach": 10
-            }
+                "prefer gradual approach": 10,
+            },
         }
         total_score = 0
         for qid, answer in st.session_state.quiz_answers.items():
@@ -618,23 +659,14 @@ class EnhancedQuizSection:
     def _render_quiz_results(self):
         score = st.session_state.quiz_score
 
-        st.success("✅ assessment complete!")
-
         if score >= 75:
-            st.success("🌟 you are highly suited for rapid transformation with hypnotherapy!")
-            recommendation = "you show strong readiness and relevant emotional patterns for effective subconscious rewiring."
-            action = "book your transformation package or start with a discovery call."
+            message = "✅ assessment complete! 🌟 you are highly suited for rapid transformation with hypnotherapy."
         elif score >= 50:
-            st.warning("🎯 you have good potential for transformation with proper support.")
-            recommendation = "your emotional and subconscious patterns are favorable for hypnotherapy benefits."
-            action = "schedule a discovery call to tailor your path forward."
+            message = "✅ assessment complete! 🎯 you have good potential for transformation with proper support."
         else:
-            st.info("🌱 you may benefit from preparation or alternative approaches before hypnotherapy.")
-            recommendation = "building more readiness will optimize your success with transformative approaches."
-            action = "let's discuss your situation and options in a discovery call."
+            message = "✅ assessment complete! 🌱 you may benefit from preparation or alternative approaches before hypnotherapy."
 
-        st.info(f"**recommendation:** {recommendation}")
-        st.write(f"**next step:** {action}")
+        st.success(message)
 
         col1, col2 = st.columns(2)
         with col1:
@@ -656,7 +688,6 @@ class EnhancedQuizSection:
         st.session_state.quiz_completed = False
         st.session_state.quiz_score = 0
         st.experimental_rerun()
-
 
 class MethodTeaserWithVideo:
     """Method overview with video and link to method page"""
