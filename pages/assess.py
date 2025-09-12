@@ -2556,123 +2556,243 @@ class ComprehensiveBehavioralAssessment:
                 self._save_response(current_q_id, "Skipped", skip_question)
                 self._advance_question()
                 st.rerun()
-    
-    # def _render_contact_form(self):
-    #     """Render contact form for results"""
-    #     st.markdown("### Assessment Complete!")
-    #     st.success("Your comprehensive behavioral pattern analysis is ready!")
-        
-    #     results = st.session_state.assessment_results
-    #     col1, col2, col3 = st.columns(3)
-    #     with col1:
-    #         st.metric("Questions", results['total_questions_answered'], "Answered")
-    #     with col2:
-    #         st.metric("Patterns", len(results.get('pattern_scores', {})), "Detected")
-    #     with col3:
-    #         completion_rate = results.get('completion_rate', 1.0)
-    #         st.metric("Completion", f"{completion_rate*100:.0f}%", "Rate")
-    
-    #     st.markdown("**Enter your email to receive your personalized analysis and next steps:**")
-        
-    #     with st.form("contact_form"):
-    #         # ONLY EMAIL IS MANDATORY
-    #         email = st.text_input("Email*", placeholder="your@email.com")
-            
-    #         # ALL OTHER FIELDS ARE OPTIONAL
-    #         name = st.text_input("Full name (optional)", placeholder="Your full name")
-    #         phone = st.text_input("Phone (optional)", placeholder="+1 xxx xxx xxxx")
-            
-    #         urgency = st.selectbox(
-    #             "How urgent is addressing this pattern? (optional)",
-    #             ["Not specified", "Extremely urgent - significantly impacting life", 
-    #              "Very urgent - causing daily distress", "Moderately urgent - noticeable impact", 
-    #              "Somewhat urgent - want to address soon", "Not urgent - exploring options"]
-    #         )
-            
-    #         concern = st.text_area(
-    #             "What brought you to this assessment? (optional)",
-    #             placeholder="Brief description of what motivated you to take this assessment...",
-    #             height=100
-    #         )
-            
-    #         next_step = st.selectbox(
-    #             "Preferred next step (optional)",
-    #             ["Not specified", "Schedule free consultation call", 
-    #              "Information about transformation packages", "Receive analysis and recommendations first", 
-    #              "Connect with clinical team directly"]
-    #         )
-            
-    #         marketing_consent = st.checkbox(
-    #             "I consent to receiving follow-up communications about my assessment results and relevant therapeutic services."
-    #         )
-            
-    #         submitted = st.form_submit_button("Get my personalized analysis", type="primary", use_container_width=True)
-    
-    #         if submitted:
-    #             errors = []
-                
-    #             # ONLY EMAIL VALIDATION IS REQUIRED
-    #             if not email.strip(): 
-    #                 errors.append("Email is required")
-    #             elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
-    #                 errors.append("Valid email address is required")
-                
-    #             # MARKETING CONSENT CHECK
-    #             if not marketing_consent:
-    #                 errors.append("Please consent to follow-up communications to receive your results")
-                
-    #             if errors:
-    #                 for error in errors:
-    #                     st.error(f"❌ {error}")
-    #             else:
-    #                 # Save contact info with optional fields defaulting to empty/not specified
-    #                 st.session_state.contact_info = {
-    #                     'name': name.strip() if name.strip() else 'Not provided',
-    #                     'email': email.strip(),
-    #                     'phone': phone.strip() if phone.strip() else 'Not provided',
-    #                     'urgency': urgency if urgency != 'Not specified' else 'Not specified',
-    #                     'primary_concern': concern.strip() if concern.strip() else 'Not provided',
-    #                     'next_step': next_step if next_step != 'Not specified' else 'Not specified',
-    #                     'marketing_consent': marketing_consent,
-    #                     'timestamp': datetime.now().isoformat()
-    #                 }
-                    
-    #                 # Prepare assessment data for email
-    #                 assessment_data = {
-    #                     'contact_info': st.session_state.contact_info,
-    #                     'assessment_results': st.session_state.assessment_results,
-    #                     'assessment_responses': st.session_state.assessment_responses,
-    #                     'intensity_responses': st.session_state.intensity_responses,
-    #                     'adaptive_triggered': st.session_state.adaptive_paths,
-    #                     'risk_flags': st.session_state.risk_flags,
-    #                     'pattern_scores': st.session_state.pattern_scores,
-    #                     'trigger_chain': st.session_state.trigger_chain,
-    #                     'start_time': st.session_state.start_time,
-    #                     'completion_timestamp': datetime.now().isoformat()
-    #                 }
-                    
-    #                 # Send comprehensive clinical assessment email
-    #                 try:
-    #                     from utils.email_handler import send_clinical_assessment_results
-    #                     #from utils.email_assess import send_clinical_assessment_results
-                        
-    #                     email_success = send_clinical_assessment_results(assessment_data)
-                        
-    #                     if email_success:
-    #                         st.success("✅ Assessment completed and clinical team notified!")
-    #                         st.info("📧 Your detailed analysis has been sent to our clinical team for review.")
-    #                     else:
-    #                         st.warning("⚠️ Assessment saved, but email notification failed. Our team will still receive your results.")
-                            
-    #                 except ImportError as e:
-    #                     st.error(f"Email system unavailable: {e}")
-    #                     st.info("Assessment completed! Our clinical team will review your results.")
-    #                 except Exception as e:
-    #                     st.error(f"Email error: {str(e)}")
-                    
-    #                 st.session_state.contact_provided = True
-    #                 st.rerun()
 
+    def _generate_behavioral_sequence_analysis(self):
+        """Generate comprehensive behavioral sequence mapping for clinical email"""
+        trigger_chain = st.session_state.get('trigger_chain', {})
+        responses = st.session_state.get('assessment_responses', {})
+        intensity_responses = st.session_state.get('intensity_responses', {})
+        
+        # Build comprehensive sequence analysis
+        sequence_analysis = """
+    ╔══════════════════════════════════════════════════════════════╗
+    ║            COMPLETE BEHAVIORAL SEQUENCE MAPPING             ║
+    ╚══════════════════════════════════════════════════════════════╝
+    
+    🎯 TRIGGER (Awareness Point)
+    """
+        
+        # Extract trigger information
+        trigger_info = trigger_chain.get('awareness_point', 'Not captured')
+        if trigger_info != 'Not captured':
+            sequence_analysis += f"""
+    Captured: "{trigger_info}"
+    
+    Clinical Notes:
+    - Trigger type: {self._analyze_trigger_type(trigger_info)}
+    - Activation pattern: {self._analyze_activation_pattern(trigger_info)}
+    - Environmental factors: {self._extract_environmental_factors(responses)}
+    """
+        else:
+            sequence_analysis += """
+    Status: NOT CAPTURED in this assessment
+    Missing Data: Specific trigger identification needed
+    Clinical Impact: Session 1 priority - complete trigger mapping
+    """
+    
+        # Physical Response Analysis
+        sequence_analysis += """
+    
+    💓 PHYSICAL RESPONSE
+    """
+        
+        physical_response = trigger_chain.get('physical_response', 'Not captured')
+        if physical_response != 'Not captured':
+            intensity = self._get_response_intensity('physical_response')
+            sequence_analysis += f"""
+    Captured: "{physical_response}"
+    
+    Clinical Analysis:
+    - Somatic location: {self._analyze_somatic_location(physical_response)}
+    - Activation system: {self._analyze_activation_system(physical_response)}
+    - Intensity level: {intensity}/7
+    - Clinical significance: {self._get_somatic_significance(physical_response)}
+    """
+        else:
+            sequence_analysis += """
+    Status: NOT CAPTURED in this assessment
+    Missing Data: Physical sensation mapping needed
+    Clinical Impact: Essential for somatic intervention design
+    """
+    
+        # Automatic Thought Analysis
+        sequence_analysis += """
+    
+    💭 AUTOMATIC THOUGHT
+    """
+        
+        automatic_thought = trigger_chain.get('automatic_thought', 'Not captured')
+        if automatic_thought != 'Not captured' and automatic_thought != 'Skipped':
+            sequence_analysis += f"""
+    Captured: "{automatic_thought}"
+    
+    Clinical Analysis:
+    - Cognitive distortion type: {self._analyze_cognitive_distortion(automatic_thought)}
+    - Core belief indicator: {self._extract_core_belief_from_thought(automatic_thought)}
+    - Therapeutic target: {self._get_thought_intervention_target(automatic_thought)}
+    - Language pattern: {self._analyze_language_pattern(automatic_thought)}
+    """
+        else:
+            sequence_analysis += """
+    Status: NOT CAPTURED in this assessment
+    Missing Data: The specific automatic thoughts that occur between physical sensation and behavioral response
+    Clinical Impact: This gap needs filling in Session 1 for complete intervention mapping
+    """
+    
+        # Emotional Response Analysis
+        sequence_analysis += """
+    
+    ❤️ EMOTIONAL RESPONSE
+    """
+        
+        emotional_response = trigger_chain.get('emotional_response', 'Not captured')
+        if emotional_response != 'Not captured':
+            if isinstance(emotional_response, dict):
+                emotions_list = [f"{emotion} (intensity: {intensity}/7)" for emotion, intensity in emotional_response.items()]
+                emotions_text = ", ".join(emotions_list)
+            else:
+                emotions_text = str(emotional_response)
+                
+            sequence_analysis += f"""
+    Captured: {emotions_text}
+    
+    Clinical Analysis:
+    - Emotional constellation: {self._analyze_emotional_constellation(emotional_response)}
+    - Regulation capacity: {self._assess_regulation_capacity(emotional_response)}
+    - Intervention approach: {self._get_emotional_intervention(emotional_response)}
+    """
+        else:
+            sequence_analysis += """
+    Status: PARTIALLY CAPTURED - implied through consequences
+    Inferred from consequences: Agitation, upset, possibly anxiety
+    Missing specifics: Exact emotions, intensity levels, emotional progression
+    """
+    
+        # Behavioral Response Analysis
+        sequence_analysis += """
+    
+    🏃 BEHAVIORAL RESPONSE
+    """
+        
+        behavioral_response = trigger_chain.get('behavioral_response', 'Not captured')
+        if behavioral_response != 'Not captured':
+            sequence_analysis += f"""
+    Captured: "{behavioral_response}"
+    
+    Clinical Analysis:
+    - Response pattern: {self._analyze_behavioral_pattern(behavioral_response)}
+    - Function analysis: {self._analyze_behavioral_function(behavioral_response)}
+    - Pattern fit: {self._assess_pattern_alignment(behavioral_response)}
+    - Intervention point: {self._get_behavioral_intervention_point(behavioral_response)}
+    """
+        else:
+            sequence_analysis += """
+    Status: NOT CAPTURED in this assessment
+    Missing Data: Specific behavioral response to emotional activation
+    Clinical Impact: Cannot design behavioral intervention without this data
+    """
+    
+        # Immediate Consequences
+        sequence_analysis += """
+    
+    ⚡ IMMEDIATE CONSEQUENCES
+    """
+        
+        immediate_consequence = trigger_chain.get('immediate_consequence', 'Not captured')
+        if immediate_consequence != 'Not captured':
+            sequence_analysis += f"""
+    Captured: "{immediate_consequence}"
+    
+    Clinical Analysis:
+    - Consequence type: {self._analyze_consequence_type(immediate_consequence)}
+    - Reinforcement pattern: {self._analyze_reinforcement_pattern(immediate_consequence)}
+    - Intervention timing: {self._get_consequence_intervention_timing(immediate_consequence)}
+    """
+        else:
+            sequence_analysis += """
+    Status: NOT CAPTURED in this assessment
+    Missing Data: Immediate aftermath of behavioral response
+    Clinical Impact: Cannot assess pattern reinforcement cycle
+    """
+    
+        # Longer-term Impact
+        sequence_analysis += """
+    
+    📈 LONGER-TERM IMPACT
+    """
+        
+        longer_impact = trigger_chain.get('longer_term_impact', 'Not captured')
+        if longer_impact != 'Not captured':
+            sequence_analysis += f"""
+    Captured: "{longer_impact}"
+    
+    Clinical Analysis:
+    - Pattern reinforcement: {self._analyze_pattern_reinforcement(longer_impact)}
+    - Cycle completion: {self._assess_cycle_completion(longer_impact)}
+    - Breaking point identification: {self._identify_breaking_points(longer_impact)}
+    """
+        else:
+            sequence_analysis += """
+    Status: NOT CAPTURED in this assessment
+    Missing Data: Long-term pattern impact and reinforcement
+    Clinical Impact: Cannot assess full cycle for intervention design
+    """
+    
+        # Add chain completion assessment
+        completion_percentage = self._calculate_chain_completeness()
+        sequence_analysis += f"""
+    
+    📊 CHAIN COMPLETION ANALYSIS
+    
+    Overall Chain Completeness: {completion_percentage}%
+    
+    {"✅ SUFFICIENT for initial intervention design" if completion_percentage >= 60 else "❌ INSUFFICIENT - Session 1 must prioritize chain completion"}
+    
+    Missing Chain Components for Session 1 Exploration:
+    
+    🔍 Critical Gaps to Fill:
+    """
+        
+        # Identify missing components
+        missing_components = self._identify_missing_components()
+        for component in missing_components:
+            sequence_analysis += f"• {component}\n"
+        
+        if not missing_components:
+            sequence_analysis += "• No critical gaps identified - proceed with intervention\n"
+    
+        sequence_analysis += """
+    
+    Session 1 Chain Completion Protocol:
+    
+    Priority Mapping Areas:
+    - Thought Content: "When you feel that physical sensation, what thought goes through your mind?"
+    - Emotional Bridge: "Between feeling the sensation and taking action, what emotions show up?"
+    - Trigger Details: "What specific situations or thoughts tend to set this whole sequence in motion?"
+    
+    Chain Intervention Strategy:
+    
+    Based on captured elements, primary intervention points would be:
+    - Somatic Interruption: Work with physical sensations as early warning system
+    - Cognitive Reframing: Address automatic thought patterns
+    - Emotional Regulation: Install healthy emotional processing
+    - Behavioral Redirection: Replace maladaptive responses with healthy alternatives
+    - Consequence Reframing: Address reinforcement patterns directly
+    
+    Clinical Assessment Quality
+    
+    Strengths:
+    - Clear behavioral sequence foundation established
+    - Physical response well-defined for somatic work
+    - Pattern scores provide intervention direction
+    
+    Areas for Session 1 Completion:
+    - Complete missing chain elements
+    - Intensify successful components
+    - Validate sequence accuracy with client
+    """
+        
+        return sequence_analysis
     
     
     def _render_contact_form(self):
@@ -3257,42 +3377,47 @@ class ComprehensiveBehavioralAssessment:
         if not resistance_text:
             resistance_text = "1. Standard change resistance\n2. Possible skepticism about process\n"
         
+        # Generate behavioral sequence analysis
+        behavioral_sequence = self._generate_behavioral_sequence_analysis()
+        
         # Build comprehensive template
         template = f"""
-    ╔══════════════════════════════════════════════════════════════╗
-    ║                    CLINICAL ANALYSIS TEMPLATE                ║
-    ║                   Behavioral Pattern Assessment              ║
-    ╚══════════════════════════════════════════════════════════════╝
-    
-    **PATTERN ANALYSIS:**
-    Dominant Pattern: {dominant_pattern} (Score: {dominant_score:.1f}/10)
-    Primary Pattern: {primary_pattern} (Score: {primary_score:.1f}/10) 
-    Secondary Pattern: {secondary_pattern} (Score: {secondary_score:.1f}/10)
-    
-    **PSYCHOLOGICAL PROFILE:**
-    Core Limiting Belief: {clinical_insights.get('core_limiting_belief', 'Requires session exploration')}
-    Hidden Benefits: {clinical_insights.get('hidden_benefits', 'Emotional protection and familiar identity')}
-    Systemic Resistance: {clinical_insights.get('systemic_resistance', 'Minimal resistance expected')}
-    Identity Threat: {clinical_insights.get('identity_threat', 'Identity evolution requires navigation')}
-    
-    **SESSION PLANNING:**
-    Session 1 Focus: {session_plan.get('session_1_focus', 'Pattern analysis and rapport building')}
-    Session 2 Target: {session_plan.get('session_2_target', 'Core transformation and positive programming')}
-    Potential Session 3 Need: {session_plan.get('session_3_need', 'Reinforcement if needed')}
-    
-    **THERAPEUTIC APPROACH:**
-    Change Readiness Score: {readiness_score}/10
-    Predicted Resistance Points:
-    {resistance_text}
-    Intervention Keywords: {clinical_insights.get('intervention_keywords', 'Collaborative, gentle, permissive')}
-    Avoid Language: {clinical_insights.get('avoid_language', 'Pressure, criticism, commands')}
-    
-    ╔══════════════════════════════════════════════════════════════╗
-    ║                     CLINICAL NOTES                          ║
-    ╚══════════════════════════════════════════════════════════════╝
-    
-    This comprehensive analysis provides the therapeutic framework for rapid, effective hypnotherapy intervention based on the client's unique behavioral pattern constellation.
-    """
+        ╔══════════════════════════════════════════════════════════════╗
+        ║                    CLINICAL ANALYSIS TEMPLATE                ║
+        ║                   Behavioral Pattern Assessment              ║
+        ╚══════════════════════════════════════════════════════════════╝
+        
+        **PATTERN ANALYSIS:**
+        Dominant Pattern: {dominant_pattern} (Score: {dominant_score:.1f}/10)
+        Primary Pattern: {primary_pattern} (Score: {primary_score:.1f}/10) 
+        Secondary Pattern: {secondary_pattern} (Score: {secondary_score:.1f}/10)
+        
+        **PSYCHOLOGICAL PROFILE:**
+        Core Limiting Belief: {clinical_insights.get('core_limiting_belief', 'Requires session exploration')}
+        Hidden Benefits: {clinical_insights.get('hidden_benefits', 'Emotional protection and familiar identity')}
+        Systemic Resistance: {clinical_insights.get('systemic_resistance', 'Minimal resistance expected')}
+        Identity Threat: {clinical_insights.get('identity_threat', 'Identity evolution requires navigation')}
+        
+        **SESSION PLANNING:**
+        Session 1 Focus: {session_plan.get('session_1_focus', 'Pattern analysis and rapport building')}
+        Session 2 Target: {session_plan.get('session_2_target', 'Core transformation and positive programming')}
+        Potential Session 3 Need: {session_plan.get('session_3_need', 'Reinforcement if needed')}
+        
+        **THERAPEUTIC APPROACH:**
+        Change Readiness Score: {readiness_score}/10
+        Predicted Resistance Points:
+        {resistance_text}
+        Intervention Keywords: {clinical_insights.get('intervention_keywords', 'Collaborative, gentle, permissive')}
+        Avoid Language: {clinical_insights.get('avoid_language', 'Pressure, criticism, commands')}
+        
+        {behavioral_sequence}
+        
+        ╔══════════════════════════════════════════════════════════════╗
+        ║                     CLINICAL NOTES                          ║
+        ╚══════════════════════════════════════════════════════════════╝
+        
+        This comprehensive analysis provides the therapeutic framework for rapid, effective hypnotherapy intervention based on the client's unique behavioral pattern constellation and complete behavioral sequence mapping.
+        """
         
         return template
 
@@ -3442,3 +3567,270 @@ def get_hypnotherapy_recommendations():
         "avoid": "Generic approaches without personalization",
         "induction": "Tailored to client's response patterns"
     })
+
+
+    def _analyze_trigger_type(self, trigger_info):
+    """Analyze the type of trigger"""
+    trigger_lower = trigger_info.lower()
+    if any(word in trigger_lower for word in ['thought', 'worry', 'thinking']):
+        return "Cognitive trigger - internal rumination pattern"
+    elif any(word in trigger_lower for word in ['said', 'person', 'someone']):
+        return "Interpersonal trigger - social activation"
+    elif any(word in trigger_lower for word in ['situation', 'environment', 'place']):
+        return "Environmental trigger - contextual activation"
+    else:
+        return "Mixed trigger - requires clarification"
+
+def _analyze_activation_pattern(self, trigger_info):
+    """Analyze activation pattern"""
+    if 'sudden' in trigger_info.lower() or 'immediately' in trigger_info.lower():
+        return "Rapid activation - acute stress response"
+    elif 'gradual' in trigger_info.lower() or 'slowly' in trigger_info.lower():
+        return "Gradual activation - building tension pattern"
+    else:
+        return "Standard activation - typical response timing"
+
+def _extract_environmental_factors(self, responses):
+    """Extract environmental factors from responses"""
+    # Look through responses for environmental context
+    for response_data in responses.values():
+        response = response_data.get('response', '')
+        if isinstance(response, str) and any(word in response.lower() for word in ['work', 'home', 'family', 'social']):
+            return "Context-dependent activation identified"
+    return "Environmental factors require exploration"
+
+def _get_response_intensity(self, response_type):
+    """Get intensity rating for specific response type"""
+    intensities = st.session_state.get('intensity_responses', {})
+    # Find intensity for this response type
+    for q_id, intensity in intensities.items():
+        response_data = st.session_state.get('assessment_responses', {}).get(q_id, {})
+        if response_data.get('chain_mapping') == response_type:
+            return intensity
+    return "Not rated"
+
+def _analyze_somatic_location(self, physical_response):
+    """Analyze somatic response location"""
+    response_lower = physical_response.lower()
+    if any(word in response_lower for word in ['chest', 'heart', 'breathing']):
+        return "Cardiac/respiratory system - anxiety/stress activation"
+    elif any(word in response_lower for word in ['stomach', 'nausea', 'digestive']):
+        return "Digestive system - gut-brain connection"
+    elif any(word in response_lower for word in ['muscle', 'tension', 'jaw']):
+        return "Muscular system - fight/flight preparation"
+    else:
+        return "Multi-system activation"
+
+def _analyze_activation_system(self, physical_response):
+    """Analyze which system is being activated"""
+    response_lower = physical_response.lower()
+    if any(word in response_lower for word in ['racing', 'fast', 'pounding']):
+        return "Sympathetic nervous system activation"
+    elif any(word in response_lower for word in ['numb', 'disconnect', 'freeze']):
+        return "Dorsal vagal shutdown response"
+    else:
+        return "Mixed autonomic response"
+
+def _get_somatic_significance(self, physical_response):
+    """Get clinical significance of somatic response"""
+    return "Primary intervention target - somatic regulation essential"
+
+def _analyze_cognitive_distortion(self, thought):
+    """Analyze type of cognitive distortion"""
+    thought_lower = thought.lower()
+    if any(phrase in thought_lower for phrase in ['not good enough', 'inadequate', 'failure']):
+        return "Negative self-evaluation"
+    elif any(phrase in thought_lower for phrase in ['must', 'should', 'have to']):
+        return "Demanding/perfectionist thinking"
+    elif any(phrase in thought_lower for phrase in ['always', 'never', 'everyone']):
+        return "All-or-nothing thinking"
+    else:
+        return "Complex cognitive pattern"
+
+def _extract_core_belief_from_thought(self, thought):
+    """Extract core belief indicated by automatic thought"""
+    thought_lower = thought.lower()
+    if 'not good enough' in thought_lower:
+        return "Core inadequacy belief"
+    elif any(word in thought_lower for word in ['danger', 'threat', 'bad']):
+        return "Safety/threat belief system"
+    elif any(word in thought_lower for word in ['reject', 'abandon', 'leave']):
+        return "Attachment/abandonment fears"
+    else:
+        return "Requires deeper exploration"
+
+def _get_thought_intervention_target(self, thought):
+    """Get intervention target for thought pattern"""
+    return "Cognitive restructuring with pattern-specific reframes"
+
+def _analyze_language_pattern(self, thought):
+    """Analyze language patterns in thought"""
+    thought_lower = thought.lower()
+    if any(word in thought_lower for word in ['must', 'should', 'have to']):
+        return "Demanding language - rigid expectations"
+    elif any(word in thought_lower for word in ['can\'t', 'won\'t', 'impossible']):
+        return "Limitation language - learned helplessness"
+    else:
+        return "Standard self-talk pattern"
+
+def _analyze_emotional_constellation(self, emotional_response):
+    """Analyze emotional response constellation"""
+    if isinstance(emotional_response, dict):
+        emotions = list(emotional_response.keys())
+        if len(emotions) > 3:
+            return "Complex emotional constellation - high activation"
+        elif any('anxious' in emotion.lower() for emotion in emotions):
+            return "Anxiety-centered constellation"
+        elif any('angry' in emotion.lower() for emotion in emotions):
+            return "Anger-centered constellation"
+        else:
+            return "Mixed emotional activation"
+    else:
+        return "Single emotion focus"
+
+def _assess_regulation_capacity(self, emotional_response):
+    """Assess emotional regulation capacity"""
+    if isinstance(emotional_response, dict):
+        high_intensity = [emotion for emotion, intensity in emotional_response.items() if intensity >= 6]
+        if len(high_intensity) >= 2:
+            return "Low regulation capacity - overwhelm pattern"
+        else:
+            return "Moderate regulation capacity"
+    else:
+        return "Regulation capacity requires assessment"
+
+def _get_emotional_intervention(self, emotional_response):
+    """Get emotional intervention approach"""
+    return "Emotional regulation training with somatic anchoring"
+
+def _analyze_behavioral_pattern(self, behavioral_response):
+    """Analyze behavioral response pattern"""
+    response_lower = behavioral_response.lower()
+    if any(word in response_lower for word in ['avoid', 'withdraw', 'escape']):
+        return "Avoidance pattern - flight response"
+    elif any(word in response_lower for word in ['busy', 'active', 'do']):
+        return "Hyperactivity pattern - doing addiction"
+    elif any(word in response_lower for word in ['argue', 'fight', 'defend']):
+        return "Confrontation pattern - fight response"
+    else:
+        return "Complex behavioral response"
+
+def _analyze_behavioral_function(self, behavioral_response):
+    """Analyze function of behavioral response"""
+    response_lower = behavioral_response.lower()
+    if 'avoid' in response_lower:
+        return "Emotional avoidance and safety-seeking"
+    elif any(word in response_lower for word in ['busy', 'productive']):
+        return "Distraction and control-seeking"
+    else:
+        return "Multiple functions - requires exploration"
+
+def _assess_pattern_alignment(self, behavioral_response):
+    """Assess how behavior aligns with dominant patterns"""
+    pattern_scores = st.session_state.get('pattern_scores', {})
+    if not pattern_scores:
+        return "Pattern alignment requires completion"
+    
+    dominant_pattern = max(pattern_scores.items(), key=lambda x: x[1])[0]
+    response_lower = behavioral_response.lower()
+    
+    alignments = {
+        1: ['avoid', 'withdraw', 'pessimistic'],
+        2: ['argue', 'fight', 'control'],
+        3: ['suspicious', 'test', 'withdraw'],
+        4: ['paralyzed', 'either', 'stuck'],
+        5: ['busy', 'productive', 'work'],
+        6: ['different', 'adapt', 'change'],
+        7: ['others', 'help', 'sacrifice'],
+        8: ['should', 'family', 'expect'],
+        9: ['weak', 'powerless', 'context']
+    }
+    
+    pattern_keywords = alignments.get(dominant_pattern, [])
+    if any(keyword in response_lower for keyword in pattern_keywords):
+        return f"Strong alignment with Pattern {dominant_pattern}"
+    else:
+        return "Partial pattern alignment"
+
+def _get_behavioral_intervention_point(self, behavioral_response):
+    """Get behavioral intervention point"""
+    return "Response substitution with healthier alternatives"
+
+def _analyze_consequence_type(self, consequence):
+    """Analyze type of consequence"""
+    consequence_lower = consequence.lower()
+    if any(word in consequence_lower for word in ['worse', 'agitated', 'escalate']):
+        return "Escalating consequence - pattern amplification"
+    elif any(word in consequence_lower for word in ['relief', 'better', 'calm']):
+        return "Reinforcing consequence - pattern maintenance"
+    else:
+        return "Mixed consequence pattern"
+
+def _analyze_reinforcement_pattern(self, consequence):
+    """Analyze reinforcement pattern"""
+    consequence_lower = consequence.lower()
+    if 'temporary' in consequence_lower and 'relief' in consequence_lower:
+        return "Intermittent reinforcement - strong pattern maintenance"
+    elif any(word in consequence_lower for word in ['worse', 'agitated']):
+        return "Negative reinforcement - pattern should extinguish but may be maintained by other factors"
+    else:
+        return "Complex reinforcement - requires analysis"
+
+def _get_consequence_intervention_timing(self, consequence):
+    """Get intervention timing for consequences"""
+    return "Immediate post-response intervention with pattern interruption"
+
+def _analyze_pattern_reinforcement(self, longer_impact):
+    """Analyze how longer-term impact reinforces pattern"""
+    impact_lower = longer_impact.lower()
+    if any(word in impact_lower for word in ['replay', 'ruminate', 'think']):
+        return "Cognitive reinforcement through rumination"
+    elif any(word in impact_lower for word in ['avoid', 'prevent', 'plan']):
+        return "Behavioral reinforcement through preparation"
+    else:
+        return "Multi-modal reinforcement pattern"
+
+def _assess_cycle_completion(self, longer_impact):
+    """Assess if the cycle completes back to trigger"""
+    impact_lower = longer_impact.lower()
+    if any(word in impact_lower for word in ['ready', 'next', 'again']):
+        return "Complete cycle - primes for re-activation"
+    else:
+        return "Incomplete cycle data"
+
+def _identify_breaking_points(self, longer_impact):
+    """Identify potential breaking points in cycle"""
+    return "Multiple intervention windows identified"
+
+def _calculate_chain_completeness(self):
+    """Calculate what percentage of the chain is complete"""
+    trigger_chain = st.session_state.get('trigger_chain', {})
+    total_components = 6  # trigger, physical, thought, emotion, behavior, consequence
+    
+    completed_components = 0
+    for component in ['awareness_point', 'physical_response', 'automatic_thought', 'emotional_response', 'behavioral_response', 'immediate_consequence']:
+        if trigger_chain.get(component) and trigger_chain.get(component) != 'Not captured' and trigger_chain.get(component) != 'Skipped':
+            completed_components += 1
+    
+    return int((completed_components / total_components) * 100)
+
+def _identify_missing_components(self):
+    """Identify missing components in the behavioral chain"""
+    trigger_chain = st.session_state.get('trigger_chain', {})
+    missing = []
+    
+    components = {
+        'awareness_point': 'Trigger identification and specificity',
+        'automatic_thought': 'Specific thought content during activation',
+        'emotional_response': 'Complete emotional sequence and intensity',
+        'behavioral_response': 'Exact behavioral response pattern',
+        'immediate_consequence': 'Immediate aftermath and reinforcement',
+        'longer_term_impact': 'Pattern completion and cycle reinforcement'
+    }
+    
+    for component, description in components.items():
+        value = trigger_chain.get(component)
+        if not value or value == 'Not captured' or value == 'Skipped':
+            missing.append(description)
+    
+    return missing
