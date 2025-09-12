@@ -231,6 +231,18 @@ def apply_global_styles():
         margin-bottom: var(--space-xl);
         box-shadow: var(--shadow-sm);
     }
+
+    /* Expander content white background */
+    .element-container .streamlit-expanderHeader {
+        background-color: white !important;
+    }
+    
+    .element-container .streamlit-expanderContent {
+        background-color: white !important;
+        padding: 1rem;
+        border-radius: var(--radius-sm);
+    }
+
     
     /* ==========================================
        ASSESSMENT PAGE SPECIFIC BUTTON CLASSES
