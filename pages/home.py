@@ -622,7 +622,6 @@ class EnhancedQuizSection:
         else:
             st.session_state.quiz_completed = True
             st.session_state.quiz_score = self._calculate_score()
-        st.rerun()
 
     def _calculate_score(self):
         scoring = {
@@ -660,26 +659,27 @@ class EnhancedQuizSection:
         score = st.session_state.quiz_score
 
         if score >= 75:
-            message = "✅ assessment complete! 🌟 you are highly suited for rapid transformation with hypnotherapy."
+            message = "✅ Assessment complete! 💫 You are highly suited for rapid transformation with hypnotherapy."
         elif score >= 50:
-            message = "✅ assessment complete! 🎯 you have good potential for transformation with proper support."
+            message = "✅ Assessment complete! ✨ You have good potential for transformation with proper support."
         else:
-            message = "✅ assessment complete! 🌱 you may benefit from preparation or alternative approaches before hypnotherapy."
+            message = "✅ Assessment complete! 🌱 You may benefit from preparation or alternative approaches before hypnotherapy."
 
         st.success(message)
 
         col1, col2 = st.columns(2)
         with col1:
+            st.markdown(" ")
             st.markdown(
                 f"""
                 <a href="{self.discovery_url}" target="_blank" class="cta-button">
-                📞 book discovery call
+                📞 Book discovery call
                 </a>
                 """,
                 unsafe_allow_html=True,
             )
         with col2:
-            if st.button("🔄 retake assessment", use_container_width=True, type="secondary"):
+            if st.button("🔄 Retake assessment", use_container_width=True, type="secondary"):
                 self._reset_quiz()
 
     def _reset_quiz(self):
