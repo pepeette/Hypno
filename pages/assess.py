@@ -2851,7 +2851,7 @@ Areas for Session 1 Completion:
                 # ONLY EMAIL VALIDATION IS REQUIRED
                 if not email.strip(): 
                     errors.append("Email is required")
-                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
+                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
                     errors.append("Valid email address is required")
                 
                 # MARKETING CONSENT CHECK
