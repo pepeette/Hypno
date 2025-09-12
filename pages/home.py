@@ -719,13 +719,16 @@ class MethodTeaserWithVideo:
             st.write("See the detailed breakdown of how neuroplasticity creates lasting change, brain wave states, and clinical evidence.")
         
         with col2:
-            st.markdown("""
-                <a href="https://hypnotherapy.streamlit.app/#deep-pattern-analysis" 
-                   target="_blank" 
-                   class="cta-button">
-                   👉 swipe to 2+1 Method page
-                </a>
-            """, unsafe_allow_html=True)
+            # st.markdown("""
+            #     <a href="https://hypnotherapy.streamlit.app/#deep-pattern-analysis" 
+            #        target="_blank" 
+            #        class="cta-button">
+            #        👉 Explore 2+1 Method page
+            #     </a>
+            # """, unsafe_allow_html=True)
+            if st.button("👉 Explore 2+1 Method", key="nav_to_method", type="primary", use_container_width=True):
+                st.session_state.selected_page = "Method"
+                st.rerun()
 
 class HomePage:
     """Complete home page with integrated improved quiz"""
