@@ -659,17 +659,16 @@ class EnhancedQuizSection:
         score = st.session_state.quiz_score
 
         if score >= 75:
-            message = "✅ Assessment complete! 💫 You are highly suited for rapid transformation with hypnotherapy."
+            message = "💫 You are **highly suited** for rapid transformation with hypnotherapy."
         elif score >= 50:
-            message = "✅ Assessment complete! ✨ You have good potential for transformation with proper support."
+            message = "✨ You have **good potential** for transformation with proper support."
         else:
-            message = "✅ Assessment complete! 🌱 You may benefit from preparation or alternative approaches before hypnotherapy."
+            message = "🌱 You **may benefit from preparation** or alternative approaches before hypnotherapy."
 
         st.success(message)
 
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown(" ")
             st.markdown(
                 f"""
                 <a href="{self.discovery_url}" target="_blank" class="cta-button">
