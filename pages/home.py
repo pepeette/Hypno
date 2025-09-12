@@ -562,7 +562,7 @@ class EnhancedQuizSection:
                         )
                 else:
                     st.success(f"✅ selected: {st.session_state.quiz_answers[2]}")
-                    st.info("recognizing these internal mindsets opens the way to lasting transformation.")
+                    st.info("recognizing your limited beliefs opens the way to lasting transformation.")
 
         # question 3 unchanged
         if len(st.session_state.quiz_answers) >= 2:
@@ -622,7 +622,7 @@ class EnhancedQuizSection:
         else:
             st.session_state.quiz_completed = True
             st.session_state.quiz_score = self._calculate_score()
-        st.experimental_rerun()
+        st.rerun()
 
     def _calculate_score(self):
         scoring = {
@@ -687,7 +687,7 @@ class EnhancedQuizSection:
         st.session_state.quiz_step = 1
         st.session_state.quiz_completed = False
         st.session_state.quiz_score = 0
-        st.experimental_rerun()
+        st.rerun()
 
 class MethodTeaserWithVideo:
     """Method overview with video and link to method page"""
