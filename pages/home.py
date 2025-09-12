@@ -726,8 +726,8 @@ class MethodTeaserWithVideo:
             #        👉 Explore 2+1 Method page
             #     </a>
             # """, unsafe_allow_html=True)
-            if st.button("👉 Explore 2+1 Method", key="nav_to_method", type="primary", use_container_width=True):
-                st.session_state.selected_page = "Method"
+            if st.button("🎯 Explore 2+1 Method", key="nav_to_method", type="primary", use_container_width=True):
+                st.session_state["main_navigation"] = 1  # Index 1 = "Method"
                 st.rerun()
 
 class HomePage:
