@@ -481,197 +481,160 @@ class HeroSection:
                 """, unsafe_allow_html=True)
 
 class EnhancedQuizSection:
-    """Improved quiz with single question display, radio inputs and navigation"""
-    
+    """Complete 3-question self-assessment on hypnotherapy suitability,
+       reflecting emotional triggers, subconscious blocks, and readiness.
+       Fast, authoritative, empathetic style."""
+
     def __init__(self):
-        if "quiz_answers" not in st.session_state:
+        if 'quiz_answers' not in st.session_state:
             st.session_state.quiz_answers = {}
-        if "quiz_step" not in st.session_state:
-            st.session_state.quiz_step = 0  # zero-based index
-        if "quiz_completed" not in st.session_state:
+        if 'quiz_step' not in st.session_state:
+            st.session_state.quiz_step = 1
+        if 'quiz_completed' not in st.session_state:
             st.session_state.quiz_completed = False
-        if "quiz_score" not in st.session_state:
+        if 'quiz_score' not in st.session_state:
             st.session_state.quiz_score = 0
-        
+
         self.discovery_url = "https://calendly.com/laetitiasheppard/discovery"
-        
-        self.questions = [
-            {
-                "id": 1,
-                "text": "What unwanted pattern would you most like to eliminate?",
-                "options": [
-                    "Quit smoking",
-                    "Reduce anxiety",
-                    "Control drinking",
-                    "Improve sleep",
-                    "Stop overeating",
-                    "Break bad habits",
-                ],
-            },
-            {
-                "id": 2,
-                "text": "How long have you been dealing with this pattern?",
-                "options": [
-                    "Less than 6 months",
-                    "6 months to 2 years",
-                    "More than 2 years",
-                ],
-            },
-            {
-                "id": 3,
-                "text": "Which internal pattern most blocks your progress?",
-                "options": [
-                    "Force and control",
-                    "Mistrust and defensiveness",
-                    "All-or-nothing thinking",
-                    "Doing addiction",
-                ],
-            },
-            {
-                "id": 4,
-                "text": "How ready are you to transform this pattern?",
-                "options": [
-                    "Curious but cautious",
-                    "Ready to commit",
-                    "Desperate for change",
-                    "Prefer gradual approach",
-                ],
-            }
-        ]
-        
-        self.scoring = {
+
+    def render(self):
+        st.subheader("30-Second Self-Assessment: Is Hypnotherapy Right for You?")
+        st.write("Quickly assess if hypnotherapy can help you transform emotional patterns and subconscious blocks.")
+
+        if not st.session_state.quiz_completed:
+            self._render_all_questions()
+        else:
+            self._render_quiz_results()
+
+    def _render_all_questions(self):
+        current_step = st.session_state.quiz_step
+
+        # Question 1: Emotional pattern impact
+        q1_expanded = (current_step == 1) or (1 not in st.session_state.quiz_answers)
+        with st.expander("Question 1: Which emotional pattern disrupts your daily life the most?", expanded=q1_expanded):
+            if 1 not in st.session_state.quiz_answers:
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("😰 Chronic stress or anxiety\nLimits your peace and calm", key="q1_stress", use_container_width=True, type="secondary"):
+                        self._answer_question(1, "Chronic stress or anxiety")
+                    if st.button("🔄 Repetitive negative habits or addictions\nHolding you back", key="q1_habits", use_container_width=True, type="secondary"):
+                        self._answer_question(1, "Repetitive negative habits or addictions")
+                    if st.button("⚡ Heightened emotional reactivity\nBlocking focus", key="q1_emoreact", use_container_width=True, type="secondary"):
+                        self._answer_question(1, "Heightened emotional reactivity")
+                with col2:
+                    if st.button("🤔 Persistent self-doubt\nUndermining your confidence", key="q1_selfdoubt", use_container_width=True, type="secondary"):
+                        self._answer_question(1, "Persistent self-doubt")
+            else:
+                st.success(f"✅ Selected: {st.session_state.quiz_answers[1]}")
+                st.info("These emotional patterns often have subconscious triggers hypnotherapy can address.")
+
+        # Question 2: Subconscious blocking trigger
+        if len(st.session_state.quiz_answers) >= 1:
+            q2_expanded = (current_step == 2) and (2 not in st.session_state.quiz_answers)
+            with st.expander("Question 2: Which subconscious trigger most often holds you back?", expanded=q2_expanded):
+                if 2 not in st.session_state.quiz_answers:
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button("⚔️ Force and control\nTrying to push through resistance", key="q2_force", use_container_width=True, type="secondary"):
+                            self._answer_question(2, "Force and control")
+                        if st.button("🔒 Defensive mistrust\nFeeling unsafe to change", key="q2_mistrust", use_container_width=True, type="secondary"):
+                            self._answer_question(2, "Defensive mistrust")
+                    with col2:
+                        if st.button("⚖️ All-or-nothing thinking\nPerfectionism blocks progress", key="q2_binary", use_container_width=True, type="secondary"):
+                            self._answer_question(2, "All-or-nothing thinking")
+                        if st.button("🏃 Doing addiction\nNeeding to prove your worth", key="q2_doing", use_container_width=True, type="secondary"):
+                            self._answer_question(2, "Doing addiction")
+                else:
+                    st.success(f"✅ Selected: {st.session_state.quiz_answers[2]}")
+                    st.info("Identifying these patterns helps unlock lasting behavioral change.")
+
+        # Question 3: Readiness for transformation
+        if len(st.session_state.quiz_answers) >= 2:
+            q3_expanded = (current_step == 3) and (3 not in st.session_state.quiz_answers)
+            with st.expander("Question 3: How ready are you to fully commit to inner transformation?", expanded=q3_expanded):
+                if 3 not in st.session_state.quiz_answers:
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button("🤔 Curious but cautious\nWant to learn more before committing", key="q3_curious", use_container_width=True, type="secondary"):
+                            self._answer_question(3, "Curious but cautious")
+                        if st.button("🎯 Ready to commit\nPrepared to do the inner work", key="q3_ready", use_container_width=True, type="secondary"):
+                            self._answer_question(3, "Ready to commit")
+                    with col2:
+                        if st.button("🔥 Desperate for change\nThis must end now", key="q3_desperate", use_container_width=True, type="secondary"):
+                            self._answer_question(3, "Desperate for change")
+                        if st.button("🛡️ Prefer gradual approach\nWant to try other methods first", key="q3_gradual", use_container_width=True, type="secondary"):
+                            self._answer_question(3, "Prefer gradual approach")
+                else:
+                    st.success(f"✅ Selected: {st.session_state.quiz_answers[3]}")
+                    st.info("Readiness strongly influences hypnotherapy success.")
+
+        # Show progress bar
+        progress = len(st.session_state.quiz_answers) / 3
+        if progress > 0:
+            st.progress(progress)
+            if progress < 1:
+                st.caption(f"Question {len(st.session_state.quiz_answers) + 1} of 3")
+            else:
+                st.caption("Assessment complete!")
+
+    def _answer_question(self, question_id, answer):
+        st.session_state.quiz_answers[question_id] = answer
+
+        if question_id < 3:
+            st.session_state.quiz_step = question_id + 1
+        else:
+            st.session_state.quiz_completed = True
+            st.session_state.quiz_score = self._calculate_score()
+        st.experimental_rerun()
+
+    def _calculate_score(self):
+        # Simplified scoring example - weights can be finetuned
+        scoring = {
             1: {
-                "Quit smoking": 30,
-                "Reduce anxiety": 25,
-                "Improve sleep": 20,
-                "Control drinking": 25,
-                "Stop overeating": 20,
-                "Break bad habits": 25
+                "Chronic stress or anxiety": 30,
+                "Repetitive negative habits or addictions": 30,
+                "Heightened emotional reactivity": 20,
+                "Persistent self-doubt": 20
             },
             2: {
-                "Less than 6 months": 15,
-                "6 months to 2 years": 20,
-                "More than 2 years": 25
-            },
-            3: {
-                "Force and control": 20,
-                "Mistrust and defensiveness": 15,
+                "Force and control": 25,
+                "Defensive mistrust": 20,
                 "All-or-nothing thinking": 25,
                 "Doing addiction": 30
             },
-            4: {
-                "Curious but cautious": 15,
+            3: {
+                "Curious but cautious": 10,
                 "Ready to commit": 30,
-                "Desperate for change": 25,
-                "Prefer gradual approach": 5
+                "Desperate for change": 30,
+                "Prefer gradual approach": 10
             }
         }
-    
-    def render(self):
-        st.subheader("Test: Are you ready for your rapid change with hypnotherapy?")
-        st.write("4 questions to assess if our method is right for your situation:")
-        
-        if st.session_state.quiz_completed:
-            self._render_quiz_results()
-        else:
-            self._render_single_question()
-    
-    def _render_single_question(self):
-        step = st.session_state.quiz_step
-        question = self.questions[step]
-        qid = question["id"]
-        
-        st.markdown(f"#### Question {step+1} of {len(self.questions)}")
-        st.write(f"**{question['text']}**")
-        
-        prev_answer = st.session_state.quiz_answers.get(qid, None)
-        selected = st.radio("Choose one:", question['options'], index=question['options'].index(prev_answer) if prev_answer in question['options'] else 0, key=f"radio_{qid}")
-        
-        col1, col2, col3 = st.columns([1,6,1])
-        
-        with col1:
-            if step > 0:
-                if st.button("← Back", key="back_button"):
-                    st.session_state.quiz_step -= 1
-                    st.experimental_rerun()
-        with col3:
-            if st.button("Next →", key="next_button"):
-                st.session_state.quiz_answers[qid] = selected
-                if step + 1 == len(self.questions):
-                    st.session_state.quiz_completed = True
-                    st.session_state.quiz_score = self._calculate_score()
-                else:
-                    st.session_state.quiz_step += 1
-                st.experimental_rerun()
-        
-        progress = (step) / (len(self.questions))
-        st.progress(progress if progress > 0 else 0.01)
-    
-    def _calculate_score(self):
         total_score = 0
-        for q in self.questions:
-            qid = q["id"]
-            answer = st.session_state.quiz_answers.get(qid, None)
-            if answer and qid in self.scoring and answer in self.scoring[qid]:
-                total_score += self.scoring[qid][answer]
+        for qid, answer in st.session_state.quiz_answers.items():
+            total_score += scoring.get(qid, {}).get(answer, 0)
         return min(total_score, 100)
-    
+
     def _render_quiz_results(self):
         score = st.session_state.quiz_score
-        
+
         st.success("✅ Assessment Complete!")
-        
+
         if score >= 75:
-            st.success("🌟 High suitability for rapid transformation!")
-            recommendation = "You show strong indicators for success with our 2-session method."
+            st.success("🌟 You are highly suited for rapid transformation with hypnotherapy!")
+            recommendation = "You show strong readiness and relevant emotional patterns for effective subconscious rewiring."
             action = "Book your transformation package or start with a discovery call."
-        elif score >= 55:
-            st.warning("🎯 Good potential for transformation!")
-            recommendation = "You have solid foundations for change with proper support."
-            action = "A discovery call will help us tailor the approach to your situation."
-        elif score >= 35:
-            st.info("💭 Assessment recommended")
-            recommendation = "Your situation would benefit from personalized evaluation."
-            action = "A free discovery call will determine the best path forward."
+        elif score >= 50:
+            st.warning("🎯 You have good potential for transformation with proper support.")
+            recommendation = "Your emotional and subconscious patterns are favorable for hypnotherapy benefits."
+            action = "Schedule a discovery call to tailor your path forward."
         else:
-            st.info("🌱 Preparation phase suggested")
-            recommendation = "Building readiness first may optimize your success."
-            action = "Let's discuss your situation and explore when you might be ready."
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            st.metric("Transformation Readiness", f"{score}%", "Suitability Score")
-        with col2:
-            first_qid = self.questions[0]["id"]
-            first_answer = st.session_state.quiz_answers.get(first_qid, "")
-            st.metric("Focus Area", first_answer or "N/A", "Primary Pattern")
-        
-        pattern_insights = {
-            "Quit smoking": "Smoking is one of our highest success areas. Most clients become smoke-free after 2 sessions.",
-            "Reduce anxiety": "Anxiety responds well to subconscious pattern work. We address root triggers, not just symptoms.",
-            "Improve sleep": "Sleep issues often stem from subconscious stress patterns we can identify and resolve.",
-            "Control drinking": "Drinking patterns usually have deeper emotional triggers that hypnotherapy addresses effectively.",
-            "Stop overeating": "Emotional eating involves subconscious reward patterns that respond well to our method.",
-            "Break bad habits": "Most habits run on autopilot from the subconscious - exactly where we work."
-        }
-        mechanism_insights = {
-            "Force and control": "You tend to use force when resistance appears, creating internal battles. Our method works with your mind, not against it.",
-            "Mistrust and defensiveness": "Your security system stays hyperactive, treating change as danger. We create safety for transformation.",
-            "All-or-nothing thinking": "Your mind categorizes everything as perfect or failure. We help you find the middle ground where growth happens.",
-            "Doing addiction": "Your worth feels tied to productivity. We help you find value in being, not just doing."
-        }
-        
-        unwanted_pattern = st.session_state.quiz_answers.get(1, "")
-        blocking_mechanism = st.session_state.quiz_answers.get(3, "")
-        
-        if unwanted_pattern in pattern_insights:
-            st.write(f"**Your pattern:** {pattern_insights[unwanted_pattern]}")
-        if blocking_mechanism in mechanism_insights:
-            st.write(f"**Your approach:** {mechanism_insights[blocking_mechanism]}")
-        
+            st.info("🌱 You may benefit from preparation or alternative approaches before hypnotherapy.")
+            recommendation = "Building more readiness will optimize your success with transformative approaches."
+            action = "Let's discuss your situation and options in a discovery call."
+
         st.info(f"**Recommendation:** {recommendation}")
         st.write(f"**Next step:** {action}")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             st.markdown(f"""
@@ -680,17 +643,18 @@ class EnhancedQuizSection:
                    class="cta-button">
                    📞 Book Discovery Call
                 </a>
-            """, unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
         with col2:
             if st.button("🔄 Retake Assessment", use_container_width=True, type="secondary"):
                 self._reset_quiz()
 
     def _reset_quiz(self):
         st.session_state.quiz_answers = {}
-        st.session_state.quiz_step = 0
+        st.session_state.quiz_step = 1
         st.session_state.quiz_completed = False
         st.session_state.quiz_score = 0
         st.experimental_rerun()
+
 
 class MethodTeaserWithVideo:
     """Method overview with video and link to method page"""
