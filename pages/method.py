@@ -566,6 +566,7 @@ class MethodPage:
             AnchorUtils.create_section_divider()
 
 def create_method_page():
+    """Factory function to create and return MethodPage instance"""
     return MethodPage()
 
 # Example usage for URL generation:
