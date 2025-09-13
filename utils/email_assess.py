@@ -1210,14 +1210,13 @@
 """
 Enhanced Clinical Assessment Email Handler
 Comprehensive email handler for behavioral pattern assessments with Digital Despair Syndrome integration
-Complete rewrite for utils/email_assess.py with full functionality
+Complete implementation for utils/email_assess.py
 """
 import smtplib
 import os
-import json
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from datetime import datetime, timedelta
+from datetime import datetime
 
 class EnhancedClinicalAssessmentEmailHandler:
     """Enhanced email handler for comprehensive clinical assessment results"""
@@ -1242,37 +1241,6 @@ class EnhancedClinicalAssessmentEmailHandler:
             9: "Context-Dependent Weakness"
         }
         
-        # Digital despair component names
-        self.digital_component_names = {
-            'digital_native_status': 'Digital Native Conditioning',
-            'reality_dissociation': 'Online vs Offline Authenticity Gap',
-            'binary_success_pressure': 'Extraordinary Achievement Pressure',
-            'ironic_detachment': 'Emotional Protection Through Cynicism',
-            'algorithmic_dependency': 'Social Media Emotional Regulation',
-            'nihilistic_worldview': 'Hopelessness and Meaning Crisis',
-            'hope_avoidance': 'Resistance to Optimism',
-            'attention_fragmentation': 'Digital Attention Conditioning',
-            'future_hopelessness': 'Economic and Existential Anxiety',
-            'social_anxiety_escalation': 'Offline Interaction Avoidance'
-        }
-        
-        # Clinical significance thresholds
-        self.clinical_thresholds = {
-            'high': 6.0,
-            'moderate': 4.0,
-            'mild': 2.5,
-            'minimal': 1.0
-        }
-        
-        # Digital despair severity levels
-        self.dds_severity_levels = {
-            'SEVERE': {'threshold': 7.0, 'description': 'Severe Digital Despair Syndrome - Immediate intervention recommended'},
-            'MODERATE': {'threshold': 5.5, 'description': 'Moderate Digital Despair Syndrome - Enhanced protocol required'},
-            'MILD': {'threshold': 4.0, 'description': 'Mild DDS patterns - Digital-aware approach recommended'},
-            'MINIMAL': {'threshold': 2.5, 'description': 'Minimal DDS indicators - Standard protocol with digital awareness'},
-            'NONE': {'threshold': 0.0, 'description': 'No significant digital despair patterns detected'}
-        }
-        
         # Try to get password from environment variables or Streamlit secrets
         try:
             import streamlit as st
@@ -1280,214 +1248,8 @@ class EnhancedClinicalAssessmentEmailHandler:
         except:
             self.password = os.environ.get("GMAIL_APP_PASSWORD", "")
 
-    def calculate_digital_despair_score(self, assessment_data):
-        """Calculate comprehensive Digital Despair Syndrome score"""
-        if 'digital_despair_assessment' not in assessment_data:
-            return {'score': 0, 'severity': 'not_assessed', 'components': {}}
-        
-        dds_data = assessment_data['digital_despair_assessment']
-        component_scores = {}
-        total_score = 0
-        component_count = 0
-        
-        # Calculate individual component scores
-        for component, questions in dds_data.items():
-            if isinstance(questions, dict) and questions:
-                component_score = 0
-                question_count = 0
-                
-                for q_id, response_data in questions.items():
-                    if isinstance(response_data, dict):
-                        # Handle different response types
-                        if 'rating' in response_data:
-                            # Scale responses (1-10 to 1-7 for consistency)
-                            rating = response_data['rating']
-                            normalized_rating = min(7, (rating * 7) / 10)
-                            component_score += normalized_rating
-                            question_count += 1
-                        elif 'response' in response_data:
-                            response = response_data['response']
-                            if isinstance(response, dict) and 'rating' in response:
-                                rating = response['rating']
-                                normalized_rating = min(7, (rating * 7) / 10)
-                                component_score += normalized_rating
-                                question_count += 1
-                            elif isinstance(response, (int, float)):
-                                component_score += min(7, response)
-                                question_count += 1
-                
-                if question_count > 0:
-                    avg_component_score = component_score / question_count
-                    component_scores[component] = {
-                        'score': round(avg_component_score, 1),
-                        'raw_total': component_score,
-                        'question_count': question_count
-                    }
-                    total_score += avg_component_score
-                    component_count += 1
-        
-        # Calculate overall DDS score
-        overall_score = total_score / component_count if component_count > 0 else 0
-        
-        # Determine severity level
-        severity = 'NONE'
-        severity_description = self.dds_severity_levels['NONE']['description']
-        
-        for level, data in sorted(self.dds_severity_levels.items(), 
-                                key=lambda x: x[1]['threshold'], reverse=True):
-            if overall_score >= data['threshold']:
-                severity = level
-                severity_description = data['description']
-                break
-        
-        return {
-            'overall_score': round(overall_score, 1),
-            'severity': severity,
-            'severity_description': severity_description,
-            'component_scores': component_scores,
-            'component_count': component_count,
-            'assessment_completeness': f"{component_count}/10 components assessed"
-        }
-
-    def calculate_pattern_scores(self, assessment_data):
-        """Calculate scores for the 9 core behavioral patterns"""
-        pattern_scores = {}
-        
-        # Process responses by pattern
-        responses_data = assessment_data.get('responses', {})
-        
-        for response_id, response_data in responses_data.items():
-            patterns = response_data.get('patterns', [])
-            intensity = response_data.get('intensity', 0)
-            
-            # Handle response data format
-            response = response_data.get('response', '')
-            if isinstance(response, dict) and 'rating' in response:
-                intensity = response['rating']
-            
-            # Add to pattern scores
-            for pattern in patterns:
-                if isinstance(pattern, str):
-                    # Convert pattern name to number if needed
-                    pattern_num = None
-                    for num, name in self.pattern_names.items():
-                        if pattern.lower() in name.lower() or name.lower() in pattern.lower():
-                            pattern_num = num
-                            break
-                    
-                    if pattern_num:
-                        if pattern_num not in pattern_scores:
-                            pattern_scores[pattern_num] = {
-                                'total_score': 0,
-                                'response_count': 0,
-                                'responses': []
-                            }
-                        
-                        pattern_scores[pattern_num]['total_score'] += intensity
-                        pattern_scores[pattern_num]['response_count'] += 1
-                        pattern_scores[pattern_num]['responses'].append({
-                            'question_id': response_id,
-                            'intensity': intensity,
-                            'response': response
-                        })
-                elif isinstance(pattern, int) and pattern in self.pattern_names:
-                    if pattern not in pattern_scores:
-                        pattern_scores[pattern] = {
-                            'total_score': 0,
-                            'response_count': 0,
-                            'responses': []
-                        }
-                    
-                    pattern_scores[pattern]['total_score'] += intensity
-                    pattern_scores[pattern]['response_count'] += 1
-                    pattern_scores[pattern]['responses'].append({
-                        'question_id': response_id,
-                        'intensity': intensity,
-                        'response': response
-                    })
-        
-        # Calculate average scores and severity levels
-        final_pattern_scores = {}
-        for pattern_num, data in pattern_scores.items():
-            if data['response_count'] > 0:
-                avg_score = data['total_score'] / data['response_count']
-                
-                # Determine severity level
-                if avg_score >= self.clinical_thresholds['high']:
-                    severity = 'High'
-                elif avg_score >= self.clinical_thresholds['moderate']:
-                    severity = 'Moderate'
-                elif avg_score >= self.clinical_thresholds['mild']:
-                    severity = 'Mild'
-                else:
-                    severity = 'Minimal'
-                
-                final_pattern_scores[pattern_num] = {
-                    'name': self.pattern_names[pattern_num],
-                    'average_score': round(avg_score, 1),
-                    'severity': severity,
-                    'response_count': data['response_count'],
-                    'total_score': data['total_score'],
-                    'responses': data['responses']
-                }
-        
-        return final_pattern_scores
-
-    def generate_clinical_insights(self, pattern_scores, dds_results):
-        """Generate comprehensive clinical insights based on assessment results"""
-        insights = []
-        
-        # Primary pattern analysis
-        high_patterns = [p for p in pattern_scores.values() if p['severity'] == 'High']
-        moderate_patterns = [p for p in pattern_scores.values() if p['severity'] == 'Moderate']
-        
-        if high_patterns:
-            insight = f"**Primary Clinical Patterns** (High intensity): {', '.join([p['name'] for p in high_patterns])}"
-            insights.append(insight)
-        
-        if moderate_patterns:
-            insight = f"**Secondary Patterns** (Moderate intensity): {', '.join([p['name'] for p in moderate_patterns])}"
-            insights.append(insight)
-        
-        # Digital Despair Syndrome analysis
-        if dds_results['severity'] != 'not_assessed':
-            if dds_results['severity'] in ['SEVERE', 'MODERATE']:
-                insights.append(f"**🚨 Digital Despair Syndrome Alert**: {dds_results['severity_description']}")
-                insights.append("**Recommended Protocol**: 2-Session Neuroplasticity Method with digital-native adaptations")
-            elif dds_results['severity'] == 'MILD':
-                insights.append(f"**📊 Digital Patterns Detected**: {dds_results['severity_description']}")
-                insights.append("**Recommended Protocol**: Standard method with digital awareness components")
-        
-        # Specific component insights for high-scoring DDS areas
-        if dds_results['component_scores']:
-            high_dds_components = [
-                (comp, data) for comp, data in dds_results['component_scores'].items() 
-                if data['score'] >= 6.0
-            ]
-            
-            if high_dds_components:
-                comp_names = [self.digital_component_names.get(comp, comp) for comp, _ in high_dds_components]
-                insights.append(f"**High-Priority Digital Components**: {', '.join(comp_names)}")
-        
-        # Treatment timeline recommendations
-        total_high_patterns = len(high_patterns)
-        if dds_results['severity'] in ['SEVERE', 'MODERATE']:
-            total_high_patterns += 2  # DDS adds complexity
-        
-        if total_high_patterns >= 4:
-            insights.append("**Treatment Recommendation**: 2+1 Session Protocol (high complexity)")
-            insights.append("**Estimated Timeline**: 3-4 weeks for complete integration")
-        elif total_high_patterns >= 2:
-            insights.append("**Treatment Recommendation**: Standard 2-Session Protocol")
-            insights.append("**Estimated Timeline**: 2-3 weeks for transformation")
-        else:
-            insights.append("**Treatment Recommendation**: Focused 2-Session Protocol")
-            insights.append("**Estimated Timeline**: 1-2 weeks for results")
-        
-        return insights
-
     def send_clinical_assessment_results(self, assessment_data):
-        """Send comprehensive clinical assessment results with full digital analysis"""
+        """Send comprehensive clinical assessment results with full analysis"""
         try:
             # Extract key information safely
             contact_info = assessment_data.get('contact_info', {})
@@ -1503,10 +1265,10 @@ class EnhancedClinicalAssessmentEmailHandler:
             msg = MIMEMultipart()
             msg['From'] = self.sender_email
             msg['To'] = self.recipient_email
-            msg['Subject'] = self._generate_enhanced_email_subject(name, urgency, assessment_results, is_digital_native, digital_analysis)
+            msg['Subject'] = self._generate_email_subject(name, urgency, assessment_results, is_digital_native, digital_analysis)
             
             # Build comprehensive email body
-            body = self._build_comprehensive_email_body(assessment_data)
+            body = self._build_email_body(assessment_data)
             
             msg.attach(MIMEText(body, 'plain'))
             
@@ -1524,13 +1286,10 @@ class EnhancedClinicalAssessmentEmailHandler:
                     print(f"Digital Native: NO - Traditional approach")
                 print(f"Urgency: {urgency}")
                 print(f"Traditional patterns: {len(assessment_results.get('pattern_scores', {}))}")
-                print(f"Completion rate: {assessment_results.get('completion_rate', 0)*100:.0f}%")
                 return True
                 
         except Exception as e:
             print(f"Error sending enhanced clinical assessment: {str(e)}")
-            import traceback
-            print(f"Full traceback: {traceback.format_exc()}")
             return False
 
     def _send_email(self, msg):
@@ -1546,8 +1305,8 @@ class EnhancedClinicalAssessmentEmailHandler:
             print(f"Error sending email: {str(e)}")
             return False
 
-    def _generate_enhanced_email_subject(self, name, urgency, assessment_results, is_digital_native, digital_analysis):
-        """Generate contextual email subject based on comprehensive assessment data"""
+    def _generate_email_subject(self, name, urgency, assessment_results, is_digital_native, digital_analysis):
+        """Generate contextual email subject"""
         # Priority indicator
         if 'extremely urgent' in urgency.lower():
             priority = "🚨 EMERGENCY"
@@ -1568,72 +1327,45 @@ class EnhancedClinicalAssessmentEmailHandler:
         else:
             assessment_type = "TRADITIONAL"
         
-        # Complexity indicator
-        pattern_count = len(assessment_results.get('pattern_scores', {}))
-        if pattern_count >= 5:
-            complexity = "COMPLEX"
-        elif pattern_count >= 3:
-            complexity = "MULTI-PATTERN"
-        else:
-            complexity = "FOCUSED"
-        
-        # Completion indicator
-        completion_rate = assessment_results.get('completion_rate', 0)
-        if completion_rate >= 0.9:
-            completion = "COMPLETE"
-        elif completion_rate >= 0.7:
-            completion = "SUBSTANTIAL"
-        else:
-            completion = "PARTIAL"
-        
-        return f"{priority} ASSESSMENT: {name} - {assessment_type} {complexity} {completion}"
+        return f"{priority} ASSESSMENT: {name} - {assessment_type}"
 
-    def _build_comprehensive_email_body(self, assessment_data):
-        """Build comprehensive email body with integrated digital and traditional analysis"""
+    def _build_email_body(self, assessment_data):
+        """Build comprehensive email body"""
         contact_info = assessment_data.get('contact_info', {})
         assessment_results = assessment_data.get('assessment_results', {})
         is_digital_native = assessment_data.get('is_digital_native', False)
         digital_analysis = assessment_data.get('digital_despair_analysis')
         
         # Header section
-        body = self._build_enhanced_header_section(contact_info, assessment_results, is_digital_native, digital_analysis)
+        body = self._build_header_section(contact_info, assessment_results, is_digital_native, digital_analysis)
         
         # Digital despair syndrome analysis (if applicable)
         if is_digital_native:
-            body += self._build_digital_despair_analysis_section(digital_analysis, assessment_data)
+            body += self._build_digital_analysis_section(digital_analysis)
         
         # Traditional behavioral pattern analysis
-        body += self._build_traditional_pattern_analysis_section(assessment_data)
+        body += self._build_pattern_analysis_section(assessment_data)
         
-        # Integrated clinical template
-        body += self._build_integrated_clinical_template(assessment_data)
-        
-        # Complete behavioral sequence analysis
-        body += self._build_behavioral_sequence_analysis_section(assessment_data)
-        
-        # Assessment transcript
-        body += self._build_enhanced_assessment_transcript_section(assessment_data)
-        
-        # Action items and recommendations
-        body += self._build_enhanced_action_items_section(assessment_data)
+        # Clinical template
+        clinical_template = assessment_data.get('clinical_template', '')
+        if clinical_template:
+            body += f"\n{clinical_template}\n"
         
         # Footer
-        body += self._build_enhanced_footer_section()
+        body += self._build_footer_section()
         
         return body
 
-    def _build_enhanced_header_section(self, contact_info, assessment_results, is_digital_native, digital_analysis):
-        """Build enhanced email header with comprehensive client information"""
+    def _build_header_section(self, contact_info, assessment_results, is_digital_native, digital_analysis):
+        """Build email header with client information"""
         name = contact_info.get('name', 'Not provided')
         email = contact_info.get('email', 'Not provided')
         phone = contact_info.get('phone', 'Not provided')
         urgency = contact_info.get('urgency', 'Not specified')
         concern = contact_info.get('primary_concern', 'Not specified')
-        next_step = contact_info.get('next_step', 'Not specified')
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         questions_answered = assessment_results.get('total_questions_answered', 0)
-        completion_rate = assessment_results.get('completion_rate', 0) * 100
         patterns_detected = len(assessment_results.get('pattern_scores', {}))
         
         header = f"""
@@ -1647,15 +1379,12 @@ Email: {email}
 Phone: {phone}
 Primary Concern: {concern}
 Urgency Level: {urgency}
-Preferred Next Step: {next_step}
 Assessment Completed: {timestamp}
 
 📊 ASSESSMENT METRICS:
 Assessment Type: {"Digital-Native Enhanced" if is_digital_native else "Traditional Behavioral"}
 Questions Answered: {questions_answered}
-Completion Rate: {completion_rate:.0f}%
 Traditional Patterns Detected: {patterns_detected}
-Assessment Quality: {'EXCELLENT' if completion_rate >= 90 else 'GOOD' if completion_rate >= 70 else 'PARTIAL'}
 """
         
         # Add digital metrics if applicable
@@ -1672,21 +1401,19 @@ Clinical Adaptation Required: {"YES - Specialized approach" if severity in ['SEV
         
         return header
 
-    def _build_digital_despair_analysis_section(self, digital_analysis, assessment_data):
-        """Build comprehensive Digital Despair Syndrome analysis section"""
-        
+    def _build_digital_analysis_section(self, digital_analysis):
+        """Build Digital Despair Syndrome analysis section"""
         if not digital_analysis:
-            return f"""
+            return """
 🖥️ DIGITAL NATIVE ASSESSMENT:
 ══════════════════════════════════════════════════════════════════
 Status: Digital native identified but syndrome analysis incomplete
 Recommendation: Brief digital assessment completion recommended
-Approach: Standard with digital awareness modifications
 
 """
         
         section = f"""
-🖥️ DIGITAL DESPAIR SYNDROME COMPREHENSIVE ANALYSIS:
+🖥️ DIGITAL DESPAIR SYNDROME ANALYSIS:
 ══════════════════════════════════════════════════════════════════
 
 📈 OVERALL SYNDROME ASSESSMENT:
@@ -1699,15 +1426,8 @@ Clinical Recommendation: {digital_analysis.get('clinical_recommendation', 'Asses
         
         components = digital_analysis.get('component_scores', {})
         for component, score in components.items():
-            component_name = self.digital_component_names.get(component, component.replace('_', ' ').title())
-            severity_level = self._get_component_severity(score)
-            clinical_significance = self._get_component_clinical_significance(component, score)
-            
-            section += f"""
-• {component_name}:
-  Score: {score:.1f}/5 ({severity_level})
-  Clinical Impact: {clinical_significance}
-"""
+            component_name = component.replace('_', ' ').title()
+            section += f"• {component_name}: {score:.1f}/5\n"
         
         # Therapeutic adaptations
         adaptations = digital_analysis.get('therapeutic_adaptations_needed', [])
@@ -1715,77 +1435,12 @@ Clinical Recommendation: {digital_analysis.get('clinical_recommendation', 'Asses
             section += f"""
 🎯 REQUIRED THERAPEUTIC ADAPTATIONS:
 """
-            for i, adaptation in enumerate(adaptations, 1):
+            for i, adaptation in enumerate(adaptations[:3], 1):
                 section += f"{i}. {adaptation}\n"
-        
-        # Digital-specific intervention protocols
-        section += self._build_digital_intervention_protocols(digital_analysis)
         
         return section + "\n"
 
-    def _build_digital_intervention_protocols(self, digital_analysis):
-        """Generate specific intervention protocols for digital despair patterns"""
-        severity = digital_analysis.get('severity_level', 'MINIMAL')
-        components = digital_analysis.get('component_scores', {})
-        
-        protocols = f"""
-🛠️ DIGITAL-NATIVE INTERVENTION PROTOCOLS:
-
-**SESSION STRUCTURE MODIFICATIONS:**
-"""
-        
-        if severity == 'SEVERE':
-            protocols += """• Session Length: 60-75 minutes MAX (attention span limits)
-• Segment Structure: 15-20 minute focused blocks with 5-minute breaks
-• Total Sessions: 3 sessions highly recommended (digital patterns reassert quickly)
-"""
-        elif severity == 'MODERATE':
-            protocols += """• Session Length: 75-90 minutes with brief breaks
-• Segment Structure: 25-30 minute focused blocks  
-• Total Sessions: 2-3 sessions based on progress
-"""
-        else:
-            protocols += """• Session Length: Standard 90 minutes
-• Segment Structure: Standard with digital awareness
-• Total Sessions: 2 sessions typically sufficient
-"""
-        
-        protocols += f"""
-**LANGUAGE PATTERN ADAPTATIONS:**
-✅ Use: "What if you discovered..." vs "You will..."
-✅ Use: "I'm curious about..." vs "You need to..."
-✅ Use: "Based on what we're finding..." vs "Trust me..."
-✅ Use: "You might notice..." vs "You must..."
-
-❌ Avoid: Authoritarian commands, overwhelming positivity, dismissing online achievements
-❌ Avoid: Binary choice frameworks, traditional success metrics
-❌ Avoid: "Just relax" or "Don't think about it" (triggers resistance)
-
-**SPECIFIC PROTOCOL IMPLEMENTATIONS:**
-"""
-        
-        # Component-specific protocols
-        if components.get('attention_fragmentation', 0) >= 3:
-            protocols += "• ATTENTION PROTOCOL: Match digital flow state familiarity in induction\n"
-        
-        if components.get('ironic_detachment', 0) >= 3:
-            protocols += "• IRONIC ARMOR DISSOLUTION: 'Your intelligence includes wisdom beyond the clever mind'\n"
-        
-        if components.get('binary_success_pressure', 0) >= 3:
-            protocols += "• BINARY INTERRUPTION: 'What if success included...' rather than extraordinary vs ordinary\n"
-        
-        if components.get('hope_avoidance', 0) >= 3:
-            protocols += "• HOPE INTRODUCTION: 'Possibilities you haven't yet considered' vs overwhelming optimism\n"
-        
-        if components.get('reality_dissociation', 0) >= 3:
-            protocols += "• REALITY BRIDGING: Honor online competencies, transfer to offline confidence\n"
-        
-        if components.get('algorithmic_dependency', 0) >= 3:
-            protocols += "• VALIDATION SHIFT: Install internal vs external digital validation systems\n"
-        
-        return protocols + "\n"
-
-    def _build_traditional_pattern_analysis_section(self, assessment_data):
+    def _build_pattern_analysis_section(self, assessment_data):
         """Build traditional behavioral pattern analysis section"""
         pattern_scores = assessment_data.get('pattern_scores', {})
         
@@ -1794,8 +1449,6 @@ Clinical Recommendation: {digital_analysis.get('clinical_recommendation', 'Asses
 🎯 TRADITIONAL BEHAVIORAL PATTERN ANALYSIS:
 ══════════════════════════════════════════════════════════════════
 Status: Insufficient pattern data - discovery session recommended
-Patterns Detected: None with sufficient confidence
-Recommendation: Complete pattern mapping in Session 1
 
 """
         
@@ -1808,588 +1461,30 @@ Recommendation: Complete pattern mapping in Session 1
         
         sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
         
-        # Pattern descriptions and clinical significance
-        pattern_descriptions = {
-            1: "Difficulty accepting or maintaining positive emotional states - blocks natural joy",
-            2: "Recurring conflicts and power struggles in relationships - fight/flight activation", 
-            3: "Default skepticism and difficulty trusting others' intentions - protective isolation",
-            4: "Black-and-white thinking patterns that limit options - decision paralysis",
-            5: "Self-worth tied to productivity and achievement - being vs doing imbalance",
-            6: "Inconsistent sense of identity across different contexts - authenticity fragmentation",
-            7: "Prioritizing others' needs while neglecting self-care - boundary dissolution",
-            8: "Life choices driven by family expectations - autonomy vs loyalty conflict",
-            9: "Context-dependent loss of personal boundaries - situational powerlessness"
-        }
-        
-        pattern_interventions = {
-            1: "Joy permission installation + positive emotion anchoring + happiness safety protocols",
-            2: "Collaboration installation + win-win mindset + conflict de-escalation reflexes",
-            3: "Healthy discernment vs mistrust + graduated vulnerability + trust capacity building",
-            4: "Both/and thinking installation + creative option generation + nuanced decision making",
-            5: "Inherent worth recognition + being/doing balance + rest permission protocols",
-            6: "Authentic self integration + consistent expression + context-independent identity",
-            7: "Self-care as strength + healthy boundaries + sustainable balance installation",
-            8: "Personal path confidence + family respect integration + autonomous choice empowerment",
-            9: "Universal boundary strength + context-independent power + consistent self-advocacy"
-        }
-        
-        for i, (pattern_id, score) in enumerate(sorted_patterns, 1):
+        for i, (pattern_id, score) in enumerate(sorted_patterns[:3], 1):
             pattern_name = self.pattern_names.get(pattern_id, f"Pattern {pattern_id}")
             activation_level = self._get_pattern_activation_level(score)
-            therapeutic_priority = self._get_therapeutic_priority(score)
             
             section += f"""
 {i}. {pattern_name}:
    Activation Score: {score:.1f}/10 ({activation_level})
-   Therapeutic Priority: {therapeutic_priority}
-   Clinical Description: {pattern_descriptions.get(pattern_id, 'Requires individual assessment')}
-   Intervention Approach: {pattern_interventions.get(pattern_id, 'Customized based on presentation')}
-   
-"""
-        
-        # Pattern interaction analysis
-        if len(sorted_patterns) > 1:
-            section += self._analyze_pattern_interactions(sorted_patterns)
-        
-        return section
-
-    def _analyze_pattern_interactions(self, sorted_patterns):
-        """Analyze how multiple patterns interact and reinforce each other"""
-        top_patterns = [p[0] for p in sorted_patterns[:3]]
-        
-        interaction_analysis = """
-🔗 PATTERN INTERACTION ANALYSIS:
-"""
-        
-        # Common pattern combinations and their clinical significance
-        pattern_synergies = {
-            (1, 5): "Unhappiness + Achievement Pressure: 'I don't deserve joy unless I earn it through work'",
-            (1, 7): "Unhappiness + Self-Sacrifice: 'Taking care of others justifies my misery'",
-            (2, 3): "Power Struggles + Mistrust: 'I must fight because others can't be trusted'",
-            (2, 4): "Power Struggles + Binary Thinking: 'Either I win or I lose - no middle ground'",
-            (3, 6): "Mistrust + Compartmentalized Authenticity: 'I can't be real because others will hurt me'",
-            (4, 5): "Binary Thinking + Achievement Pressure: 'Either extraordinary success or complete failure'",
-            (5, 7): "Achievement + Self-Sacrifice: 'My worth depends on what I produce for others'",
-            (6, 9): "Compartmentalized Authenticity + Context Weakness: 'I lose myself in certain situations'",
-            (7, 8): "Self-Sacrifice + Inherited Missions: 'I must sacrifice myself for family expectations'"
-        }
-        
-        # Check for known synergistic combinations
-        found_synergies = []
-        for combination, description in pattern_synergies.items():
-            if combination[0] in top_patterns and combination[1] in top_patterns:
-                found_synergies.append(description)
-        
-        if found_synergies:
-            interaction_analysis += """
-**Identified Pattern Synergies:**
-"""
-            for synergy in found_synergies:
-                interaction_analysis += f"• {synergy}\n"
-        
-        # Overall complexity assessment
-        complexity_level = "HIGH" if len(top_patterns) >= 4 else "MODERATE" if len(top_patterns) >= 3 else "FOCUSED"
-        
-        interaction_analysis += f"""
-**Pattern Complexity Level:** {complexity_level}
-**Clinical Implication:** {"Multi-session approach recommended with careful sequencing" if complexity_level == "HIGH" else "Standard 2-session approach suitable" if complexity_level == "MODERATE" else "Focused intervention possible"}
-
-"""
-        
-        return interaction_analysis
-
-    def _build_integrated_clinical_template(self, assessment_data):
-        """Build integrated clinical template combining traditional and digital analysis"""
-        
-        # Use the clinical template from assessment_data if available
-        clinical_template = assessment_data.get('clinical_template', '')
-        
-        if clinical_template:
-            return f"""
-{clinical_template}
-"""
-        
-        # Generate fallback template if not provided
-        return self._generate_fallback_clinical_template(assessment_data)
-
-    def _generate_fallback_clinical_template(self, assessment_data):
-        """Generate fallback clinical template when not provided by assessment"""
-        contact_info = assessment_data.get('contact_info', {})
-        assessment_results = assessment_data.get('assessment_results', {})
-        pattern_scores = assessment_data.get('pattern_scores', {})
-        is_digital_native = assessment_data.get('is_digital_native', False)
-        digital_analysis = assessment_data.get('digital_despair_analysis')
-        
-        template = f"""
-╔══════════════════════════════════════════════════════════════╗
-║                    INTEGRATED CLINICAL TEMPLATE              ║
-║              Traditional + Digital Analysis                  ║
-╚══════════════════════════════════════════════════════════════╝
-
-**CLIENT PROFILE:**
-Assessment Type: {"Digital-Native Enhanced" if is_digital_native else "Traditional Behavioral"}
-Primary Concerns: {contact_info.get('primary_concern', 'Not specified')}
-Urgency Level: {contact_info.get('urgency', 'Not specified')}
-
-**BEHAVIORAL PATTERN ANALYSIS:**
-"""
-        
-        if pattern_scores:
-            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
-            
-            dominant_pattern = self.pattern_names.get(sorted_patterns[0][0], "Unknown") if sorted_patterns else "Unknown"
-            dominant_score = sorted_patterns[0][1] if sorted_patterns else 0
-            
-            primary_pattern = self.pattern_names.get(sorted_patterns[1][0], "Unknown") if len(sorted_patterns) > 1 else "None detected"
-            primary_score = sorted_patterns[1][1] if len(sorted_patterns) > 1 else 0
-            
-            secondary_pattern = self.pattern_names.get(sorted_patterns[2][0], "Unknown") if len(sorted_patterns) > 2 else "None detected"
-            secondary_score = sorted_patterns[2][1] if len(sorted_patterns) > 2 else 0
-            
-            template += f"""
-Dominant Pattern: {dominant_pattern} (Score: {dominant_score:.1f}/10)
-Primary Pattern: {primary_pattern} (Score: {primary_score:.1f}/10)
-Secondary Pattern: {secondary_pattern} (Score: {secondary_score:.1f}/10)
-"""
-        else:
-            template += """
-Dominant Pattern: Assessment incomplete - requires session completion
-Primary Pattern: Insufficient data for ranking
-Secondary Pattern: Additional assessment needed
-"""
-        
-        # Add digital analysis if applicable
-        if is_digital_native and digital_analysis:
-            digital_score = digital_analysis.get('digital_despair_score', 0)
-            severity = digital_analysis.get('severity_level', 'UNKNOWN')
-            
-            template += f"""
-
-**DIGITAL DESPAIR SYNDROME OVERLAY:**
-Syndrome Severity: {severity} ({digital_score:.1f}% Digital Despair Score)
-Therapeutic Adaptation Required: {"ESSENTIAL" if severity in ['SEVERE', 'MODERATE'] else "RECOMMENDED"}
-
-**INTEGRATED TREATMENT APPROACH:**
-• Traditional pattern work + Digital-native adaptations
-• {"Collaborative peer-consultant model" if severity in ['SEVERE', 'MODERATE'] else "Standard therapeutic relationship"}
-• {"Modified session structure (60-75 min)" if severity == 'SEVERE' else "Standard 90-minute sessions"}
-• {"Evidence-based hope introduction" if digital_analysis.get('component_scores', {}).get('hope_avoidance', 0) >= 3 else "Standard optimism building"}
-"""
-        else:
-            template += f"""
-
-**TREATMENT APPROACH:**
-• Traditional behavioral pattern transformation
-• Standard hypnotherapy protocols
-• 90-minute session structure
-• Classical therapeutic relationship model
-"""
-        
-        # Session planning recommendations
-        template += f"""
-
-**SESSION PLANNING RECOMMENDATIONS:**
-Session 1 Focus: {"Digital-aware pattern mapping + trust building" if is_digital_native else "Comprehensive pattern assessment + rapport"}
-Session 2 Target: {"Adapted hypnotherapy with digital considerations" if is_digital_native else "Core pattern transformation"}
-Session 3 Need: {"Higher probability due to digital pattern reassertion" if is_digital_native and digital_analysis and digital_analysis.get('severity_level') in ['SEVERE', 'MODERATE'] else "Standard - as needed"}
-
-**SUCCESS PROBABILITY:**
-Estimated Rate: {self._calculate_integrated_success_probability(assessment_data)}%
-Key Success Factors: {"Digital adaptation compliance, intellectual engagement, gradual hope building" if is_digital_native else "Pattern recognition, change readiness, therapeutic alliance"}
-
-╔══════════════════════════════════════════════════════════════╗
-║                     CLINICAL RECOMMENDATIONS                ║
-╚══════════════════════════════════════════════════════════════╝
-
-This assessment reveals {"a digital-native psychology requiring specialized intervention adaptations alongside traditional pattern work" if is_digital_native else "traditional behavioral patterns suitable for standard hypnotherapy approaches"}.
-
-Priority Actions:
-1. {"Review digital-native protocols before contact" if is_digital_native else "Standard contact and session preparation"}
-2. {"Use collaborative language patterns from first contact" if is_digital_native and digital_analysis and digital_analysis.get('severity_level') in ['SEVERE', 'MODERATE'] else "Standard therapeutic communication"}
-3. {"Prepare for intellectual resistance and cynicism" if is_digital_native and digital_analysis and digital_analysis.get('component_scores', {}).get('ironic_detachment', 0) >= 3 else "Standard resistance management"}
-"""
-        
-        return template
-
-    def _build_behavioral_sequence_analysis_section(self, assessment_data):
-        """Build comprehensive behavioral sequence mapping analysis"""
-        trigger_chain = assessment_data.get('trigger_chain', {})
-        
-        section = f"""
-╔══════════════════════════════════════════════════════════════╗
-║            COMPLETE BEHAVIORAL SEQUENCE MAPPING             ║
-╚══════════════════════════════════════════════════════════════╝
-
-🔗 TRIGGER → PHYSICAL → THOUGHT → EMOTION → BEHAVIOR → CONSEQUENCE CHAIN:
-
-"""
-        
-        sequence_components = {
-            'awareness_point': '🎯 TRIGGER IDENTIFICATION',
-            'physical_response': '💓 PHYSICAL RESPONSE', 
-            'automatic_thought': '💭 AUTOMATIC THOUGHT',
-            'emotional_response': '❤️ EMOTIONAL RESPONSE',
-            'behavioral_response': '🏃 BEHAVIORAL RESPONSE',
-            'immediate_consequence': '⚡ IMMEDIATE CONSEQUENCE',
-            'longer_term_impact': '📈 LONGER-TERM IMPACT'
-        }
-        
-        captured_count = 0
-        total_count = len(sequence_components)
-        
-        for component_key, component_name in sequence_components.items():
-            response = trigger_chain.get(component_key, 'Not captured')
-            
-            section += f"{component_name}:\n"
-            
-            if response and response != 'Not captured' and response != 'Skipped':
-                captured_count += 1
-                section += f"   ✅ CAPTURED: \"{response}\"\n"
-                
-                # Add clinical analysis based on component type
-                if component_key == 'physical_response':
-                    section += f"   Clinical Analysis: {self._analyze_somatic_response(response)}\n"
-                elif component_key == 'automatic_thought':
-                    section += f"   Clinical Analysis: {self._analyze_thought_pattern(response)}\n"
-                elif component_key == 'behavioral_response':
-                    section += f"   Clinical Analysis: {self._analyze_behavioral_pattern_clinical(response)}\n"
-                elif component_key == 'immediate_consequence':
-                    section += f"   Clinical Analysis: {self._analyze_consequence_pattern(response)}\n"
-            else:
-                section += f"   ❌ NOT CAPTURED - Session 1 priority for intervention design\n"
-                section += f"   Clinical Impact: {self._get_missing_component_impact(component_key)}\n"
-            
-            section += "\n"
-        
-        # Chain completeness assessment
-        completeness_percentage = int((captured_count / total_count) * 100)
-        section += f"""
-📊 BEHAVIORAL CHAIN COMPLETENESS ANALYSIS:
-Overall Completeness: {completeness_percentage}% ({captured_count}/{total_count} components captured)
-
-{"✅ SUFFICIENT for targeted intervention design - proceed with hypnotherapy" if completeness_percentage >= 60 else "⚠️ PARTIAL - Session 1 must prioritize chain completion" if completeness_percentage >= 40 else "❌ INSUFFICIENT - Discovery call essential for intervention design"}
-
-🎯 SESSION 1 CHAIN COMPLETION PROTOCOL:
-Missing components require exploration using these therapeutic questions:
-"""
-        
-        # Generate session 1 questions for missing components
-        missing_components = [comp for comp in sequence_components.keys() 
-                            if not trigger_chain.get(comp) or trigger_chain.get(comp) in ['Not captured', 'Skipped']]
-        
-        component_questions = {
-            'awareness_point': "What specific situations tend to set this whole pattern in motion?",
-            'physical_response': "When this pattern starts, what's the first thing you notice in your body?",
-            'automatic_thought': "What thought pops into your mind the moment you feel that physical sensation?",
-            'emotional_response': "What emotions show up right after that thought?",
-            'behavioral_response': "When you feel that emotion, what do you typically do?",
-            'immediate_consequence': "Right after you do that, how do you feel?",
-            'longer_term_impact': "Hours or days later, what's the lasting effect?"
-        }
-        
-        for component in missing_components[:5]:  # Show up to 5 missing components
-            question = component_questions.get(component, "Explore this component in session")
-            section += f"• {component.replace('_', ' ').title()}: \"{question}\"\n"
-        
-        section += "\n"
-        
-        return section
-
-    def _build_enhanced_assessment_transcript_section(self, assessment_data):
-        """Build enhanced assessment transcript section with phase organization"""
-        responses = assessment_data.get('responses', {})
-        
-        if not responses:
-            return """
-╔══════════════════════════════════════════════════════════════╗
-║                    ASSESSMENT TRANSCRIPT                     ║
-╚══════════════════════════════════════════════════════════════╝
-
-Status: No detailed responses recorded
-Recommendation: Complete assessment for full clinical analysis
-
-"""
-        
-        section = """
-╔══════════════════════════════════════════════════════════════╗
-║                    ASSESSMENT TRANSCRIPT                     ║
-║                  Phase-Organized Responses                   ║
-╚══════════════════════════════════════════════════════════════╝
-
-"""
-        
-        # Organize responses by phase
-        phases = {
-            'age_assessment': '🎂 AGE & DEMOGRAPHIC ASSESSMENT',
-            'digital_assessment': '💻 DIGITAL NATIVE EVALUATION', 
-            'engagement_assessment': '📞 ENGAGEMENT & URGENCY ASSESSMENT',
-            'trigger_mapping': '🔗 BEHAVIORAL TRIGGER MAPPING',
-            'pattern_assessment': '🧠 BEHAVIORAL PATTERN ANALYSIS',
-            'integration_assessment': '🎯 INTEGRATION & COMPLETION'
-        }
-        
-        # Sort responses by phase and question ID
-        phase_responses = {}
-        for response_id, response_data in responses.items():
-            phase = response_data.get('phase', 'unknown_phase')
-            if phase not in phase_responses:
-                phase_responses[phase] = []
-            phase_responses[phase].append((response_id, response_data))
-        
-        # Sort within each phase
-        for phase in phase_responses:
-            phase_responses[phase].sort(key=lambda x: int(x[0]) if x[0].isdigit() else float('inf'))
-        
-        total_responses = 0
-        high_intensity_responses = 0
-        
-        for phase_key in phases.keys():
-            if phase_key in phase_responses:
-                section += f"\n{phases[phase_key]}:\n"
-                section += "─" * 60 + "\n"
-                
-                for response_id, response_data in phase_responses[phase_key]:
-                    total_responses += 1
-                    
-                    question_text = response_data.get('question_text', 'Unknown question')
-                    response = response_data.get('response', 'No response')
-                    intensity = response_data.get('intensity', 0)
-                    timestamp = response_data.get('timestamp', 'Unknown time')
-                    question_type = response_data.get('question_type', 'Unknown type')
-                    patterns = response_data.get('patterns', [])
-                    
-                    if intensity >= 6:
-                        high_intensity_responses += 1
-                    
-                    section += f"\nQ{response_id} [{question_type.upper()}]:\n"
-                    section += f"Question: {question_text}\n"
-                    
-                    # Format response based on type
-                    if isinstance(response, dict):
-                        if 'rating' in response:
-                            section += f"Response: Rating {response['rating']}/10"
-                            if response.get('follow_up'):
-                                section += f" - {response['follow_up']}"
-                            section += "\n"
-                        else:
-                            section += f"Response: Multiple selections:\n"
-                            for item, item_intensity in response.items():
-                                section += f"  • {item}: {item_intensity}/7\n"
-                    elif isinstance(response, list):
-                        section += f"Response: {', '.join(response)}\n"
-                    else:
-                        section += f"Response: {response}\n"
-                    
-                    if intensity and intensity != response:
-                        section += f"Intensity: {intensity}/7 {'(HIGH CLINICAL SIGNIFICANCE)' if intensity >= 6 else '(MODERATE)' if intensity >= 4 else ''}\n"
-                    
-                    if patterns:
-                        pattern_names = []
-                        for pattern in patterns:
-                            if isinstance(pattern, int) and pattern in self.pattern_names:
-                                pattern_names.append(f"{pattern}. {self.pattern_names[pattern]}")
-                            elif isinstance(pattern, str):
-                                pattern_names.append(pattern)
-                        
-                        if pattern_names:
-                            section += f"Associated Patterns: {', '.join(pattern_names)}\n"
-                    
-                    if timestamp != 'Unknown time':
-                        try:
-                            dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
-                            formatted_time = dt.strftime("%H:%M:%S")
-                            section += f"Time: {formatted_time}\n"
-                        except:
-                            section += f"Time: {timestamp}\n"
-                    
-                    section += "─" * 30 + "\n"
-        
-        # Transcript quality metrics
-        high_intensity_percentage = (high_intensity_responses / total_responses * 100) if total_responses > 0 else 0
-        
-        section += f"""
-
-📊 TRANSCRIPT QUALITY METRICS:
-Total Responses Recorded: {total_responses}
-High-Intensity Responses (≥6): {high_intensity_responses} ({high_intensity_percentage:.0f}%)
-Assessment Depth: {'COMPREHENSIVE' if total_responses >= 20 else 'SUBSTANTIAL' if total_responses >= 15 else 'BASIC' if total_responses >= 10 else 'LIMITED'}
-Clinical Data Quality: {'EXCELLENT' if high_intensity_percentage >= 30 else 'GOOD' if high_intensity_percentage >= 20 else 'ADEQUATE' if high_intensity_percentage >= 10 else 'LIMITED'}
-
 """
         
         return section
 
-    def _build_enhanced_action_items_section(self, assessment_data):
-        """Build enhanced action items and recommendations section"""
-        contact_info = assessment_data.get('contact_info', {})
-        is_digital_native = assessment_data.get('is_digital_native', False)
-        digital_analysis = assessment_data.get('digital_despair_analysis')
-        urgency = contact_info.get('urgency', 'not specified').lower()
-        
-        section = """
-╔══════════════════════════════════════════════════════════════╗
-║                    ENHANCED ACTION ITEMS                     ║
-║              Prioritized Clinical Recommendations           ║
-╚══════════════════════════════════════════════════════════════╝
-
-"""
-        
-        # Priority contact timeline
-        if 'extremely urgent' in urgency or 'emergency' in urgency:
-            contact_priority = "🚨 IMMEDIATE CONTACT (within 4-6 hours)"
-        elif 'very urgent' in urgency:
-            contact_priority = "⚡ PRIORITY CONTACT (within 12-24 hours)" 
-        elif 'urgent' in urgency:
-            contact_priority = "📋 URGENT CONTACT (within 24-48 hours)"
-        elif is_digital_native and digital_analysis and digital_analysis.get('severity_level') == 'SEVERE':
-            contact_priority = "⚡ DIGITAL SEVERITY CONTACT (within 12-24 hours)"
-        else:
-            contact_priority = "📞 STANDARD CONTACT (within 2-3 days)"
-        
-        section += f"**CONTACT PRIORITY:** {contact_priority}\n\n"
-        
-        # Digital-native preparation protocols
-        if is_digital_native:
-            section += "**DIGITAL-NATIVE PREPARATION PROTOCOLS:**\n"
-            
-            if digital_analysis and digital_analysis.get('severity_level') in ['SEVERE', 'MODERATE']:
-                section += """✅ Review digital-native intervention protocols before contact
-✅ Prepare collaborative language patterns (avoid authoritarian approaches)
-✅ Plan modified session structure (shorter focused blocks)
-✅ Anticipate intellectual resistance and cynicism as protective mechanisms
-✅ Prepare reality-bridging techniques (online competence → offline confidence)
-✅ Ready hope introduction protocols (gradual, evidence-based)
-
-"""
-            else:
-                section += """✅ Review basic digital awareness protocols
-✅ Prepare standard approach with digital sensitivity
-✅ Plan standard session structure with brief breaks
-✅ Be aware of potential online/offline authenticity gaps
-
-"""
-        
-        # Traditional preparation
-        else:
-            section += """**TRADITIONAL APPROACH PREPARATION:**
-✅ Standard hypnotherapy protocols applicable
-✅ Classical therapeutic relationship approach
-✅ 90-minute session structure recommended
-✅ Focus on traditional pattern transformation techniques
-
-"""
-        
-        # Intervention readiness assessment
-        pattern_scores = assessment_data.get('pattern_scores', {})
-        trigger_chain = assessment_data.get('trigger_chain', {})
-        
-        trigger_completeness = len([k for k, v in trigger_chain.items() if v and v not in ['Not captured', 'Skipped']]) / 7
-        pattern_clarity = len(pattern_scores)
-        
-        section += f"""**INTERVENTION READINESS ASSESSMENT:**
-Trigger Chain Completeness: {trigger_completeness*100:.0f}% {'✅ READY' if trigger_completeness >= 0.6 else '⚠️ NEEDS COMPLETION' if trigger_completeness >= 0.4 else '❌ INSUFFICIENT'}
-Pattern Clarity: {pattern_clarity} patterns identified {'✅ SUFFICIENT' if pattern_clarity >= 3 else '⚠️ BASIC' if pattern_clarity >= 2 else '❌ INSUFFICIENT'}
-
-Intervention Readiness: {'✅ PROCEED WITH HYPNOTHERAPY' if trigger_completeness >= 0.6 and pattern_clarity >= 2 else '⚠️ BRIEF DISCOVERY SESSION RECOMMENDED' if trigger_completeness >= 0.4 or pattern_clarity >= 1 else '❌ COMPREHENSIVE DISCOVERY CALL ESSENTIAL'}
-
-"""
-        
-        # Success optimization strategies
-        section += "**SUCCESS OPTIMIZATION STRATEGIES:**\n"
-        
-        estimated_success = self._calculate_integrated_success_probability(assessment_data)
-        
-        if estimated_success >= 85:
-            section += f"""✅ HIGH SUCCESS PROBABILITY ({estimated_success}%)
-• Standard protocols with confidence
-• Expect rapid response to interventions
-• Plan for maintenance and integration phase
-"""
-        elif estimated_success >= 70:
-            section += f"""📊 GOOD SUCCESS PROBABILITY ({estimated_success}%)
-• Enhanced preparation recommended
-• Allow extra time for trust building
-• Consider 2+1 session protocol for complex patterns
-"""
-        else:
-            section += f"""⚠️ MODERATE SUCCESS PROBABILITY ({estimated_success}%)
-• Comprehensive preparation essential
-• Extended rapport building required
-• 2+1 session protocol highly recommended
-• Consider addressing barriers to change first
-"""
-        
-        # Follow-up checklist
-        section += """
-**FOLLOW-UP CHECKLIST:**
-□ Review complete assessment data before contact
-□ Prepare session environment (digital-aware if applicable)
-□ Ready specific intervention protocols based on pattern analysis
-□ Plan session structure based on attention capacity
-□ Prepare integration and homework assignments
-□ Schedule appropriate follow-up timing based on complexity
-
-"""
-        
-        return section
-
-    def _build_enhanced_footer_section(self):
-        """Build enhanced footer section"""
+    def _build_footer_section(self):
+        """Build footer section"""
         return f"""
 ╔══════════════════════════════════════════════════════════════╗
 ║                        SYSTEM INFORMATION                    ║
 ╚══════════════════════════════════════════════════════════════╝
 
-Assessment System: Enhanced Clinical Assessment Platform v2.1
+Assessment System: Enhanced Clinical Assessment Platform
 Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-Protocol: Rapid Transformation Hypnotherapy with Digital Despair Syndrome Integration
-Clinical Framework: 9 Behavioral Patterns + 10 Digital Components Analysis
-
-This comprehensive assessment integrates traditional behavioral pattern analysis 
-with cutting-edge Digital Despair Syndrome evaluation to provide clinically-
-appropriate therapeutic approaches for both traditional and digital-native clients.
-
-For questions about this assessment system or clinical protocols, contact:
-Enhanced Clinical Assessment Support
+Protocol: Rapid Transformation Hypnotherapy
 
 ══════════════════════════════════════════════════════════════════
 """
-
-    # Helper methods for clinical analysis
-    
-    def _get_component_severity(self, score):
-        """Get severity level for digital component score"""
-        if score >= 4.0:
-            return "SEVERE"
-        elif score >= 3.0:
-            return "MODERATE"
-        elif score >= 2.0:
-            return "MILD"
-        else:
-            return "MINIMAL"
-
-    def _get_component_clinical_significance(self, component, score):
-        """Get clinical significance for specific component"""
-        significance_map = {
-            'attention_fragmentation': {
-                'high': 'Requires modified session structure with frequent breaks',
-                'medium': 'May benefit from varied therapeutic techniques',
-                'low': 'Standard attention approaches suitable'
-            },
-            'ironic_detachment': {
-                'high': 'Essential to work with rather than against intellectual defenses',
-                'medium': 'Some resistance to traditional optimistic approaches expected',
-                'low': 'Standard hope-building techniques appropriate'
-            },
-            'binary_success_pressure': {
-                'high': 'Critical to reframe success definitions before goal setting',
-                'medium': 'Address achievement pressure during intervention',
-                'low': 'Standard goal-setting approaches suitable'
-            }
-        }
-        
-        level = 'high' if score >= 3.5 else 'medium' if score >= 2.5 else 'low'
-        return significance_map.get(component, {}).get(level, 'Requires individual clinical assessment')
 
     def _get_pattern_activation_level(self, score):
         """Get activation level for behavioral pattern"""
@@ -2404,134 +1499,17 @@ Enhanced Clinical Assessment Support
         else:
             return "MINIMAL"
 
-    def _get_therapeutic_priority(self, score):
-        """Get therapeutic priority for pattern"""
-        if score >= 6.0:
-            return "PRIMARY TARGET"
-        elif score >= 4.0:
-            return "SECONDARY TARGET"
-        elif score >= 2.0:
-            return "MONITOR & ADDRESS"
-        else:
-            return "BACKGROUND AWARENESS"
 
-    def _calculate_integrated_success_probability(self, assessment_data):
-        """Calculate integrated success probability considering all factors"""
-        base_probability = 85  # Base success rate
-        
-        # Adjust for digital factors
-        is_digital_native = assessment_data.get('is_digital_native', False)
-        digital_analysis = assessment_data.get('digital_despair_analysis')
-        
-        if is_digital_native and digital_analysis:
-            severity = digital_analysis.get('severity_level', 'MINIMAL')
-            if severity == 'SEVERE':
-                base_probability -= 15
-            elif severity == 'MODERATE':
-                base_probability -= 10
-            elif severity == 'MILD':
-                base_probability -= 5
-        
-        # Adjust for pattern complexity
-        pattern_scores = assessment_data.get('pattern_scores', {})
-        high_patterns = len([p for p in pattern_scores.values() if p >= 6.0])
-        
-        if high_patterns >= 4:
-            base_probability -= 10
-        elif high_patterns >= 2:
-            base_probability -= 5
-        
-        # Adjust for assessment completeness
-        assessment_results = assessment_data.get('assessment_results', {})
-        completion_rate = assessment_results.get('completion_rate', 0)
-        
-        if completion_rate < 0.7:
-            base_probability -= 10
-        elif completion_rate < 0.8:
-            base_probability -= 5
-        
-        # Adjust for trigger chain completeness
-        trigger_chain = assessment_data.get('trigger_chain', {})
-        trigger_completeness = len([k for k, v in trigger_chain.items() if v and v not in ['Not captured', 'Skipped']]) / 7
-        
-        if trigger_completeness < 0.6:
-            base_probability -= 10
-        elif trigger_completeness < 0.8:
-            base_probability -= 5
-        
-        return max(50, min(95, base_probability))  # Keep between 50-95%
-
-    def _analyze_somatic_response(self, response):
-        """Analyze somatic response for clinical insights"""
-        response_lower = response.lower()
-        
-        if any(word in response_lower for word in ['chest', 'tight', 'pressure', 'heart']):
-            return "Cardiovascular activation - indicates high stress response, suitable for breathing techniques"
-        elif any(word in response_lower for word in ['stomach', 'gut', 'nausea', 'sick']):
-            return "Digestive system activation - suggests anxiety pattern, benefits from grounding techniques"
-        elif any(word in response_lower for word in ['muscle', 'tense', 'jaw', 'shoulder']):
-            return "Muscular tension pattern - indicates fight/flight, responds well to progressive relaxation"
-        else:
-            return "Individual somatic pattern - requires personalized approach"
-
-    def _analyze_thought_pattern(self, response):
-        """Analyze automatic thought pattern for clinical insights"""
-        response_lower = response.lower()
-        
-        if any(phrase in response_lower for phrase in ['should', 'must', 'have to', 'supposed to']):
-            return "Perfectionist/obligation thinking - address 'shoulds' and install permission for imperfection"
-        elif any(phrase in response_lower for phrase in ['always', 'never', 'everyone', 'nobody']):
-            return "All-or-nothing thinking - teach nuanced perspective and exception finding"
-        elif any(phrase in response_lower for phrase in ['what if', 'going to happen', 'worry']):
-            return "Catastrophic thinking - future-focused anxiety requiring present-moment anchoring"
-        else:
-            return "Individual thought pattern - requires specific cognitive restructuring"
-
-    def _analyze_behavioral_pattern_clinical(self, response):
-        """Analyze behavioral response pattern for clinical insights"""
-        response_lower = response.lower()
-        
-        if any(word in response_lower for word in ['avoid', 'hide', 'withdraw', 'isolate']):
-            return "Avoidance pattern - gradual exposure with safety building required"
-        elif any(word in response_lower for word in ['fight', 'argue', 'angry', 'attack']):
-            return "Fight response - conflict de-escalation and collaboration skills needed"
-        elif any(word in response_lower for word in ['please', 'agree', 'go along', 'accommodate']):
-            return "People-pleasing pattern - boundary setting and authentic expression work"
-        else:
-            return "Individual behavioral pattern - requires customized intervention approach"
-
-    def _analyze_consequence_pattern(self, response):
-        """Analyze consequence pattern for clinical insights"""
-        response_lower = response.lower()
-        
-        if any(word in response_lower for word in ['guilty', 'shame', 'bad', 'wrong']):
-            return "Self-blame pattern - self-compassion and worth-building interventions needed"
-        elif any(word in response_lower for word in ['angry', 'frustrated', 'mad', 'annoyed']):
-            return "Anger consequence - emotional regulation and expression skills required"
-        elif any(word in response_lower for word in ['tired', 'exhausted', 'drained', 'empty']):
-            return "Energy depletion - sustainable coping strategies and energy management needed"
-        else:
-            return "Individual consequence pattern - monitor for intervention effectiveness"
-
-    def _get_missing_component_impact(self, component_key):
-        """Get clinical impact of missing behavioral sequence component"""
-        impact_map = {
-            'awareness_point': 'Cannot identify intervention entry points - limits prevention strategies',
-            'physical_response': 'Missing early warning system - reduces intervention timing effectiveness',
-            'automatic_thought': 'Cannot address cognitive component - limits cognitive restructuring',
-            'emotional_response': 'Missing emotional processing needs - reduces emotional regulation work',
-            'behavioral_response': 'Cannot target specific behaviors - limits behavioral modification',
-            'immediate_consequence': 'Missing reinforcement understanding - reduces pattern interruption effectiveness',
-            'longer_term_impact': 'Cannot assess full pattern cost - reduces motivation for change'
-        }
-        
-        return impact_map.get(component_key, 'Reduces comprehensive intervention design')
+# Main function to be called from assess.py
+def send_clinical_assessment_results(assessment_data):
+    """Main function to send clinical assessment results - called from assess.py"""
+    handler = EnhancedClinicalAssessmentEmailHandler()
+    return handler.send_clinical_assessment_results(assessment_data)
 
 
-# Convenience functions for backward compatibility
+# Legacy function for backward compatibility
 def send_assessment_results(client_info, assessment_data):
     """Legacy function wrapper for sending assessment results"""
-    # Convert old format to new format if necessary
     if 'contact_info' not in assessment_data:
         assessment_data['contact_info'] = client_info
     
@@ -2541,258 +1519,3 @@ def send_assessment_results(client_info, assessment_data):
 
 # Initialize global handler instance
 email_handler = EnhancedClinicalAssessmentEmailHandler()
-
-
-# Testing and debugging functions
-def validate_enhanced_assessment_data(assessment_data):
-    """Validate assessment data structure for enhanced email handler"""
-    required_fields = ['contact_info', 'assessment_results']
-    missing_fields = []
-    
-    for field in required_fields:
-        if field not in assessment_data:
-            missing_fields.append(field)
-    
-    is_valid = len(missing_fields) == 0
-    
-    return is_valid, missing_fields
-
-
-def debug_enhanced_assessment_data(assessment_data):
-    """Debug assessment data for enhanced email handler"""
-    print("=== ENHANCED ASSESSMENT DATA DEBUG ===")
-    
-    # Basic structure
-    print(f"Keys present: {list(assessment_data.keys())}")
-    
-    # Contact info
-    contact_info = assessment_data.get('contact_info', {})
-    print(f"Contact info keys: {list(contact_info.keys())}")
-    print(f"Name: {contact_info.get('name', 'Not provided')}")
-    print(f"Email: {contact_info.get('email', 'Not provided')}")
-    print(f"Urgency: {contact_info.get('urgency', 'Not provided')}")
-    
-    # Digital native status
-    is_digital_native = assessment_data.get('is_digital_native', False)
-    print(f"Digital native: {is_digital_native}")
-    
-    # Digital analysis
-    digital_analysis = assessment_data.get('digital_despair_analysis')
-    if digital_analysis:
-        print(f"Digital severity: {digital_analysis.get('severity_level', 'Unknown')}")
-        print(f"Digital score: {digital_analysis.get('digital_despair_score', 0):.1f}%")
-        print(f"Digital components: {len(digital_analysis.get('component_scores', {}))}")
-    else:
-        print("Digital analysis: Not present")
-    
-    # Traditional patterns
-    pattern_scores = assessment_data.get('pattern_scores', {})
-    print(f"Traditional patterns detected: {len(pattern_scores)}")
-    
-    # Assessment results
-    assessment_results = assessment_data.get('assessment_results', {})
-    print(f"Total questions: {assessment_results.get('total_questions_answered', 0)}")
-    print(f"Completion rate: {assessment_results.get('completion_rate', 0)*100:.0f}%")
-    
-    # Trigger chain
-    trigger_chain = assessment_data.get('trigger_chain', {})
-    captured_components = len([k for k, v in trigger_chain.items() if v and v not in ['Not captured', 'Skipped']])
-    print(f"Trigger chain components captured: {captured_components}/7")
-    
-    print("=== DEBUG COMPLETE ===")
-
-
-def test_enhanced_email_handler():
-    """Test enhanced email handler with digital native assessment"""
-    print("Testing enhanced email handler with digital native assessment...")
-    
-    # Create test data for digital native with severe syndrome
-    test_data = {
-        'contact_info': {
-            'name': 'Alex Chen',
-            'email': 'alex.chen.test@gmail.com',
-            'phone': '+66-98-765-4321',
-            'urgency': 'Very urgent - struggling with motivation and future direction',
-            'primary_concern': 'Lost sense of purpose, everything feels pointless, can\'t get motivated',
-            'next_step': 'I want to try hypnotherapy - heard it might help'
-        },
-        'assessment_results': {
-            'total_questions_answered': 45,
-            'completion_rate': 0.89,
-            'pattern_scores': {
-                1: 7.2,  # Unhappiness Culture
-                4: 6.8,  # Separation/Division
-                5: 8.1   # Doing vs Being
-            }
-        },
-        'is_digital_native': True,
-        'digital_despair_analysis': {
-            'digital_despair_score': 73.5,
-            'severity_level': 'SEVERE',
-            'clinical_recommendation': 'Immediate specialized intervention with digital-native protocols',
-            'component_scores': {
-                'nihilistic_worldview': 4.2,
-                'binary_success_pressure': 4.8,
-                'hope_avoidance': 4.5,
-                'ironic_detachment': 3.9,
-                'attention_fragmentation': 3.7,
-                'algorithmic_dependency': 4.1
-            },
-            'therapeutic_adaptations_needed': [
-                'Modified session structure (60-75 minutes)',
-                'Collaborative peer-consultant approach',
-                'Evidence-based hope introduction protocols',
-                'Reality bridging techniques'
-            ]
-        },
-        'pattern_scores': {
-            1: 7.2,
-            4: 6.8,
-            5: 8.1
-        },
-        'trigger_chain': {
-            'awareness_point': 'Seeing success stories on social media',
-            'physical_response': 'Heavy feeling in chest, like being crushed',
-            'automatic_thought': 'I\'ll never achieve anything meaningful',
-            'emotional_response': 'Deep despair and hopelessness',
-            'behavioral_response': 'Scroll more social media or play games to numb out',
-            'immediate_consequence': 'Feel worse about wasting time',
-            'longer_term_impact': 'Reinforces belief that I\'m a failure'
-        },
-        'responses': {
-            '1': {
-                'question_text': 'How old are you?',
-                'response': '23',
-                'phase': 'age_assessment',
-                'question_type': 'demographic',
-                'timestamp': '2024-01-15T10:30:00Z'
-            },
-            '15': {
-                'question_text': 'How often do you feel like nothing really matters?',
-                'response': {'rating': 8, 'follow_up': 'Most days, especially when I see what others are accomplishing'},
-                'intensity': 8,
-                'phase': 'digital_assessment',
-                'question_type': 'scale_with_followup',
-                'patterns': [1, 4],
-                'timestamp': '2024-01-15T10:45:00Z'
-            }
-        }
-    }
-    
-    # Test the email handler
-    handler = EnhancedClinicalAssessmentEmailHandler()
-    success = handler.send_clinical_assessment_results(test_data)
-    
-    if success:
-        print("✅ Digital native test passed - comprehensive email generated")
-    else:
-        print("❌ Digital native test failed")
-    
-    return success
-
-
-def test_traditional_assessment():
-    """Test enhanced email handler with traditional assessment"""
-    print("Testing enhanced email handler with traditional assessment...")
-    
-    # Create test data for traditional client
-    test_data = {
-        'contact_info': {
-            'name': 'Sarah Johnson',
-            'email': 'sarah.johnson.test@gmail.com',
-            'phone': '+66-87-654-3210',
-            'urgency': 'Moderate - want to address anxiety patterns',
-            'primary_concern': 'Anxiety in social situations and perfectionism',
-            'next_step': 'Book a session to work on confidence'
-        },
-        'assessment_results': {
-            'total_questions_answered': 32,
-            'completion_rate': 0.94,
-            'pattern_scores': {
-                2: 6.5,  # Power Struggles
-                3: 5.8,  # Systematic Mistrust
-                7: 7.1   # Self-Sacrifice
-            }
-        },
-        'is_digital_native': False,
-        'pattern_scores': {
-            2: 6.5,
-            3: 5.8,
-            7: 7.1
-        },
-        'trigger_chain': {
-            'awareness_point': 'Social gatherings or work meetings',
-            'physical_response': 'Tight shoulders and shallow breathing',
-            'automatic_thought': 'They\'re judging me',
-            'emotional_response': 'Anxiety and self-consciousness',
-            'behavioral_response': 'Stay quiet or leave early',
-            'immediate_consequence': 'Relief but also regret',
-            'longer_term_impact': 'Avoid similar situations more'
-        },
-        'responses': {
-            '1': {
-                'question_text': 'How old are you?',
-                'response': '45',
-                'phase': 'age_assessment',
-                'question_type': 'demographic',
-                'timestamp': '2024-01-15T14:30:00Z'
-            },
-            '12': {
-                'question_text': 'How often do you put others\' needs before your own?',
-                'response': {'rating': 9, 'follow_up': 'Almost always - I feel guilty when I say no'},
-                'intensity': 7,
-                'phase': 'pattern_assessment',
-                'question_type': 'scale_with_followup',
-                'patterns': [7],
-                'timestamp': '2024-01-15T14:45:00Z'
-            }
-        }
-    }
-    
-    # Test the email handler
-    handler = EnhancedClinicalAssessmentEmailHandler()
-    success = handler.send_clinical_assessment_results(test_data)
-    
-    if success:
-        print("✅ Traditional assessment test passed - standard email generated")
-    else:
-        print("❌ Traditional assessment test failed")
-    
-    return success
-
-
-def run_comprehensive_tests():
-    """Run comprehensive tests for enhanced email handler"""
-    print("🧪 RUNNING COMPREHENSIVE EMAIL HANDLER TESTS")
-    print("=" * 60)
-    
-    # Test 1: Digital native with severe DDS
-    test1_result = test_enhanced_email_handler()
-    
-    print()
-    
-    # Test 2: Traditional assessment
-    test2_result = test_traditional_assessment()
-    
-    print()
-    print("=" * 60)
-    
-    if test1_result and test2_result:
-        print("✅ ALL TESTS PASSED - Enhanced email handler fully functional")
-        return True
-    else:
-        print("❌ SOME TESTS FAILED - Review implementation")
-        return False
-
-
-# Export main functions
-__all__ = [
-    'EnhancedClinicalAssessmentEmailHandler',
-    'send_assessment_results',
-    'email_handler',
-    'validate_enhanced_assessment_data',
-    'debug_enhanced_assessment_data',
-    'test_enhanced_email_handler',
-    'test_traditional_assessment',
-    'run_comprehensive_tests'
-]
