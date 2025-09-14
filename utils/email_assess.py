@@ -1930,12 +1930,12 @@ class EnhancedClinicalAssessmentEmailHandler:
         
         # Complete behavioral sequence analysis
         body += self._build_behavioral_sequence_analysis_section(assessment_data)
+
+        # Action items and recommendations
+        body += self._build_enhanced_action_items_section(assessment_data)
         
         # Assessment transcript
         body += self._build_enhanced_assessment_transcript_section(assessment_data)
-        
-        # Action items and recommendations
-        body += self._build_enhanced_action_items_section(assessment_data)
         
         # Footer
         body += self._build_enhanced_footer_section()
