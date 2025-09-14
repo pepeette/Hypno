@@ -4070,31 +4070,280 @@ class ComprehensiveBehavioralAssessment:
         """, unsafe_allow_html=True)
 
     def _render_question(self, q_id, question):
-        """Render current question"""
+        """Render current question with mobile-first design"""
+        
+        # Ensure question has required fields
+        if not question or not question.get('text'):
+            st.error("⚠️ Question configuration error")
+            st.markdown("**Question data missing. Please contact support.**")
+            if st.button("Skip to next question", key=f"error_skip_{q_id}", type="secondary"):
+                self._advance_question()
+                st.rerun()
+            return
+        
+        # Display question with mobile-friendly styling
         st.markdown(f"### {question['text']}")
         
-        # Show clinical insights if patterns are emerging
-        if len(st.session_state.assessment_responses) > 8 and st.session_state.pattern_scores:
+        # Show clinical insights if patterns are emerging (but only after sufficient responses)
+        if len(st.session_state.assessment_responses) > 10 and st.session_state.pattern_scores:
             self._show_pattern_insights()
         
-        # Handle different question types
-        q_type = question['type']
-        if q_type == 'single_choice':
-            self._handle_single_choice(q_id, question)
-        elif q_type == 'single_choice_with_intensity':
-            self._handle_single_choice_with_intensity(q_id, question)
-        elif q_type == 'single_choice_with_follow_up':
-            self._handle_single_choice_with_follow_up(q_id, question)
-        elif q_type == 'text_with_analysis':
-            self._handle_text_with_analysis(q_id, question)
-        elif q_type == 'detailed_scenario':
-            self._handle_detailed_scenario(q_id, question)
-        elif q_type == 'scale_with_follow_up':
-            self._handle_scale_with_follow_up(q_id, question)
-        elif q_type == 'percentage_slider':
-            self._handle_percentage_slider(q_id, question)
-        elif q_type == 'detailed_future_pacing':
-            self._handle_detailed_future_pacing(q_id, question)
+        # Ensure question type exists and handle appropriately
+        q_type = question.get('type', 'unknown')
+        
+        # Add container for mobile spacing
+        with st.container():
+            if q_type == 'single_choice':
+                self._handle_single_choice(q_id, question)
+            elif q_type == 'single_choice_with_intensity':
+                self._handle_single_choice_with_intensity(q_id, question)
+            elif q_type == 'single_choice_with_follow_up':
+                self._handle_single_choice_with_follow_up(q_id, question)
+            elif q_type == 'text_with_analysis':
+                self._handle_text_with_analysis(q_id, question)
+            elif q_type == 'detailed_scenario':
+                self._handle_detailed_scenario(q_id, question)
+            elif q_type == 'scale_with_follow_up':
+                self._handle_scale_with_follow_up(q_id, question)
+            elif q_type == 'percentage_slider':
+                self._handle_percentage_slider(q_id, question)
+            elif q_type == 'detailed_future_pacing':
+                self._handle_detailed_future_pacing(q_id, question)
+            elif q_type == 'thought_completion':
+                self._handle_thought_completion(q_id, question)
+            elif q_type == 'single_choice_with_body_mapping':
+                self._handle_single_choice_with_body_mapping(q_id, question)
+            elif q_type == 'multiple_choice_weighted':
+                self._handle_multiple_choice_weighted(q_id, question)
+            else:
+                # Unknown question type - show error and fallback
+                st.error(f"⚠️ Unknown question type: {q_type}")
+                st.info("This question type is not yet implemented. You can skip it.")
+                if st.button("Skip this question", key=f"unknown_skip_{q_id}", type="secondary"):
+                    self._save_response(q_id, f"Skipped - unknown type: {q_type}", question)
+                    self._advance_question()
+                    st.rerun()
+
+    def _handle_thought_completion(self, q_id, question):
+        """Handle thought completion questions - MOBILE OPTIMIZED"""
+        st.markdown("**Complete this thought:**")
+        st.info("💭 Write the actual words that go through your mind, even if they seem harsh or unreasonable.")
+        
+        response = st.text_area(
+            "The automatic thought that appears is:",
+            placeholder=question.get('placeholder', 'What does your inner voice say?'),
+            key=f"q_{q_id}_thought",
+            height=100,
+            help="Be honest about your internal dialogue - this helps create the most effective intervention"
+        )
+        
+        char_count = len(response.strip())
+        min_chars = question.get('min_chars', 5)
+        
+        if char_count >= min_chars:
+            st.success(f"✓ Captured your thought pattern ({char_count} characters)")
+            if st.button("Continue →", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
+                self._save_response(q_id, response.strip(), question)
+                self._advance_question()
+                st.rerun()
+        elif char_count > 0:
+            st.info(f"Please add a bit more detail ({min_chars - char_count} more characters)")
+            st.button("Continue →", key=f"q_{q_id}_continue", type="primary", use_container_width=True, disabled=True)
+        else:
+            st.info("💭 Please share what goes through your mind")
+            st.button("Continue →", key=f"q_{q_id}_continue", type="primary", use_container_width=True, disabled=True)
+
+    def _handle_single_choice_with_body_mapping(self, q_id, question):
+        """Handle single choice with body mapping - MOBILE OPTIMIZED"""
+        # Ensure options exist
+        if 'options' not in question or not question['options']:
+            st.error("⚠️ Question configuration error - missing options")
+            if st.button("Skip this question", key=f"q_{q_id}_skip", type="secondary"):
+                self._save_response(q_id, "Question error - skipped", question)
+                self._advance_question()
+                st.rerun()
+            return
+            
+        st.markdown("**Select the physical sensation you experience most often:**")
+        
+        selected_option = st.radio(
+            "Choose the sensation that best describes your experience:",
+            question['options'],
+            key=f"q_{q_id}_radio",
+            label_visibility="collapsed"
+        )
+        
+        if selected_option:
+            st.success(f"✓ Selected: {selected_option}")
+            
+            # Optional body location follow-up if configured
+            if question.get('body_location_follow_up'):
+                st.markdown("---")
+                st.markdown("**Where specifically do you feel this sensation?**")
+                location = st.text_input(
+                    "Body location (optional):",
+                    key=f"q_{q_id}_location",
+                    placeholder="e.g., 'center of chest', 'right shoulder', 'lower back'...",
+                    help="This helps with more targeted intervention"
+                )
+            else:
+                location = ""
+            
+            if st.button("Continue →", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
+                additional_data = {'body_location': location} if location.strip() else None
+                self._save_response(q_id, selected_option, question, additional_data=additional_data)
+                self._advance_question()
+                st.rerun()
+
+    def _handle_multiple_choice_weighted(self, q_id, question):
+        """Handle multiple choice with weighting - MOBILE OPTIMIZED"""
+        # Ensure options exist
+        if 'options' not in question or not question['options']:
+            st.error("⚠️ Question configuration error - missing options")
+            if st.button("Skip this question", key=f"q_{q_id}_skip", type="secondary"):
+                self._save_response(q_id, "Question error - skipped", question)
+                self._advance_question() 
+                st.rerun()
+            return
+            
+        max_selections = question.get('max_selections', len(question['options']))
+        
+        st.markdown(f"**Select up to {max_selections} options that apply:**")
+        
+        selected_options = st.multiselect(
+            "Choose the emotions you typically feel:",
+            question['options'],
+            key=f"q_{q_id}_multi",
+            max_selections=max_selections,
+            help=f"Select up to {max_selections} that best describe your experience"
+        )
+        
+        if selected_options:
+            st.success(f"✓ Selected {len(selected_options)} option(s)")
+            
+            st.markdown("---")
+            st.markdown("**Rate the intensity of each selected emotion:**")
+            
+            intensities = {}
+            for emotion in selected_options:
+                # Create safe key for streamlit
+                safe_key = emotion.replace('/', '_').replace(' ', '_').replace(',', '')
+                
+                st.markdown(f"**{emotion}:**")
+                intensities[emotion] = st.select_slider(
+                    f"Intensity of {emotion}:",
+                    options=[1, 2, 3, 4, 5, 6, 7],
+                    format_func=lambda x: f"{x}/7",
+                    value=4,
+                    key=f"q_{q_id}_{safe_key}_intensity",
+                    label_visibility="collapsed"
+                )
+            
+            if st.button("Continue →", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
+                # Store as weighted response dictionary
+                weighted_response = {emotion: intensities[emotion] for emotion in selected_options}
+                self._save_response(q_id, weighted_response, question)
+                self._advance_question()
+                st.rerun()
+        else:
+            st.info("👆 Please select the emotions you typically experience")
+
+    def _estimate_time_remaining(self):
+        """Estimate remaining time with realistic mobile timing"""
+        total_q = self._estimate_total_questions()
+        answered = len(st.session_state.assessment_responses)
+        remaining = max(0, total_q - answered)
+        
+        # Adjust for mobile users (typically take longer)
+        time_per_question = 1.2  # Slightly longer for mobile-friendly experience
+        
+        # Adjust for digital native assessment which may be faster
+        if st.session_state.is_digital_native:
+            time_per_question *= 0.9
+        
+        return remaining * time_per_question
+
+    def _show_pattern_insights(self):
+        """Show emerging pattern insights during assessment - MOBILE OPTIMIZED"""
+        if st.session_state.pattern_scores:
+            top_pattern = max(st.session_state.pattern_scores.items(), key=lambda x: x[1])
+            if top_pattern[1] >= 4:
+                pattern_name = self.patterns.get(top_pattern[0], "Unknown")
+                intensity = self._classify_pattern_intensity(top_pattern[1])
+                
+                # Mobile-friendly insight display
+                intensity_class = intensity.lower().replace(' ', '').replace('-', '')
+                st.markdown(f"""
+                <div class="insight-preview">
+                    <strong>💡 Pattern emerging:</strong> {pattern_name}<br>
+                    <span class="pattern-strength-{intensity_class}">[{intensity} intensity detected]</span><br>
+                    <small>Your responses suggest this may be a key focus area for transformation</small>
+                </div>
+                """, unsafe_allow_html=True)
+
+    def _render_progress(self):
+        """Render mobile-optimized progress indicator"""
+        answered = len(st.session_state.assessment_responses)
+        total = self._estimate_total_questions()
+        progress = answered / total if total > 0 else 0
+        time_remaining = self._estimate_time_remaining()
+        
+        st.markdown(f"""
+        <div class="progress-container">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <span><strong>Question {answered + 1} of {total}</strong></span>
+                <span><strong>{int(progress * 100)}%</strong></span>
+            </div>
+            <div class="progress-bar" style="margin: 0.5rem 0;">
+                <div class="progress-fill" style="width: {progress * 100}%"></div>
+            </div>
+            <div style="text-align: center; font-size: 0.8rem; color: #6b7280;">
+                ~ {time_remaining:.0f} minutes remaining
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    def _render_header(self):
+        """Render mobile-optimized assessment header"""
+        time_remaining = self._estimate_time_remaining()
+        
+        # Mobile-friendly header
+        st.markdown("""
+        <div style="text-align: center; padding: 1rem 0; background: #f8fafc; border-radius: 8px; margin-bottom: 1rem;">
+            <h2 style="margin: 0; color: #273548;">Behavioral pattern assessment</h2>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.info(f"💡 **Understanding your unique patterns** is key to targeted, effective hypnotherapy. This takes about {time_remaining:.0f} minutes on mobile.")
+
+    def _render_navigation(self):
+        """Render navigation controls with SKIP button restored - MOBILE OPTIMIZED"""
+        col1, col2, col3 = st.columns([1, 2, 1])
+        
+        with col1:
+            if len(st.session_state.assessment_responses) > 0:
+                if st.button("← Back", key="nav_back", use_container_width=True, help="Go to previous question"):
+                    self._go_back()
+                    st.rerun()
+        
+        with col2:
+            answered_count = len(st.session_state.assessment_responses)
+            total_count = self._estimate_total_questions()
+            st.markdown(f"""
+            <div style="text-align: center; padding: 0.5rem; color: #556D7A; font-size: 0.85rem; font-weight: 500;">
+                <strong>{answered_count}/{total_count}</strong> completed
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            # SKIP button - always available except for first question
+            current_q_id, current_question = self._get_current_question()
+            if current_q_id and current_q_id > 1:  # Don't allow skipping the first question
+                if st.button("Skip", key="nav_skip", use_container_width=True, help="Skip this question", type="secondary"):
+                    skip_question = {"text": "Skipped", "type": "skip", "phase": "skip"}
+                    self._save_response(current_q_id, "Skipped", skip_question)
+                    self._advance_question()
+                    st.rerun()
 
     def _show_pattern_insights(self):
         """Show emerging pattern insights during assessment"""
@@ -4177,7 +4426,7 @@ class ComprehensiveBehavioralAssessment:
             if submitted:
                 if not email.strip():
                     st.error("❌ Email is required")
-                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
+                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
                     st.error("❌ Valid email address is required")
                 elif not marketing_consent:
                     st.error("❌ Please consent to follow-up communications to receive your results")
