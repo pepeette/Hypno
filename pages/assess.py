@@ -4094,6 +4094,7 @@ class ComprehensiveBehavioralAssessment:
                     assessment_data = {
                         'contact_info': st.session_state.contact_info,
                         'assessment_results': st.session_state.assessment_results,
+                        'responses': st.session_state.assessment_responses,
                         'assessment_responses': st.session_state.assessment_responses,
                         'intensity_responses': st.session_state.intensity_responses,
                         'adaptive_triggered': st.session_state.adaptive_paths,
