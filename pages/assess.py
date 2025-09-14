@@ -4177,7 +4177,7 @@ class ComprehensiveBehavioralAssessment:
             if submitted:
                 if not email.strip():
                     st.error("❌ Email is required")
-                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
                     st.error("❌ Valid email address is required")
                 elif not marketing_consent:
                     st.error("❌ Please consent to follow-up communications to receive your results")
