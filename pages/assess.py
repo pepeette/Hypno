@@ -2069,11 +2069,16 @@ optimal intervention design.
         """Render user-centric results page with comprehensive insights"""
         self._render_results_hero()
         self._render_pattern_insights()
-        self._render_pattern_cost_analysis()
-        self._render_aha_moment_bridge()
-        if st.session_state.is_digital_native:
-            self._render_digital_insights()
-        self._render_transformation_roadmap()
+        
+        # COMMENTED OUT FOR NOW - WILL BE ENABLED IN COMPLETE BLUEPRINT:
+        # self._render_pattern_cost_analysis()
+        # self._render_aha_moment_bridge()
+        # if st.session_state.is_digital_native:
+        #     self._render_digital_insights()
+        # self._render_transformation_roadmap()
+        
+        # Jump directly to empowerment and next steps
+        self._render_empowerment_section()
         self._render_next_steps_section()
 
     def _render_results_hero(self):
@@ -2126,7 +2131,8 @@ optimal intervention design.
         # Sort patterns by score
         sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
         
-        # Pattern descriptions
+        # Pattern descriptions (keep for later use)
+        """
         pattern_descriptions = {
             1: {
                 "description": "You may find it challenging to accept or maintain positive emotional states",
@@ -2174,8 +2180,46 @@ optimal intervention design.
                 "transformation": "Establishing consistent, healthy boundaries across all situations"
             }
         }
+        """
         
-        # Show top 3 patterns with insights
+        # Show only the first pattern with basic info
+        if sorted_patterns:
+            pattern_id, score = sorted_patterns[0]
+            pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
+            
+            # Determine severity
+            if score >= 6:
+                intensity_text = "High intensity"
+                badge_color = "🔴"
+            elif score >= 4:
+                intensity_text = "Moderate intensity" 
+                badge_color = "🟡"
+            elif score >= 2:
+                intensity_text = "Mild intensity"
+                badge_color = "🟢"
+            else:
+                intensity_text = "Emerging pattern"
+                badge_color = "🟢"
+            
+            with st.container():
+                col1, col2 = st.columns([3, 1])
+                with col1:
+                    st.markdown(f"**1. {pattern_name}**")
+                with col2:
+                    st.markdown(f"{badge_color} {intensity_text}")
+                
+                st.markdown("This primary pattern has been identified and will be addressed in your personalized sessions.")
+                st.markdown("---")
+        
+        # Show count of additional patterns if present
+        if len(sorted_patterns) > 1:
+            additional_count = len(sorted_patterns) - 1
+            st.markdown(f"**Plus {additional_count} additional pattern{'s' if additional_count > 1 else ''} identified**")
+            st.caption("Complete pattern analysis and interaction mapping available in your clinical consultation.")
+        
+        # COMMENTED OUT SECTIONS FOR LATER USE:
+        """
+        # Show top 3 patterns with insights - FULL VERSION FOR LATER
         for i, (pattern_id, score) in enumerate(sorted_patterns[:3]):
             pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
             pattern_info = pattern_descriptions.get(pattern_id, {
@@ -2210,7 +2254,7 @@ optimal intervention design.
                 st.info(f"**Transformation potential:** {pattern_info['transformation']}")
                 st.markdown("---")
         
-        # Show additional patterns if present
+        # Show additional patterns if present - FULL VERSION
         if len(sorted_patterns) > 3:
             additional_count = len(sorted_patterns) - 3
             additional_patterns = [self.patterns.get(pid, f"Pattern {pid}") for pid, _ in sorted_patterns[3:]]
@@ -2218,14 +2262,7 @@ optimal intervention design.
             st.markdown(f"**Additional patterns identified ({additional_count})**")
             st.markdown(f"Your comprehensive analysis also reveals these supporting patterns: {', '.join(additional_patterns)}")
             st.caption("These will be addressed as part of your integrated transformation approach.")
-        
-        # # Add cost analysis and aha moment
-        # self._render_pattern_cost_analysis()
-        # self._render_aha_moment_bridge()
-        
-        # # Digital despair analysis if applicable
-        # if st.session_state.is_digital_native:
-        #     self._render_digital_insights()
+        """
     
     def _render_pattern_cost_analysis(self):
         """Render pattern cost analysis using Streamlit components"""
@@ -2432,18 +2469,21 @@ optimal intervention design.
     
     def _render_empowerment_section(self):
         """Render empowerment section using Streamlit components"""
-        readiness_indicators = self._extract_readiness_indicators()
-        user_insights = self._extract_user_insights()
+        # COMMENTED OUT FOR NOW:
+        # readiness_indicators = self._extract_readiness_indicators()
+        # user_insights = self._extract_user_insights()
         
         st.markdown("#### You have everything needed for rapid transformation")
         
-        st.markdown("**Your transformation readiness indicators:**")
-        st.markdown(readiness_indicators, unsafe_allow_html=True)
+        # COMMENTED OUT:
+        # st.markdown("**Your transformation readiness indicators:**")
+        # st.markdown(readiness_indicators, unsafe_allow_html=True)
         
         st.success("**Key insight:** Your pattern recognition ability is already strong - that's 60% of the transformation work already complete.")
         
-        if user_insights:
-            st.markdown(user_insights, unsafe_allow_html=True)
+        # COMMENTED OUT:
+        # if user_insights:
+        #     st.markdown(user_insights, unsafe_allow_html=True)
         
         st.markdown("**Most people see initial shifts within 48 hours of Session 1**")
     
