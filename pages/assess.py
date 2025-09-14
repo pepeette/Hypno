@@ -129,6 +129,101 @@ def apply_clinical_styles():
     .text-center {
         text-align: center;
     }
+    /* Enhanced Results Page Styles */
+    .results-hero {
+        background: linear-gradient(135deg, #F3F6F8 0%, #e1f0f0 100%);
+        padding: 2rem;
+        border-radius: 12px;
+        margin: 1rem 0;
+        text-align: center;
+        border: 1px solid #CBD5E1;
+    }
+    .insight-card {
+        background: #FFFFFF;
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 1px solid #E2E8F0;
+        margin: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .pattern-badge {
+        display: inline-block;
+        background: #4CA1A3;
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin: 0.2rem;
+    }
+    .severity-high { background: #ef4444; }
+    .severity-moderate { background: #eab308; }
+    .severity-mild { background: #4CA1A3; }
+    .severity-minimal { background: #22c55e; }
+    .next-step-card {
+        background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+    .timeline-item {
+        display: flex;
+        align-items: center;
+        margin: 0.8rem 0;
+        padding: 0.5rem;
+        background: #F3F6F8;
+        border-radius: 6px;
+        border-left: 3px solid #4CA1A3;
+    }
+    .timeline-number {
+        background: #4CA1A3;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    .priority-banner {
+        background: #fef3c7;
+        border: 1px solid #eab308;
+        color: #92400e;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        font-weight: 500;
+    }
+    .success-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0.5rem 0;
+    }
+    .success-bar {
+        flex: 1;
+        height: 8px;
+        background: #E2E8F0;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .success-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4CA1A3 0%, #22c55e 100%);
+        transition: width 0.5s ease;
+    }
+    .transformation-preview {
+        background: #f0f9ff;
+        border: 1px solid #0ea5e9;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
     @media (max-width: 768px) {
         .main .block-container {
             padding-left: 1rem;
@@ -1912,146 +2007,624 @@ Session 1 will focus on completing any missing sequence components for
 optimal intervention design.
 """
 
-    def _render_results(self):
-        """Render final results page"""
-        st.markdown("## Your behavioral pattern analysis")
+    # def _render_results(self):
+    #     """Render final results page"""
+    #     st.markdown("## Your behavioral pattern analysis")
         
-        # Show digital native indicator if applicable
-        if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis:
-                severity = digital_analysis['severity_level']
-                score = digital_analysis['digital_despair_score']
+    #     # Show digital native indicator if applicable
+    #     if st.session_state.is_digital_native:
+    #         digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+    #         if digital_analysis:
+    #             severity = digital_analysis['severity_level']
+    #             score = digital_analysis['digital_despair_score']
                 
-                # if severity in ['SEVERE', 'MODERATE']:
-                #     st.markdown(f"""
-                #     <div class="digital-indicator">
-                #     📲 Algorithmic Syndrome Detected: {severity} ({score:.0f}% score) - Specialized intervention required
-                #     </div>
-                #     """, unsafe_allow_html=True)
+    #             # if severity in ['SEVERE', 'MODERATE']:
+    #             #     st.markdown(f"""
+    #             #     <div class="digital-indicator">
+    #             #     📲 Algorithmic Syndrome Detected: {severity} ({score:.0f}% score) - Specialized intervention required
+    #             #     </div>
+    #             #     """, unsafe_allow_html=True)
         
-        # Direct to clinical analysis
-        self._render_clinical_analysis_section()
+    #     # Direct to clinical analysis
+    #     self._render_clinical_analysis_section()
     
-        st.markdown("### Your next steps")
+    #     st.markdown("### Your next steps")
         
+    #     contact_info = st.session_state.get('contact_info', {})
+    #     urgency = contact_info.get('urgency', '')
+        
+    #     if 'extremely urgent' in urgency.lower() or 'very urgent' in urgency.lower():
+    #         st.warning("⚠️ **Priority contact**: Given your urgency level, our clinical team will contact you within 24 hours.")
+        
+    #     # Show different messaging for digital natives
+    #     if st.session_state.is_digital_native:
+    #         digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+    #         if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
+    #             st.info("💡 **Specialized approach**: Your assessment indicates algorithmical divide patterns that require adapted hypnotherapy techniques for optimal results.")
+        
+    #     st.markdown("""
+    #     **What happens next:**
+    
+    #     1. **Clinical review** (24-48 hours): Licensed therapist analyzes your responses
+    #     2. **Initial contact** (48-72 hours): We have reached out via your preferred method  
+    #     3. **Personalized protocol** (within 72 hours): Custom hypnotherapy approach designed for your patterns
+        
+    #     **Want to understand our proven method?** Visit **[hypnotherapy.streamlit.app](https://hypnotherapy.streamlit.app)** to learn about our rapid transformation hypnotherapy approach.
+        
+    #     **Questions?** Reply to any email from us or contact our clinical team directly.
+    #     """)
+        
+    #     # Add bottom CTA button
+    #     st.markdown(f"""
+    #     <div class="text-center">
+    #         <a href="{self.discovery_url}" 
+    #            target="_blank" 
+    #            class="cta-button">
+    #            📞 Schedule your session
+    #         </a>
+    #     </div>
+    #     """, unsafe_allow_html=True)
+
+    def _render_results(self):
+        """Render user-centric results page with comprehensive insights"""
+        self._render_results_hero()
+        self._render_pattern_insights()
+        self._render_transformation_roadmap()
+        self._render_next_steps_section()
+
+    def _render_results_hero(self):
+        """Render the hero section with key insights"""
+        results = st.session_state.assessment_results
+        pattern_scores = results.get('pattern_scores', {})
+        
+        # Calculate key metrics
+        total_patterns = len(pattern_scores)
+        completion_rate = results.get('completion_rate', 1.0)
+        success_probability = self._calculate_comprehensive_success_rate()
+        
+        # Check for urgency
+        contact_info = st.session_state.get('contact_info', {})
+        urgency = contact_info.get('urgency', '')
+        is_urgent = any(word in urgency.lower() for word in ['extremely', 'very urgent', 'significantly impacting'])
+        
+        # Priority banner for urgent cases
+        if is_urgent:
+            st.markdown("""
+            <div class="priority-banner">
+                <strong>Priority contact scheduled</strong> - Given your urgency level, our clinical team will contact you within 24 hours to expedite your transformation process.
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Main hero section
+        st.markdown(f"""
+        <div class="results-hero">
+            <h2 style="margin-bottom: 0.5rem;">Your personal transformation blueprint is ready</h2>
+            <p style="font-size: 1.1rem; color: #556D7A; margin-bottom: 1.5rem;">
+                Based on your comprehensive assessment, we've identified your unique pattern signature
+            </p>
+            
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem;">
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 600; color: #4CA1A3;">{total_patterns}</div>
+                    <div style="font-size: 0.9rem; color: #556D7A;">Patterns identified</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 600; color: #4CA1A3;">{completion_rate*100:.0f}%</div>
+                    <div style="font-size: 0.9rem; color: #556D7A;">Assessment complete</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 600; color: #4CA1A3;">{success_probability}%</div>
+                    <div style="font-size: 0.9rem; color: #556D7A;">Success probability</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Success probability visualization
+        st.markdown(f"""
+        <div class="success-indicator">
+            <span style="font-weight: 600; color: #273548;">Transformation success likelihood:</span>
+            <div class="success-bar">
+                <div class="success-fill" style="width: {success_probability}%"></div>
+            </div>
+            <span style="font-weight: 600; color: #4CA1A3;">{success_probability}%</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    def _render_pattern_insights(self):
+        """Render detailed pattern insights in user-friendly format"""
+        results = st.session_state.assessment_results
+        pattern_scores = results.get('pattern_scores', {})
+        
+        if not pattern_scores:
+            st.warning("Pattern analysis incomplete - please complete the full assessment for detailed insights.")
+            return
+        
+        st.markdown("### Your core behavioral patterns")
+        
+        # Sort patterns by score
+        sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+        
+        # Pattern descriptions with transformation potential
+        pattern_descriptions = {
+            1: {
+                "description": "You may find it challenging to accept or maintain positive emotional states",
+                "impact": "This can limit your ability to fully enjoy success and happiness",
+                "transformation": "Learning to trust that joy and success can be sustainable and deserved"
+            },
+            2: {
+                "description": "You experience recurring conflicts and power struggles in relationships",
+                "impact": "This can create stress and prevent collaborative problem-solving",
+                "transformation": "Developing skills for curious dialogue and win-win resolution"
+            },
+            3: {
+                "description": "You maintain a default skepticism about others' intentions",
+                "impact": "This protective mechanism may limit deep connections and opportunities",
+                "transformation": "Calibrating trust responses and building authentic relationships"
+            },
+            4: {
+                "description": "You tend toward black-and-white thinking patterns",
+                "impact": "This can limit creative solutions and increase decision paralysis",
+                "transformation": "Developing nuanced thinking and embracing creative possibilities"
+            },
+            5: {
+                "description": "Your self-worth is closely tied to productivity and achievement",
+                "impact": "This can lead to burnout and difficulty with rest or self-care",
+                "transformation": "Anchoring worth in your inherent value, independent of accomplishments"
+            },
+            6: {
+                "description": "Your sense of identity shifts significantly across different contexts",
+                "impact": "This can create internal confusion and emotional exhaustion",
+                "transformation": "Integrating an authentic, consistent self across all situations"
+            },
+            7: {
+                "description": "You prioritize others' needs while neglecting your own self-care",
+                "impact": "This can lead to resentment and emotional depletion over time",
+                "transformation": "Developing healthy boundaries and self-care practices"
+            },
+            8: {
+                "description": "Your life choices are driven more by family expectations than personal desires",
+                "impact": "This can create internal conflict and limit authentic self-expression",
+                "transformation": "Clarifying personal values while maintaining family harmony"
+            },
+            9: {
+                "description": "Your boundaries and limits vary dramatically based on context",
+                "impact": "This can lead to inconsistent relationships and self-advocacy",
+                "transformation": "Establishing consistent, healthy boundaries across all situations"
+            }
+        }
+        
+        # Show top 3 patterns with insights
+        for i, (pattern_id, score) in enumerate(sorted_patterns[:3]):
+            pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
+            pattern_info = pattern_descriptions.get(pattern_id, {
+                "description": "Unique behavioral pattern requiring individual exploration",
+                "impact": "May be affecting your daily life and relationships",
+                "transformation": "Personalized approach will be developed in your sessions"
+            })
+            
+            # Determine severity styling
+            if score >= 6:
+                severity_class = "severity-high"
+                intensity_text = "High intensity"
+            elif score >= 4:
+                severity_class = "severity-moderate" 
+                intensity_text = "Moderate intensity"
+            elif score >= 2:
+                severity_class = "severity-mild"
+                intensity_text = "Mild intensity"
+            else:
+                severity_class = "severity-minimal"
+                intensity_text = "Emerging pattern"
+            
+            st.markdown(f"""
+            <div class="insight-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h4 style="margin: 0; color: #273548;">{i+1}. {pattern_name}</h4>
+                    <span class="pattern-badge {severity_class}">{intensity_text}</span>
+                </div>
+                
+                <p style="margin: 0.5rem 0; color: #556D7A;"><strong>What this means:</strong> {pattern_info['description']}</p>
+                <p style="margin: 0.5rem 0; color: #556D7A;"><strong>Current impact:</strong> {pattern_info['impact']}</p>
+                
+                <div class="transformation-preview">
+                    <strong style="color: #0ea5e9;">Transformation potential:</strong> {pattern_info['transformation']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Show additional patterns if present
+        if len(sorted_patterns) > 3:
+            additional_count = len(sorted_patterns) - 3
+            additional_patterns = [self.patterns.get(pid, f"Pattern {pid}") for pid, _ in sorted_patterns[3:]]
+            
+            st.markdown(f"""
+            <div class="insight-card">
+                <h4 style="color: #273548;">Additional patterns identified ({additional_count})</h4>
+                <p style="color: #556D7A;">Your comprehensive analysis also reveals these supporting patterns: {', '.join(additional_patterns)}</p>
+                <p style="color: #556D7A; font-style: italic;">These will be addressed as part of your integrated transformation approach.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Digital despair analysis if applicable
+        if st.session_state.is_digital_native:
+            self._render_digital_insights()
+    
+    def _render_digital_insights(self):
+        """Render digital despair syndrome insights if applicable"""
+        digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+        if not digital_analysis:
+            return
+        
+        severity = digital_analysis['severity_level']
+        score = digital_analysis['digital_despair_score']
+        
+        # Digital-specific insights
+        digital_insights = {
+            'SEVERE': {
+                'title': 'Specialized digital-native approach required',
+                'description': 'Your assessment reveals significant digital conditioning patterns that require adapted therapeutic techniques.',
+                'benefits': 'With proper specialized approach, you can integrate your digital competencies with real-world confidence and authentic emotional expression.',
+                'color': '#ef4444'
+            },
+            'MODERATE': {
+                'title': 'Enhanced digital-aware therapy recommended', 
+                'description': 'You show moderate digital conditioning that benefits from modified therapeutic approaches.',
+                'benefits': 'Standard techniques enhanced with digital awareness will optimize your transformation process.',
+                'color': '#eab308'
+            },
+            'MILD': {
+                'title': 'Digital considerations integrated',
+                'description': 'Some digital influence detected that will be incorporated into your standard approach.',
+                'benefits': 'Your digital skills can be leveraged as strengths in your transformation journey.',
+                'color': '#4CA1A3'
+            },
+            'MINIMAL': {
+                'title': 'Traditional approach optimal',
+                'description': 'Minimal digital conditioning detected - standard hypnotherapy approach is ideal.',
+                'benefits': 'You can benefit from proven traditional techniques without modification.',
+                'color': '#22c55e'
+            }
+        }
+        
+        insight = digital_insights.get(severity, digital_insights['MINIMAL'])
+        
+        st.markdown(f"""
+        <div class="insight-card" style="border-left: 4px solid {insight['color']};">
+            <h4 style="color: #273548; margin-bottom: 0.5rem;">Digital pattern analysis: {insight['title']}</h4>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0;">
+                <span style="color: #556D7A;">Digital conditioning score:</span>
+                <strong style="color: {insight['color']};">{score:.0f}% ({severity})</strong>
+            </div>
+            <p style="color: #556D7A; margin: 0.5rem 0;">{insight['description']}</p>
+            <div style="background: #f0f9ff; padding: 0.8rem; border-radius: 6px; margin-top: 1rem;">
+                <strong style="color: #0ea5e9;">Specialized advantage:</strong> {insight['benefits']}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    def _render_transformation_roadmap(self):
+        """Render personalized transformation roadmap"""
+        st.markdown("### Your transformation roadmap")
+        
+        # Estimate timeline and sessions needed
+        pattern_count = len(st.session_state.pattern_scores)
+        digital_severity = st.session_state.assessment_results.get('digital_despair_analysis', {}).get('severity_level', 'MINIMAL')
+        
+        # Determine session structure
+        if pattern_count >= 5 or digital_severity in ['SEVERE', 'MODERATE']:
+            sessions = "2-3 sessions"
+            timeline = "3-4 weeks"
+            session_3_prob = "40-60%"
+        elif pattern_count >= 3:
+            sessions = "2 sessions"
+            timeline = "2-3 weeks" 
+            session_3_prob = "20-30%"
+        else:
+            sessions = "2 sessions"
+            timeline = "2 weeks"
+            session_3_prob = "10-15%"
+        
+        # Phase timeline
+        phases = [
+            {
+                "title": "Pattern analysis & rapport building",
+                "duration": "Session 1 (90 minutes)",
+                "description": "Complete behavioral sequence mapping, core belief identification, and initial positive programming",
+                "outcome": "Clear understanding of your unique patterns and therapeutic alliance established"
+            },
+            {
+                "title": "Core transformation & programming",
+                "duration": "Session 2 (90 minutes)", 
+                "description": "Direct pattern interruption, new empowering response installation, and future scenario testing",
+                "outcome": "Fundamental shifts in automatic responses and new positive patterns anchored"
+            },
+            {
+                "title": "Integration & mastery",
+                "duration": f"Session 3 if needed ({session_3_prob} probability)",
+                "description": "Pattern reinforcement, fine-tuning, and long-term stability anchoring",
+                "outcome": "Complete integration and sustained transformation confidence"
+            }
+        ]
+        
+        st.markdown(f"""
+        <div class="insight-card">
+            <h4 style="color: #273548; margin-bottom: 1rem;">Estimated transformation timeline: {timeline}</h4>
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                <div style="background: #F3F6F8; padding: 0.8rem; border-radius: 6px; flex: 1; min-width: 200px;">
+                    <strong style="color: #4CA1A3;">Total sessions:</strong> {sessions}
+                </div>
+                <div style="background: #F3F6F8; padding: 0.8rem; border-radius: 6px; flex: 1; min-width: 200px;">
+                    <strong style="color: #4CA1A3;">Timeline:</strong> {timeline} for complete transformation
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Phase breakdown
+        for i, phase in enumerate(phases):
+            st.markdown(f"""
+            <div class="timeline-item">
+                <div class="timeline-number">{i+1}</div>
+                <div style="flex: 1;">
+                    <h5 style="margin: 0 0 0.3rem 0; color: #273548;">{phase['title']}</h5>
+                    <div style="font-size: 0.9rem; color: #4CA1A3; font-weight: 600; margin-bottom: 0.3rem;">{phase['duration']}</div>
+                    <p style="margin: 0.3rem 0; color: #556D7A; font-size: 0.9rem;">{phase['description']}</p>
+                    <div style="font-size: 0.85rem; color: #22c55e; font-style: italic; margin-top: 0.5rem;">
+                        <strong>Expected outcome:</strong> {phase['outcome']}
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    def _render_next_steps_section(self):
+        """Render clear next steps and contact information"""
         contact_info = st.session_state.get('contact_info', {})
         urgency = contact_info.get('urgency', '')
         
+        st.markdown("### What happens next")
+        
+        # Immediate next steps based on urgency
         if 'extremely urgent' in urgency.lower() or 'very urgent' in urgency.lower():
-            st.warning("⚠️ **Priority contact**: Given your urgency level, our clinical team will contact you within 24 hours.")
+            contact_timeline = "within 24 hours"
+            priority_text = "Given your urgency level, you're on our priority contact list."
+        else:
+            contact_timeline = "within 48-72 hours"
+            priority_text = "You'll hear from our clinical team soon."
         
-        # Show different messaging for digital natives
-        if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
-                st.info("💡 **Specialized approach**: Your assessment indicates algorithmical divide patterns that require adapted hypnotherapy techniques for optimal results.")
+        next_steps = [
+            {
+                "title": "Clinical review",
+                "timeline": "24-48 hours",
+                "description": f"Licensed therapist analyzes your comprehensive assessment and designs your personalized approach. {priority_text}"
+            },
+            {
+                "title": "Personal contact", 
+                "timeline": contact_timeline,
+                "description": "We reach out via your preferred method to schedule your first transformation session."
+            },
+            {
+                "title": "Transformation begins",
+                "timeline": "Within 1 week",
+                "description": "Your personalized hypnotherapy protocol begins, targeting your specific pattern constellation."
+            }
+        ]
         
+        for i, step in enumerate(next_steps):
+            st.markdown(f"""
+            <div class="timeline-item">
+                <div class="timeline-number">{i+1}</div>
+                <div style="flex: 1;">
+                    <h5 style="margin: 0 0 0.3rem 0; color: #273548;">{step['title']}</h5>
+                    <div style="font-size: 0.9rem; color: #4CA1A3; font-weight: 600; margin-bottom: 0.3rem;">{step['timeline']}</div>
+                    <p style="margin: 0; color: #556D7A; font-size: 0.9rem;">{step['description']}</p>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Call to action section
         st.markdown("""
-        **What happens next:**
-    
-        1. **Clinical review** (24-48 hours): Licensed therapist analyzes your responses
-        2. **Initial contact** (48-72 hours): We have reached out via your preferred method  
-        3. **Personalized protocol** (within 72 hours): Custom hypnotherapy approach designed for your patterns
-        
-        **Want to understand our proven method?** Visit **[hypnotherapy.streamlit.app](https://hypnotherapy.streamlit.app)** to learn about our rapid transformation hypnotherapy approach.
-        
-        **Questions?** Reply to any email from us or contact our clinical team directly.
-        """)
-        
-        # Add bottom CTA button
-        st.markdown(f"""
-        <div class="text-center">
-            <a href="{self.discovery_url}" 
-               target="_blank" 
-               class="cta-button">
-               📞 Schedule your session
-            </a>
+        <div class="next-step-card">
+            <h4 style="margin: 0 0 1rem 0; color: white;">Ready to start your transformation?</h4>
+            <p style="margin: 0 0 1.5rem 0; color: white; opacity: 0.9;">
+                While you wait for our clinical team to contact you, learn more about our proven rapid transformation method.
+            </p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                <a href="https://hypnotherapy.streamlit.app" 
+                   target="_blank" 
+                   style="background: white; color: #4CA1A3; padding: 0.8rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">
+                   Learn about our method
+                </a>
+                <span style="color: white; opacity: 0.8;">or</span>
+                <a href="https://calendly.com/laetitiasheppard/discovery" 
+                   target="_blank" 
+                   style="border: 2px solid white; color: white; padding: 0.8rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">
+                   Schedule direct consultation
+                </a>
+            </div>
         </div>
         """, unsafe_allow_html=True)
+        
+        # Additional support information
+        st.markdown("""
+        <div class="insight-card">
+            <h4 style="color: #273548; margin-bottom: 0.5rem;">Questions or need immediate support?</h4>
+            <p style="color: #556D7A; margin: 0.5rem 0;">
+                <strong>Email:</strong> Reply to any assessment email you receive from us<br>
+                <strong>Direct contact:</strong> Our clinical team will reach out to you personally<br>
+                <strong>Emergency support:</strong> If you're experiencing crisis, please contact your local emergency services
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Clinical analysis access
+        self._render_clinical_analysis_section()
+    
+    # def _render_clinical_analysis_section(self):
+    #     """Render clinical analysis with paywall integration"""
+    #     if PAYWALL_AVAILABLE:
+    #         try:
+    #             paywall = create_clinical_paywall()
+    #             assessment_data = {
+    #                 'assessment_results': st.session_state.assessment_results,
+    #                 'assessment_responses': st.session_state.assessment_responses,
+    #                 'intensity_responses': st.session_state.intensity_responses,
+    #                 'is_digital_native': st.session_state.is_digital_native,
+    #                 'digital_despair_analysis': st.session_state.assessment_results.get('digital_despair_analysis')
+    #             }
+    #             contact_info = st.session_state.get('contact_info', {})
+    #             assessment_data.update(contact_info)
+                
+    #             if paywall.check_payment_status():
+    #                 paywall.render_premium_analysis(assessment_data)
+    #             else:
+    #                 self._render_analysis_preview()
+    #                 with st.expander("🔓 Unlock complete clinical analysis", expanded=False):
+    #                     paywall.render_paywall_interface(assessment_data)
+    #         except Exception as e:
+    #             st.error(f"Error loading premium analysis: {str(e)}")
+    #             self._render_analysis_preview()
+    #     else:
+    #         st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
+    #         self._render_analysis_preview()
 
     def _render_clinical_analysis_section(self):
         """Render clinical analysis with paywall integration"""
+        st.markdown("---")
+        st.markdown("### Complete clinical analysis")
+        
         if PAYWALL_AVAILABLE:
             try:
                 paywall = create_clinical_paywall()
                 assessment_data = {
                     'assessment_results': st.session_state.assessment_results,
                     'assessment_responses': st.session_state.assessment_responses,
-                    'intensity_responses': st.session_state.intensity_responses,
+                    'intensity_responses': st.session_state.get('intensity_responses', {}),
                     'is_digital_native': st.session_state.is_digital_native,
                     'digital_despair_analysis': st.session_state.assessment_results.get('digital_despair_analysis')
                 }
-                contact_info = st.session_state.get('contact_info', {})
-                assessment_data.update(contact_info)
+                
+                # Add contact info if available
+                if 'contact_info' in st.session_state:
+                    assessment_data.update(st.session_state.contact_info)
                 
                 if paywall.check_payment_status():
                     paywall.render_premium_analysis(assessment_data)
                 else:
-                    self._render_analysis_preview()
-                    with st.expander("🔓 Unlock complete clinical analysis", expanded=False):
+                    # Enhanced preview section
+                    st.markdown("""
+                    <div class="insight-card" style="border: 2px solid #4CA1A3;">
+                        <h4 style="color: #273548; margin-bottom: 1rem;">Unlock your complete clinical analysis</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                            <div style="background: #F3F6F8; padding: 1rem; border-radius: 6px;">
+                                <strong style="color: #4CA1A3;">Pattern interactions</strong>
+                                <p style="margin: 0.5rem 0 0 0; color: #556D7A; font-size: 0.9rem;">How your patterns reinforce each other and optimal intervention points</p>
+                            </div>
+                            <div style="background: #F3F6F8; padding: 1rem; border-radius: 6px;">
+                                <strong style="color: #4CA1A3;">Behavioral sequence mapping</strong>
+                                <p style="margin: 0.5rem 0 0 0; color: #556D7A; font-size: 0.9rem;">Complete trigger-to-outcome chain with breaking points identified</p>
+                            </div>
+                            <div style="background: #F3F6F8; padding: 1rem; border-radius: 6px;">
+                                <strong style="color: #4CA1A3;">Personalized session design</strong>
+                                <p style="margin: 0.5rem 0 0 0; color: #556D7A; font-size: 0.9rem;">Exact hypnotic approach and session structure for your patterns</p>
+                            </div>
+                            <div style="background: #F3F6F8; padding: 1rem; border-radius: 6px;">
+                                <strong style="color: #4CA1A3;">Resistance prediction</strong>
+                                <p style="margin: 0.5rem 0 0 0; color: #556D7A; font-size: 0.9rem;">Likely resistance points and how to navigate them</p>
+                            </div>
+                        </div>
+                        
+                        <p style="color: #556D7A; margin: 1rem 0; text-align: center; font-style: italic;">
+                            This detailed analysis complements your upcoming clinical consultation
+                        </p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    with st.expander("Access complete clinical analysis", expanded=False):
                         paywall.render_paywall_interface(assessment_data)
+                        
             except Exception as e:
                 st.error(f"Error loading premium analysis: {str(e)}")
-                self._render_analysis_preview()
+                self._render_simple_analysis_preview()
         else:
-            st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
-            self._render_analysis_preview()
+            st.info("Complete clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning are available with premium access.")
+            self._render_simple_analysis_preview()
 
-    def _render_analysis_preview(self):
-        """Render preview of analysis results"""
+    def _render_simple_analysis_preview(self):
+        """Render simple analysis preview when paywall is not available"""
         results = st.session_state.assessment_results
         pattern_scores = results.get('pattern_scores', {})
         
-        # Show algorithmical divide results if applicable
-        if st.session_state.is_digital_native:
-            digital_analysis = results.get('digital_despair_analysis')
-            if digital_analysis:
-                severity = digital_analysis['severity_level']
-                score = digital_analysis['digital_despair_score']
-                
-                st.markdown(f"**📲 Algorithmic syndrome assessment: {severity}** ({score:.0f}% score)")
-                
-                if severity in ['SEVERE', 'MODERATE']:
-                    st.warning(f"⚠️ **Hypnotherapy required** - Traditional approaches may be less effective")
-                else:
-                    st.success("✅ **Standard approach suitable** with highly targetted analysis")
-        
-        # Show traditional patterns
         if pattern_scores:
-            st.markdown("**🎯 Your top behavioral patterns:**")
             sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            dominant_pattern = self.patterns.get(sorted_patterns[0][0], "Unknown")
             
-            descriptions = {
-                1: "Difficulty accepting or maintaining positive emotional states",
-                2: "Recurring conflicts and power struggles in relationships", 
-                3: "Default skepticism and difficulty trusting others' intentions",
-                4: "Black-and-white thinking patterns that limit options",
-                5: "Self-worth tied to productivity and achievement",
-                6: "Inconsistent sense of identity across different contexts",
-                7: "Prioritizing others' needs while neglecting self-care",
-                8: "Life choices driven by family expectations",
-                9: "Context-dependent loss of personal boundaries"
-            }
-            
-            # Show only the top pattern
-            if sorted_patterns:
-                pattern_id, score = sorted_patterns[0]
-                pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
-                strength = "High" if score >= 6 else "Moderate" if score >= 3 else "Emerging"
-                
-                st.markdown(f"**1. {pattern_name}** - *{strength} intensity pattern detected*")
-                
-                if pattern_id in descriptions:
-                    st.caption(descriptions[pattern_id])
-                
-                # Show indication of additional patterns if there are more
-                if len(sorted_patterns) > 1:
-                    remaining = len(sorted_patterns) - 1
-                    st.write(f"**2. ...** *Plus {remaining} additional pattern{'s' if remaining > 1 else ''} identified*")
+            st.markdown(f"""
+            <div class="insight-card">
+                <h4 style="color: #273548;">Clinical analysis preview</h4>
+                <p style="color: #556D7A;">
+                    <strong>Primary focus:</strong> {dominant_pattern} pattern transformation<br>
+                    <strong>Complexity level:</strong> {"High" if len(sorted_patterns) >= 4 else "Moderate" if len(sorted_patterns) >= 2 else "Standard"}<br>
+                    <strong>Approach:</strong> {"Specialized digital-native protocol" if st.session_state.is_digital_native else "Standard clinical hypnotherapy"}
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    # def _render_analysis_preview(self):
+    #     """Render preview of analysis results"""
+    #     results = st.session_state.assessment_results
+    #     pattern_scores = results.get('pattern_scores', {})
         
-        # Info section outside the expander
-        st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
+    #     # Show algorithmical divide results if applicable
+    #     if st.session_state.is_digital_native:
+    #         digital_analysis = results.get('digital_despair_analysis')
+    #         if digital_analysis:
+    #             severity = digital_analysis['severity_level']
+    #             score = digital_analysis['digital_despair_score']
+                
+    #             st.markdown(f"**📲 Algorithmic syndrome assessment: {severity}** ({score:.0f}% score)")
+                
+    #             if severity in ['SEVERE', 'MODERATE']:
+    #                 st.warning(f"⚠️ **Hypnotherapy required** - Traditional approaches may be less effective")
+    #             else:
+    #                 st.success("✅ **Standard approach suitable** with highly targetted analysis")
+        
+    #     # Show traditional patterns
+    #     if pattern_scores:
+    #         st.markdown("**🎯 Your top behavioral patterns:**")
+    #         sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            
+    #         descriptions = {
+    #             1: "Difficulty accepting or maintaining positive emotional states",
+    #             2: "Recurring conflicts and power struggles in relationships", 
+    #             3: "Default skepticism and difficulty trusting others' intentions",
+    #             4: "Black-and-white thinking patterns that limit options",
+    #             5: "Self-worth tied to productivity and achievement",
+    #             6: "Inconsistent sense of identity across different contexts",
+    #             7: "Prioritizing others' needs while neglecting self-care",
+    #             8: "Life choices driven by family expectations",
+    #             9: "Context-dependent loss of personal boundaries"
+    #         }
+            
+    #         # Show only the top pattern
+    #         if sorted_patterns:
+    #             pattern_id, score = sorted_patterns[0]
+    #             pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
+    #             strength = "High" if score >= 6 else "Moderate" if score >= 3 else "Emerging"
+                
+    #             st.markdown(f"**1. {pattern_name}** - *{strength} intensity pattern detected*")
+                
+    #             if pattern_id in descriptions:
+    #                 st.caption(descriptions[pattern_id])
+                
+    #             # Show indication of additional patterns if there are more
+    #             if len(sorted_patterns) > 1:
+    #                 remaining = len(sorted_patterns) - 1
+    #                 st.write(f"**2. ...** *Plus {remaining} additional pattern{'s' if remaining > 1 else ''} identified*")
+        
+    #     # Info section outside the expander
+    #     st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
 
 
 # ---- Main Application Classes ----
