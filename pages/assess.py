@@ -3883,13 +3883,13 @@ class ComprehensiveBehavioralAssessment:
         if not st.session_state.assessment_completed:
             time_remaining = self._estimate_time_remaining()
             
-            # Show digital native indicator if applicable
-            if st.session_state.is_digital_native and st.session_state.current_phase != 'age_screening':
-                st.markdown("""
-                <div class="digital-indicator">
-                🖥️ Digital-native assessment active - specialized approach enabled
-                </div>
-                """, unsafe_allow_html=True)
+            # # Show digital native indicator if applicable
+            # if st.session_state.is_digital_native and st.session_state.current_phase != 'age_screening':
+            #     st.markdown("""
+            #     <div class="digital-indicator">
+            #     🖥️ Digital-native assessment active - specialized approach enabled
+            #     </div>
+            #     """, unsafe_allow_html=True)
             
             st.info(f"Understanding **your unique behavioral patterns** is the key to **targeted, effective hypnotherapy** that brings rapid, lasting change. This assessment takes about {time_remaining:.0f} minutes to complete.")
 
@@ -3936,8 +3936,8 @@ class ComprehensiveBehavioralAssessment:
         }
         phase_display = phase_names.get(current_phase, current_phase.title())
         
-        if current_phase != 'age_screening':
-            st.caption(f"**Phase:** {phase_display}")
+        # if current_phase != 'age_screening':
+        #     st.caption(f"**Phase:** {phase_display}")
 
         # Question display
         st.markdown(f"### {question['text']}")
