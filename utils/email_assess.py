@@ -2421,31 +2421,31 @@ Missing components require exploration using these therapeutic questions:
         
         if not responses:
             return """
-╔══════════════════════════════════════════════════════════════╗
-║                    ASSESSMENT TRANSCRIPT                     ║
-╚══════════════════════════════════════════════════════════════╝
-
-Status: No detailed responses recorded
-Recommendation: Complete assessment for full clinical analysis
-
-"""
+    ╔══════════════════════════════════════════════════════════════╗
+    ║                    ASSESSMENT TRANSCRIPT                     ║
+    ╚══════════════════════════════════════════════════════════════╝
+    
+    Status: No detailed responses recorded
+    Recommendation: Complete assessment for full clinical analysis
+    
+    """
         
         section = """
-╔══════════════════════════════════════════════════════════════╗
-║                    ASSESSMENT TRANSCRIPT                     ║
-║                  Phase-Organized Responses                   ║
-╚══════════════════════════════════════════════════════════════╝
-
-"""
+    ╔══════════════════════════════════════════════════════════════╗
+    ║                    ASSESSMENT TRANSCRIPT                     ║
+    ║                  Phase-Organized Responses                   ║
+    ╚══════════════════════════════════════════════════════════════╝
+    
+    """
         
         # Organize responses by phase
         phases = {
-            'age_assessment': '🎂 AGE & DEMOGRAPHIC ASSESSMENT',
-            'digital_assessment': '💻 DIGITAL NATIVE EVALUATION', 
-            'engagement_assessment': '📞 ENGAGEMENT & URGENCY ASSESSMENT',
+            'age_screening': '🎂 AGE & DEMOGRAPHIC ASSESSMENT',
+            'digital_screening': '💻 DIGITAL NATIVE EVALUATION', 
+            'engagement': '📞 ENGAGEMENT & URGENCY ASSESSMENT',
             'trigger_mapping': '🔗 BEHAVIORAL TRIGGER MAPPING',
-            'pattern_assessment': '🧠 BEHAVIORAL PATTERN ANALYSIS',
-            'integration_assessment': '🎯 INTEGRATION & COMPLETION'
+            'pattern_specific': '🧠 BEHAVIORAL PATTERN ANALYSIS',
+            'integration': '🎯 INTEGRATION & COMPLETION'
         }
         
         # Sort responses by phase and question ID
@@ -2458,11 +2458,12 @@ Recommendation: Complete assessment for full clinical analysis
         
         # Sort within each phase
         for phase in phase_responses:
-            phase_responses[phase].sort(key=lambda x: int(x[0]) if x[0].isdigit() else float('inf'))
+            phase_responses[phase].sort(key=lambda x: int(x[0]) if str(x[0]).isdigit() else float('inf'))
         
         total_responses = 0
         high_intensity_responses = 0
         
+        # Process matched phases first
         for phase_key in phases.keys():
             if phase_key in phase_responses:
                 section += f"\n{phases[phase_key]}:\n"
@@ -2523,19 +2524,82 @@ Recommendation: Complete assessment for full clinical analysis
                             section += f"Time: {timestamp}\n"
                     
                     section += "─" * 30 + "\n"
+    
+        # Handle any unmatched phases
+        unmatched_phases = set(phase_responses.keys()) - set(phases.keys())
+        for unmatched_phase in unmatched_phases:
+            if unmatched_phase in phase_responses:
+                section += f"\n📝 {unmatched_phase.upper().replace('_', ' ')}:\n"
+                section += "─" * 60 + "\n"
+                
+                for response_id, response_data in phase_responses[unmatched_phase]:
+                    total_responses += 1
+                    
+                    question_text = response_data.get('question_text', 'Unknown question')
+                    response = response_data.get('response', 'No response')
+                    intensity = response_data.get('intensity', 0)
+                    timestamp = response_data.get('timestamp', 'Unknown time')
+                    question_type = response_data.get('question_type', 'Unknown type')
+                    patterns = response_data.get('patterns', [])
+                    
+                    if intensity >= 6:
+                        high_intensity_responses += 1
+                    
+                    section += f"\nQ{response_id} [{question_type.upper()}]:\n"
+                    section += f"Question: {question_text}\n"
+                    
+                    # Format response based on type
+                    if isinstance(response, dict):
+                        if 'rating' in response:
+                            section += f"Response: Rating {response['rating']}/10"
+                            if response.get('follow_up'):
+                                section += f" - {response['follow_up']}"
+                            section += "\n"
+                        else:
+                            section += f"Response: Multiple selections:\n"
+                            for item, item_intensity in response.items():
+                                section += f"  • {item}: {item_intensity}/7\n"
+                    elif isinstance(response, list):
+                        section += f"Response: {', '.join(response)}\n"
+                    else:
+                        section += f"Response: {response}\n"
+                    
+                    if intensity and intensity != response:
+                        section += f"Intensity: {intensity}/7 {'(HIGH CLINICAL SIGNIFICANCE)' if intensity >= 6 else '(MODERATE)' if intensity >= 4 else ''}\n"
+                    
+                    if patterns:
+                        pattern_names = []
+                        for pattern in patterns:
+                            if isinstance(pattern, int) and pattern in self.pattern_names:
+                                pattern_names.append(f"{pattern}. {self.pattern_names[pattern]}")
+                            elif isinstance(pattern, str):
+                                pattern_names.append(pattern)
+                        
+                        if pattern_names:
+                            section += f"Associated Patterns: {', '.join(pattern_names)}\n"
+                    
+                    if timestamp != 'Unknown time':
+                        try:
+                            dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                            formatted_time = dt.strftime("%H:%M:%S")
+                            section += f"Time: {formatted_time}\n"
+                        except:
+                            section += f"Time: {timestamp}\n"
+                    
+                    section += "─" * 30 + "\n"
         
         # Transcript quality metrics
         high_intensity_percentage = (high_intensity_responses / total_responses * 100) if total_responses > 0 else 0
         
         section += f"""
-
-📊 TRANSCRIPT QUALITY METRICS:
-Total Responses Recorded: {total_responses}
-High-Intensity Responses (≥6): {high_intensity_responses} ({high_intensity_percentage:.0f}%)
-Assessment Depth: {'COMPREHENSIVE' if total_responses >= 20 else 'SUBSTANTIAL' if total_responses >= 15 else 'BASIC' if total_responses >= 10 else 'LIMITED'}
-Clinical Data Quality: {'EXCELLENT' if high_intensity_percentage >= 30 else 'GOOD' if high_intensity_percentage >= 20 else 'ADEQUATE' if high_intensity_percentage >= 10 else 'LIMITED'}
-
-"""
+    
+    📊 TRANSCRIPT QUALITY METRICS:
+    Total Responses Recorded: {total_responses}
+    High-Intensity Responses (≥6): {high_intensity_responses} ({high_intensity_percentage:.0f}%)
+    Assessment Depth: {'COMPREHENSIVE' if total_responses >= 20 else 'SUBSTANTIAL' if total_responses >= 15 else 'BASIC' if total_responses >= 10 else 'LIMITED'}
+    Clinical Data Quality: {'EXCELLENT' if high_intensity_percentage >= 30 else 'GOOD' if high_intensity_percentage >= 20 else 'ADEQUATE' if high_intensity_percentage >= 10 else 'LIMITED'}
+    
+    """
         
         return section
 
