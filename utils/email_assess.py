@@ -1924,7 +1924,7 @@ BEHAVIORAL CHAIN COMPLETENESS: {completeness_percentage}% ({captured_count}/{tot
         return section
 
     def _build_assessment_transcript(self, assessment_data):
-        """Build assessment transcript section"""
+        """Build complete assessment transcript section"""
         responses = assessment_data.get('assessment_responses', {})
         
         if not responses:
@@ -1939,26 +1939,110 @@ Status: No detailed transcript available
 📝 ASSESSMENT TRANSCRIPT:
 ══════════════════════════════════════════════════════════════════
 
-RESPONSE SUMMARY:
-Total Questions: {len(responses)}
+COMPLETE CLIENT RESPONSES:
+Total Questions Answered: {len(responses)}
+
 """
         
-        # Show sample responses
-        sorted_responses = sorted(responses.items(), key=lambda x: int(str(x[0])))
+        # Show ALL responses, organized by phase
+        sorted_responses = sorted(responses.items(), key=lambda x: int(str(x[0])) if str(x[0]).isdigit() else float('inf'))
         
-        section += "\nSAMPLE RESPONSES:\n"
+        # Organize by phase
+        phases = {
+            'age_screening': '🎂 AGE SCREENING',
+            'digital_screening': '💻 DIGITAL ASSESSMENT', 
+            'engagement': '📞 ENGAGEMENT ASSESSMENT',
+            'trigger_mapping': '🔗 TRIGGER MAPPING',
+            'pattern_specific': '🧠 PATTERN ANALYSIS',
+            'integration': '🎯 INTEGRATION',
+            'unknown': '📝 OTHER RESPONSES'
+        }
         
-        for i, (q_id, response_data) in enumerate(sorted_responses[:5], 1):
-            question_text = response_data.get('question_text', 'Unknown question')
-            response = response_data.get('response', 'No response')
-            
-            section += f"\nQ{q_id}: {question_text[:80]}...\n"
-            section += f"Response: {str(response)[:100]}...\n"
+        phase_responses = {}
+        for q_id, response_data in sorted_responses:
+            phase = response_data.get('phase', 'unknown')
+            if phase not in phase_responses:
+                phase_responses[phase] = []
+            phase_responses[phase].append((q_id, response_data))
         
-        if len(responses) > 5:
-            section += f"\n... and {len(responses) - 5} more responses\n"
+        # Display all responses by phase
+        for phase_key in phases.keys():
+            if phase_key in phase_responses:
+                section += f"\n{phases[phase_key]}:\n"
+                section += "─" * 60 + "\n"
+                
+                for q_id, response_data in phase_responses[phase_key]:
+                    question_text = response_data.get('question_text', 'Unknown question')
+                    response = response_data.get('response', 'No response')
+                    intensity = response_data.get('intensity', None)
+                    question_type = response_data.get('question_type', 'unknown')
+                    timestamp = response_data.get('timestamp', 'Unknown time')
+                    
+                    section += f"\nQ{q_id} [{question_type.upper()}]:\n"
+                    section += f"Question: {question_text}\n"
+                    
+                    # Format response based on type
+                    if isinstance(response, dict):
+                        if 'rating' in response:
+                            section += f"Response: Rating {response['rating']}/10"
+                            if response.get('follow_up'):
+                                section += f" - Follow-up: {response['follow_up']}"
+                            section += "\n"
+                        else:
+                            section += "Response: Multiple selections:\n"
+                            for item, item_intensity in response.items():
+                                section += f"  • {item}: {item_intensity}/7\n"
+                    elif isinstance(response, list):
+                        section += f"Response: {', '.join(map(str, response))}\n"
+                    else:
+                        # Handle long text responses
+                        response_str = str(response)
+                        if len(response_str) > 200:
+                            section += f"Response: {response_str[:200]}...\n"
+                        else:
+                            section += f"Response: {response_str}\n"
+                    
+                    # Add intensity if available and different from response
+                    if intensity and intensity != response:
+                        section += f"Intensity: {intensity}/7"
+                        if intensity >= 6:
+                            section += " (HIGH CLINICAL SIGNIFICANCE)"
+                        elif intensity >= 4:
+                            section += " (MODERATE)"
+                        section += "\n"
+                    
+                    # Add timestamp
+                    if timestamp != 'Unknown time':
+                        try:
+                            from datetime import datetime
+                            dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                            formatted_time = dt.strftime("%H:%M:%S")
+                            section += f"Time: {formatted_time}\n"
+                        except:
+                            section += f"Time: {timestamp}\n"
+                    
+                    section += "─" * 30 + "\n"
         
-        return section + "\n"
+        # Add transcript statistics
+        text_responses = sum(1 for r in responses.values() 
+                           if isinstance(r.get('response'), str) and len(r.get('response', '')) > 50)
+        choice_responses = len(responses) - text_responses
+        
+        # Calculate average intensity
+        intensity_responses = [r.get('intensity', 0) for r in responses.values() if r.get('intensity')]
+        avg_intensity = sum(intensity_responses) / len(intensity_responses) if intensity_responses else 0
+        
+        section += f"""
+📊 TRANSCRIPT STATISTICS:
+Total Responses: {len(responses)}
+Text Responses: {text_responses}
+Choice Responses: {choice_responses}
+Average Response Intensity: {avg_intensity:.1f}/7
+High Intensity Responses (≥6): {len([i for i in intensity_responses if i >= 6])}
+
+"""
+        
+        return section
 
     def _build_action_items_section(self, assessment_data):
         """Build action items section"""
