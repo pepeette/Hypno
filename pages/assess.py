@@ -2828,7 +2828,7 @@ class ComprehensiveBehavioralAssessment:
             }
         }
 
-def _determine_digital_native_status(self, age_response):
+    def _determine_digital_native_status(self, age_response):
         """Enhanced digital native determination"""
         age_options = ["Under 18", "18-22", "23-27", "28-32", "33-37", "38-42", "43-50", "Over 50"]
         scoring = [3, 5, 4, 3, 2, 1, 0, 0]
@@ -3273,7 +3273,7 @@ def _determine_digital_native_status(self, age_response):
         else:
             return "Low - Single dominant pattern with minimal complications"
 
-def _map_complete_behavioral_sequence(self):
+    def _map_complete_behavioral_sequence(self):
         """Map the complete behavioral sequence from trigger to consequence"""
         sequence = {}
         
@@ -3441,7 +3441,7 @@ def _map_complete_behavioral_sequence(self):
         
         return resistance
 
-def _design_personalized_sessions(self):
+    def _design_personalized_sessions(self):
         """Design personalized hypnotherapy sessions based on all assessment data"""
         
         # Extract preferences from responses
@@ -3761,7 +3761,7 @@ def _design_personalized_sessions(self):
         
         return approaches
 
-def _get_next_question(self):
+    def _get_next_question(self):
         """Enhanced question flow with adaptive logic"""
         answered = set(st.session_state.assessment_responses.keys())
         
@@ -4039,7 +4039,7 @@ def _get_next_question(self):
         total = 25
         return min(100, (answered / total) * 100)
 
-def _handle_single_choice(self, q_id, question):
+    def _handle_single_choice(self, q_id, question):
         """Handle single choice questions with one-click advancement"""
         for i, option in enumerate(question['options']):
             if st.button(option, key=f"q_{q_id}_opt_{i}", use_container_width=True):
@@ -4336,7 +4336,7 @@ def _handle_single_choice(self, q_id, question):
                     self._advance_question()
                     st.rerun()
 
-def render(self):
+    def render(self):
         """Main rendering method with mobile-first responsive design"""
         apply_clinical_styles()
         self._render_header()
@@ -4821,7 +4821,7 @@ def render(self):
         </div>
         """, unsafe_allow_html=True)
 
-def _format_clinical_template(self):
+    def _format_clinical_template(self):
         """Format comprehensive clinical template for email delivery"""
         
         # Get comprehensive analysis
