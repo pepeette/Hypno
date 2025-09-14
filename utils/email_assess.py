@@ -2849,12 +2849,8 @@ Enhanced Clinical Assessment Support
 
 
 # Convenience functions for backward compatibility
-def send_clinical_assessment_results(client_info, assessment_data):
+def send_clinical_assessment_results(assessment_data):
     """Legacy function wrapper for sending assessment results"""
-    # Convert old format to new format if necessary
-    if 'contact_info' not in assessment_data:
-        assessment_data['contact_info'] = client_info
-    
     handler = EnhancedClinicalAssessmentEmailHandler()
     return handler.send_assessment_results(assessment_data)
 
