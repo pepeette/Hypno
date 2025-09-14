@@ -6,10 +6,13 @@
 import streamlit as st
 from datetime import datetime
 import re
+
 from components.blueprint import create_behavioral_blueprint
-from utils.cloud_storage import CloudStorage
+from utils.cloud_storage_streamlit import StreamlitCloudStorage
 from utils.pdf_generator import PDFGenerator
 import uuid
+import base64
+import json
 
 # ---- Paywall Integration ----
 try:
@@ -1638,8 +1641,9 @@ class ComprehensiveBehavioralAssessment:
                 }
                 description = severity_descriptions.get(severity, 'Assessment incomplete')
                 
-                st.metric("Digital patterns", f"{severity}", f"{digital_score:.0f}%")
-                st.caption(description)
+                st.metric("", "Digital patterns}", f"{digital_score:.0f}%")
+                #st.metric("Digital patterns", f"{severity}", f"{digital_score:.0f}%")
+                #st.caption(description)
             with col4:
                 completion_rate = results.get('completion_rate', 1.0)
                 st.metric("", "Completion rate", f"{completion_rate*100:.0f}%")
@@ -2097,7 +2101,7 @@ optimal intervention design.
         
         # Blueprint preview and full access
         self._render_blueprint_access(assessment_data)
-    
+        
 
     def _render_results_hero(self):
         """Render the hero section with key insights using Streamlit components"""
@@ -2874,6 +2878,7 @@ optimal intervention design.
             'assessment_version': '2.0'
         }
     
+
     def _render_blueprint_access(self, assessment_data):
         """Render blueprint access with preview and full version"""
         st.markdown("### Your complete transformation blueprint")
@@ -2955,8 +2960,8 @@ optimal intervention design.
                 pdf_generator = PDFGenerator()
                 pdf_bytes = pdf_generator.generate_blueprint_pdf(assessment_data)
                 
-                # Save to cloud storage
-                cloud_storage = CloudStorage()
+                # Save to Streamlit Community Cloud storage
+                cloud_storage = StreamlitCloudStorage()
                 pdf_url = cloud_storage.save_pdf(
                     pdf_bytes, 
                     f"blueprint_{assessment_data['session_id']}.pdf"
@@ -2973,9 +2978,9 @@ optimal intervention design.
                     use_container_width=True
                 )
                 
-                # Show cloud link
+                # Show cloud access info
                 if pdf_url:
-                    st.info(f"📡 Your report is also available in the cloud: [Access here]({pdf_url})")
+                    st.info("📡 Your report is saved and can be accessed through the download link above.")
                     
         except Exception as e:
             st.error(f"Error generating PDF: {str(e)}")
@@ -2985,7 +2990,7 @@ optimal intervention design.
         """Save assessment data to cloud storage"""
         try:
             with st.spinner("Saving to cloud..."):
-                cloud_storage = CloudStorage()
+                cloud_storage = StreamlitCloudStorage()
                 
                 # Save complete assessment data
                 cloud_url = cloud_storage.save_assessment_data(
@@ -2994,16 +2999,16 @@ optimal intervention design.
                 )
                 
                 if cloud_url:
-                    st.success("✅ Assessment saved to cloud successfully!")
-                    st.info(f"📡 Access your data anytime: [Cloud link]({cloud_url})")
+                    st.success("✅ Assessment saved successfully!")
+                    st.info("📡 Your data is securely stored and can be accessed via download links.")
                     
                     # Store cloud reference in session
                     st.session_state.cloud_save_url = cloud_url
                 else:
-                    st.warning("⚠️ Cloud save partially completed. Data is secure but link generation failed.")
+                    st.warning("⚠️ Save completed locally. Cloud storage may have limitations.")
                     
         except Exception as e:
-            st.error(f"Error saving to cloud: {str(e)}")
+            st.error(f"Error saving: {str(e)}")
     
     def _email_blueprint(self, assessment_data):
         """Email the blueprint to user"""
@@ -3015,15 +3020,15 @@ optimal intervention design.
             return
         
         try:
-            with st.spinner("Sending blueprint to your email..."):
+            with st.spinner("Preparing blueprint email..."):
                 # Generate PDF first
                 pdf_generator = PDFGenerator()
                 pdf_bytes = pdf_generator.generate_blueprint_pdf(assessment_data)
                 
                 # Send email with attachment
-                from utils.email_blueprint import send_blueprint_email
+                from utils.email_blueprint_streamlit import send_blueprint_email_streamlit
                 
-                success = send_blueprint_email(
+                success = send_blueprint_email_streamlit(
                     user_email=user_email,
                     user_name=contact_info.get('name', 'Valued Client'),
                     assessment_data=assessment_data,
@@ -3031,21 +3036,17 @@ optimal intervention design.
                 )
                 
                 if success:
-                    st.success(f"✅ Blueprint sent to {user_email}")
-                    st.info("📧 Check your inbox (and spam folder) for your personalized report.")
+                    st.success(f"✅ Blueprint prepared for {user_email}")
+                    st.info("📧 Email will be sent within 24 hours by our clinical team.")
                 else:
-                    st.warning("⚠️ Email sending encountered an issue. Please try again or contact support.")
+                    st.warning("⚠️ Blueprint prepared. Our team will contact you directly.")
                     
         except Exception as e:
-            st.error(f"Error sending email: {str(e)}")
+            st.error(f"Error preparing email: {str(e)}")
     
     def _get_user_agent(self):
         """Get basic user agent info for analytics"""
-        try:
-            # This would typically come from request headers in a full web app
-            return "Streamlit App User"
-        except:
-            return "Unknown"
+        return "Streamlit Community Cloud User"
 
 # ---- Main Application Classes ----
 class AssessPage:
