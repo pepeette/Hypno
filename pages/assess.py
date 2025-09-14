@@ -193,7 +193,7 @@
 #                 "text": "If this issue completely resolved, what would be different about your daily life?",
 #                 "type": "text_completion",
 #                 "placeholder": "Describe what you'd be doing differently in 6 months - be as specific as possible about the changes you'd see...",
-#                 "min_chars": 5,
+#                 "min_chars": 3,
 #                 "pattern_analysis": True,
 #                 "keywords": {
 #                     "productivity": [5], "relationships": [2, 3, 6, 7], "peace": [1], 
@@ -247,7 +247,7 @@
 #                 "text": "Thinking of the most recent time, what was happening in the 30 seconds right before this pattern kicked in?",
 #                 "type": "text_completion",
 #                 "placeholder": "Be specific: Where were you? Who was present? What was being discussed or happening? What did you see, hear, or notice?",
-#                 "min_chars": 5,
+#                 "min_chars": 3,
 #                 "trigger_analysis": True,
 #                 "phase": "trigger_mapping"
 #             },
@@ -287,7 +287,7 @@
 #                 "text": "What thought automatically appears when you feel that physical sensation?",
 #                 "type": "text_completion",
 #                 "placeholder": "The actual words that go through your mind - even if they seem harsh or unreasonable. What does your inner voice say?",
-#                 "min_chars": 5,
+#                 "min_chars": 3,
 #                 "pattern_keywords": {
 #                     "not good enough": [1], "fight": [2], "can't trust": [3], 
 #                     "either or": [4], "must do": [5], "can't be real": [6],
@@ -397,7 +397,7 @@
 #                     "text": "What would you lose if you allowed yourself to be genuinely happy?",
 #                     "type": "text_completion",
 #                     "placeholder": "Think about identity, relationships, what others might think, or what might change...",
-#                     "min_chars": 5,
+#                     "min_chars": 3,
 #                     "pattern": 1
 #                 }
 #             },
@@ -2478,7 +2478,7 @@
 
 
 # Complete Enhanced Clinical Behavioral Pattern Assessment
-# Integrated with Digital Despair Syndrome screening and analysis
+# Integrated with algorithmical divide Syndrome screening and analysis
 # Comprehensive implementation with adaptive questioning and pattern detection
 # Optimized for both traditional and digital-native populations
 
@@ -2620,7 +2620,7 @@ def apply_clinical_styles():
 
 # ---- Enhanced Assessment Class ----
 class ComprehensiveBehavioralAssessment:
-    """Clinical-grade behavioral pattern assessment with Digital Despair Syndrome integration"""
+    """Clinical-grade behavioral pattern assessment with algorithmical divide Syndrome integration"""
     
     def __init__(self):
         self._init_session_state()
@@ -2684,7 +2684,7 @@ class ComprehensiveBehavioralAssessment:
         }
 
     def _get_digital_screening_questions(self):
-        """Phase 1: Digital Despair Syndrome Screening (for digital natives)"""
+        """Phase 1: Algorithmic Syndrome Screening (for digital natives)"""
         return {
             1: {
                 "text": "On average, how many hours per day do you spend on digital devices (excluding required work)?",
@@ -2831,7 +2831,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "If this issue completely resolved, what would be different about your daily life?",
                 "type": "text_completion",
                 "placeholder": "Describe what you'd be doing differently in 6 months - be as specific as possible about the changes you'd see...",
-                "min_chars": 20,
+                "min_chars": 3,
                 "pattern_analysis": True,
                 "keywords": {
                     "productivity": [5], "relationships": [2, 3, 6, 7], "peace": [1], 
@@ -2885,7 +2885,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "Thinking of the most recent time, what was happening in the 30 seconds right before this pattern kicked in?",
                 "type": "text_completion",
                 "placeholder": "Be specific: Where were you? Who was present? What was being discussed or happening? What did you see, hear, or notice?",
-                "min_chars": 20,
+                "min_chars": 5,
                 "trigger_analysis": True,
                 "phase": "trigger_mapping"
             },
@@ -2925,7 +2925,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "What thought automatically appears when you feel that physical sensation?",
                 "type": "text_completion",
                 "placeholder": "The actual words that go through your mind - even if they seem harsh or unreasonable. What does your inner voice say?",
-                "min_chars": 10,
+                "min_chars": 3,
                 "pattern_keywords": {
                     "not good enough": [1], "fight": [2], "can't trust": [3], 
                     "either or": [4], "must do": [5], "can't be real": [6],
@@ -3035,7 +3035,7 @@ class ComprehensiveBehavioralAssessment:
                     "text": "What would you lose if you allowed yourself to be genuinely happy?",
                     "type": "text_completion",
                     "placeholder": "Think about identity, relationships, what others might think, or what might change...",
-                    "min_chars": 15,
+                    "min_chars": 3,
                     "pattern": 1
                 }
             },
@@ -3224,7 +3224,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "What would need to be true for you to feel completely safe changing this pattern?",
                 "type": "text_completion",
                 "placeholder": "Think about what guarantees, support, or conditions you'd need to feel safe letting go...",
-                "min_chars": 15,
+                "min_chars": 3,
                 "safety_assessment": True,
                 "phase": "integration"
             },
@@ -3245,15 +3245,15 @@ class ComprehensiveBehavioralAssessment:
                 "text": "Imagine you've completely transformed this pattern. What's the first thing you'd do that you can't do now?",
                 "type": "text_completion",
                 "placeholder": "Be specific about the first action, conversation, or decision you'd make...",
-                "min_chars": 15,
+                "min_chars": 5,
                 "outcome_visualization": True,
                 "phase": "integration"
             }
         }
 
-    # ---- Digital Despair Analysis Methods ----
+    # ---- algorithmical divide Analysis Methods ----
     def _analyze_digital_despair_indicators(self, responses):
-        """Analyze responses for Digital Despair Syndrome indicators"""
+        """Analyze responses for algorithmical divide Syndrome indicators"""
         
         # Age factor (digital native status)
         age_response = responses.get(0, {}).get('response', '')
@@ -3270,7 +3270,7 @@ class ComprehensiveBehavioralAssessment:
         
         # Determine if digital native assessment was triggered
         if digital_native_score < 2:
-            return None  # Skip digital despair analysis for non-digital natives
+            return None  # Skip algorithmical divide analysis for non-digital natives
         
         # Extract component scores
         reality_dissociation = self._extract_reality_dissociation_score(responses)
@@ -3281,7 +3281,7 @@ class ComprehensiveBehavioralAssessment:
         hope_avoidance = self._extract_hope_avoidance_score(responses)
         attention_fragmentation = self._extract_attention_fragmentation_score(responses)
         
-        # Calculate composite Digital Despair Score
+        # Calculate composite algorithmical divide Score
         total_possible = 35  # Maximum possible score across all indicators
         raw_score = (digital_native_score + reality_dissociation + binary_thinking + 
                      ironic_detachment + algorithmic_dependency + nihilistic_worldview + 
@@ -3321,7 +3321,7 @@ class ComprehensiveBehavioralAssessment:
         }
 
     def _get_therapeutic_adaptations(self, severity):
-        """Get required therapeutic adaptations based on Digital Despair severity"""
+        """Get required therapeutic adaptations based on algorithmical divide severity"""
         
         adaptations = {
             "SEVERE": [
@@ -3764,7 +3764,7 @@ class ComprehensiveBehavioralAssessment:
 
     def _handle_text_completion(self, q_id, question):
         """Handle text completion questions"""
-        min_chars = question.get('min_chars', 10)
+        min_chars = question.get('min_chars', 3)
         response = st.text_area(
             "Your response:",
             placeholder=question.get('placeholder', 'Please share your thoughts...'),
@@ -3835,7 +3835,7 @@ class ComprehensiveBehavioralAssessment:
         """Complete the assessment and prepare results"""
         st.session_state.assessment_completed = True
         
-        # Analyze digital despair if digital native
+        # Analyze algorithmical divide if digital native
         digital_analysis = None
         if st.session_state.is_digital_native:
             digital_analysis = self._analyze_digital_despair_indicators(st.session_state.assessment_responses)
@@ -4003,24 +4003,24 @@ class ComprehensiveBehavioralAssessment:
         if st.session_state.is_digital_native:
             col1, col2, col3, col4 = st.columns(4)
             with col1:
-                st.metric("Questions", results['total_questions_answered'], "Answered")
+                st.metric("", results['total_questions_answered'], "Questions answered")
             with col2:
-                st.metric("Patterns", len(results.get('pattern_scores', {})), "Detected")
+                st.metric("s", len(results.get('pattern_scores', {})), "Patterns detected")
             with col3:
                 digital_score = st.session_state.get('digital_despair_score', 0)
-                st.metric("Digital Score", f"{digital_score:.0f}%", st.session_state.get('digital_severity', 'MINIMAL'))
+                st.metric("", f"{digital_score:.0f}%", st.session_state.get('digital_severity', 'MINIMAL'))
             with col4:
                 completion_rate = results.get('completion_rate', 1.0)
-                st.metric("Completion", f"{completion_rate*100:.0f}%", "Rate")
+                st.metric("", f"{completion_rate*100:.0f}%", "Completion rate")
         else:
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("Questions", results['total_questions_answered'], "Answered")
+                st.metric("", results['total_questions_answered'], "Questions answered")
             with col2:
-                st.metric("Patterns", len(results.get('pattern_scores', {})), "Detected")
+                st.metric("", len(results.get('pattern_scores', {})), "Patterns detected")
             with col3:
                 completion_rate = results.get('completion_rate', 1.0)
-                st.metric("Completion", f"{completion_rate*100:.0f}%", "Rate")
+                st.metric("", f"{completion_rate*100:.0f}%", "Completion rate")
         
         st.markdown("**Enter your email to receive your personalized analysis and next steps:**")
         
@@ -4031,18 +4031,18 @@ class ComprehensiveBehavioralAssessment:
             # ALL OTHER FIELDS ARE OPTIONAL
             name = st.text_input("Full name (optional)", placeholder="Your full name")
             phone = st.text_input("Phone (optional)", placeholder="+1 xxx xxx xxxx")
+
+            concern = st.text_area(
+                "What brought you to this assessment? (optional)",
+                placeholder="Brief description of what motivated you to take this assessment...",
+                height=100
+            )
             
             urgency = st.selectbox(
                 "How urgent is addressing this pattern? (optional)",
                 ["Not specified", "Extremely urgent - significantly impacting life", 
                  "Very urgent - causing daily distress", "Moderately urgent - noticeable impact", 
                  "Somewhat urgent - want to address soon", "Not urgent - exploring options"]
-            )
-            
-            concern = st.text_area(
-                "What brought you to this assessment? (optional)",
-                placeholder="Brief description of what motivated you to take this assessment...",
-                height=100
             )
             
             next_step = st.selectbox(
@@ -4202,7 +4202,7 @@ Motivation Level: {"HIGH" if readiness_score >= 8 else "MODERATE" if readiness_s
 ╚══════════════════════════════════════════════════════════════╝
 
 **SYNDROME ASSESSMENT:**
-Digital Despair Score: {digital_score:.1f}% ({severity} severity)
+Algorithmical divide Score: {digital_score:.1f}% ({severity} severity)
 Clinical Recommendation: {digital_analysis['clinical_recommendation']}
 
 **SYNDROME COMPONENTS:**"""
@@ -4363,7 +4363,7 @@ optimal intervention design.
                 if severity in ['SEVERE', 'MODERATE']:
                     st.markdown(f"""
                     <div class="digital-indicator">
-                    🖥️ Digital Despair Syndrome Detected: {severity} ({score:.0f}% score) - Specialized intervention required
+                    📲 Algorithmic Syndrome Detected: {severity} ({score:.0f}% score) - Specialized intervention required
                     </div>
                     """, unsafe_allow_html=True)
         
@@ -4382,16 +4382,16 @@ optimal intervention design.
         if st.session_state.is_digital_native:
             digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
             if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
-                st.info("💡 **Specialized Approach**: Your assessment indicates digital-native psychology patterns that require adapted hypnotherapy techniques for optimal results.")
+                st.info("💡 **Specialized approach**: Your assessment indicates algorithmical divide patterns that require adapted hypnotherapy techniques for optimal results.")
         
         st.markdown("""
         **What happens next:**
     
         1. **Clinical review** (24-48 hours): Licensed therapist analyzes your responses
-        2. **Personalized protocol** (48-72 hours): Custom hypnotherapy approach designed for your patterns  
-        3. **Initial contact** (within 72 hours): We'll reach out via your preferred method
+        2. **Initial contact** (48-72 hours): We have reached out via your preferred method  
+        3. **Personalized protocol** (within 72 hours): Custom hypnotherapy approach designed for your patterns
         
-        **Want to understand our proven method?** Visit [hypnotherapy.streamlit.app](https://hypnotherapy.streamlit.app) to learn about our rapid transformation hypnotherapy approach.
+        **Want to understand our proven method?** Visit **[hypnotherapy.streamlit.app](https://hypnotherapy.streamlit.app)** to learn about our rapid transformation hypnotherapy approach.
         
         **Questions?** Reply to any email from us or contact our clinical team directly.
         """)
@@ -4440,19 +4440,19 @@ optimal intervention design.
         results = st.session_state.assessment_results
         pattern_scores = results.get('pattern_scores', {})
         
-        # Show digital despair results if applicable
+        # Show algorithmical divide results if applicable
         if st.session_state.is_digital_native:
             digital_analysis = results.get('digital_despair_analysis')
             if digital_analysis:
                 severity = digital_analysis['severity_level']
                 score = digital_analysis['digital_despair_score']
                 
-                st.markdown(f"**🖥️ Digital Despair Syndrome Assessment: {severity}** ({score:.0f}% score)")
+                st.markdown(f"**📲 Algorithmic syndrome assessment: {severity}** ({score:.0f}% score)")
                 
                 if severity in ['SEVERE', 'MODERATE']:
-                    st.warning(f"⚠️ **Specialized intervention required** - Traditional approaches may be less effective without digital-native adaptations")
+                    st.warning(f"⚠️ **Hypnotherapy required** - Traditional approaches may be less effective")
                 else:
-                    st.success("✅ **Standard approach suitable** with digital considerations")
+                    st.success("✅ **Standard approach suitable** with highly targetted analysis")
         
         # Show traditional patterns
         if pattern_scores:
@@ -4522,7 +4522,7 @@ def get_pattern_scores():
     return {}
 
 def get_digital_analysis():
-    """Get digital despair analysis if available"""
+    """Get algorithmical divide analysis if available"""
     if 'assessment_results' in st.session_state:
         return st.session_state.assessment_results.get('digital_despair_analysis')
     return None
