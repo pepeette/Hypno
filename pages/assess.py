@@ -2165,75 +2165,179 @@ except ImportError:
 
 # ---- Enhanced Styling ----
 def apply_clinical_styles():
-    """Apply enhanced clinical-grade styling with improved UX"""
+    """Apply mobile-first clinical styling with proper button behavior"""
     st.markdown("""
     <style>
     .main .block-container {
-        padding-top: 0.75rem !important;
-        padding-bottom: 0.75rem !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
         max-width: 100% !important;
     }
     @media (min-width: 768px) {
         .main .block-container {
             max-width: 650px !important;
             margin: 0 auto;
+            padding-top: 1rem !important;
         }
     }
+    
+    /* MOBILE-FIRST BUTTON STYLING */
     .stButton > button {
         width: 100% !important;
-        margin-bottom: 0.25rem !important;
-        padding: 0.6rem 1rem !important;
+        margin-bottom: 0.5rem !important;
+        padding: 0.75rem 1rem !important;
         text-align: left !important;
         background-color: #F8FAFC !important;
         border: 1px solid #E2E8F0 !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
         color: #374151 !important;
         font-size: 0.95rem !important;
         transition: all 0.2s ease !important;
-        line-height: 1.3 !important;
+        line-height: 1.4 !important;
+        min-height: 48px !important; /* Mobile touch target */
+        cursor: pointer !important;
     }
     .stButton > button:hover {
-        background-color: #F1F5F9 !important;
+        background-color: #E1F0F0 !important;
         border-color: #4CA1A3 !important;
         transform: translateY(-1px) !important;
+        box-shadow: 0 2px 8px rgba(76, 161, 163, 0.15) !important;
     }
     .stButton > button:focus {
         background-color: #E1F0F0 !important;
         border-color: #4CA1A3 !important;
         outline: none !important;
+        box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.2) !important;
     }
+    
+    /* PRIMARY BUTTON STYLING */
+    .stButton > button[data-testid="baseButton-primary"],
+    .stButton > button[kind="primary"] {
+        background: linear-gradient(135deg, #4CA1A3 0%, #357a7c 100%) !important;
+        color: white !important;
+        border: 2px solid #4CA1A3 !important;
+        text-align: center !important;
+        font-weight: 600 !important;
+    }
+    .stButton > button[data-testid="baseButton-primary"]:hover,
+    .stButton > button[kind="primary"]:hover {
+        background: linear-gradient(135deg, #357a7c 0%, #2d6465 100%) !important;
+        transform: translateY(-2px) !important;
+    }
+    
+    /* RADIO BUTTON STYLING */
+    .stRadio > div {
+        background: #F8FAFC;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid #E2E8F0;
+    }
+    .stRadio > div > label {
+        margin-bottom: 0.5rem !important;
+        padding: 0.5rem !important;
+        border-radius: 6px !important;
+        cursor: pointer !important;
+        min-height: 44px !important; /* Mobile touch target */
+        display: flex !important;
+        align-items: center !important;
+    }
+    .stRadio > div > label:hover {
+        background-color: #F1F5F9 !important;
+    }
+    
+    /* PROGRESS BAR */
     .progress-container {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         margin-bottom: 1.5rem;
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         font-weight: normal; 
         color: #556D7A;
-        padding: 0.5rem;
+        padding: 0.75rem;
+        background: #F8FAFC;
+        border-radius: 8px;
     }
     .progress-bar {
         flex: 1;
-        height: 4px;
+        height: 6px;
         background: #E2E8F0;
-        border-radius: 2px;
+        border-radius: 3px;
         overflow: hidden;
     }
     .progress-fill {
         height: 100%;
-        background: #4CA1A3;
+        background: linear-gradient(90deg, #4CA1A3 0%, #357a7c 100%);
         transition: width 0.3s ease;
     }
+    
+    /* TEXT INPUT STYLING */
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea {
+        border-radius: 8px !important;
+        border: 1px solid #E2E8F0 !important;
+        padding: 0.75rem !important;
+        font-size: 0.95rem !important;
+        min-height: 44px !important; /* Mobile touch target */
+    }
+    .stTextInput > div > div > input:focus,
+    .stTextArea > div > div > textarea:focus {
+        border-color: #4CA1A3 !important;
+        box-shadow: 0 0 0 2px rgba(76, 161, 163, 0.2) !important;
+    }
+    
+    /* SLIDER STYLING */
+    .stSlider > div > div {
+        padding: 1rem 0.5rem !important;
+    }
+    
+    /* SELECT SLIDER STYLING */
+    .stSelectSlider {
+        padding: 1rem 0 !important;
+    }
+    
+    /* MOBILE IMPROVEMENTS */
+    @media (max-width: 768px) {
+        .stButton > button {
+            font-size: 0.9rem !important;
+            padding: 1rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+        .progress-container {
+            font-size: 0.8rem;
+            padding: 0.5rem;
+        }
+        h1, h2, h3 {
+            font-size: 1.4rem !important;
+            line-height: 1.3 !important;
+            margin-bottom: 1rem !important;
+        }
+    }
+    
+    /* QUESTION STYLING */
+    .question-container {
+        margin-bottom: 2rem;
+    }
+    
+    /* SUCCESS/INFO/WARNING STYLING */
+    .stAlert {
+        border-radius: 8px !important;
+        margin: 1rem 0 !important;
+    }
+    
+    /* INSIGHT PREVIEW */
     .insight-preview {
         background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
         border-left: 4px solid #4CA1A3;
         padding: 1rem;
         margin: 1rem 0;
         border-radius: 0 6px 6px 0;
+        font-size: 0.9rem;
     }
-    .pattern-strength-high { color: #dc2626; font-weight: 600; }
-    .pattern-strength-moderate { color: #ea580c; font-weight: 600; }
-    .pattern-strength-emerging { color: #059669; font-weight: 600; }
+    
+    /* CLINICAL INDICATORS */
     .clinical-indicator {
         background: #fef3c7;
         border: 1px solid #f59e0b;
@@ -2242,21 +2346,15 @@ def apply_clinical_styles():
         margin: 0.5rem 0;
         font-size: 0.9rem;
     }
-    .digital-severity-severe { 
-        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-        color: #991b1b; 
-        border-left: 4px solid #dc2626;
-    }
-    .digital-severity-moderate { 
-        background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
-        color: #9a3412; 
-        border-left: 4px solid #ea580c;
-    }
-    .digital-severity-mild { 
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        color: #92400e; 
-        border-left: 4px solid #f59e0b;
-    }
+    
+    /* PATTERN STRENGTH COLORS */
+    .pattern-strength-veryhigh { color: #991b1b; font-weight: 700; }
+    .pattern-strength-high { color: #dc2626; font-weight: 600; }
+    .pattern-strength-moderate { color: #ea580c; font-weight: 600; }
+    .pattern-strength-emerging { color: #059669; font-weight: 600; }
+    .pattern-strength-minimal { color: #6b7280; font-weight: 500; }
+    
+    /* ANALYSIS TEASER */
     .analysis-teaser {
         background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         border: 2px dashed #4CA1A3;
@@ -2265,6 +2363,8 @@ def apply_clinical_styles():
         margin: 1rem 0;
         text-align: center;
     }
+    
+    /* CTA BUTTON */
     .cta-button {
         display: inline-block;
         background: linear-gradient(135deg, #4CA1A3 0%, #357a7c 100%);
@@ -2276,17 +2376,24 @@ def apply_clinical_styles():
         margin: 20px auto;
         text-align: center;
         transition: transform 0.2s ease;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .cta-button:hover {
         transform: translateY(-2px);
         text-decoration: none;
         color: white !important;
     }
+    
+    /* UTILITY CLASSES */
     .text-center {
         text-align: center;
     }
     </style>
     """, unsafe_allow_html=True)
+
 
 # ---- Enhanced Assessment Class ----
 class ComprehensiveBehavioralAssessment:
@@ -2329,7 +2436,9 @@ class ComprehensiveBehavioralAssessment:
             'adaptive_questions': [],
             'clinical_insights': {},
             'session_design': {},
-            'success_predictors': {}
+            'success_predictors': {},
+            'trigger_chain': {},  # Initialize trigger_chain
+            'digital_responses': {}  # Initialize digital_responses
         }
         for key, value in defaults.items():
             if key not in st.session_state:
@@ -2529,7 +2638,7 @@ class ComprehensiveBehavioralAssessment:
                 "type": "single_choice_with_intensity",
                 "options": [
                     "I feel genuinely encouraged and want to believe them",
-                    "I appreciate it but remain cautiously realistic",
+                    "I appreciate it but remain cautiously realistic", 
                     "I immediately think of reasons why they're probably wrong",
                     "I feel annoyed because they don't understand how things really are",
                     "I dismiss it as naive thinking or manipulation"
@@ -2544,10 +2653,10 @@ class ComprehensiveBehavioralAssessment:
                 "text": "Your attention span for activities without digital stimulation (books, conversations, offline tasks):",
                 "type": "single_choice",
                 "options": [
-                    "Same as it's always been - I can focus for hours",
+                    "Same as always - can focus for hours when interested",
                     "Slightly shorter but still manageable for important things",
-                    "Noticeably fragmented - I need frequent mental breaks",
-                    "Very difficult - my mind wanders within minutes",
+                    "Noticeably fragmented - need frequent mental breaks",
+                    "Very difficult - mind wanders within minutes",
                     "Almost impossible without some background digital input"
                 ],
                 "attention_fragmentation_scoring": [0, 1, 2, 3, 4],
@@ -2672,6 +2781,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "What would you potentially lose or give up if this pattern completely disappeared?",
                 "type": "text_with_analysis",
                 "placeholder": "Consider identity, relationships, familiar ways of being, or what others might think or expect...",
+                "min_chars": 15,
                 "loss_analysis": True,
                 "identity_threat_assessment": True,
                 "phase": "resistance_analysis"
@@ -2681,6 +2791,7 @@ class ComprehensiveBehavioralAssessment:
                 "text": "Who in your life might be most surprised or unsettled if you dramatically changed this pattern?",
                 "type": "text_with_analysis",
                 "placeholder": "Think about family members, partners, friends, or colleagues who are used to you being a certain way...",
+                "min_chars": 10,
                 "systemic_resistance_mapping": True,
                 "relationship_impact_prediction": True,
                 "phase": "resistance_analysis"
@@ -2714,68 +2825,10 @@ class ComprehensiveBehavioralAssessment:
                 ],
                 "change_pace_preference": True,
                 "phase": "session_design"
-            },
-            
-            26: {
-                "text": "On a scale of 1-10, how ready are you to completely let go of this pattern right now?",
-                "type": "scale_with_follow_up",
-                "scale_range": [1, 10],
-                "follow_up_threshold": 7,
-                "follow_up_question": "What would need to be different for this to be a 10?",
-                "readiness_assessment": True,
-                "phase": "session_design"
-            },
-            
-            # Integration & Future Pacing (27-30)
-            27: {
-                "text": "Imagine it's 6 months from now and this pattern has completely transformed. Describe a typical day:",
-                "type": "detailed_future_pacing",
-                "prompts": [
-                    "How do you start your morning differently?",
-                    "How do interactions with others change?",
-                    "What do you do that you couldn't do before?",
-                    "How do you feel about yourself?"
-                ],
-                "future_self_visualization": True,
-                "outcome_anchoring": True,
-                "phase": "integration"
-            },
-            
-            28: {
-                "text": "The most important thing for you to remember during the transformation process is:",
-                "type": "single_choice",
-                "options": [
-                    "You have everything within you needed to make this change",
-                    "Change can be easier and more natural than you expect",
-                    "Your past patterns were protecting you and served a purpose",
-                    "Small shifts create surprisingly large life changes",
-                    "You deserve to experience life without this limitation"
-                ],
-                "therapeutic_message_preference": True,
-                "core_programming_preparation": True,
-                "phase": "integration"
-            },
-            
-            # Final Assessment Questions (29-30)
-            29: {
-                "text": "What percentage of your mental and emotional energy does this pattern currently consume?",
-                "type": "percentage_slider",
-                "range": [0, 100],
-                "impact_quantification": True,
-                "phase": "final_assessment"
-            },
-            
-            30: {
-                "text": "If hypnotherapy completely resolved this for you, what would that mean for your life?",
-                "type": "text_with_analysis",
-                "placeholder": "Think beyond just the problem being gone - what becomes possible? How does your life expand?",
-                "transformation_vision": True,
-                "motivation_anchoring": True,
-                "phase": "final_assessment"
             }
         }
 
-    def _determine_digital_native_status(self, age_response):
+def _determine_digital_native_status(self, age_response):
         """Enhanced digital native determination"""
         age_options = ["Under 18", "18-22", "23-27", "28-32", "33-37", "38-42", "43-50", "Over 50"]
         scoring = [3, 5, 4, 3, 2, 1, 0, 0]
@@ -2904,10 +2957,10 @@ class ComprehensiveBehavioralAssessment:
         """Calculate attention fragmentation score"""
         attention_response = responses.get(14, {}).get('response', '')
         options = [
-            "Same as it's always been - I can focus for hours",
+            "Same as always - can focus for hours when interested",
             "Slightly shorter but still manageable for important things",
-            "Noticeably fragmented - I need frequent mental breaks", 
-            "Very difficult - my mind wanders within minutes",
+            "Noticeably fragmented - need frequent mental breaks", 
+            "Very difficult - mind wanders within minutes",
             "Almost impossible without some background digital input"
         ]
         scoring = [0, 1, 2, 3, 4]
@@ -3006,7 +3059,7 @@ class ComprehensiveBehavioralAssessment:
         }
         return modifications.get(severity, modifications["MINIMAL"])
 
-    # ---- Enhanced Pattern Detection ----
+# ---- Enhanced Pattern Detection ----
     def _update_pattern_scores_enhanced(self, question_id, response, question):
         """Enhanced pattern scoring with intensity and context"""
         
@@ -3106,7 +3159,7 @@ class ComprehensiveBehavioralAssessment:
         
         return detected_patterns
 
-    # ---- Enhanced Clinical Analysis Generation ----
+# ---- Enhanced Clinical Analysis Generation ----
     def _generate_comprehensive_clinical_analysis(self):
         """Generate the complete clinical analysis as outlined in requirements"""
         
@@ -3220,7 +3273,7 @@ class ComprehensiveBehavioralAssessment:
         else:
             return "Low - Single dominant pattern with minimal complications"
 
-    def _map_complete_behavioral_sequence(self):
+def _map_complete_behavioral_sequence(self):
         """Map the complete behavioral sequence from trigger to consequence"""
         sequence = {}
         
@@ -3388,338 +3441,506 @@ class ComprehensiveBehavioralAssessment:
         
         return resistance
 
-    def _design_personalized_sessions(self):
-        """Design personalized session approach"""
-        design = {}
+def _design_personalized_sessions(self):
+        """Design personalized hypnotherapy sessions based on all assessment data"""
         
-        for q_id, response_data in st.session_state.assessment_responses.items():
-            question = self.questions.get(q_id, {})
-            
-            if question.get('hypnotic_style_preference'):
-                design['preferred_style'] = response_data.get('response', 'Collaborative exploration')
-            elif question.get('change_pace_preference'):
-                design['preferred_pace'] = response_data.get('response', 'Rapid but sustainable')
-            elif question.get('session_design_input'):
-                design['approach_preference'] = response_data.get('response', 'Collaborative')
+        # Extract preferences from responses
+        hypnotic_style = self._extract_hypnotic_preference()
+        change_pace = self._extract_change_pace_preference()
+        pattern_complexity = self._assess_pattern_complexity(
+            sorted(st.session_state.pattern_scores.items(), key=lambda x: x[1], reverse=True)
+        )
         
-        # Add digital adaptations if needed
-        if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis:
-                design['digital_adaptations'] = digital_analysis.get('session_modifications', {})
+        # Design session 1
+        session_1 = {
+            'duration': '90 minutes',
+            'focus': 'Pattern analysis, rapport building, and initial programming',
+            'structure': [
+                'Rapport and safety establishment (15 minutes)',
+                'Complete behavioral sequence mapping (25 minutes)',
+                'Core belief identification and challenge (25 minutes)',
+                'Initial positive programming installation (20 minutes)',
+                'Integration and next session preparation (5 minutes)'
+            ],
+            'hypnotic_approach': hypnotic_style,
+            'resistance_management': self._predict_resistance_points()[:3]
+        }
         
-        return design
-
-    def _calculate_success_predictors(self):
-        """Calculate success predictors and probability"""
-        base_success_rate = 85  # Standard hypnotherapy success rate
+        # Design session 2
+        session_2 = {
+            'duration': '90 minutes', 
+            'focus': 'Core transformation and new pattern installation',
+            'structure': [
+                'Progress review and deepening (10 minutes)',
+                'Core pattern interruption work (30 minutes)',
+                'New empowering pattern installation (35 minutes)',
+                'Future pacing and testing (10 minutes)',
+                'Integration anchoring (5 minutes)'
+            ],
+            'transformation_targets': list(st.session_state.pattern_scores.keys())[:3]
+        }
         
-        # Adjust for pattern complexity
-        pattern_count = len([score for score in st.session_state.pattern_scores.values() if score >= 4])
-        if pattern_count >= 4:
-            base_success_rate -= 15
-        elif pattern_count >= 2:
-            base_success_rate -= 8
-        
-        # Adjust for readiness score
-        readiness_score = 7  # Default
-        for q_id, response_data in st.session_state.assessment_responses.items():
-            question = self.questions.get(q_id, {})
-            if question.get('readiness_assessment'):
-                if isinstance(response_data.get('response'), (int, float)):
-                    readiness_score = response_data['response']
-                break
-        
-        if readiness_score >= 8:
-            base_success_rate += 10
-        elif readiness_score <= 5:
-            base_success_rate -= 15
-        
-        # Adjust for digital despair factors
-        if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis:
-                adjustment = digital_analysis.get('success_rate_adjustment', 0)
-                base_success_rate += adjustment
-                # Add back points for proper adaptations
-                if digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
-                    base_success_rate += 10  # Specialized approach increases success
-        
-        # Completion rate adjustment
-        completion_rate = len(st.session_state.assessment_responses) / len(self.questions)
-        if completion_rate >= 0.9:
-            base_success_rate += 8
-        elif completion_rate <= 0.6:
-            base_success_rate -= 12
-        
-        final_rate = max(55, min(96, base_success_rate))
+        # Determine if session 3 needed
+        session_3_probability = self._calculate_session_3_probability()
         
         return {
-            'predicted_success_rate': final_rate,
-            'readiness_score': readiness_score,
-            'pattern_complexity': pattern_count,
-            'completion_engagement': completion_rate,
-            'confidence_level': 'High' if final_rate >= 80 else 'Moderate' if final_rate >= 70 else 'Requires preparation'
+            'session_1': session_1,
+            'session_2': session_2, 
+            'session_3_needed': session_3_probability > 25,
+            'session_3_probability': f"{session_3_probability}%",
+            'total_timeline': self._predict_transformation_timeline(),
+            'approach_modifications': self._get_approach_modifications()
         }
-
-    def _predict_transformation_timeline(self):
-        """Predict realistic transformation timeline"""
-        # Base timeline: 2 sessions for most people
-        base_sessions = 2
+    
+    def _extract_hypnotic_preference(self):
+        """Extract hypnotic style preference from responses"""
+        for response_data in st.session_state.assessment_responses.values():
+            if response_data.get('question_text', '').startswith('When you\'re learning'):
+                preference = response_data.get('response', '')
+                
+                if 'Direct, clear instructions' in preference:
+                    return 'Authoritarian - direct suggestions and clear commands'
+                elif 'Gentle suggestions' in preference:
+                    return 'Permissive - gentle indirect suggestions'
+                elif 'Stories, metaphors' in preference:
+                    return 'Metaphorical - story-based and imagery-rich'
+                elif 'Logical explanations' in preference:
+                    return 'Analytical - explanation-based with rationale'
+                elif 'Collaborative exploration' in preference:
+                    return 'Collaborative - mutual discovery approach'
+        
+        return 'Adaptive - flexible approach based on response'
+    
+    def _extract_change_pace_preference(self):
+        """Extract preferred change pace"""
+        for response_data in st.session_state.assessment_responses.values():
+            if 'ideal pace for transformation' in response_data.get('question_text', '').lower():
+                return response_data.get('response', 'Adaptive pacing')
+        return 'Standard progression'
+    
+    def _calculate_session_3_probability(self):
+        """Calculate probability that a third session will be needed"""
+        base_probability = 15  # Base 15% need reinforcement
         
         # Adjust for pattern complexity
-        pattern_count = len([score for score in st.session_state.pattern_scores.values() if score >= 4])
-        if pattern_count >= 4:
-            base_sessions += 1
+        pattern_count = len(st.session_state.pattern_scores)
+        if pattern_count >= 5:
+            base_probability += 20
+        elif pattern_count >= 3:
+            base_probability += 10
         
-        # Adjust for digital despair severity
-        if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis and digital_analysis['severity_level'] == 'SEVERE':
-                base_sessions += 1
-        
-        # Adjust for readiness
-        readiness_score = 7  # Default
-        for q_id, response_data in st.session_state.assessment_responses.items():
-            question = self.questions.get(q_id, {})
-            if question.get('readiness_assessment'):
-                if isinstance(response_data.get('response'), (int, float)):
-                    readiness_score = response_data['response']
-                break
-        
-        if readiness_score <= 6:
-            base_sessions += 1
-        
-        timeline = {
-            'recommended_sessions': min(4, base_sessions),
-            'initial_shifts': "48-72 hours after session 1",
-            'significant_changes': "7-14 days after session 2",
-            'full_integration': "4-8 weeks post-completion",
-            'maintenance': "Optional 6-month check-in"
-        }
-        
-        return timeline
-
-    def _rank_intervention_priorities(self):
-        """Rank intervention priorities based on pattern analysis"""
-        priorities = []
-        
-        if st.session_state.pattern_scores:
-            sorted_patterns = sorted(st.session_state.pattern_scores.items(), key=lambda x: x[1], reverse=True)
-            
-            # Primary intervention: Dominant pattern
-            if sorted_patterns:
-                primary_id, primary_score = sorted_patterns[0]
-                priorities.append({
-                    'priority': 1,
-                    'target': self.patterns.get(primary_id, 'Unknown pattern'),
-                    'approach': self._get_pattern_intervention_approach(primary_id),
-                    'session': 'Session 1 & 2 focus'
-                })
-            
-            # Secondary interventions: Supporting patterns
-            for i, (pattern_id, score) in enumerate(sorted_patterns[1:3], 2):
-                if score >= 4:  # Only significant secondary patterns
-                    priorities.append({
-                        'priority': i,
-                        'target': self.patterns.get(pattern_id, 'Unknown pattern'),
-                        'approach': self._get_pattern_intervention_approach(pattern_id),
-                        'session': f'Session {"2" if i == 2 else "3"} integration'
-                    })
-        
-        # Add digital despair intervention if needed
-        if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
-                priorities.insert(0, {
-                    'priority': 0,
-                    'target': 'Digital despair syndrome adaptations',
-                    'approach': 'Specialized digital-native protocol integration',
-                    'session': 'Throughout all sessions'
-                })
-        
-        return priorities
-
-    def _get_pattern_intervention_approach(self, pattern_id):
-        """Get specific intervention approach for each pattern"""
-        approaches = {
-            1: "Permission for natural joy, safety in happiness programming",
-            2: "Collaborative strength, curiosity about differences installation", 
-            3: "Graduated trust building, authentic connection safety",
-            4: "Both/and thinking, creative third option generation",
-            5: "Inherent worth recognition, being-state appreciation",
-            6: "Authentic self integration across all contexts",
-            7: "Balanced care system, self-preservation as service",
-            8: "Personal mission clarity separate from inherited expectations",
-            9: "Consistent boundary maintenance across all relationships"
-        }
-        return approaches.get(pattern_id, "Pattern-specific intervention protocol")
-
-    def _predict_resistance_points(self):
-        """Predict likely resistance points during transformation"""
-        resistance_points = []
-        
-        # Pattern-based resistance predictions
-        top_patterns = sorted(st.session_state.pattern_scores.items(), key=lambda x: x[1], reverse=True)[:3]
-        
-        for pattern_id, score in top_patterns:
-            if score >= 5:  # Strong patterns likely to create resistance
-                pattern_name = self.patterns.get(pattern_id, 'Unknown')
-                resistance_points.append({
-                    'source': pattern_name,
-                    'resistance_type': self._get_pattern_resistance_type(pattern_id),
-                    'management_strategy': self._get_resistance_management_strategy(pattern_id)
-                })
-        
-        # Digital native resistance patterns
-        if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
-                resistance_points.append({
-                    'source': 'Digital despair conditioning',
-                    'resistance_type': 'Intellectual superiority, cynicism about traditional approaches',
-                    'management_strategy': 'Validate intelligence, use collaborative peer-consultant model'
-                })
-        
-        return resistance_points
-
-    def _get_pattern_resistance_type(self, pattern_id):
-        """Get expected resistance type for each pattern"""
-        resistance_types = {
-            1: "Fear that happiness will lead to disappointment or loss",
-            2: "Loss of familiar power/control dynamics in relationships",
-            3: "Vulnerability anxiety about trusting others",
-            4: "Identity confusion without black-and-white thinking",
-            5: "Worth anxiety without constant doing/achieving",
-            6: "Fear of authentic self rejection or judgment",
-            7: "Guilt about prioritizing own needs over others",
-            8: "Family loyalty conflicts and guilt about independence",
-            9: "Safety concerns about maintaining boundaries"
-        }
-        return resistance_types.get(pattern_id, "Standard change resistance")
-
-    def _get_resistance_management_strategy(self, pattern_id):
-        """Get strategy for managing pattern-specific resistance"""
-        strategies = {
-            1: "Gradual happiness permission, safety anchoring with joy",
-            2: "Collaborative strength reframe, win-win possibility installation",
-            3: "Graduated trust building, discernment vs mistrust distinction",
-            4: "Creative third option celebration, both/and excitement",
-            5: "Being-state value demonstration, effortless worth experience",
-            6: "Authentic self safety testing, genuine connection rewards",
-            7: "Balanced care as ultimate service, sustainable giving model",
-            8: "Personal mission discovery, family honor through authenticity",
-            9: "Boundary strength as relationship gift, respectful firmness"
-        }
-        return strategies.get(pattern_id, "Standard resistance management")
-
-    def _recommend_therapeutic_approach(self):
-        """Recommend overall therapeutic approach"""
-        approach = {
-            'primary_modality': 'Rapid transformation hypnotherapy',
-            'session_structure': '2+1 session protocol',
-            'hypnotic_style': 'Collaborative permissive with targeted interventions'
-        }
-        
-        # Adjust for digital native status
+        # Adjust for digital native factors
         if st.session_state.is_digital_native:
             digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
             if digital_analysis:
                 severity = digital_analysis['severity_level']
-                if severity in ['SEVERE', 'MODERATE']:
-                    approach.update({
-                        'specialized_protocol': 'Digital-native adapted hypnotherapy',
-                        'authority_model': 'Peer consultant collaborative approach',
-                        'language_adaptations': 'Intelligence-validating, anti-directive',
-                        'session_modifications': digital_analysis.get('session_modifications', {})
-                    })
+                if severity == 'SEVERE':
+                    base_probability += 15
+                elif severity == 'MODERATE':
+                    base_probability += 10
         
-        # Adjust for pattern complexity
-        pattern_count = len([score for score in st.session_state.pattern_scores.values() if score >= 4])
-        if pattern_count >= 4:
-            approach['complexity_note'] = 'Multiple pattern integration required'
-            approach['session_recommendation'] = '2+1 sessions with possible extension'
+        # Adjust for readiness level
+        readiness_score = self._extract_readiness_score()
+        if readiness_score <= 5:
+            base_probability += 15
+        elif readiness_score >= 8:
+            base_probability -= 10
         
-        return approach
+        return min(60, max(5, base_probability))  # Cap between 5-60%
+    
+    def _extract_readiness_score(self):
+        """Extract readiness score from responses"""
+        for response_data in st.session_state.assessment_responses.values():
+            response = response_data.get('response', {})
+            if isinstance(response, dict) and 'rating' in response:
+                return response['rating']
+        return 7  # Default moderate readiness
+    
+    def _predict_transformation_timeline(self):
+        """Predict transformation timeline based on all factors"""
+        base_timeline = "2-3 weeks for core transformation"
+        
+        # Adjust for complexity
+        pattern_count = len(st.session_state.pattern_scores)
+        if pattern_count >= 5:
+            return "4-6 weeks for complete integration"
+        elif pattern_count >= 3:
+            return "3-4 weeks for solid transformation"
+        
+        # Adjust for digital factors
+        if st.session_state.is_digital_native:
+            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
+                return "3-5 weeks with specialized digital-native approach"
+        
+        return base_timeline
+    
+    def _get_approach_modifications(self):
+        """Get approach modifications based on assessment"""
+        modifications = []
+        
+        if st.session_state.is_digital_native:
+            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            if digital_analysis:
+                modifications.extend(digital_analysis.get('therapeutic_adaptations', [])[:3])
+        
+        # Add pattern-specific modifications
+        top_patterns = sorted(st.session_state.pattern_scores.items(), key=lambda x: x[1], reverse=True)[:2]
+        for pattern_id, score in top_patterns:
+            if score >= 5:
+                modifications.append(self._get_pattern_modification(pattern_id))
+        
+        return modifications[:5]  # Limit to top 5 modifications
+    
+    def _get_pattern_modification(self, pattern_id):
+        """Get specific modification for pattern"""
+        modifications = {
+            1: "Joy permission work - gradual happiness acceptance programming",
+            2: "Collaboration installation - conflict to curiosity transformation",
+            3: "Trust calibration - evidence-based safety assessment training",
+            4: "Integration thinking - both/and vs either/or pattern installation",
+            5: "Being-worth anchoring - value independent of achievement programming",
+            6: "Authentic integration - consistent self across contexts",
+            7: "Healthy boundaries - self-care permission and practice",
+            8: "Mission authenticity - personal vs inherited goal clarification",
+            9: "Context stability - consistent boundaries across situations"
+        }
+        return modifications.get(pattern_id, "Standard pattern transformation approach")
+    
+    def _calculate_success_predictors(self):
+        """Calculate factors that predict success"""
+        predictors = {
+            'readiness_score': self._extract_readiness_score(),
+            'completion_rate': len(st.session_state.assessment_responses) / 25,
+            'pattern_clarity': len(st.session_state.pattern_scores) > 0,
+            'engagement_level': self._assess_engagement_level(),
+            'resistance_factors': len(self._predict_resistance_points()),
+            'systemic_support': self._assess_systemic_support()
+        }
+        
+        # Calculate overall success probability
+        success_score = 85  # Base success rate
+        
+        if predictors['readiness_score'] >= 8:
+            success_score += 10
+        elif predictors['readiness_score'] <= 5:
+            success_score -= 15
+        
+        if predictors['completion_rate'] >= 0.9:
+            success_score += 5
+        elif predictors['completion_rate'] <= 0.7:
+            success_score -= 10
+        
+        if predictors['resistance_factors'] >= 3:
+            success_score -= 10
+        
+        # Digital native adjustments
+        if st.session_state.is_digital_native:
+            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            if digital_analysis:
+                success_score += digital_analysis.get('success_rate_adjustment', 0)
+        
+        predictors['overall_success_probability'] = max(45, min(95, success_score))
+        
+        return predictors
+    
+    def _assess_engagement_level(self):
+        """Assess client engagement level from response quality"""
+        text_responses = []
+        for response_data in st.session_state.assessment_responses.values():
+            if isinstance(response_data.get('response'), str) and len(response_data['response']) > 20:
+                text_responses.append(response_data['response'])
+        
+        if len(text_responses) >= 3:
+            avg_length = sum(len(r) for r in text_responses) / len(text_responses)
+            if avg_length > 100:
+                return "High"
+            elif avg_length > 50:
+                return "Moderate"
+        
+        return "Standard"
+    
+    def _assess_systemic_support(self):
+        """Assess systemic support for change"""
+        for response_data in st.session_state.assessment_responses.values():
+            if 'surprised or unsettled' in response_data.get('question_text', '').lower():
+                response = response_data.get('response', '')
+                if 'no one' in response.lower() or 'supportive' in response.lower():
+                    return "High support"
+                elif 'everyone' in response.lower() or 'resist' in response.lower():
+                    return "Significant resistance expected"
+        
+        return "Moderate support expected"
+    
+    def _rank_intervention_priorities(self):
+        """Rank intervention priorities based on pattern scores and impact"""
+        if not st.session_state.pattern_scores:
+            return ["Complete pattern assessment in session 1"]
+        
+        priorities = []
+        sorted_patterns = sorted(st.session_state.pattern_scores.items(), key=lambda x: x[1], reverse=True)
+        
+        for i, (pattern_id, score) in enumerate(sorted_patterns[:3]):
+            pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
+            priority_level = "High" if i == 0 else "Medium" if i == 1 else "Supporting"
+            priorities.append(f"{priority_level} Priority: {pattern_name} transformation")
+        
+        return priorities
+    
+    def _predict_resistance_points(self):
+        """Predict likely resistance points during therapy"""
+        resistance_points = []
+        
+        # Pattern-specific resistance
+        for pattern_id, score in st.session_state.pattern_scores.items():
+            if score >= 5:
+                resistance_points.append(self._get_pattern_resistance(pattern_id))
+        
+        # Digital native resistance
+        if st.session_state.is_digital_native:
+            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
+                resistance_points.extend([
+                    "Authority resistance - preference for collaborative approach",
+                    "Cynicism about positive change - need evidence-based hope building",
+                    "Intellectual defensiveness - may challenge therapeutic process"
+                ])
+        
+        # Readiness-based resistance
+        readiness = self._extract_readiness_score()
+        if readiness <= 6:
+            resistance_points.append("Change ambivalence - may need motivation building")
+        
+        return resistance_points[:5]  # Limit to top 5
+    
+    def _get_pattern_resistance(self, pattern_id):
+        """Get specific resistance for pattern"""
+        resistances = {
+            1: "Joy phobia - fear that happiness leads to disappointment",
+            2: "Control addiction - difficulty with collaborative approaches", 
+            3: "Trust fear - skepticism about therapeutic relationship",
+            4: "Complexity avoidance - resistance to nuanced solutions",
+            5: "Worth threat - identity crisis if not constantly achieving",
+            6: "Authenticity terror - fear of being rejected for real self",
+            7: "Guilt about self-care - feeling selfish for personal needs",
+            8: "Family loyalty conflict - changing feels like betrayal",
+            9: "Boundary anxiety - fear of conflict if limits are set"
+        }
+        return resistances.get(pattern_id, "Standard change resistance")
+    
+    def _recommend_therapeutic_approach(self):
+        """Recommend overall therapeutic approach"""
+        approaches = []
+        
+        # Base approach
+        if st.session_state.is_digital_native:
+            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
+                approaches.append("Digital-native specialized hypnotherapy protocol")
+            else:
+                approaches.append("Standard hypnotherapy with digital cultural awareness")
+        else:
+            approaches.append("Traditional clinical hypnotherapy approach")
+        
+        # Pattern-specific approaches
+        top_pattern = max(st.session_state.pattern_scores.items(), key=lambda x: x[1])[0] if st.session_state.pattern_scores else None
+        if top_pattern:
+            pattern_approaches = {
+                1: "Somatic joy installation with safety programming",
+                2: "Collaborative communication training with nervous system regulation", 
+                3: "Graduated trust building with evidence-based safety assessment",
+                4: "Integration and creative thinking pattern installation",
+                5: "Being-worth anchoring independent of achievement",
+                6: "Authentic self integration across all contexts",
+                7: "Healthy boundary installation with self-care permission",
+                8: "Personal mission clarification with family harmony",
+                9: "Consistent boundary maintenance training"
+            }
+            if top_pattern in pattern_approaches:
+                approaches.append(pattern_approaches[top_pattern])
+        
+        return approaches
 
-    # ---- Question Navigation & Flow Control ----
-    def _get_current_question(self):
-        """Get current question based on adaptive flow"""
+def _get_next_question(self):
+        """Enhanced question flow with adaptive logic"""
         answered = set(st.session_state.assessment_responses.keys())
         
-        # Always start with screening questions (1-5)
-        for q_id in range(1, 6):
-            if q_id not in answered:
-                return q_id, self.questions[q_id]
-        
-        # Check if digital native assessment is needed (6-15)
-        if st.session_state.is_digital_native:
-            for q_id in range(13, 16):  # Digital-specific questions
+        # Phase 1: Screening Questions (1-5)
+        if st.session_state.current_phase == 'screening':
+            for q_id in range(1, 6):
                 if q_id not in answered:
-                    question = self.questions[q_id]
-                    if question.get('conditional_on') == 'digital_native':
-                        return q_id, question
+                    return q_id, self.questions.get(q_id, self._get_fallback_question(q_id))
+            
+            # After screening, determine digital native status
+            age_response = st.session_state.assessment_responses.get(1, {}).get('response', '')
+            st.session_state.is_digital_native = self._determine_digital_native_status(age_response)
+            st.session_state.current_phase = 'behavioral_mapping'
         
-        # Core behavioral mapping questions (6-12)
-        for q_id in range(6, 13):
-            if q_id not in answered:
-                return q_id, self.questions[q_id]
+        # Phase 2: Behavioral Mapping (6-12)
+        if st.session_state.current_phase == 'behavioral_mapping':
+            for q_id in range(6, 13):
+                if q_id not in answered:
+                    return q_id, self.questions.get(q_id, self._get_fallback_question(q_id))
+            st.session_state.current_phase = 'digital_assessment'
         
-        # Pattern-specific questions (16-20) - only ask if patterns are triggered
-        for q_id in range(16, 21):
-            if q_id not in answered:
-                question = self.questions[q_id]
-                if self._should_ask_pattern_question_by_condition(question):
-                    return q_id, question
+        # Phase 3: Digital Assessment (13-15) - Only for digital natives
+        if st.session_state.current_phase == 'digital_assessment':
+            if st.session_state.is_digital_native:
+                for q_id in range(13, 16):
+                    if q_id not in answered:
+                        return q_id, self.questions.get(q_id, self._get_fallback_question(q_id))
+            st.session_state.current_phase = 'pattern_exploration'
         
-        # Resistance and secondary gain analysis (21-23)
-        for q_id in range(21, 24):
-            if q_id not in answered:
-                return q_id, self.questions[q_id]
+        # Phase 4: Pattern Exploration (16-20) - Adaptive based on triggered patterns
+        if st.session_state.current_phase == 'pattern_exploration':
+            triggered_patterns = list(st.session_state.triggered_patterns)[:3]  # Top 3 patterns
+            
+            if triggered_patterns:
+                for pattern_id in triggered_patterns:
+                    pattern_q_id = 15 + pattern_id  # Questions 16-20 map to patterns 1-5
+                    if pattern_q_id not in answered and pattern_q_id <= 20:
+                        question = self.questions.get(pattern_q_id, self._get_pattern_question(pattern_id))
+                        if question:
+                            return pattern_q_id, question
+            
+            # Always ask at least 2 pattern questions, even if not strongly triggered
+            for q_id in range(16, 21):
+                if q_id not in answered and len([q for q in range(16, 21) if q in answered]) < 2:
+                    return q_id, self.questions.get(q_id, self._get_fallback_question(q_id))
+            
+            st.session_state.current_phase = 'resistance_analysis'
         
-        # Session design questions (24-26)
-        for q_id in range(24, 27):
-            if q_id not in answered:
-                return q_id, self.questions[q_id]
+        # Phase 5: Resistance Analysis (21-23)
+        if st.session_state.current_phase == 'resistance_analysis':
+            for q_id in range(21, 24):
+                if q_id not in answered:
+                    return q_id, self.questions.get(q_id, self._get_fallback_question(q_id))
+            st.session_state.current_phase = 'session_design'
         
-        # Integration questions (27-30)
-        for q_id in range(27, 31):
-            if q_id not in answered:
-                return q_id, self.questions[q_id]
+        # Phase 6: Session Design (24-25)
+        if st.session_state.current_phase == 'session_design':
+            for q_id in range(24, 26):
+                if q_id not in answered:
+                    return q_id, self.questions.get(q_id, self._get_fallback_question(q_id))
         
         return None, None
 
-    def _should_ask_pattern_question_by_condition(self, question):
-        """Check if pattern-specific question should be asked"""
-        condition = question.get('conditional_on')
-        if not condition:
-            return True
+    def _get_fallback_question(self, q_id):
+        """Provide fallback question when main question is missing"""
+        fallback_questions = {
+            1: {
+                "text": "What is your age range?",
+                "type": "single_choice",
+                "options": ["Under 18", "18-22", "23-27", "28-32", "33-37", "38-42", "43-50", "Over 50"],
+                "phase": "screening"
+            },
+            6: {
+                "text": "Thinking of a recent time this issue appeared, what was happening right before you noticed it?",
+                "type": "text_completion",
+                "placeholder": "Describe the situation, environment, and what was occurring...",
+                "min_chars": 10,
+                "phase": "behavioral_mapping"
+            },
+            21: {
+                "text": "What might this pattern be trying to protect you from?",
+                "type": "single_choice",
+                "options": [
+                    "Getting hurt or disappointed",
+                    "Being rejected or abandoned", 
+                    "Losing control or being powerless",
+                    "Feeling inadequate or not good enough",
+                    "Being taken advantage of",
+                    "Making mistakes or failing"
+                ],
+                "phase": "resistance_analysis"
+            }
+        }
         
-        if condition == 'digital_native':
-            return st.session_state.is_digital_native
-        elif condition.startswith('pattern_') and condition.endswith('_triggered'):
-            pattern_id = int(condition.split('_')[1])
-            return st.session_state.pattern_scores.get(pattern_id, 0) >= 3.0
-        
-        return True
+        return fallback_questions.get(q_id, {
+            "text": f"Please describe your experience with this behavioral pattern:",
+            "type": "text_completion",
+            "placeholder": "Share any relevant thoughts or experiences...",
+            "min_chars": 5,
+            "phase": "general"
+        })
 
-    def _estimate_total_questions(self):
-        """Estimate total questions for progress tracking"""
-        base_questions = 20  # Core questions everyone gets
+    def _get_pattern_question(self, pattern_id):
+        """Generate pattern-specific question"""
+        pattern_questions = {
+            1: {
+                "text": "When something genuinely good happens to you, your first reaction is usually:",
+                "type": "single_choice_with_intensity",
+                "options": [
+                    "Pure enjoyment and celebration",
+                    "Immediately looking for the catch or downside",
+                    "Feeling guilty or undeserving of good things", 
+                    "Minimizing its importance",
+                    "Anxiety about when it will end"
+                ],
+                "pattern": 1,
+                "phase": "pattern_exploration"
+            },
+            2: {
+                "text": "When someone disagrees with you, your nervous system:",
+                "type": "single_choice_with_intensity",
+                "options": [
+                    "Stays curious about their perspective",
+                    "Immediately activates into combat mode",
+                    "Feels threatened or attacked",
+                    "Shuts down to avoid confrontation", 
+                    "Searches for ways to prove them wrong"
+                ],
+                "pattern": 2,
+                "phase": "pattern_exploration"
+            },
+            3: {
+                "text": "When meeting new people, you assume they:",
+                "type": "single_choice_with_intensity", 
+                "options": [
+                    "Are generally well-intentioned",
+                    "Are judging or evaluating you",
+                    "Want something from you",
+                    "Will eventually disappoint you",
+                    "Are basically indifferent"
+                ],
+                "pattern": 3,
+                "phase": "pattern_exploration"
+            }
+        }
         
-        if st.session_state.is_digital_native:
-            base_questions += 3  # Digital-specific questions
-        
-        # Add triggered pattern questions
-        triggered_count = len([p for p, score in st.session_state.pattern_scores.items() if score >= 3.0])
-        base_questions += min(triggered_count, 5)  # Max 5 pattern-specific questions
-        
-        return base_questions
+        return pattern_questions.get(pattern_id, self._get_fallback_question(16))
 
-    # ---- Response Handling Methods ----
-    def _save_response(self, q_id, response, question, intensity=None, additional_data=None):
-        """Save response with enhanced data tracking"""
-        response_data = {
+    def _advance_question(self):
+        """Move to next question with validation"""
+        st.session_state.current_question += 1
+        
+        # Update pattern scores based on latest response
+        if st.session_state.assessment_responses:
+            latest_q_id = max(st.session_state.assessment_responses.keys())
+            latest_response = st.session_state.assessment_responses[latest_q_id]
+            self._update_pattern_scores_enhanced(
+                latest_q_id, 
+                latest_response['response'], 
+                self.questions.get(latest_q_id, {})
+            )
+
+    def _go_back(self):
+        """Go back one question with state cleanup"""
+        if st.session_state.current_question > 1:
+            st.session_state.current_question -= 1
+            
+            # Remove last response
+            if st.session_state.assessment_responses:
+                last_key = max(st.session_state.assessment_responses.keys())
+                del st.session_state.assessment_responses[last_key]
+                
+                # Clean up associated data
+                if last_key in st.session_state.get('intensity_responses', {}):
+                    del st.session_state.intensity_responses[last_key]
+
+    def _save_response(self, q_id, response, question, intensity=None):
+        """Enhanced response saving with comprehensive data tracking"""
+        st.session_state.assessment_responses[q_id] = {
             'response': response,
             'intensity': intensity,
             'question_text': question['text'],
@@ -3728,42 +3949,98 @@ class ComprehensiveBehavioralAssessment:
             'phase': question.get('phase', 'unknown')
         }
         
-        if additional_data:
-            response_data.update(additional_data)
+        # Store intensity separately for easy access
+        if intensity:
+            if 'intensity_responses' not in st.session_state:
+                st.session_state.intensity_responses = {}
+            st.session_state.intensity_responses[q_id] = intensity
         
-        st.session_state.assessment_responses[q_id] = response_data
-        
-        # Update pattern scoring
-        self._update_pattern_scores_enhanced(q_id, response, question)
-        
-        # Handle special question types
-        if question.get('trigger_analysis'):
-            st.session_state.behavioral_sequence['environmental_trigger'] = response
-            st.session_state.trigger_chain['environmental_trigger'] = response
-        elif question.get('core_belief_extraction'):
-            st.session_state.core_beliefs['primary_automatic_thought'] = response
-            st.session_state.trigger_chain['automatic_thought'] = response
-        elif question.get('secondary_gain_analysis'):
-            st.session_state.secondary_gains['protective_function'] = response
-        elif question.get('sequence_mapping') == 'trigger_point':
-            st.session_state.trigger_chain['awareness_point'] = response
-        elif 'physical sensation' in question.get('text', '').lower():
-            st.session_state.trigger_chain['physical_response'] = response
-        elif question.get('stress_response_mapping'):
-            st.session_state.trigger_chain['behavioral_response'] = response
-        elif question.get('immediate_consequence_analysis'):
-            st.session_state.trigger_chain['immediate_consequence'] = response
-        
-        # Store digital responses separately for email handler
-        if question.get('phase') == 'digital_assessment' or question.get('conditional_on') == 'digital_native':
+        # Store digital responses separately
+        if question.get('phase') == 'digital_assessment':
+            if 'digital_responses' not in st.session_state:
+                st.session_state.digital_responses = {}
             st.session_state.digital_responses[q_id] = response
         
-        # Check if we need to determine digital native status
-        if q_id == 1:  # Age question
-            st.session_state.is_digital_native = self._determine_digital_native_status(response)
+        # Update behavioral sequence mapping
+        if question.get('trigger_analysis'):
+            st.session_state.trigger_chain['environmental_trigger'] = response
+        elif question.get('sequence_mapping'):
+            st.session_state.trigger_chain[question['sequence_mapping']] = response
+        elif 'physical sensation' in question.get('text', '').lower():
+            st.session_state.trigger_chain['physical_response'] = response
+        elif question.get('thought_categorization'):
+            st.session_state.trigger_chain['automatic_thought'] = response
+        elif question.get('stress_response_mapping'):
+            st.session_state.trigger_chain['behavioral_response'] = response
 
-    def _handle_single_choice(self, q_id, question):
-        """Handle single choice questions"""
+    def _complete_assessment(self):
+        """Complete assessment with comprehensive analysis generation"""
+        st.session_state.assessment_completed = True
+        
+        # Generate digital despair analysis if applicable
+        digital_analysis = None
+        if st.session_state.is_digital_native:
+            digital_analysis = self._analyze_digital_despair_comprehensive(st.session_state.assessment_responses)
+            if digital_analysis:
+                st.session_state.digital_despair_score = digital_analysis['digital_despair_score']
+                st.session_state.digital_severity = digital_analysis['severity_level']
+        
+        # Generate complete clinical analysis
+        comprehensive_analysis = self._generate_comprehensive_clinical_analysis()
+        
+        # Compile final results
+        st.session_state.assessment_results = {
+            'pattern_scores': dict(st.session_state.pattern_scores),
+            'pattern_intensities': dict(st.session_state.get('pattern_intensities', {})),
+            'triggered_patterns': list(st.session_state.triggered_patterns),
+            'behavioral_sequence': dict(st.session_state.trigger_chain),
+            'digital_despair_analysis': digital_analysis,
+            'comprehensive_analysis': comprehensive_analysis,
+            'completion_timestamp': datetime.now().isoformat(),
+            'total_questions_answered': len(st.session_state.assessment_responses),
+            'completion_rate': len(st.session_state.assessment_responses) / 25,  # Fixed 25 questions
+            'is_digital_native': st.session_state.is_digital_native,
+            'session_design': comprehensive_analysis.get('session_design', {}),
+            'success_predictors': comprehensive_analysis.get('success_predictors', {}),
+            'intervention_priorities': comprehensive_analysis.get('intervention_priorities', []),
+            'resistance_points': comprehensive_analysis.get('resistance_points', []),
+            'therapeutic_approach': comprehensive_analysis.get('therapeutic_approach', [])
+        }
+        
+        st.rerun()
+
+    def _estimate_total_questions(self):
+        """Fixed total question count for stable progress bar"""
+        return 25  # Fixed total for consistent progress tracking
+
+    def _estimate_time_remaining(self):
+        """Estimate remaining time based on mobile-optimized timing"""
+        total_questions = 25
+        answered = len(st.session_state.assessment_responses)
+        remaining = max(0, total_questions - answered)
+        
+        # Mobile-optimized timing (faster interaction)
+        base_time_per_question = 0.8  # 48 seconds average on mobile
+        
+        # Adjust for digital natives (may be faster)
+        if st.session_state.is_digital_native:
+            base_time_per_question = 0.7  # 42 seconds
+        
+        # Adjust for question types in remaining questions
+        text_question_bonus = 0.5  # Extra time for text questions
+        
+        estimated_text_questions = max(0, min(3, remaining))  # Estimate remaining text questions
+        
+        return (remaining * base_time_per_question) + (estimated_text_questions * text_question_bonus)
+
+    def _get_progress_percentage(self):
+        """Calculate progress percentage"""
+        answered = len(st.session_state.assessment_responses)
+        total = 25
+        return min(100, (answered / total) * 100)
+
+def _handle_single_choice(self, q_id, question):
+        """Handle single choice questions with one-click advancement"""
         for i, option in enumerate(question['options']):
             if st.button(option, key=f"q_{q_id}_opt_{i}", use_container_width=True):
                 self._save_response(q_id, option, question)
@@ -3771,644 +4048,516 @@ class ComprehensiveBehavioralAssessment:
                 st.rerun()
 
     def _handle_single_choice_with_intensity(self, q_id, question):
-        """Handle single choice with intensity rating"""
+        """Handle single choice with intensity rating - enhanced UX"""
         selection_key = f"selected_option_{q_id}"
         
-        for i, option in enumerate(question['options']):
-            if st.button(option, key=f"q_{q_id}_opt_{i}", use_container_width=True):
-                st.session_state[selection_key] = option
-                st.rerun()
-        
-        if selection_key in st.session_state:
+        # Step 1: Option selection
+        if selection_key not in st.session_state:
+            st.markdown("**Select the option that best describes your experience:**")
+            for i, option in enumerate(question['options']):
+                if st.button(option, key=f"q_{q_id}_opt_{i}", use_container_width=True):
+                    st.session_state[selection_key] = option
+                    st.rerun()
+        else:
+            # Step 2: Show selected option and intensity rating
             selected_option = st.session_state[selection_key]
             st.success(f"Selected: {selected_option}")
             
             st.markdown("**How intense is this experience for you?**")
-            intensity = st.select_slider(
-                "Intensity level:",
-                options=[1, 2, 3, 4, 5, 6, 7],
-                format_func=lambda x: f"{x}/7",
-                value=4,
-                key=f"q_{q_id}_intensity"
+            
+            # Use radio buttons for mobile-friendly intensity selection
+            intensity_options = [
+                "1 - Very mild",
+                "2 - Mild", 
+                "3 - Somewhat mild",
+                "4 - Moderate",
+                "5 - Somewhat intense",
+                "6 - Intense",
+                "7 - Very intense"
+            ]
+            
+            intensity_choice = st.radio(
+                "Choose intensity level:",
+                intensity_options,
+                key=f"q_{q_id}_intensity_radio",
+                index=3  # Default to moderate
             )
+            
+            # Extract numeric value
+            intensity = int(intensity_choice.split(' - ')[0])
             
             col1, col2 = st.columns(2)
             with col1:
-                st.caption("1 = Very mild")
-            with col2:
-                st.caption("7 = Extremely intense")
-            
-            if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-                self._save_response(q_id, selected_option, question, intensity)
-                if selection_key in st.session_state:
+                if st.button("← Change selection", key=f"q_{q_id}_change", use_container_width=True):
                     del st.session_state[selection_key]
-                self._advance_question()
-                st.rerun()
+                    st.rerun()
+            
+            with col2:
+                if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
+                    self._save_response(q_id, selected_option, question, intensity)
+                    if selection_key in st.session_state:
+                        del st.session_state[selection_key]
+                    self._advance_question()
+                    st.rerun()
 
     def _handle_single_choice_with_follow_up(self, q_id, question):
-        """Handle single choice with follow-up questions"""
+        """Handle single choice with conditional follow-up questions"""
         selection_key = f"selected_option_{q_id}"
         
-        for i, option in enumerate(question['options']):
-            if st.button(option, key=f"q_{q_id}_opt_{i}", use_container_width=True):
-                st.session_state[selection_key] = (option, i)
-                st.rerun()
-        
-        if selection_key in st.session_state:
-            selected_option, option_index = st.session_state[selection_key]
+        # Step 1: Initial selection
+        if selection_key not in st.session_state:
+            for i, option in enumerate(question['options']):
+                if st.button(option, key=f"q_{q_id}_opt_{i}", use_container_width=True):
+                    st.session_state[selection_key] = {'option': option, 'index': i}
+                    st.rerun()
+        else:
+            # Step 2: Show selected option and follow-up if needed
+            selection_data = st.session_state[selection_key]
+            selected_option = selection_data['option']
+            option_index = selection_data['index']
+            
             st.success(f"Selected: {selected_option}")
             
-            # Show follow-up if configured
+            # Check if follow-up is needed
             follow_up_mapping = question.get('follow_up_mapping', {})
-            if option_index in follow_up_mapping:
-                follow_up_text = st.text_area(
-                    follow_up_mapping[option_index],
-                    key=f"q_{q_id}_followup",
-                    height=80
-                )
-            else:
-                follow_up_text = ""
+            follow_up_text = ""
             
-            if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-                additional_data = {'follow_up': follow_up_text} if follow_up_text else None
-                self._save_response(q_id, selected_option, question, additional_data=additional_data)
-                if selection_key in st.session_state:
+            if option_index in follow_up_mapping:
+                follow_up_question = follow_up_mapping[option_index]
+                follow_up_text = st.text_area(
+                    follow_up_question,
+                    key=f"q_{q_id}_followup",
+                    height=100,
+                    placeholder="Please provide more details..."
+                )
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("← Change selection", key=f"q_{q_id}_change", use_container_width=True):
                     del st.session_state[selection_key]
-                self._advance_question()
-                st.rerun()
+                    st.rerun()
+            
+            with col2:
+                if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
+                    response_data = {
+                        'main_response': selected_option,
+                        'follow_up': follow_up_text
+                    }
+                    self._save_response(q_id, response_data, question)
+                    del st.session_state[selection_key]
+                    self._advance_question()
+                    st.rerun()
 
-    def _handle_text_with_analysis(self, q_id, question):
-        """Handle text questions with built-in analysis"""
-        min_chars = question.get('min_chars', 10)
+    def _handle_text_completion(self, q_id, question):
+        """Handle text completion with enhanced UX and validation"""
+        min_chars = question.get('min_chars', 5)
+        placeholder = question.get('placeholder', 'Please share your thoughts...')
+        
         response = st.text_area(
             "Your response:",
-            placeholder=question.get('placeholder', 'Please share your thoughts...'),
+            placeholder=placeholder,
             key=f"q_{q_id}_text",
+            height=120,
+            help=f"Please provide at least {min_chars} characters for a complete response."
+        )
+        
+        char_count = len(response.strip())
+        
+        # Show character count with color coding
+        if char_count > 0:
+            sufficient = char_count >= min_chars
+            color = "🟢" if sufficient else "🔴"
+            st.markdown(f"{color} **{char_count}** characters {f'({char_count - min_chars} over minimum)' if sufficient else f'({min_chars - char_count} needed)'}")
+        
+        # Continue button with validation
+        if char_count >= min_chars:
+            if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
+                self._save_response(q_id, response.strip(), question)
+                self._advance_question()
+                st.rerun()
+        else:
+            st.button("Continue", key=f"q_{q_id}_continue_disabled", disabled=True, use_container_width=True, 
+                     help=f"Please write at least {min_chars - char_count} more characters")
+
+    def _handle_text_with_analysis(self, q_id, question):
+        """Handle text responses that need keyword analysis"""
+        min_chars = question.get('min_chars', 10)
+        placeholder = question.get('placeholder', 'Please provide details...')
+        
+        response = st.text_area(
+            "Your response:",
+            placeholder=placeholder,
+            key=f"q_{q_id}_text_analysis",
             height=120
         )
         
         char_count = len(response.strip())
         
-        # Show character count
+        # Show helpful guidance for better responses
         if char_count > 0:
             sufficient = char_count >= min_chars
             if sufficient:
-                st.success(f"✓ {char_count} characters - good detail level")
+                st.success(f"✓ {char_count} characters - great detail!")
             else:
-                st.info(f"Please add {min_chars - char_count} more characters for complete analysis")
+                st.info(f"📝 {char_count}/{min_chars} characters - please add more detail for better analysis")
         
         if char_count >= min_chars:
             if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
                 self._save_response(q_id, response.strip(), question)
                 self._advance_question()
                 st.rerun()
+        else:
+            st.button("Continue", disabled=True, use_container_width=True)
 
     def _handle_detailed_scenario(self, q_id, question):
         """Handle detailed scenario questions with multiple prompts"""
-        st.markdown("Please provide details for each aspect:")
-        
-        prompts = question.get('prompts', [])
+        prompts = question.get('prompts', ['Please provide details...'])
         responses = {}
         
+        st.markdown("**Please provide details for each aspect:**")
+        
+        all_complete = True
         for i, prompt in enumerate(prompts):
-            responses[f'prompt_{i}'] = st.text_input(
+            response = st.text_input(
                 prompt,
                 key=f"q_{q_id}_prompt_{i}",
                 placeholder="Be as specific as possible..."
             )
+            responses[f"prompt_{i}"] = response
+            if len(response.strip()) < 3:
+                all_complete = False
         
-        # Check if we have enough detail
-        total_chars = sum(len(resp) for resp in responses.values())
-        min_total = len(prompts) * 10  # At least 10 chars per prompt
+        # Combined response field for overall context
+        overall_response = st.text_area(
+            "Overall description of the situation:",
+            key=f"q_{q_id}_overall",
+            placeholder="Provide a complete picture of what was happening...",
+            height=100
+        )
+        responses['overall'] = overall_response
         
-        if total_chars >= min_total:
+        if len(overall_response.strip()) < 10:
+            all_complete = False
+        
+        if all_complete:
             if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-                # Combine all responses
-                combined_response = " | ".join([f"{prompts[i]}: {resp}" for i, resp in enumerate(responses.values())])
-                self._save_response(q_id, combined_response, question, additional_data=responses)
+                self._save_response(q_id, responses, question)
                 self._advance_question()
                 st.rerun()
-        elif total_chars > 0:
-            st.info(f"Please add more detail ({min_total - total_chars} more characters needed)")
-
-    def _handle_scale_with_follow_up(self, q_id, question):
-        """Handle scale questions with conditional follow-up"""
-        scale_range = question.get('scale_range', [1, 10])
-        value = st.select_slider(
-            "Your rating:",
-            options=list(range(scale_range[0], scale_range[1] + 1)),
-            format_func=lambda x: f"{x}/{scale_range[1]}",
-            value=scale_range[1] // 2 + 2,  # Slightly above middle
-            key=f"q_{q_id}_scale"
-        )
-        
-        # Show follow-up if below threshold
-        follow_up = ""
-        threshold = question.get('follow_up_threshold', 7)
-        if value <= threshold and question.get('follow_up_question'):
-            follow_up = st.text_area(
-                question['follow_up_question'],
-                key=f"q_{q_id}_followup",
-                height=80,
-                placeholder="What would make this easier for you?"
-            )
-        
-        if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-            response_data = {'rating': value}
-            if follow_up:
-                response_data['follow_up'] = follow_up
-            self._save_response(q_id, response_data, question)
-            self._advance_question()
-            st.rerun()
-
-    def _handle_percentage_slider(self, q_id, question):
-        """Handle percentage slider questions"""
-        value = st.slider(
-            "Percentage:",
-            min_value=0,
-            max_value=100,
-            value=50,
-            step=5,
-            key=f"q_{q_id}_percentage",
-            format="%d%%"
-        )
-        
-        # Show interpretation
-        if value >= 80:
-            st.error("🔴 Very high impact - this is consuming most of your energy")
-        elif value >= 60:
-            st.warning("🟡 High impact - significant energy drain")
-        elif value >= 40:
-            st.info("🔵 Moderate impact - noticeable but manageable")
-        elif value >= 20:
-            st.success("🟢 Low impact - minimal energy consumption")
         else:
-            st.success("✅ Very low impact")
-        
-        if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-            self._save_response(q_id, value, question)
-            self._advance_question()
-            st.rerun()
+            st.button("Continue", disabled=True, use_container_width=True, 
+                     help="Please complete all fields with sufficient detail")
 
-    def _handle_detailed_future_pacing(self, q_id, question):
-        """Handle detailed future pacing questions"""
-        st.markdown("**Imagine your transformed life in detail:**")
+    def _handle_thought_completion(self, q_id, question):
+        """Handle automatic thought capture with analysis"""
+        response = st.text_area(
+            "Write the exact words that go through your mind:",
+            key=f"q_{q_id}_thought",
+            placeholder=question.get('placeholder', 'Even if it seems harsh or unreasonable...'),
+            height=100,
+            help="Don't edit or soften it - we need the raw automatic thought for accurate analysis"
+        )
         
-        prompts = question.get('prompts', [])
-        responses = {}
+        char_count = len(response.strip())
         
-        for i, prompt in enumerate(prompts):
-            responses[f'future_{i}'] = st.text_area(
-                prompt,
-                key=f"q_{q_id}_future_{i}",
-                height=60,
-                placeholder="Be specific and vivid..."
-            )
+        # Encourage authentic responses
+        if char_count > 0:
+            st.info("💡 Remember: These automatic thoughts don't define you - they're just patterns we can change")
         
-        total_chars = sum(len(resp) for resp in responses.values())
-        min_total = len(prompts) * 15  # More detail for future pacing
-        
-        if total_chars >= min_total:
+        if char_count >= 3:
             if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-                combined_response = " | ".join([f"{prompts[i]}: {resp}" for i, resp in enumerate(responses.values())])
-                self._save_response(q_id, combined_response, question, additional_data=responses)
+                self._save_response(q_id, response.strip(), question)
                 self._advance_question()
                 st.rerun()
-        elif total_chars > 0:
-            st.info(f"Please add more vivid details ({min_total - total_chars} more characters)")
+        else:
+            st.button("Continue", disabled=True, use_container_width=True)
 
-    def _advance_question(self):
-        """Advance to next question"""
-        st.session_state.current_question += 1
+    def _handle_multiple_choice_weighted(self, q_id, question):
+        """Handle multiple choice with weighting"""
+        max_selections = question.get('max_selections', 3)
+        
+        selected = st.multiselect(
+            f"Select up to {max_selections} that apply:",
+            question['options'],
+            key=f"q_{q_id}_multi",
+            max_selections=max_selections,
+            help="Choose the most relevant options"
+        )
+        
+        if selected:
+            st.success(f"Selected {len(selected)} option{'s' if len(selected) > 1 else ''}")
+            
+            if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
+                self._save_response(q_id, selected, question)
+                self._advance_question()
+                st.rerun()
+        else:
+            st.button("Continue", disabled=True, use_container_width=True, 
+                     help="Please select at least one option")
 
-    def _go_back(self):
-        """Go back one question"""
-        if st.session_state.current_question > 1:
-            # Remove last response
-            if st.session_state.assessment_responses:
-                last_key = max(st.session_state.assessment_responses.keys())
-                del st.session_state.assessment_responses[last_key]
-            st.session_state.current_question -= 1
+    def _handle_single_choice_with_body_mapping(self, q_id, question):
+        """Handle body sensation questions with location mapping"""
+        selection_key = f"selected_option_{q_id}"
+        
+        # Step 1: Sensation selection
+        if selection_key not in st.session_state:
+            st.markdown("**What physical sensation do you feel most often?**")
+            for i, option in enumerate(question['options']):
+                if st.button(option, key=f"q_{q_id}_opt_{i}", use_container_width=True):
+                    st.session_state[selection_key] = option
+                    st.rerun()
+        else:
+            # Step 2: Location specification
+            selected_sensation = st.session_state[selection_key]
+            st.success(f"Selected: {selected_sensation}")
+            
+            st.markdown("**Where in your body do you feel this most strongly?**")
+            body_location = st.selectbox(
+                "Body location:",
+                ["Head/Face", "Neck/Throat", "Chest/Heart", "Stomach/Abdomen", 
+                 "Arms/Hands", "Back/Shoulders", "Legs/Feet", "Whole body"],
+                key=f"q_{q_id}_location"
+            )
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("← Change selection", key=f"q_{q_id}_change", use_container_width=True):
+                    del st.session_state[selection_key]
+                    st.rerun()
+            
+            with col2:
+                if st.button("Continue", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
+                    response_data = {
+                        'sensation': selected_sensation,
+                        'location': body_location
+                    }
+                    self._save_response(q_id, response_data, question)
+                    del st.session_state[selection_key]
+                    self._advance_question()
+                    st.rerun()
 
-    def _complete_assessment(self):
-        """Complete assessment and generate comprehensive analysis"""
-        st.session_state.assessment_completed = True
-        
-        # Generate comprehensive clinical analysis
-        clinical_analysis = self._generate_comprehensive_clinical_analysis()
-        
-        # Store results
-        st.session_state.assessment_results = {
-            'comprehensive_analysis': clinical_analysis,
-            'pattern_scores': dict(st.session_state.pattern_scores),
-            'triggered_patterns': list(st.session_state.triggered_patterns),
-            'completion_timestamp': datetime.now().isoformat(),
-            'total_questions_answered': len(st.session_state.assessment_responses),
-            'completion_rate': len(st.session_state.assessment_responses) / self._estimate_total_questions(),
-            'is_digital_native': st.session_state.is_digital_native
-        }
-        
-        # Add digital analysis if applicable
-        if st.session_state.is_digital_native:
-            digital_analysis = self._analyze_digital_despair_comprehensive(st.session_state.assessment_responses)
-            st.session_state.assessment_results['digital_despair_analysis'] = digital_analysis
-        
-        st.rerun()
-
-    # ---- Rendering Methods ----
-    def render(self):
-        """Main render method"""
+def render(self):
+        """Main rendering method with mobile-first responsive design"""
         apply_clinical_styles()
+        self._render_header()
         
         if not st.session_state.contact_provided:
             if not st.session_state.assessment_completed:
-                self._render_assessment()
+                self._render_current_question()
             else:
                 self._render_contact_form()
         else:
             self._render_results()
 
-    def _render_assessment(self):
-        """Render the assessment interface"""
-        self._render_header()
-        
-        q_id, question = self._get_current_question()
+    def _render_header(self):
+        """Render header with progress and guidance"""
+        if not st.session_state.assessment_completed:
+            time_remaining = self._estimate_time_remaining()
+            
+            # Show digital native indicator if in specialized phase
+            if (st.session_state.is_digital_native and 
+                st.session_state.current_phase == 'digital_assessment' and 
+                st.session_state.get('digital_severity', 'MINIMAL') in ['SEVERE', 'MODERATE']):
+                st.markdown("""
+                <div class="clinical-indicator">
+                🧠 Enhanced digital-native assessment active - specialized analysis enabled
+                </div>
+                """, unsafe_allow_html=True)
+            
+            st.info(f"Understanding your unique behavioral patterns is the key to targeted, effective hypnotherapy that brings rapid, lasting change. This assessment takes about {time_remaining:.0f} minutes to complete.")
+            st.markdown("<h2 style='text-align: center; margin-bottom: 1.5rem;'>Behavioral pattern assessment</h2>", unsafe_allow_html=True)
+
+    def _render_current_question(self):
+        """Render current question with enhanced mobile UX"""
+        q_id, question = self._get_next_question()
         
         if q_id is None:
             self._complete_assessment()
             return
         
-        self._render_progress()
-        self._render_question(q_id, question)
-        self._render_navigation()
+        if not question:
+            st.error("Question configuration error. Please skip to continue.")
+            if st.button("Skip this question", type="primary", use_container_width=True):
+                self._advance_question()
+                st.rerun()
+            return
 
-    def _render_header(self):
-        """Render assessment header"""
-        time_remaining = self._estimate_time_remaining()
-        
-        st.info(f"Understanding **your unique behavioral patterns** is the key to **targeted, effective hypnotherapy** that brings rapid, lasting change. This assessment takes about {time_remaining:.0f} minutes to complete.")
-        st.markdown("<h2 style='text-align: center;'>Behavioral pattern assessment</h2>", unsafe_allow_html=True)
-
-    def _render_progress(self):
-        """Render progress indicator"""
+        # Progress tracking with fixed 25 questions
         answered = len(st.session_state.assessment_responses)
-        total = self._estimate_total_questions()
-        progress = answered / total if total > 0 else 0
+        progress = answered / 25
         time_remaining = self._estimate_time_remaining()
-        
+
         st.markdown(f"""
         <div class="progress-container">
-            <span><strong>Question {answered + 1} of {total}</strong></span>
+            <span><strong>Question {answered + 1} of 25</strong></span>
             <div class="progress-bar">
                 <div class="progress-fill" style="width: {progress * 100}%"></div>
             </div>
             <span><strong>{int(progress * 100)}%</strong></span>
         </div>
-        <div style="text-align: center; margin-bottom: 1rem; color: #556D7A; font-size: 0.9rem;">
-            ~ {time_remaining:.0f} minutes remaining
+        <div style="text-align: center; margin-bottom: 1rem; color: #556D7A; font-size: 0.85rem;">
+        ⏱️ About {time_remaining:.0f} minutes remaining
         </div>
         """, unsafe_allow_html=True)
 
-    def _render_question(self, q_id, question):
-        """Render current question with mobile-first design"""
+        # Phase indicator (subtle)
+        current_phase = question.get('phase', 'unknown')
+        phase_names = {
+            'screening': 'Initial screening',
+            'behavioral_mapping': 'Pattern discovery', 
+            'digital_assessment': 'Digital pattern analysis',
+            'pattern_exploration': 'Deep pattern exploration',
+            'resistance_analysis': 'Change preparation',
+            'session_design': 'Treatment planning'
+        }
         
-        # Ensure question has required fields
-        if not question or not question.get('text'):
-            st.error("⚠️ Question configuration error")
-            st.markdown("**Question data missing. Please contact support.**")
-            if st.button("Skip to next question", key=f"error_skip_{q_id}", type="secondary"):
-                self._advance_question()
-                st.rerun()
-            return
-        
-        # Display question with mobile-friendly styling
+        if answered > 3:  # Only show after initial questions
+            st.caption(f"**Phase:** {phase_names.get(current_phase, current_phase.title())}")
+
+        # Question display with enhanced formatting
         st.markdown(f"### {question['text']}")
         
-        # Show clinical insights if patterns are emerging (but only after sufficient responses)
-        if len(st.session_state.assessment_responses) > 10 and st.session_state.pattern_scores:
-            self._show_pattern_insights()
+        # Show pattern insight hints for engaged users (after question 10)
+        if answered > 10 and st.session_state.pattern_scores:
+            top_pattern = max(st.session_state.pattern_scores.items(), key=lambda x: x[1])
+            if top_pattern[1] >= 4.0:
+                pattern_name = self.patterns.get(top_pattern[0], "Unknown")
+                st.markdown(f"""
+                <div class="insight-preview">
+                💡 <strong>Pattern insight:</strong> Detecting strong {pattern_name} indicators - your personalized analysis is taking shape!
+                </div>
+                """, unsafe_allow_html=True)
+
+        # Handle different question types with error checking
+        q_type = question.get('type', 'text_completion')
         
-        # Ensure question type exists and handle appropriately
-        q_type = question.get('type', 'unknown')
-        
-        # Add container for mobile spacing
-        with st.container():
+        try:
             if q_type == 'single_choice':
                 self._handle_single_choice(q_id, question)
             elif q_type == 'single_choice_with_intensity':
                 self._handle_single_choice_with_intensity(q_id, question)
             elif q_type == 'single_choice_with_follow_up':
                 self._handle_single_choice_with_follow_up(q_id, question)
+            elif q_type == 'text_completion':
+                self._handle_text_completion(q_id, question)
             elif q_type == 'text_with_analysis':
                 self._handle_text_with_analysis(q_id, question)
             elif q_type == 'detailed_scenario':
                 self._handle_detailed_scenario(q_id, question)
-            elif q_type == 'scale_with_follow_up':
-                self._handle_scale_with_follow_up(q_id, question)
-            elif q_type == 'percentage_slider':
-                self._handle_percentage_slider(q_id, question)
-            elif q_type == 'detailed_future_pacing':
-                self._handle_detailed_future_pacing(q_id, question)
             elif q_type == 'thought_completion':
                 self._handle_thought_completion(q_id, question)
-            elif q_type == 'single_choice_with_body_mapping':
-                self._handle_single_choice_with_body_mapping(q_id, question)
             elif q_type == 'multiple_choice_weighted':
                 self._handle_multiple_choice_weighted(q_id, question)
+            elif q_type == 'single_choice_with_body_mapping':
+                self._handle_single_choice_with_body_mapping(q_id, question)
             else:
-                # Unknown question type - show error and fallback
-                st.error(f"⚠️ Unknown question type: {q_type}")
-                st.info("This question type is not yet implemented. You can skip it.")
-                if st.button("Skip this question", key=f"unknown_skip_{q_id}", type="secondary"):
-                    self._save_response(q_id, f"Skipped - unknown type: {q_type}", question)
-                    self._advance_question()
-                    st.rerun()
-
-    def _handle_thought_completion(self, q_id, question):
-        """Handle thought completion questions - MOBILE OPTIMIZED"""
-        st.markdown("**Complete this thought:**")
-        st.info("💭 Write the actual words that go through your mind, even if they seem harsh or unreasonable.")
-        
-        response = st.text_area(
-            "The automatic thought that appears is:",
-            placeholder=question.get('placeholder', 'What does your inner voice say?'),
-            key=f"q_{q_id}_thought",
-            height=100,
-            help="Be honest about your internal dialogue - this helps create the most effective intervention"
-        )
-        
-        char_count = len(response.strip())
-        min_chars = question.get('min_chars', 5)
-        
-        if char_count >= min_chars:
-            st.success(f"✓ Captured your thought pattern ({char_count} characters)")
-            if st.button("Continue →", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-                self._save_response(q_id, response.strip(), question)
-                self._advance_question()
-                st.rerun()
-        elif char_count > 0:
-            st.info(f"Please add a bit more detail ({min_chars - char_count} more characters)")
-            st.button("Continue →", key=f"q_{q_id}_continue", type="primary", use_container_width=True, disabled=True)
-        else:
-            st.info("💭 Please share what goes through your mind")
-            st.button("Continue →", key=f"q_{q_id}_continue", type="primary", use_container_width=True, disabled=True)
-
-    def _handle_single_choice_with_body_mapping(self, q_id, question):
-        """Handle single choice with body mapping - MOBILE OPTIMIZED"""
-        # Ensure options exist
-        if 'options' not in question or not question['options']:
-            st.error("⚠️ Question configuration error - missing options")
-            if st.button("Skip this question", key=f"q_{q_id}_skip", type="secondary"):
-                self._save_response(q_id, "Question error - skipped", question)
-                self._advance_question()
-                st.rerun()
-            return
-            
-        st.markdown("**Select the physical sensation you experience most often:**")
-        
-        selected_option = st.radio(
-            "Choose the sensation that best describes your experience:",
-            question['options'],
-            key=f"q_{q_id}_radio",
-            label_visibility="collapsed"
-        )
-        
-        if selected_option:
-            st.success(f"✓ Selected: {selected_option}")
-            
-            # Optional body location follow-up if configured
-            if question.get('body_location_follow_up'):
-                st.markdown("---")
-                st.markdown("**Where specifically do you feel this sensation?**")
-                location = st.text_input(
-                    "Body location (optional):",
-                    key=f"q_{q_id}_location",
-                    placeholder="e.g., 'center of chest', 'right shoulder', 'lower back'...",
-                    help="This helps with more targeted intervention"
-                )
-            else:
-                location = ""
-            
-            if st.button("Continue →", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-                additional_data = {'body_location': location} if location.strip() else None
-                self._save_response(q_id, selected_option, question, additional_data=additional_data)
-                self._advance_question()
-                st.rerun()
-
-    def _handle_multiple_choice_weighted(self, q_id, question):
-        """Handle multiple choice with weighting - MOBILE OPTIMIZED"""
-        # Ensure options exist
-        if 'options' not in question or not question['options']:
-            st.error("⚠️ Question configuration error - missing options")
-            if st.button("Skip this question", key=f"q_{q_id}_skip", type="secondary"):
-                self._save_response(q_id, "Question error - skipped", question)
-                self._advance_question() 
-                st.rerun()
-            return
-            
-        max_selections = question.get('max_selections', len(question['options']))
-        
-        st.markdown(f"**Select up to {max_selections} options that apply:**")
-        
-        selected_options = st.multiselect(
-            "Choose the emotions you typically feel:",
-            question['options'],
-            key=f"q_{q_id}_multi",
-            max_selections=max_selections,
-            help=f"Select up to {max_selections} that best describe your experience"
-        )
-        
-        if selected_options:
-            st.success(f"✓ Selected {len(selected_options)} option(s)")
-            
-            st.markdown("---")
-            st.markdown("**Rate the intensity of each selected emotion:**")
-            
-            intensities = {}
-            for emotion in selected_options:
-                # Create safe key for streamlit
-                safe_key = emotion.replace('/', '_').replace(' ', '_').replace(',', '')
+                # Fallback to basic text input
+                st.warning(f"Unknown question type: {q_type}. Using basic text input.")
+                self._handle_text_completion(q_id, question)
                 
-                st.markdown(f"**{emotion}:**")
-                intensities[emotion] = st.select_slider(
-                    f"Intensity of {emotion}:",
-                    options=[1, 2, 3, 4, 5, 6, 7],
-                    format_func=lambda x: f"{x}/7",
-                    value=4,
-                    key=f"q_{q_id}_{safe_key}_intensity",
-                    label_visibility="collapsed"
-                )
-            
-            if st.button("Continue →", key=f"q_{q_id}_continue", type="primary", use_container_width=True):
-                # Store as weighted response dictionary
-                weighted_response = {emotion: intensities[emotion] for emotion in selected_options}
-                self._save_response(q_id, weighted_response, question)
-                self._advance_question()
-                st.rerun()
-        else:
-            st.info("👆 Please select the emotions you typically experience")
+        except Exception as e:
+            st.error(f"Error rendering question: {str(e)}")
+            st.info("Please skip this question to continue.")
 
-    def _estimate_time_remaining(self):
-        """Estimate remaining time with realistic mobile timing"""
-        total_q = self._estimate_total_questions()
-        answered = len(st.session_state.assessment_responses)
-        remaining = max(0, total_q - answered)
-        
-        # Adjust for mobile users (typically take longer)
-        time_per_question = 1.2  # Slightly longer for mobile-friendly experience
-        
-        # Adjust for digital native assessment which may be faster
-        if st.session_state.is_digital_native:
-            time_per_question *= 0.9
-        
-        return remaining * time_per_question
+        # Navigation controls
+        self._render_navigation(q_id)
 
-    def _show_pattern_insights(self):
-        """Show emerging pattern insights during assessment - MOBILE OPTIMIZED"""
-        if st.session_state.pattern_scores:
-            top_pattern = max(st.session_state.pattern_scores.items(), key=lambda x: x[1])
-            if top_pattern[1] >= 4:
-                pattern_name = self.patterns.get(top_pattern[0], "Unknown")
-                intensity = self._classify_pattern_intensity(top_pattern[1])
-                
-                # Mobile-friendly insight display
-                intensity_class = intensity.lower().replace(' ', '').replace('-', '')
-                st.markdown(f"""
-                <div class="insight-preview">
-                    <strong>💡 Pattern emerging:</strong> {pattern_name}<br>
-                    <span class="pattern-strength-{intensity_class}">[{intensity} intensity detected]</span><br>
-                    <small>Your responses suggest this may be a key focus area for transformation</small>
-                </div>
-                """, unsafe_allow_html=True)
-
-    def _render_progress(self):
-        """Render mobile-optimized progress indicator"""
-        answered = len(st.session_state.assessment_responses)
-        total = self._estimate_total_questions()
-        progress = answered / total if total > 0 else 0
-        time_remaining = self._estimate_time_remaining()
-        
-        st.markdown(f"""
-        <div class="progress-container">
-            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
-                <span><strong>Question {answered + 1} of {total}</strong></span>
-                <span><strong>{int(progress * 100)}%</strong></span>
-            </div>
-            <div class="progress-bar" style="margin: 0.5rem 0;">
-                <div class="progress-fill" style="width: {progress * 100}%"></div>
-            </div>
-            <div style="text-align: center; font-size: 0.8rem; color: #6b7280;">
-                ~ {time_remaining:.0f} minutes remaining
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    def _render_header(self):
-        """Render mobile-optimized assessment header"""
-        time_remaining = self._estimate_time_remaining()
-        
-        # Mobile-friendly header
-        st.markdown("""
-        <div style="text-align: center; padding: 1rem 0; background: #f8fafc; border-radius: 8px; margin-bottom: 1rem;">
-            <h2 style="margin: 0; color: #273548;">Behavioral pattern assessment</h2>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.info(f"💡 **Understanding your unique patterns** is key to targeted, effective hypnotherapy. This takes about {time_remaining:.0f} minutes on mobile.")
-
-    def _render_navigation(self):
-        """Render navigation controls with SKIP button restored - MOBILE OPTIMIZED"""
+    def _render_navigation(self, current_q_id):
+        """Render navigation with improved mobile UX"""
         col1, col2, col3 = st.columns([1, 2, 1])
         
         with col1:
-            if len(st.session_state.assessment_responses) > 0:
-                if st.button("← Back", key="nav_back", use_container_width=True, help="Go to previous question"):
-                    self._go_back()
-                    st.rerun()
-        
-        with col2:
+            # Back button (disabled for first question)
             answered_count = len(st.session_state.assessment_responses)
-            total_count = self._estimate_total_questions()
-            st.markdown(f"""
-            <div style="text-align: center; padding: 0.5rem; color: #556D7A; font-size: 0.85rem; font-weight: 500;">
-                <strong>{answered_count}/{total_count}</strong> completed
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col3:
-            # SKIP button - always available except for first question
-            current_q_id, current_question = self._get_current_question()
-            if current_q_id and current_q_id > 1:  # Don't allow skipping the first question
-                if st.button("Skip", key="nav_skip", use_container_width=True, help="Skip this question", type="secondary"):
-                    skip_question = {"text": "Skipped", "type": "skip", "phase": "skip"}
-                    self._save_response(current_q_id, "Skipped", skip_question)
-                    self._advance_question()
-                    st.rerun()
-
-    def _show_pattern_insights(self):
-        """Show emerging pattern insights during assessment"""
-        if st.session_state.pattern_scores:
-            top_pattern = max(st.session_state.pattern_scores.items(), key=lambda x: x[1])
-            if top_pattern[1] >= 4:
-                pattern_name = self.patterns.get(top_pattern[0], "Unknown")
-                intensity = self._classify_pattern_intensity(top_pattern[1])
-                
-                st.markdown(f"""
-                <div class="insight-preview">
-                    <strong>💡 Pattern emerging:</strong> {pattern_name} 
-                    <span class="pattern-strength-{intensity.lower().replace(' ', '')}">[{intensity} intensity]</span>
-                    <br><small>Your responses suggest this may be a primary focus area</small>
-                </div>
-                """, unsafe_allow_html=True)
-
-    def _render_navigation(self):
-        """Render navigation controls"""
-        col1, col2, col3 = st.columns([1, 2, 1])
-        
-        with col1:
-            if len(st.session_state.assessment_responses) > 0:
+            if answered_count > 0:
                 if st.button("← Back", key="nav_back", use_container_width=True):
                     self._go_back()
                     st.rerun()
+            else:
+                st.button("← Back", disabled=True, use_container_width=True)
         
         with col2:
-            answered_count = len(st.session_state.assessment_responses)
-            total_count = self._estimate_total_questions()
+            # Progress indicator
             st.markdown(f"""
-            <div style="text-align: center; padding: 0.25rem; color: #556D7A; font-size: 0.8rem;">
-                <strong>{answered_count}/{total_count}</strong> completed
+            <div style="text-align: center; padding: 0.5rem; color: #556D7A; font-size: 0.9rem;">
+                <strong>{answered_count}/25</strong> completed • <strong>{int((answered_count/25)*100)}%</strong>
             </div>
             """, unsafe_allow_html=True)
         
         with col3:
-            pass  # Keep space for symmetry
-
-    def _estimate_time_remaining(self):
-        """Estimate remaining time"""
-        total_q = self._estimate_total_questions()
-        answered = len(st.session_state.assessment_responses)
-        remaining = max(0, total_q - answered)
-        
-        # Adjust for digital native assessment which may be faster
-        if st.session_state.is_digital_native:
-            return remaining * 0.9
-        else:
-            return remaining * 1.0
+            # Skip button (available for all questions except first)
+            if current_q_id > 1:
+                if st.button("Skip", key="nav_skip", use_container_width=True):
+                    # Create skip response
+                    skip_question = {
+                        "text": "Skipped question", 
+                        "type": "skip", 
+                        "phase": st.session_state.current_phase
+                    }
+                    self._save_response(current_q_id, "Skipped", skip_question)
+                    self._advance_question()
+                    st.rerun()
+            else:
+                st.button("Skip", disabled=True, use_container_width=True, 
+                         help="First question required")
 
     def _render_contact_form(self):
-        """Render enhanced contact form with clinical preview"""
-        st.success("Your comprehensive behavioral pattern analysis is complete!")
+        """Enhanced contact form with improved mobile UX"""
+        st.success("🎉 Your comprehensive behavioral pattern analysis is ready!")
         
-        # Show preview of analysis
-        self._render_analysis_preview()
+        results = st.session_state.assessment_results
+        
+        # Show key metrics
+        if st.session_state.is_digital_native and results.get('digital_despair_analysis'):
+            col1, col2, col3, col4 = st.columns(4)
+            
+            digital_analysis = results['digital_despair_analysis']
+            digital_score = digital_analysis['digital_despair_score']
+            severity = digital_analysis['severity_level']
+            
+            with col1:
+                st.metric("Questions answered", results['total_questions_answered'])
+            with col2:
+                st.metric("Patterns detected", len(results.get('pattern_scores', {})))
+            with col3:
+                st.metric("Digital patterns", f"{severity}", f"{digital_score:.0f}%")
+                severity_descriptions = {
+                    'SEVERE': 'Specialized intervention required',
+                    'MODERATE': 'Enhanced approach needed', 
+                    'MILD': 'Standard with modifications',
+                    'MINIMAL': 'Traditional approach suitable'
+                }
+                st.caption(severity_descriptions.get(severity, 'Assessment incomplete'))
+            with col4:
+                completion_rate = results.get('completion_rate', 1.0)
+                st.metric("Completion", f"{completion_rate*100:.0f}%")
+        else:
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Questions answered", results['total_questions_answered'])
+            with col2:
+                st.metric("Patterns detected", len(results.get('pattern_scores', {})))
+            with col3:
+                completion_rate = results.get('completion_rate', 1.0)
+                st.metric("Completion", f"{completion_rate*100:.0f}%")
         
         st.markdown("---")
-        st.markdown("**Enter your email to receive your complete personalized analysis:**")
-        
-        with st.form("contact_form"):
-            email = st.text_input("Email*", placeholder="your@email.com")
+        st.markdown("### Get your personalized analysis")
+        st.markdown("Enter your email to receive your detailed behavioral pattern analysis and personalized hypnotherapy recommendations:")
+
+        with st.form("contact_form", clear_on_submit=False):
+            # ONLY EMAIL IS MANDATORY
+            email = st.text_input("Email address*", placeholder="your@email.com")
+            
+            # ALL OTHER FIELDS ARE OPTIONAL
             name = st.text_input("Full name (optional)", placeholder="Your full name")
             phone = st.text_input("Phone (optional)", placeholder="+1 xxx xxx xxxx")
+
+            concern = st.text_area(
+                "What brought you to this assessment? (optional)",
+                placeholder="Brief description of what motivated you to take this assessment...",
+                height=100
+            )
             
             urgency = st.selectbox(
                 "How urgent is addressing this pattern? (optional)",
@@ -4417,419 +4566,131 @@ class ComprehensiveBehavioralAssessment:
                  "Somewhat urgent - want to address soon", "Not urgent - exploring options"]
             )
             
-            marketing_consent = st.checkbox(
-                "I consent to receiving follow-up communications about my assessment results and therapeutic services."
+            next_step = st.selectbox(
+                "Preferred next step (optional)",
+                ["Not specified", "Schedule free consultation call", 
+                 "Information about transformation packages", "Receive analysis and recommendations first", 
+                 "Connect with clinical team directly"]
             )
             
-            submitted = st.form_submit_button("Get my complete clinical analysis", type="primary", use_container_width=True)
+            marketing_consent = st.checkbox(
+                "I consent to receiving follow-up communications about my assessment results and relevant therapeutic services."
+            )
             
+            submitted = st.form_submit_button("Get my personalized analysis", type="primary", use_container_width=True)
+
             if submitted:
-                if not email.strip():
-                    st.error("❌ Email is required")
+                errors = []
+                
+                # ONLY EMAIL VALIDATION IS REQUIRED
+                if not email.strip(): 
+                    errors.append("Email is required")
                 elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
-                    st.error("❌ Valid email address is required")
-                elif not marketing_consent:
-                    st.error("❌ Please consent to follow-up communications to receive your results")
+                    errors.append("Valid email address is required")
+                
+                # MARKETING CONSENT CHECK
+                if not marketing_consent:
+                    errors.append("Please consent to follow-up communications to receive your results")
+                
+                if errors:
+                    for error in errors:
+                        st.error(f"❌ {error}")
                 else:
                     # Save contact info
                     st.session_state.contact_info = {
                         'name': name.strip() if name.strip() else 'Not provided',
                         'email': email.strip(),
                         'phone': phone.strip() if phone.strip() else 'Not provided',
-                        'urgency': urgency,
+                        'urgency': urgency if urgency != 'Not specified' else 'Not specified',
+                        'primary_concern': concern.strip() if concern.strip() else 'Not provided',
+                        'next_step': next_step if next_step != 'Not specified' else 'Not specified',
                         'marketing_consent': marketing_consent,
                         'timestamp': datetime.now().isoformat()
                     }
                     
-                    # Generate complete clinical report
-                    clinical_report = self._generate_complete_clinical_report()
-                    
-                    # Prepare email data
+                    # Prepare comprehensive assessment data for email
                     assessment_data = {
                         'contact_info': st.session_state.contact_info,
                         'assessment_results': st.session_state.assessment_results,
-                        'responses': st.session_state.assessment_responses,
-                        'clinical_report': clinical_report,
+                        'assessment_responses': st.session_state.assessment_responses,
+                        'intensity_responses': st.session_state.get('intensity_responses', {}),
+                        'pattern_scores': st.session_state.pattern_scores,
+                        'trigger_chain': st.session_state.trigger_chain,
+                        'digital_responses': st.session_state.get('digital_responses', {}),
+                        'is_digital_native': st.session_state.is_digital_native,
+                        'digital_despair_analysis': results.get('digital_despair_analysis'),
+                        'comprehensive_analysis': results.get('comprehensive_analysis'),
+                        'clinical_template': self._format_clinical_template(),
+                        'start_time': st.session_state.start_time,
                         'completion_timestamp': datetime.now().isoformat()
                     }
                     
-                    # Send email
+                    # Send assessment results email
                     try:
                         from utils.email_assess import send_clinical_assessment_results
+                        
                         email_success = send_clinical_assessment_results(assessment_data)
                         
                         if email_success:
-                            st.success("✅ Complete analysis sent to clinical team!")
+                            st.success("✅ Assessment completed and sent to our clinical team!")
+                            st.info("📧 Your detailed analysis will be reviewed and you'll receive personalized recommendations within 24-48 hours.")
                         else:
-                            st.warning("⚠️ Assessment saved - our team will contact you directly")
+                            st.warning("⚠️ Assessment saved, but email notification failed. Our team will still receive your results.")
+                            
+                    except ImportError:
+                        st.warning("📧 Email system temporarily unavailable. Your assessment has been saved and our team will contact you directly.")
                     except Exception as e:
-                        st.info("📧 Assessment completed - our clinical team will review your results")
+                        st.error(f"System error: {str(e)}")
+                        st.info("Your assessment is saved. Please contact our team directly if you don't receive results within 48 hours.")
                     
                     st.session_state.contact_provided = True
                     st.rerun()
-
-    def _render_analysis_preview(self):
-        """Render preview of clinical analysis"""
-        analysis = st.session_state.assessment_results.get('comprehensive_analysis', {})
-        
-        # Show pattern constellation
-        pattern_analysis = analysis.get('pattern_constellation', {})
-        if pattern_analysis.get('dominant'):
-            dominant = pattern_analysis['dominant']
-            st.markdown(f"""
-            <div class="clinical-indicator">
-                <strong>🎯 Dominant pattern:</strong> {dominant['name']} 
-                <span class="pattern-strength-{dominant['intensity'].lower().replace(' ', '')}">[{dominant['intensity']} intensity]</span>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Show digital analysis if applicable
-        if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis:
-                severity = digital_analysis['severity_level']
-                score = digital_analysis['digital_despair_score']
-                
-                severity_class = f"digital-severity-{severity.lower()}"
-                st.markdown(f"""
-                <div class="clinical-indicator {severity_class}">
-                    <strong>📲 Digital pattern analysis:</strong> {severity} severity ({score:.0f}% score)
-                    <br><small>{digital_analysis.get('clinical_recommendation', '')}</small>
-                </div>
-                """, unsafe_allow_html=True)
-        
-        # Show success predictors
-        success_predictors = analysis.get('success_predictors', {})
-        if success_predictors:
-            success_rate = success_predictors.get('predicted_success_rate', 85)
-            confidence = success_predictors.get('confidence_level', 'High')
-            
-            st.markdown(f"""
-            <div class="clinical-indicator">
-                <strong>📈 Predicted success rate:</strong> {success_rate}% ({confidence} confidence)
-                <br><small>Based on pattern complexity, readiness, and approach optimization</small>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Teaser for complete analysis
-        st.markdown("""
-        <div class="analysis-teaser">
-            <strong>🔓 Your complete clinical analysis includes:</strong>
-            <ul style="text-align: left; margin-top: 0.5rem;">
-                <li>Complete behavioral sequence mapping and intervention points</li>
-                <li>Core limiting beliefs and subconscious programming analysis</li>
-                <li>Secondary gains and transformation resistance predictions</li>
-                <li>Personalized hypnotherapy session design and timeline</li>
-                <li>Success optimization strategies and maintenance planning</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-    def _generate_complete_clinical_report(self):
-        """Generate complete clinical report for email"""
-        analysis = st.session_state.assessment_results.get('comprehensive_analysis', {})
-        
-        # Extract key components
-        pattern_analysis = analysis.get('pattern_constellation', {})
-        behavioral_sequence = analysis.get('behavioral_sequence', {})
-        digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-        core_beliefs = analysis.get('core_limiting_beliefs', {})
-        secondary_gains = analysis.get('secondary_gains', {})
-        success_predictors = analysis.get('success_predictors', {})
-        
-        report = f"""
-╔══════════════════════════════════════════════════════════════╗
-║                 COMPREHENSIVE CLINICAL ANALYSIS              ║
-║              Enhanced Behavioral Pattern Assessment          ║
-╚══════════════════════════════════════════════════════════════╝
-
-**CLIENT INFORMATION:**
-Name: {st.session_state.contact_info.get('name', 'Not provided')}
-Email: {st.session_state.contact_info.get('email', 'Not provided')}
-Phone: {st.session_state.contact_info.get('phone', 'Not provided')}
-Urgency: {st.session_state.contact_info.get('urgency', 'Not specified')}
-Assessment Completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-
-**ASSESSMENT METRICS:**
-Questions Answered: {len(st.session_state.assessment_responses)}
-Completion Rate: {len(st.session_state.assessment_responses) / self._estimate_total_questions() * 100:.1f}%
-Assessment Duration: {self._calculate_assessment_duration()}
-Engagement Level: {'High' if len(st.session_state.assessment_responses) >= 25 else 'Moderate'}
-
-**PATTERN CONSTELLATION ANALYSIS:**"""
-
-        # Add dominant pattern
-        dominant = pattern_analysis.get('dominant', {})
-        if dominant:
-            report += f"""
-Dominant Pattern: {dominant.get('name', 'Unknown')} (Score: {dominant.get('score', 0):.1f}/10)
-Intensity Level: {dominant.get('intensity', 'Unknown')}
-Clinical Priority: Primary intervention target"""
-
-        # Add supporting patterns
-        supporting = pattern_analysis.get('supporting', [])
-        if supporting:
-            report += f"\n\nSupporting Patterns:"
-            for i, pattern in enumerate(supporting[:3], 1):
-                report += f"\n{i}. {pattern.get('name', 'Unknown')} (Score: {pattern.get('score', 0):.1f}/10) - {pattern.get('intensity', 'Unknown')} intensity"
-
-        # Add pattern interactions
-        interactions = pattern_analysis.get('pattern_interactions', [])
-        if interactions:
-            report += f"\n\nPattern Interactions:"
-            for interaction in interactions[:2]:
-                patterns = interaction.get('patterns', [])
-                description = interaction.get('interaction', '')
-                report += f"\n• {patterns[0]} + {patterns[1]}: {description}"
-
-        # Add complexity assessment
-        complexity = pattern_analysis.get('complexity_level', 'Unknown')
-        report += f"\n\nPattern Complexity: {complexity}"
-
-        # Add digital despair analysis if applicable
-        if st.session_state.is_digital_native and digital_analysis:
-            report += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║               DIGITAL DESPAIR SYNDROME ANALYSIS             ║
-╚══════════════════════════════════════════════════════════════╝
-
-Digital Native Status: Confirmed
-Algorithmic Despair Score: {digital_analysis['digital_despair_score']:.1f}% ({digital_analysis['severity_level']} severity)
-Clinical Recommendation: {digital_analysis['clinical_recommendation']}
-
-Component Analysis:"""
-            
-            components = digital_analysis.get('component_scores', {})
-            for component, score in components.items():
-                level = "HIGH" if score >= 4 else "MODERATE" if score >= 2 else "LOW"
-                report += f"\n• {component.replace('_', ' ').title()}: {level} ({score:.1f}/5)"
-
-            # Add therapeutic adaptations
-            adaptations = digital_analysis.get('therapeutic_adaptations', [])
-            if adaptations:
-                report += f"\n\nRequired Therapeutic Adaptations:"
-                for i, adaptation in enumerate(adaptations[:5], 1):
-                    report += f"\n{i}. {adaptation}"
-
-        # Add behavioral sequence analysis
-        sequence = behavioral_sequence.get('complete_sequence', {})
-        if sequence:
-            report += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║              BEHAVIORAL SEQUENCE MAPPING                     ║
-╚══════════════════════════════════════════════════════════════╝
-
-Complete Behavioral Chain:"""
-            
-            sequence_order = [
-                ('environmental_trigger', 'Environmental Trigger'),
-                ('awareness_point', 'First Awareness Point'),
-                ('physical_response', 'Physical Response'),
-                ('automatic_thought', 'Automatic Thought'),
-                ('behavioral_response', 'Behavioral Response'),
-                ('immediate_consequence', 'Immediate Consequence'),
-                ('reinforcement_mechanism', 'Reinforcement Pattern')
-            ]
-            
-            for key, label in sequence_order:
-                if key in sequence:
-                    value = sequence[key]
-                    if len(value) > 100:
-                        value = value[:97] + "..."
-                    report += f"\n→ {label}: {value}"
-
-            # Add intervention points
-            intervention_points = behavioral_sequence.get('intervention_points', [])
-            if intervention_points:
-                report += f"\n\nOptimal Intervention Points:"
-                for point in intervention_points[:3]:
-                    report += f"\n• {point.get('point', 'Unknown')}: {point.get('intervention', 'Standard intervention')}"
-
-        # Add core beliefs analysis
-        if core_beliefs:
-            report += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║                CORE LIMITING BELIEFS ANALYSIS               ║
-╚══════════════════════════════════════════════════════════════╝
-
-Primary Limiting Belief: {core_beliefs.get('primary_belief', 'Requires session exploration')}
-Family Programming: {core_beliefs.get('family_programming', 'Not captured')}
-Worth Equation: {core_beliefs.get('worth_equation', 'Not captured')}
-
-Subconscious Programming Priority: {'High' if any(core_beliefs.values()) else 'Standard assessment needed'}"""
-
-        # Add secondary gains
-        if secondary_gains:
-            report += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║                 SECONDARY GAINS ANALYSIS                    ║
-╚══════════════════════════════════════════════════════════════╝
-
-Protective Function: {secondary_gains.get('primary_protection', 'Emotional protection mechanism')}
-Potential Identity Losses: {secondary_gains.get('potential_losses', 'Requires exploration')}
-Change Resistance Source: Pattern serves important protective function"""
-
-        # Add success predictors and session design
-        if success_predictors:
-            success_rate = success_predictors.get('predicted_success_rate', 85)
-            readiness = success_predictors.get('readiness_score', 7)
-            confidence = success_predictors.get('confidence_level', 'High')
-            
-            report += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║            SUCCESS PREDICTORS & SESSION DESIGN              ║
-╚══════════════════════════════════════════════════════════════╝
-
-Predicted Success Rate: {success_rate}% ({confidence} confidence)
-Readiness Score: {readiness}/10
-Pattern Complexity: {success_predictors.get('pattern_complexity', 'Unknown')} significant patterns
-Completion Engagement: {success_predictors.get('completion_engagement', 0) * 100:.1f}%
-
-Session Design Recommendations:"""
-            
-            session_design = analysis.get('session_design', {})
-            if session_design:
-                report += f"\nPreferred Hypnotic Style: {session_design.get('preferred_style', 'Collaborative exploration')}"
-                report += f"\nPreferred Change Pace: {session_design.get('preferred_pace', 'Rapid but sustainable')}"
-                
-                # Add digital adaptations if needed
-                digital_adaptations = session_design.get('digital_adaptations', {})
-                if digital_adaptations:
-                    report += f"\nSession Length: {digital_adaptations.get('session_length', 'Standard 90 minutes')}"
-                    report += f"\nAuthority Style: {digital_adaptations.get('authority_style', 'Professional therapeutic')}"
-                    report += f"\nLanguage Approach: {digital_adaptations.get('language_style', 'Professional clinical')}"
-
-        # Add intervention priorities
-        priorities = analysis.get('intervention_priorities', [])
-        if priorities:
-            report += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║                 INTERVENTION PRIORITIES                     ║
-╚══════════════════════════════════════════════════════════════╝
-
-Treatment Prioritization:"""
-            for priority in priorities[:4]:
-                report += f"\nPriority {priority.get('priority', 'X')}: {priority.get('target', 'Unknown target')}"
-                report += f"\n  Approach: {priority.get('approach', 'Standard intervention')}"
-                report += f"\n  Session: {priority.get('session', 'TBD')}"
-
-        # Add resistance predictions
-        resistance_points = analysis.get('resistance_points', [])
-        if resistance_points:
-            report += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║                RESISTANCE PREDICTION & MANAGEMENT           ║
-╚══════════════════════════════════════════════════════════════╝
-
-Predicted Resistance Points:"""
-            for resistance in resistance_points[:3]:
-                report += f"\nSource: {resistance.get('source', 'Unknown')}"
-                report += f"\n  Type: {resistance.get('resistance_type', 'Standard change resistance')}"
-                report += f"\n  Management: {resistance.get('management_strategy', 'Standard approach')}\n"
-
-        # Add transformation timeline
-        timeline = analysis.get('transformation_timeline', {})
-        if timeline:
-            report += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║                TRANSFORMATION TIMELINE                      ║
-╚══════════════════════════════════════════════════════════════╝
-
-Recommended Sessions: {timeline.get('recommended_sessions', 2)}
-Initial Shifts: {timeline.get('initial_shifts', '48-72 hours post-session')}
-Significant Changes: {timeline.get('significant_changes', '1-2 weeks')}
-Full Integration: {timeline.get('full_integration', '4-8 weeks')}
-Maintenance: {timeline.get('maintenance', 'Optional check-in')}"""
-
-        # Add therapeutic approach summary
-        approach = analysis.get('therapeutic_approach', {})
-        if approach:
-            report += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║              THERAPEUTIC APPROACH SUMMARY                   ║
-╚══════════════════════════════════════════════════════════════╝
-
-Primary Modality: {approach.get('primary_modality', 'Rapid transformation hypnotherapy')}
-Session Structure: {approach.get('session_structure', '2+1 session protocol')}
-Hypnotic Style: {approach.get('hypnotic_style', 'Collaborative permissive')}"""
-            
-            if approach.get('specialized_protocol'):
-                report += f"\nSpecialized Protocol: {approach['specialized_protocol']}"
-            if approach.get('complexity_note'):
-                report += f"\nComplexity Note: {approach['complexity_note']}"
-
-        # Add clinical notes and recommendations
-        report += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║                    CLINICAL RECOMMENDATIONS                 ║
-╚══════════════════════════════════════════════════════════════╝
-
-Priority Actions:
-1. Schedule discovery consultation to confirm analysis
-2. {"Implement specialized digital-native protocols" if st.session_state.is_digital_native and digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE'] else "Prepare standard hypnotherapy approach"}
-3. Address dominant pattern as primary intervention target
-4. Plan for predicted resistance patterns
-
-Urgency Level: {st.session_state.contact_info.get('urgency', 'Not specified')}
-{"⚠️ PRIORITY CONTACT REQUIRED - High urgency indicated" if 'urgent' in st.session_state.contact_info.get('urgency', '').lower() else "Standard follow-up timeline appropriate"}
-
-Assessment Quality: {'Comprehensive - High confidence in recommendations' if len(st.session_state.assessment_responses) >= 25 else 'Good - Sufficient for initial treatment planning'}
-
-╔══════════════════════════════════════════════════════════════╗
-║                      END OF REPORT                          ║
-╚══════════════════════════════════════════════════════════════╝
-
-Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-Practitioner: Licensed Clinical Hypnotherapist Team
-Next Steps: Discovery consultation booking and personalized session scheduling"""
-
-        return report
-
-    def _calculate_assessment_duration(self):
-        """Calculate assessment duration"""
-        start_time = datetime.fromisoformat(st.session_state.start_time)
-        duration = datetime.now() - start_time
-        minutes = int(duration.total_seconds() / 60)
-        return f"{minutes} minutes"
 
     def _render_results(self):
         """Render final results page with paywall integration"""
         st.markdown("## Your behavioral pattern analysis")
         
-        # Show comprehensive results or paywall
+        # Show specialized analysis indicator for digital natives
+        if st.session_state.is_digital_native:
+            results = st.session_state.assessment_results
+            digital_analysis = results.get('digital_despair_analysis')
+            if digital_analysis:
+                severity = digital_analysis['severity_level']
+                score = digital_analysis['digital_despair_score']
+                
+                if severity in ['SEVERE', 'MODERATE']:
+                    st.markdown(f"""
+                    <div class="clinical-indicator">
+                    🧠 <strong>Digital-native patterns detected:</strong> {severity} intensity ({score:.0f}% score)
+                    <br>Specialized hypnotherapy approach recommended for optimal results
+                    </div>
+                    """, unsafe_allow_html=True)
+        
+        # Clinical analysis section with paywall
         self._render_clinical_analysis_section()
         
+        # Next steps
         st.markdown("### Your next steps")
         
         contact_info = st.session_state.get('contact_info', {})
         urgency = contact_info.get('urgency', '')
         
-        if 'urgent' in urgency.lower():
+        if 'extremely urgent' in urgency.lower() or 'very urgent' in urgency.lower():
             st.warning("⚠️ **Priority contact**: Given your urgency level, our clinical team will contact you within 24 hours.")
         
         st.markdown("""
         **What happens next:**
+    
+        1. **Clinical review** (24-48 hours): Licensed therapist analyzes your comprehensive assessment
+        2. **Personal contact** (48-72 hours): We reach out via your preferred method  
+        3. **Custom protocol** (within 72 hours): Personalized hypnotherapy approach designed for your specific patterns
         
-        1. **Clinical review** (24-48 hours): Licensed hypnotherapist analyzes your complete assessment
-        2. **Personalized contact** (48-72 hours): Direct outreach via your preferred method  
-        3. **Treatment planning** (within 72 hours): Custom hypnotherapy protocol designed for your specific patterns
+        **Want to understand our proven method?** Visit **[hypnotherapy.streamlit.app](https://hypnotherapy.streamlit.app)** to learn about our rapid transformation approach.
         
-        **Ready to begin transformation?** Visit **[hypnotherapy.streamlit.app](https://hypnotherapy.streamlit.app)** to learn about our proven rapid change methodology.
-        
-        **Questions about your analysis?** Reply to any email from our team or contact us directly.
+        **Questions?** Reply to any email from us or contact our clinical team directly.
         """)
         
-        # Add scheduling CTA
+        # Call-to-action button
         st.markdown(f"""
         <div class="text-center">
             <a href="{self.discovery_url}" 
@@ -4848,114 +4709,299 @@ Next Steps: Discovery consultation booking and personalized session scheduling""
                 assessment_data = {
                     'assessment_results': st.session_state.assessment_results,
                     'assessment_responses': st.session_state.assessment_responses,
+                    'intensity_responses': st.session_state.get('intensity_responses', {}),
                     'is_digital_native': st.session_state.is_digital_native,
-                    'comprehensive_analysis': st.session_state.assessment_results.get('comprehensive_analysis', {}),
-                    'contact_info': st.session_state.get('contact_info', {})
+                    'digital_despair_analysis': st.session_state.assessment_results.get('digital_despair_analysis')
                 }
+                
+                # Add contact info if available
+                if 'contact_info' in st.session_state:
+                    assessment_data.update(st.session_state.contact_info)
                 
                 if paywall.check_payment_status():
                     paywall.render_premium_analysis(assessment_data)
                 else:
-                    self._render_enhanced_preview()
+                    self._render_analysis_preview()
                     with st.expander("🔓 Unlock complete clinical analysis", expanded=False):
                         paywall.render_paywall_interface(assessment_data)
+                        
             except Exception as e:
                 st.error(f"Error loading premium analysis: {str(e)}")
-                self._render_enhanced_preview()
+                self._render_analysis_preview()
         else:
-            st.info("💡 **Complete clinical analysis available**: Comprehensive insights, personalized treatment planning, and detailed session design available with premium access.")
-            self._render_enhanced_preview()
+            st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
+            self._render_analysis_preview()
 
-    def _render_enhanced_preview(self):
-        """Render enhanced preview of analysis"""
-        analysis = st.session_state.assessment_results.get('comprehensive_analysis', {})
+    def _render_analysis_preview(self):
+        """Render preview of analysis results with enhanced insights"""
+        results = st.session_state.assessment_results
+        pattern_scores = results.get('pattern_scores', {})
         
-        # Show pattern constellation preview
-        pattern_analysis = analysis.get('pattern_constellation', {})
-        if pattern_analysis.get('dominant'):
-            dominant = pattern_analysis['dominant']
-            supporting = pattern_analysis.get('supporting', [])
-            
-            st.markdown(f"**🎯 Your behavioral pattern constellation:**")
-            
-            # Dominant pattern
-            intensity_class = dominant['intensity'].lower().replace(' ', '')
-            st.markdown(f"""
-            <div style="background: #f8fafc; padding: 1rem; border-left: 4px solid #4CA1A3; margin: 0.5rem 0;">
-                <strong>Primary pattern:</strong> {dominant['name']}<br>
-                <span class="pattern-strength-{intensity_class}">Intensity: {dominant['intensity']} ({dominant['score']:.1f}/10)</span>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Supporting patterns teaser
-            if supporting:
-                patterns_preview = ", ".join([p['name'] for p in supporting[:2]])
-                remaining = len(supporting) - 2
-                if remaining > 0:
-                    patterns_preview += f" + {remaining} more"
-                
-                st.markdown(f"**Supporting patterns:** {patterns_preview}")
-        
-        # Show digital analysis preview if applicable
+        # Show digital despair results if applicable
         if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            digital_analysis = results.get('digital_despair_analysis')
             if digital_analysis:
                 severity = digital_analysis['severity_level']
                 score = digital_analysis['digital_despair_score']
                 
-                severity_class = f"digital-severity-{severity.lower()}"
-                st.markdown(f"""
-                <div class="clinical-indicator {severity_class}" style="margin: 1rem 0;">
-                    <strong>📲 Digital pattern analysis:</strong> {severity} severity ({score:.0f}% score)<br>
-                    <small>Requires {"specialized intervention protocols" if severity in ['SEVERE', 'MODERATE'] else "standard approach with digital awareness"}</small>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown(f"**🧠 Digital pattern assessment: {severity}** ({score:.0f}% severity score)")
+                
+                if severity in ['SEVERE', 'MODERATE']:
+                    st.warning(f"⚠️ **Specialized intervention recommended** - Traditional approaches may be less effective")
+                else:
+                    st.success("✅ **Standard approach suitable** with targeted digital considerations")
         
-        # Show success predictor preview
-        success_predictors = analysis.get('success_predictors', {})
-        if success_predictors:
-            success_rate = success_predictors.get('predicted_success_rate', 85)
-            confidence = success_predictors.get('confidence_level', 'High')
+        # Show traditional behavioral patterns
+        if pattern_scores:
+            st.markdown("**🎯 Your dominant behavioral patterns:**")
+            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
             
-            st.markdown(f"""
-            <div style="background: #f0f9ff; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
-                <strong>📈 Transformation probability:</strong> {success_rate}% ({confidence.lower()} confidence)<br>
-                <small>Based on pattern analysis, readiness assessment, and approach optimization</small>
-            </div>
-            """, unsafe_allow_html=True)
+            # Pattern descriptions for preview
+            descriptions = {
+                1: "Difficulty accepting or maintaining positive emotional states",
+                2: "Recurring conflicts and power struggles in relationships", 
+                3: "Default skepticism and difficulty trusting others' intentions",
+                4: "Black-and-white thinking patterns that limit creative solutions",
+                5: "Self-worth tied to productivity and constant achievement",
+                6: "Inconsistent sense of identity across different contexts",
+                7: "Prioritizing others' needs while neglecting self-care",
+                8: "Life choices driven by family expectations rather than personal desires",
+                9: "Context-dependent loss of personal boundaries and limits"
+            }
+            
+            # Show top pattern with strength indicator
+            if sorted_patterns:
+                pattern_id, score = sorted_patterns[0]
+                pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
+                
+                # Enhanced strength classification
+                if score >= 8:
+                    strength = "Very High"
+                    strength_class = "pattern-strength-veryhigh"
+                elif score >= 6:
+                    strength = "High" 
+                    strength_class = "pattern-strength-high"
+                elif score >= 4:
+                    strength = "Moderate"
+                    strength_class = "pattern-strength-moderate"
+                elif score >= 2:
+                    strength = "Emerging"
+                    strength_class = "pattern-strength-emerging"
+                else:
+                    strength = "Minimal"
+                    strength_class = "pattern-strength-minimal"
+                
+                st.markdown(f"""
+                **1. {pattern_name}** - <span class="{strength_class}">{strength} intensity pattern detected</span>
+                """, unsafe_allow_html=True)
+                
+                if pattern_id in descriptions:
+                    st.markdown(f"*{descriptions[pattern_id]}*")
+                
+                # Show indication of additional patterns
+                if len(sorted_patterns) > 1:
+                    remaining = len(sorted_patterns) - 1
+                    st.markdown(f"**Plus {remaining} additional pattern{'s' if remaining > 1 else ''} identified** - *Complete analysis shows pattern interactions and treatment priorities*")
+        else:
+            st.info("Pattern analysis will be completed with full assessment data.")
         
-        # Enhanced teaser for complete analysis
+        # Analysis teaser
         st.markdown("""
         <div class="analysis-teaser">
-            <h4>🔓 Your complete clinical analysis reveals:</h4>
-            <div style="text-align: left; margin-top: 1rem;">
-                <strong>📋 Behavioral Sequence Mapping:</strong><br>
-                <small>• Complete trigger-to-consequence chain analysis<br>
-                • Optimal intervention points for maximum effectiveness<br>
-                • Breaking points for rapid pattern interruption</small>
-                
-                <br><br><strong>🧠 Subconscious Programming Analysis:</strong><br>
-                <small>• Core limiting beliefs driving your patterns<br>
-                • Secondary gains and hidden benefits of current behaviors<br>
-                • Identity threats and transformation resistance predictions</small>
-                
-                <br><br><strong>⚡ Personalized Treatment Protocol:</strong><br>
-                <small>• Custom hypnotherapy session design for your brain type<br>
-                • Specific intervention priorities and sequencing<br>
-                • Success optimization strategies and timeline predictions</small>
-                
-                <br><br><strong>🎯 Session-by-Session Roadmap:</strong><br>
-                <small>• Exact therapeutic approach for your pattern constellation<br>
-                • Predicted resistance points and management strategies<br>
-                • Integration support and long-term maintenance planning</small>
-            </div>
+            <h4>🔒 Complete Clinical Analysis Available</h4>
+            <p><strong>Your premium analysis includes:</strong></p>
+            <ul style="text-align: left; margin: 0.5rem 0;">
+                <li><strong>Complete pattern constellation</strong> with interaction analysis</li>
+                <li><strong>Behavioral sequence mapping</strong> with intervention points</li>
+                <li><strong>Personalized session design</strong> with specific approach recommendations</li>
+                <li><strong>Success predictors</strong> and transformation timeline</li>
+                <li><strong>Resistance points</strong> and how to navigate them</li>
+                <li><strong>Digital-native adaptations</strong> (if applicable)</li>
+            </ul>
         </div>
         """, unsafe_allow_html=True)
 
+def _format_clinical_template(self):
+        """Format comprehensive clinical template for email delivery"""
+        
+        # Get comprehensive analysis
+        comprehensive_analysis = st.session_state.assessment_results.get('comprehensive_analysis', {})
+        pattern_constellation = comprehensive_analysis.get('pattern_constellation', {})
+        digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+        session_design = comprehensive_analysis.get('session_design', {})
+        success_predictors = comprehensive_analysis.get('success_predictors', {})
+        
+        # Extract dominant patterns
+        pattern_scores = st.session_state.pattern_scores
+        if pattern_scores:
+            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            dominant_pattern = self.patterns.get(sorted_patterns[0][0], "Unknown") if sorted_patterns else "Assessment incomplete"
+            dominant_score = sorted_patterns[0][1] if sorted_patterns else 0
+            
+            primary_pattern = self.patterns.get(sorted_patterns[1][0], "None detected") if len(sorted_patterns) > 1 else "None detected"
+            primary_score = sorted_patterns[1][1] if len(sorted_patterns) > 1 else 0
+            
+            secondary_pattern = self.patterns.get(sorted_patterns[2][0], "None detected") if len(sorted_patterns) > 2 else "None detected"
+            secondary_score = sorted_patterns[2][1] if len(sorted_patterns) > 2 else 0
+        else:
+            dominant_pattern = primary_pattern = secondary_pattern = "Assessment incomplete"
+            dominant_score = primary_score = secondary_score = 0
+        
+        # Get change readiness score
+        readiness_score = success_predictors.get('readiness_score', 5)
+        overall_success_probability = success_predictors.get('overall_success_probability', 85)
+        
+        # Build comprehensive template
+        template = f"""
+╔══════════════════════════════════════════════════════════════╗
+║                    CLINICAL ANALYSIS TEMPLATE                ║
+║          Enhanced Behavioral Pattern Assessment              ║
+╚══════════════════════════════════════════════════════════════╝
 
-# ---- Main Application Class ----
+**CLIENT INFORMATION:**
+Assessment Completion: {st.session_state.assessment_results.get('completion_rate', 0)*100:.0f}%
+Total Questions Answered: {st.session_state.assessment_results.get('total_questions_answered', 0)}/25
+Digital Native Status: {'Yes' if st.session_state.is_digital_native else 'No'}
+
+**BEHAVIORAL PATTERN CONSTELLATION:**
+Dominant Pattern: {dominant_pattern} (Score: {dominant_score:.1f}/10)
+Primary Supporting: {primary_pattern} (Score: {primary_score:.1f}/10) 
+Secondary Supporting: {secondary_pattern} (Score: {secondary_score:.1f}/10)
+
+**PATTERN COMPLEXITY ANALYSIS:**
+Complexity Level: {pattern_constellation.get('complexity_level', 'Moderate - Standard intervention suitable')}
+Pattern Interactions: {len(pattern_constellation.get('pattern_interactions', []))} significant interactions detected
+"""
+        
+        # Add digital analysis if applicable
+        if st.session_state.is_digital_native and digital_analysis:
+            digital_score = digital_analysis['digital_despair_score']
+            severity = digital_analysis['severity_level']
+            
+            template += f"""
+
+╔══════════════════════════════════════════════════════════════╗
+║               DIGITAL DESPAIR SYNDROME ANALYSIS             ║
+╚══════════════════════════════════════════════════════════════╝
+
+**SYNDROME ASSESSMENT:**
+Digital Despair Score: {digital_score:.1f}% ({severity} severity)
+Clinical Recommendation: {digital_analysis['clinical_recommendation']}
+Success Rate Impact: {digital_analysis.get('success_rate_adjustment', 0):+d}%
+
+**COMPONENT ANALYSIS:**"""
+            
+            components = digital_analysis.get('component_scores', {})
+            component_names = {
+                'reality_dissociation': 'Online vs Offline Authenticity Gap',
+                'achievement_pressure': 'Binary Success Framework Pressure',
+                'ironic_detachment': 'Emotional Protection via Cynicism',
+                'hope_avoidance': 'Systematic Optimism Resistance',
+                'attention_fragmentation': 'Digital Conditioning Effects',
+                'digital_dependency': 'Platform-Based Emotional Regulation'
+            }
+            
+            for comp, score in components.items():
+                name = component_names.get(comp, comp)
+                level = "HIGH" if score >= 4 else "MODERATE" if score >= 2 else "LOW"
+                template += f"\n• {name}: {level} ({score:.1f}/5)"
+            
+            template += f"""
+
+**REQUIRED THERAPEUTIC ADAPTATIONS:**
+{"🚨 SPECIALIZED DIGITAL-NATIVE PROTOCOL REQUIRED" if severity in ['SEVERE', 'MODERATE'] else "✅ STANDARD APPROACH WITH DIGITAL AWARENESS"}
+"""
+            
+            adaptations = digital_analysis.get('therapeutic_adaptations', [])[:5]
+            for i, adaptation in enumerate(adaptations, 1):
+                template += f"\n{i}. {adaptation}"
+        
+        # Add session design
+        template += f"""
+
+╔══════════════════════════════════════════════════════════════╗
+║                     SESSION DESIGN PLAN                      ║
+╚══════════════════════════════════════════════════════════════╝
+
+**SESSION STRUCTURE:**
+Session 1 Focus: {session_design.get('session_1', {}).get('focus', 'Pattern analysis and rapport building')}
+Session 1 Duration: {session_design.get('session_1', {}).get('duration', '90 minutes')}
+Session 2 Focus: {session_design.get('session_2', {}).get('focus', 'Core transformation and new pattern installation')}
+Session 3 Probability: {session_design.get('session_3_probability', '15%')} 
+
+**HYPNOTIC APPROACH:**
+Preferred Style: {session_design.get('session_1', {}).get('hypnotic_approach', 'Adaptive based on client response')}
+Approach Modifications: {len(session_design.get('approach_modifications', []))} specific adaptations identified
+"""
+        
+        # Add success predictors
+        template += f"""
+
+**SUCCESS PREDICTION ANALYSIS:**
+Overall Success Probability: {overall_success_probability}%
+Change Readiness Score: {readiness_score}/10
+Completion Engagement: {success_predictors.get('completion_rate', 0)*100:.0f}%
+Assessment Engagement: {success_predictors.get('engagement_level', 'Standard')}
+Predicted Timeline: {session_design.get('total_timeline', '2-3 weeks for core transformation')}
+"""
+        
+        # Add intervention priorities
+        intervention_priorities = comprehensive_analysis.get('intervention_priorities', [])
+        if intervention_priorities:
+            template += f"""
+
+**INTERVENTION PRIORITIES:**"""
+            for i, priority in enumerate(intervention_priorities[:5], 1):
+                template += f"\n{i}. {priority}"
+        
+        # Add resistance analysis
+        resistance_points = comprehensive_analysis.get('resistance_points', [])
+        if resistance_points:
+            template += f"""
+
+**PREDICTED RESISTANCE POINTS:**"""
+            for i, resistance in enumerate(resistance_points[:5], 1):
+                template += f"\n{i}. {resistance}"
+        
+        # Add behavioral sequence if captured
+        behavioral_sequence = comprehensive_analysis.get('behavioral_sequence', {})
+        if behavioral_sequence.get('complete_sequence'):
+            template += f"""
+
+**BEHAVIORAL SEQUENCE MAPPING:**
+Sequence Strength: {behavioral_sequence.get('sequence_strength', 'Standard entrenchment')}
+Key Intervention Points: {len(behavioral_sequence.get('intervention_points', []))} optimal points identified
+Breaking Point Strategy: {behavioral_sequence.get('breaking_points', [{}])[0].get('effectiveness', 'Standard approach') if behavioral_sequence.get('breaking_points') else 'To be determined in session'}
+"""
+        
+        template += f"""
+
+╔══════════════════════════════════════════════════════════════╗
+║                     CLINICAL RECOMMENDATIONS                 ║
+╚══════════════════════════════════════════════════════════════╝
+
+**IMMEDIATE ACTIONS:**
+1. Schedule initial consultation within 48-72 hours
+2. {"Priority scheduling recommended due to high urgency indicators" if st.session_state.get('contact_info', {}).get('urgency', '').lower().startswith(('extremely', 'very')) else "Standard scheduling appropriate"}
+3. Prepare specialized materials for identified pattern constellation
+
+**THERAPEUTIC APPROACH:**
+Primary Method: {"Digital-native specialized hypnotherapy" if st.session_state.is_digital_native and digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE'] else "Clinical hypnotherapy with behavioral pattern focus"}
+Expected Sessions: {"2-3 sessions" if session_design.get('session_3_needed', False) else "2 sessions"}
+Success Indicators: Pattern interruption within 7-14 days, sustained change within 3-4 weeks
+
+**CLINICAL NOTES:**
+This comprehensive assessment reveals {dominant_pattern} as the primary therapeutic target with {len(st.session_state.pattern_scores)} total patterns requiring attention. {"Digital-native adaptations are essential for optimal outcomes." if st.session_state.is_digital_native and digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE'] else "Standard clinical hypnotherapy protocols are suitable with identified modifications."}
+
+Assessment Quality: {"High - comprehensive responses with strong engagement indicators" if success_predictors.get('engagement_level') == 'High' else "Standard - adequate data for effective intervention design"}
+Prognosis: {"Excellent with proper approach adaptations" if overall_success_probability >= 85 else "Good with standard intervention methods"}
+"""
+        
+        return template
+
+# ---- Main Application Classes ----
 class AssessPage:
-    """Enhanced assessment page with comprehensive clinical analysis"""
+    """Main application wrapper for the comprehensive assessment"""
     
     def __init__(self):
         self.assessment = ComprehensiveBehavioralAssessment()
@@ -4963,65 +5009,41 @@ class AssessPage:
     def render(self):
         self.assessment.render()
 
-
-# ---- Factory Function ----
+# ---- Factory and Helper Functions ----
 def create_assess_page():
-    """Factory function to create the enhanced assessment page"""
+    """Factory function to create the assessment page"""
     return AssessPage()
 
-
-# ---- Helper Functions ----
 def get_assessment_summary():
-    """Get comprehensive assessment summary"""
+    """Get current assessment summary for external access"""
     if 'assessment_results' in st.session_state:
         return st.session_state.assessment_results
     return None
 
-def get_comprehensive_analysis():
-    """Get complete clinical analysis"""
-    if 'assessment_results' in st.session_state:
-        return st.session_state.assessment_results.get('comprehensive_analysis')
-    return None
-
 def get_pattern_scores():
-    """Get enhanced pattern scores with intensities"""
+    """Get current pattern scores for external access"""
     if 'pattern_scores' in st.session_state:
         return st.session_state.pattern_scores
     return {}
 
 def get_digital_analysis():
-    """Get comprehensive digital despair analysis"""
+    """Get digital despair analysis if available"""
     if 'assessment_results' in st.session_state:
         return st.session_state.assessment_results.get('digital_despair_analysis')
     return None
 
 def is_digital_native():
-    """Check digital native status"""
+    """Check if current user is assessed as digital native"""
     return st.session_state.get('is_digital_native', False)
 
-def get_behavioral_sequence():
-    """Get complete behavioral sequence mapping"""
+def get_completion_rate():
+    """Get assessment completion rate"""
     if 'assessment_results' in st.session_state:
-        analysis = st.session_state.assessment_results.get('comprehensive_analysis', {})
-        return analysis.get('behavioral_sequence', {})
-    return {}
-
-def get_success_predictors():
-    """Get success predictors and optimization strategies"""
-    if 'assessment_results' in st.session_state:
-        analysis = st.session_state.assessment_results.get('comprehensive_analysis', {})
-        return analysis.get('success_predictors', {})
-    return {}
-
-def get_intervention_priorities():
-    """Get ranked intervention priorities"""
-    if 'assessment_results' in st.session_state:
-        analysis = st.session_state.assessment_results.get('comprehensive_analysis', {})
-        return analysis.get('intervention_priorities', [])
-    return []
+        return st.session_state.assessment_results.get('completion_rate', 0)
+    return len(st.session_state.get('assessment_responses', {})) / 25
 
 def reset_assessment():
-    """Reset all assessment state"""
+    """Reset assessment state for new session"""
     keys_to_reset = [
         'assessment_responses', 'current_question', 'current_phase',
         'is_digital_native', 'digital_despair_score', 'digital_severity',
@@ -5029,42 +5051,119 @@ def reset_assessment():
         'behavioral_sequence', 'secondary_gains', 'core_beliefs',
         'systemic_resistance', 'transformation_blockers', 'readiness_indicators',
         'hypnotic_preferences', 'assessment_completed', 'contact_provided',
-        'assessment_results', 'adaptive_questions', 'clinical_insights',
-        'session_design', 'success_predictors'
+        'assessment_results', 'intensity_responses', 'trigger_chain',
+        'digital_responses', 'adaptive_questions', 'clinical_insights',
+        'session_design', 'success_predictors', 'start_time', 'contact_info'
     ]
     for key in keys_to_reset:
         if key in st.session_state:
             del st.session_state[key]
 
-def export_comprehensive_assessment():
-    """Export complete assessment data including all analysis"""
+def export_assessment_data():
+    """Export complete assessment data for analysis or backup"""
     if 'assessment_responses' not in st.session_state:
         return None
     
     return {
         'responses': st.session_state.assessment_responses,
-        'comprehensive_analysis': st.session_state.assessment_results.get('comprehensive_analysis', {}),
         'pattern_scores': st.session_state.get('pattern_scores', {}),
+        'intensity_data': st.session_state.get('intensity_responses', {}),
         'triggered_patterns': list(st.session_state.get('triggered_patterns', set())),
-        'behavioral_sequence': st.session_state.get('behavioral_sequence', {}),
-        'core_beliefs': st.session_state.get('core_beliefs', {}),
-        'secondary_gains': st.session_state.get('secondary_gains', {}),
-        'success_predictors': st.session_state.get('success_predictors', {}),
+        'behavioral_sequence': st.session_state.get('trigger_chain', {}),
+        'digital_responses': st.session_state.get('digital_responses', {}),
         'is_digital_native': st.session_state.get('is_digital_native', False),
-        'digital_analysis': st.session_state.assessment_results.get('digital_despair_analysis'),
-        'contact_info': st.session_state.get('contact_info', {}),
+        'digital_analysis': st.session_state.get('assessment_results', {}).get('digital_despair_analysis'),
+        'comprehensive_analysis': st.session_state.get('assessment_results', {}).get('comprehensive_analysis'),
         'results': st.session_state.get('assessment_results', {}),
-        'completion_timestamp': datetime.now().isoformat()
+        'contact_info': st.session_state.get('contact_info', {}),
+        'completion_timestamp': datetime.now().isoformat(),
+        'export_timestamp': datetime.now().isoformat()
     }
 
+def get_assessment_insights():
+    """Get key insights from completed assessment"""
+    if not st.session_state.get('assessment_completed', False):
+        return None
+    
+    results = st.session_state.assessment_results
+    insights = {
+        'dominant_pattern': None,
+        'pattern_complexity': 'Unknown',
+        'digital_native_status': st.session_state.is_digital_native,
+        'success_probability': 85,  # Default
+        'intervention_priorities': [],
+        'session_count_estimate': 2
+    }
+    
+    # Extract dominant pattern
+    pattern_scores = results.get('pattern_scores', {})
+    if pattern_scores:
+        sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+        insights['dominant_pattern'] = {
+            'id': sorted_patterns[0][0],
+            'name': ComprehensiveBehavioralAssessment().patterns.get(sorted_patterns[0][0], 'Unknown'),
+            'score': sorted_patterns[0][1]
+        }
+    
+    # Extract complexity and success factors
+    comprehensive_analysis = results.get('comprehensive_analysis', {})
+    if comprehensive_analysis:
+        insights.update({
+            'pattern_complexity': comprehensive_analysis.get('pattern_constellation', {}).get('complexity_level', 'Moderate'),
+            'success_probability': comprehensive_analysis.get('success_predictors', {}).get('overall_success_probability', 85),
+            'intervention_priorities': comprehensive_analysis.get('intervention_priorities', [])[:3],
+            'session_count_estimate': 3 if comprehensive_analysis.get('session_design', {}).get('session_3_needed', False) else 2
+        })
+    
+    return insights
 
+# ---- Development and Testing Helpers ----
+def simulate_assessment_completion(pattern_focus=None, digital_native=False):
+    """Simulate assessment completion for testing purposes"""
+    if not hasattr(simulate_assessment_completion, '_called'):
+        st.warning("🧪 Development mode: Simulating assessment completion")
+        simulate_assessment_completion._called = True
+    
+    # Set basic state
+    st.session_state.assessment_completed = True
+    st.session_state.is_digital_native = digital_native
+    st.session_state.pattern_scores = {1: 6.5, 2: 4.2, 3: 2.1} if not pattern_focus else {pattern_focus: 7.8, 2: 3.1}
+    st.session_state.triggered_patterns = set([1, 2] if not pattern_focus else [pattern_focus])
+    st.session_state.assessment_responses = {i: {'response': f'Test response {i}', 'timestamp': datetime.now().isoformat()} for i in range(1, 21)}
+    
+    # Create mock results
+    st.session_state.assessment_results = {
+        'pattern_scores': st.session_state.pattern_scores,
+        'total_questions_answered': 20,
+        'completion_rate': 0.8,
+        'is_digital_native': digital_native,
+        'comprehensive_analysis': {
+            'pattern_constellation': {'complexity_level': 'Moderate - Standard intervention suitable'},
+            'success_predictors': {'overall_success_probability': 87, 'readiness_score': 8},
+            'session_design': {'session_3_needed': False, 'total_timeline': '2-3 weeks'}
+        }
+    }
+
+# ---- Main Execution ----
 if __name__ == "__main__":
     st.set_page_config(
-        page_title="Enhanced Clinical Behavioral Assessment",
+        page_title="Enhanced Behavioral Pattern Assessment",
         page_icon="🧠",
         layout="centered",
         initial_sidebar_state="collapsed"
     )
     
+    # Development mode check
+    if st.sidebar.button("🧪 Simulate Completion (Dev)"):
+        simulate_assessment_completion()
+    
+    if st.sidebar.button("🔄 Reset Assessment"):
+        reset_assessment()
+        st.rerun()
+    
+    # Main application
     assessment_page = create_assess_page()
     assessment_page.render()
+
+
+
