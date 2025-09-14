@@ -3122,6 +3122,47 @@ def export_assessment_data():
         'completion_timestamp': datetime.now().isoformat()
     }
 
+def create_blueprint_link(session_id):
+    """Create shareable link to blueprint"""
+    return f"https://yourapp.com/blueprint/{session_id}"
+
+def save_assessment_summary(assessment_data):
+    """Save assessment summary for analytics"""
+    try:
+        summary = {
+            'session_id': assessment_data['session_id'],
+            'pattern_count': len(assessment_data.get('pattern_scores', {})),
+            'completion_rate': assessment_data.get('completion_rate', 0),
+            'is_digital_native': assessment_data.get('is_digital_native', False),
+            'timestamp': datetime.now().isoformat(),
+            'user_email_hash': hashlib.sha256(
+                assessment_data.get('contact_info', {}).get('email', '').encode()
+            ).hexdigest()[:8]  # Privacy-safe identifier
+        }
+        
+        # Save to analytics database or file
+        # Implementation depends on your analytics setup
+        
+        return True
+    except Exception as e:
+        print(f"Analytics save failed: {str(e)}")
+        return False
+
+def load_blueprint_from_session(session_id):
+    """Load existing blueprint by session ID"""
+    try:
+        cloud_storage = CloudStorage()
+        assessment_data = cloud_storage.retrieve_assessment_data(session_id)
+        
+        if assessment_data:
+            return assessment_data
+        else:
+            return None
+            
+    except Exception as e:
+        print(f"Blueprint loading failed: {str(e)}")
+        return None
+
 
 if __name__ == "__main__":
     st.set_page_config(
