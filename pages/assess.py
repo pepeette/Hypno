@@ -6,6 +6,10 @@
 import streamlit as st
 from datetime import datetime
 import re
+from components.blueprint import create_behavioral_blueprint
+from utils.cloud_storage import CloudStorage
+from utils.pdf_generator import PDFGenerator
+import uuid
 
 # ---- Paywall Integration ----
 try:
@@ -2081,6 +2085,20 @@ optimal intervention design.
         self._render_empowerment_section()
         self._render_next_steps_section()
 
+        # Add blueprint access after basic results
+        st.markdown("---")
+        
+        # Generate unique session ID for this assessment
+        if 'assessment_session_id' not in st.session_state:
+            st.session_state.assessment_session_id = str(uuid.uuid4())
+        
+        # Create comprehensive assessment data package
+        assessment_data = self._compile_complete_assessment_data()
+        
+        # Blueprint preview and full access
+        self._render_blueprint_access(assessment_data)
+    
+
     def _render_results_hero(self):
         """Render the hero section with key insights using Streamlit components"""
         results = st.session_state.assessment_results
@@ -2832,6 +2850,202 @@ optimal intervention design.
     #     # Info section outside the expander
     #     st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
 
+    
+    def _compile_complete_assessment_data(self):
+        """Compile complete assessment data for blueprint"""
+        return {
+            'session_id': st.session_state.assessment_session_id,
+            'assessment_results': st.session_state.assessment_results,
+            'assessment_responses': st.session_state.assessment_responses,
+            'pattern_scores': st.session_state.pattern_scores,
+            'intensity_responses': st.session_state.get('intensity_responses', {}),
+            'trigger_chain': st.session_state.get('trigger_chain', {}),
+            'digital_responses': st.session_state.get('digital_responses', {}),
+            'is_digital_native': st.session_state.is_digital_native,
+            'digital_despair_analysis': st.session_state.assessment_results.get('digital_despair_analysis'),
+            'contact_info': st.session_state.get('contact_info', {}),
+            'completion_rate': st.session_state.assessment_results.get('completion_rate', 1.0),
+            'triggered_patterns': list(st.session_state.get('triggered_patterns', set())),
+            'adaptive_paths': st.session_state.get('adaptive_paths', []),
+            'risk_flags': st.session_state.get('risk_flags', []),
+            'start_time': st.session_state.get('start_time'),
+            'completion_timestamp': datetime.now().isoformat(),
+            'user_agent': self._get_user_agent(),
+            'assessment_version': '2.0'
+        }
+    
+    def _render_blueprint_access(self, assessment_data):
+        """Render blueprint access with preview and full version"""
+        st.markdown("### Your complete transformation blueprint")
+        
+        # Preview section
+        with st.expander("📋 Preview your behavioral blueprint", expanded=True):
+            st.markdown("""
+            Your comprehensive blueprint includes:
+            - **Detailed pattern analysis** with specific insights for each detected pattern
+            - **Hidden cost calculations** showing weekly and lifetime impact
+            - **Digital conditioning analysis** (if applicable) with specialized recommendations
+            - **Transformation roadmap** with personalized session planning
+            - **Success probability analysis** based on your specific factors
+            - **Investment analysis** comparing costs vs. benefits
+            - **Why hypnotherapy works** for your specific pattern constellation
+            """)
+            
+            # Show key metrics
+            pattern_count = len(assessment_data.get('pattern_scores', {}))
+            success_rate = self._calculate_comprehensive_success_rate()
+            
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Patterns analyzed", pattern_count)
+            with col2:
+                st.metric("Success probability", f"{success_rate}%")
+            with col3:
+                digital_score = assessment_data.get('digital_despair_analysis', {}).get('digital_despair_score', 0)
+                st.metric("Digital conditioning", f"{digital_score:.0f}%")
+        
+        # Access options
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            if st.button("📖 View full blueprint", type="primary", use_container_width=True):
+                st.session_state.show_blueprint = True
+                st.rerun()
+        
+        with col2:
+            if st.button("📄 Generate PDF report", use_container_width=True):
+                self._generate_and_offer_pdf(assessment_data)
+        
+        # Show full blueprint if requested
+        if st.session_state.get('show_blueprint', False):
+            st.markdown("---")
+            self._render_full_blueprint(assessment_data)
+    
+    def _render_full_blueprint(self, assessment_data):
+        """Render the full behavioral blueprint"""
+        try:
+            blueprint = create_behavioral_blueprint()
+            blueprint.render_complete_blueprint(assessment_data)
+            
+            # Add download and save options at the bottom
+            st.markdown("---")
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                if st.button("💾 Save to cloud", use_container_width=True):
+                    self._save_to_cloud(assessment_data)
+            
+            with col2:
+                if st.button("📧 Email report", use_container_width=True):
+                    self._email_blueprint(assessment_data)
+            
+            with col3:
+                if st.button("🔄 Update blueprint", use_container_width=True):
+                    # Force refresh of blueprint
+                    st.rerun()
+                    
+        except Exception as e:
+            st.error(f"Error loading blueprint: {str(e)}")
+            st.info("Please contact our technical support team.")
+    
+    def _generate_and_offer_pdf(self, assessment_data):
+        """Generate PDF and offer download"""
+        try:
+            with st.spinner("Generating your personalized report..."):
+                pdf_generator = PDFGenerator()
+                pdf_bytes = pdf_generator.generate_blueprint_pdf(assessment_data)
+                
+                # Save to cloud storage
+                cloud_storage = CloudStorage()
+                pdf_url = cloud_storage.save_pdf(
+                    pdf_bytes, 
+                    f"blueprint_{assessment_data['session_id']}.pdf"
+                )
+                
+                st.success("✅ Your personalized blueprint report has been generated!")
+                
+                # Offer download
+                st.download_button(
+                    label="📥 Download PDF Report",
+                    data=pdf_bytes,
+                    file_name=f"behavioral_blueprint_{assessment_data['session_id'][:8]}.pdf",
+                    mime="application/pdf",
+                    use_container_width=True
+                )
+                
+                # Show cloud link
+                if pdf_url:
+                    st.info(f"📡 Your report is also available in the cloud: [Access here]({pdf_url})")
+                    
+        except Exception as e:
+            st.error(f"Error generating PDF: {str(e)}")
+            st.info("Please try again or contact support if the issue persists.")
+    
+    def _save_to_cloud(self, assessment_data):
+        """Save assessment data to cloud storage"""
+        try:
+            with st.spinner("Saving to cloud..."):
+                cloud_storage = CloudStorage()
+                
+                # Save complete assessment data
+                cloud_url = cloud_storage.save_assessment_data(
+                    assessment_data,
+                    f"assessment_{assessment_data['session_id']}.json"
+                )
+                
+                if cloud_url:
+                    st.success("✅ Assessment saved to cloud successfully!")
+                    st.info(f"📡 Access your data anytime: [Cloud link]({cloud_url})")
+                    
+                    # Store cloud reference in session
+                    st.session_state.cloud_save_url = cloud_url
+                else:
+                    st.warning("⚠️ Cloud save partially completed. Data is secure but link generation failed.")
+                    
+        except Exception as e:
+            st.error(f"Error saving to cloud: {str(e)}")
+    
+    def _email_blueprint(self, assessment_data):
+        """Email the blueprint to user"""
+        contact_info = assessment_data.get('contact_info', {})
+        user_email = contact_info.get('email')
+        
+        if not user_email:
+            st.error("❌ No email address found. Please provide your email to receive the report.")
+            return
+        
+        try:
+            with st.spinner("Sending blueprint to your email..."):
+                # Generate PDF first
+                pdf_generator = PDFGenerator()
+                pdf_bytes = pdf_generator.generate_blueprint_pdf(assessment_data)
+                
+                # Send email with attachment
+                from utils.email_blueprint import send_blueprint_email
+                
+                success = send_blueprint_email(
+                    user_email=user_email,
+                    user_name=contact_info.get('name', 'Valued Client'),
+                    assessment_data=assessment_data,
+                    pdf_attachment=pdf_bytes
+                )
+                
+                if success:
+                    st.success(f"✅ Blueprint sent to {user_email}")
+                    st.info("📧 Check your inbox (and spam folder) for your personalized report.")
+                else:
+                    st.warning("⚠️ Email sending encountered an issue. Please try again or contact support.")
+                    
+        except Exception as e:
+            st.error(f"Error sending email: {str(e)}")
+    
+    def _get_user_agent(self):
+        """Get basic user agent info for analytics"""
+        try:
+            # This would typically come from request headers in a full web app
+            return "Streamlit App User"
+        except:
+            return "Unknown"
 
 # ---- Main Application Classes ----
 class AssessPage:
