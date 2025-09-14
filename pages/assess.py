@@ -4003,24 +4003,24 @@ class ComprehensiveBehavioralAssessment:
         if st.session_state.is_digital_native:
             col1, col2, col3, col4 = st.columns(4)
             with col1:
-                st.metric("", results['total_questions_answered'], "Questions answered")
+                st.metric("", "Questions answered", results['total_questions_answered'])
             with col2:
-                st.metric("s", len(results.get('pattern_scores', {})), "Patterns detected")
+                st.metric("", "Patterns detected", len(results.get('pattern_scores', {})))
             with col3:
                 digital_score = st.session_state.get('digital_despair_score', 0)
-                st.metric("", f"{digital_score:.0f}%", st.session_state.get('digital_severity', 'MINIMAL'))
+                st.metric("", st.session_state.get('digital_severity', 'MINIMAL'), f"{digital_score:.0f}%")
             with col4:
                 completion_rate = results.get('completion_rate', 1.0)
-                st.metric("", f"{completion_rate*100:.0f}%", "Completion rate")
+                st.metric("", "Completion rate", f"{completion_rate*100:.0f}%")
         else:
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("", results['total_questions_answered'], "Questions answered")
+                st.metric("", "Questions answered", results['total_questions_answered'])
             with col2:
-                st.metric("", len(results.get('pattern_scores', {})), "Patterns detected")
+                st.metric("", "Patterns detected", len(results.get('pattern_scores', {})))
             with col3:
                 completion_rate = results.get('completion_rate', 1.0)
-                st.metric("", f"{completion_rate*100:.0f}%", "Completion rate")
+                st.metric("", "Completion rate", f"{completion_rate*100:.0f}%")
         
         st.markdown("**Enter your email to receive your personalized analysis and next steps:**")
         
