@@ -1413,8 +1413,7 @@ class ComprehensiveBehavioralAssessment:
             #     """, unsafe_allow_html=True)
             
             st.info(f"Understanding **your unique behavioral patterns** is the key to **targeted, effective hypnotherapy** that brings rapid, lasting change. This assessment takes about {time_remaining:.0f} minutes to complete.")
-
-        st.markdown("<h2 style='text-align: center;'>Behavioral pattern assessment</h1>", unsafe_allow_html=True)
+            st.markdown("<h2 style='text-align: center;'>Behavioral pattern assessment</h1>", unsafe_allow_html=True)
 
     def _render_current_question(self):
         """Render the current question with progress tracking"""
@@ -1515,7 +1514,7 @@ class ComprehensiveBehavioralAssessment:
 
     def _render_contact_form(self):
         """Render contact form for results with enhanced clinical data"""
-        st.markdown("### Assessment complete!")
+        #st.markdown("### Assessment complete!")
         st.success("Your comprehensive behavioral pattern analysis is ready!")
         
         results = st.session_state.assessment_results
@@ -1529,7 +1528,19 @@ class ComprehensiveBehavioralAssessment:
                 st.metric("", "Patterns detected", len(results.get('pattern_scores', {})))
             with col3:
                 digital_score = st.session_state.get('digital_despair_score', 0)
-                st.metric("", st.session_state.get('digital_severity', 'MINIMAL'), f"{digital_score:.0f}%")
+                severity = st.session_state.get('digital_severity', 'MINIMAL')
+                
+                # Add severity descriptions
+                severity_descriptions = {
+                    'SEVERE': 'Specialized intervention required',
+                    'MODERATE': 'Enhanced approach needed',
+                    'MILD': 'Standard with modifications', 
+                    'MINIMAL': 'Traditional approach suitable'
+                }
+                description = severity_descriptions.get(severity, 'Assessment incomplete')
+                
+                st.metric("Digital patterns", f"{severity}", f"{digital_score:.0f}%")
+                st.caption(description)
             with col4:
                 completion_rate = results.get('completion_rate', 1.0)
                 st.metric("", "Completion rate", f"{completion_rate*100:.0f}%")
@@ -1577,7 +1588,38 @@ class ComprehensiveBehavioralAssessment:
                 "I consent to receiving follow-up communications about my assessment results and relevant therapeutic services."
             )
             
+            submit_button_html = """
+            <style>
+            .custom-submit-button {
+                background-color: #4CA1A3 !important;
+                color: #FFFFFF !important;
+                border: 2px solid #4CA1A3 !important;
+                border-radius: 8px !important;
+                padding: 12px 24px !important;
+                font-size: 1rem !important;
+                font-weight: 600 !important;
+                width: 100% !important;
+                margin: 8px 0 !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                text-align: center !important;
+                min-height: 2.5rem !important;
+            }
+            
+            .custom-submit-button:hover {
+                background-color: #E1F0F0 !important;
+                color: #273548 !important;
+                border-color: #E1F0F0 !important;
+                transform: translateY(-1px) !important;
+                box-shadow: 0 4px 12px rgba(243,246,248,0.6) !important;
+            }
+            </style>
+            """
+            st.markdown(submit_button_html, unsafe_allow_html=True)
+            
+            # Use the regular streamlit submit button but with custom styling
             submitted = st.form_submit_button("Get my personalized analysis", type="primary", use_container_width=True)
+
 
             if submitted:
                 errors = []
