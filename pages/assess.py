@@ -2069,11 +2069,15 @@ optimal intervention design.
         """Render user-centric results page with comprehensive insights"""
         self._render_results_hero()
         self._render_pattern_insights()
+        self._render_pattern_cost_analysis()
+        self._render_aha_moment_bridge()
+        if st.session_state.is_digital_native:
+            self._render_digital_insights()
         self._render_transformation_roadmap()
         self._render_next_steps_section()
 
     def _render_results_hero(self):
-        """Render the hero section with key insights"""
+        """Render the hero section with key insights using Streamlit components"""
         results = st.session_state.assessment_results
         pattern_scores = results.get('pattern_scores', {})
         
@@ -2089,50 +2093,27 @@ optimal intervention design.
         
         # Priority banner for urgent cases
         if is_urgent:
-            st.markdown("""
-            <div class="priority-banner">
-                <strong>Priority contact scheduled</strong> - Given your urgency level, our clinical team will contact you within 24 hours to expedite your transformation process.
-            </div>
-            """, unsafe_allow_html=True)
+            st.warning("**Priority contact scheduled** - Given your urgency level, our clinical team will contact you within 24 hours to expedite your transformation process.")
         
         # Main hero section
-        st.markdown(f"""
-        <div class="results-hero">
-            <h2 style="margin-bottom: 0.5rem;">Your personal transformation blueprint is ready</h2>
-            <p style="font-size: 1.1rem; color: #556D7A; margin-bottom: 1.5rem;">
-                Based on your comprehensive assessment, we've identified your unique pattern signature
-            </p>
-            
-            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem;">
-                <div style="text-align: center;">
-                    <div style="font-size: 2rem; font-weight: 600; color: #4CA1A3;">{total_patterns}</div>
-                    <div style="font-size: 0.9rem; color: #556D7A;">Patterns identified</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 2rem; font-weight: 600; color: #4CA1A3;">{completion_rate*100:.0f}%</div>
-                    <div style="font-size: 0.9rem; color: #556D7A;">Assessment complete</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 2rem; font-weight: 600; color: #4CA1A3;">{success_probability}%</div>
-                    <div style="font-size: 0.9rem; color: #556D7A;">Success probability</div>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("## Your personal transformation blueprint is ready")
+        st.markdown("Based on your comprehensive assessment, we've identified your unique pattern signature")
         
-        # Success probability visualization
-        st.markdown(f"""
-        <div class="success-indicator">
-            <span style="font-weight: 600; color: #273548;">Transformation success likelihood:</span>
-            <div class="success-bar">
-                <div class="success-fill" style="width: {success_probability}%"></div>
-            </div>
-            <span style="font-weight: 600; color: #4CA1A3;">{success_probability}%</span>
-        </div>
-        """, unsafe_allow_html=True)
+        # Metrics display
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Patterns identified", total_patterns)
+        with col2:
+            st.metric("Assessment complete", f"{completion_rate*100:.0f}%")
+        with col3:
+            st.metric("Success probability", f"{success_probability}%")
+        
+        # Success probability bar
+        st.markdown("**Transformation success likelihood:**")
+        progress_bar = st.progress(success_probability / 100)
     
     def _render_pattern_insights(self):
-        """Render detailed pattern insights in user-friendly format"""
+        """Render detailed pattern insights using Streamlit components"""
         results = st.session_state.assessment_results
         pattern_scores = results.get('pattern_scores', {})
         
@@ -2145,7 +2126,7 @@ optimal intervention design.
         # Sort patterns by score
         sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
         
-        # Pattern descriptions with transformation potential
+        # Pattern descriptions
         pattern_descriptions = {
             1: {
                 "description": "You may find it challenging to accept or maintain positive emotional states",
@@ -2203,55 +2184,83 @@ optimal intervention design.
                 "transformation": "Personalized approach will be developed in your sessions"
             })
             
-            # Determine severity styling
+            # Determine severity
             if score >= 6:
-                severity_class = "severity-high"
                 intensity_text = "High intensity"
+                badge_color = "🔴"
             elif score >= 4:
-                severity_class = "severity-moderate" 
-                intensity_text = "Moderate intensity"
+                intensity_text = "Moderate intensity" 
+                badge_color = "🟡"
             elif score >= 2:
-                severity_class = "severity-mild"
                 intensity_text = "Mild intensity"
+                badge_color = "🟢"
             else:
-                severity_class = "severity-minimal"
                 intensity_text = "Emerging pattern"
+                badge_color = "🟢"
             
-            st.markdown(f"""
-            <div class="insight-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h4 style="margin: 0; color: #273548;">{i+1}. {pattern_name}</h4>
-                    <span class="pattern-badge {severity_class}">{intensity_text}</span>
-                </div>
+            with st.container():
+                col1, col2 = st.columns([3, 1])
+                with col1:
+                    st.markdown(f"**{i+1}. {pattern_name}**")
+                with col2:
+                    st.markdown(f"{badge_color} {intensity_text}")
                 
-                <p style="margin: 0.5rem 0; color: #556D7A;"><strong>What this means:</strong> {pattern_info['description']}</p>
-                <p style="margin: 0.5rem 0; color: #556D7A;"><strong>Current impact:</strong> {pattern_info['impact']}</p>
-                
-                <div class="transformation-preview">
-                    <strong style="color: #0ea5e9;">Transformation potential:</strong> {pattern_info['transformation']}
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+                st.markdown(f"**What this means:** {pattern_info['description']}")
+                st.markdown(f"**Current impact:** {pattern_info['impact']}")
+                st.info(f"**Transformation potential:** {pattern_info['transformation']}")
+                st.markdown("---")
         
         # Show additional patterns if present
         if len(sorted_patterns) > 3:
             additional_count = len(sorted_patterns) - 3
             additional_patterns = [self.patterns.get(pid, f"Pattern {pid}") for pid, _ in sorted_patterns[3:]]
             
-            st.markdown(f"""
-            <div class="insight-card">
-                <h4 style="color: #273548;">Additional patterns identified ({additional_count})</h4>
-                <p style="color: #556D7A;">Your comprehensive analysis also reveals these supporting patterns: {', '.join(additional_patterns)}</p>
-                <p style="color: #556D7A; font-style: italic;">These will be addressed as part of your integrated transformation approach.</p>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"**Additional patterns identified ({additional_count})**")
+            st.markdown(f"Your comprehensive analysis also reveals these supporting patterns: {', '.join(additional_patterns)}")
+            st.caption("These will be addressed as part of your integrated transformation approach.")
         
-        # Digital despair analysis if applicable
-        if st.session_state.is_digital_native:
-            self._render_digital_insights()
+        # # Add cost analysis and aha moment
+        # self._render_pattern_cost_analysis()
+        # self._render_aha_moment_bridge()
+        
+        # # Digital despair analysis if applicable
+        # if st.session_state.is_digital_native:
+        #     self._render_digital_insights()
+    
+    def _render_pattern_cost_analysis(self):
+        """Render pattern cost analysis using Streamlit components"""
+        future_vision = self._extract_future_vision()
+        current_cost = self._calculate_pattern_cost()
+        
+        st.markdown("#### The hidden cost of your current patterns")
+        
+        st.warning(f"**Weekly impact:** This pattern sequence is likely costing you approximately **{current_cost['hours']} hours of peace and productivity per week**")
+        
+        st.markdown("**Compound cost over time:** Without intervention, these patterns typically solidify further, making change more difficult and the impact more severe.")
+        
+        if future_vision:
+            st.info(f"**Your vision:** You mentioned wanting to {future_vision}. These patterns are the primary barrier standing between you and that reality.")
+    
+    def _render_aha_moment_bridge(self):
+        """Render aha moment bridge using Streamlit components"""
+        hidden_mechanisms = self._identify_hidden_mechanisms()
+        future_prediction = self._generate_future_prediction()
+        
+        st.markdown("### The hidden layer")
+        
+        with st.container():
+            st.markdown("**Protective mechanisms detected:**")
+            st.markdown(f"Your assessment reveals {len(hidden_mechanisms)} protective mechanisms your mind uses that we haven't fully explored yet. These unconscious strategies are actually trying to help you, but they're creating the very problems you want to solve.")
+            
+            st.markdown("**The paradox:**")
+            st.markdown("Why your logical mind keeps you stuck (and it's not what you think): Your conscious efforts to change are actually reinforcing the pattern at a deeper level.")
+            
+            st.warning(f"**Pattern trajectory:** {future_prediction}")
+            
+            st.caption("This free analysis covers your behavioral patterns. Your complete clinical profile reveals the deeper psychological architecture driving these patterns.")
     
     def _render_digital_insights(self):
-        """Render digital despair syndrome insights if applicable"""
+        """Render digital insights using Streamlit components"""
         digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
         if not digital_analysis:
             return
@@ -2264,47 +2273,38 @@ optimal intervention design.
             'SEVERE': {
                 'title': 'Specialized digital-native approach required',
                 'description': 'Your assessment reveals significant digital conditioning patterns that require adapted therapeutic techniques.',
-                'benefits': 'With proper specialized approach, you can integrate your digital competencies with real-world confidence and authentic emotional expression.',
-                'color': '#ef4444'
+                'benefits': 'With proper specialized approach, you can integrate your digital competencies with real-world confidence and authentic emotional expression.'
             },
             'MODERATE': {
                 'title': 'Enhanced digital-aware therapy recommended', 
                 'description': 'You show moderate digital conditioning that benefits from modified therapeutic approaches.',
-                'benefits': 'Standard techniques enhanced with digital awareness will optimize your transformation process.',
-                'color': '#eab308'
+                'benefits': 'Standard techniques enhanced with digital awareness will optimize your transformation process.'
             },
             'MILD': {
                 'title': 'Digital considerations integrated',
                 'description': 'Some digital influence detected that will be incorporated into your standard approach.',
-                'benefits': 'Your digital skills can be leveraged as strengths in your transformation journey.',
-                'color': '#4CA1A3'
+                'benefits': 'Your digital skills can be leveraged as strengths in your transformation journey.'
             },
             'MINIMAL': {
                 'title': 'Traditional approach optimal',
                 'description': 'Minimal digital conditioning detected - standard hypnotherapy approach is ideal.',
-                'benefits': 'You can benefit from proven traditional techniques without modification.',
-                'color': '#22c55e'
+                'benefits': 'You can benefit from proven traditional techniques without modification.'
             }
         }
         
         insight = digital_insights.get(severity, digital_insights['MINIMAL'])
         
-        st.markdown(f"""
-        <div class="insight-card" style="border-left: 4px solid {insight['color']};">
-            <h4 style="color: #273548; margin-bottom: 0.5rem;">Digital pattern analysis: {insight['title']}</h4>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0;">
-                <span style="color: #556D7A;">Digital conditioning score:</span>
-                <strong style="color: {insight['color']};">{score:.0f}% ({severity})</strong>
-            </div>
-            <p style="color: #556D7A; margin: 0.5rem 0;">{insight['description']}</p>
-            <div style="background: #f0f9ff; padding: 0.8rem; border-radius: 6px; margin-top: 1rem;">
-                <strong style="color: #0ea5e9;">Specialized advantage:</strong> {insight['benefits']}
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"#### Digital pattern analysis: {insight['title']}")
+        
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.markdown(f"**Digital conditioning score:** {score:.0f}% ({severity})")
+        
+        st.markdown(insight['description'])
+        st.info(f"**Specialized advantage:** {insight['benefits']}")
     
     def _render_transformation_roadmap(self):
-        """Render personalized transformation roadmap"""
+        """Render transformation roadmap using Streamlit components"""
         st.markdown("### Your transformation roadmap")
         
         # Estimate timeline and sessions needed
@@ -2325,7 +2325,15 @@ optimal intervention design.
             timeline = "2 weeks"
             session_3_prob = "10-15%"
         
-        # Phase timeline
+        st.markdown(f"**Estimated transformation timeline:** {timeline}")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Total sessions", sessions)
+        with col2:
+            st.metric("Timeline", f"{timeline} for complete transformation")
+        
+        # Phase breakdown
         phases = [
             {
                 "title": "Pattern analysis & rapport building",
@@ -2347,38 +2355,17 @@ optimal intervention design.
             }
         ]
         
-        st.markdown(f"""
-        <div class="insight-card">
-            <h4 style="color: #273548; margin-bottom: 1rem;">Estimated transformation timeline: {timeline}</h4>
-            <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
-                <div style="background: #F3F6F8; padding: 0.8rem; border-radius: 6px; flex: 1; min-width: 200px;">
-                    <strong style="color: #4CA1A3;">Total sessions:</strong> {sessions}
-                </div>
-                <div style="background: #F3F6F8; padding: 0.8rem; border-radius: 6px; flex: 1; min-width: 200px;">
-                    <strong style="color: #4CA1A3;">Timeline:</strong> {timeline} for complete transformation
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Phase breakdown
         for i, phase in enumerate(phases):
-            st.markdown(f"""
-            <div class="timeline-item">
-                <div class="timeline-number">{i+1}</div>
-                <div style="flex: 1;">
-                    <h5 style="margin: 0 0 0.3rem 0; color: #273548;">{phase['title']}</h5>
-                    <div style="font-size: 0.9rem; color: #4CA1A3; font-weight: 600; margin-bottom: 0.3rem;">{phase['duration']}</div>
-                    <p style="margin: 0.3rem 0; color: #556D7A; font-size: 0.9rem;">{phase['description']}</p>
-                    <div style="font-size: 0.85rem; color: #22c55e; font-style: italic; margin-top: 0.5rem;">
-                        <strong>Expected outcome:</strong> {phase['outcome']}
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            with st.container():
+                st.markdown(f"**{i+1}. {phase['title']}**")
+                st.markdown(f"*{phase['duration']}*")
+                st.markdown(phase['description'])
+                st.success(f"**Expected outcome:** {phase['outcome']}")
+                if i < len(phases) - 1:
+                    st.markdown("---")
     
     def _render_next_steps_section(self):
-        """Render clear next steps and contact information"""
+        """Render next steps using Streamlit components"""
         contact_info = st.session_state.get('contact_info', {})
         urgency = contact_info.get('urgency', '')
         
@@ -2411,54 +2398,296 @@ optimal intervention design.
         ]
         
         for i, step in enumerate(next_steps):
-            st.markdown(f"""
-            <div class="timeline-item">
-                <div class="timeline-number">{i+1}</div>
-                <div style="flex: 1;">
-                    <h5 style="margin: 0 0 0.3rem 0; color: #273548;">{step['title']}</h5>
-                    <div style="font-size: 0.9rem; color: #4CA1A3; font-weight: 600; margin-bottom: 0.3rem;">{step['timeline']}</div>
-                    <p style="margin: 0; color: #556D7A; font-size: 0.9rem;">{step['description']}</p>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            with st.container():
+                st.markdown(f"**{i+1}. {step['title']}**")
+                st.markdown(f"*{step['timeline']}*")
+                st.markdown(step['description'])
+                if i < len(next_steps) - 1:
+                    st.markdown("---")
+        
+        # Add empowerment and value sections
+        self._render_empowerment_section()
+        self._render_value_comparison()
         
         # Call to action section
-        st.markdown("""
-        <div class="next-step-card">
-            <h4 style="margin: 0 0 1rem 0; color: white;">Ready to start your transformation?</h4>
-            <p style="margin: 0 0 1.5rem 0; color: white; opacity: 0.9;">
-                While you wait for our clinical team to contact you, learn more about our proven rapid transformation method.
-            </p>
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-                <a href="https://hypnotherapy.streamlit.app" 
-                   target="_blank" 
-                   style="background: white; color: #4CA1A3; padding: 0.8rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">
-                   Learn about our method
-                </a>
-                <span style="color: white; opacity: 0.8;">or</span>
-                <a href="https://calendly.com/laetitiasheppard/discovery" 
-                   target="_blank" 
-                   style="border: 2px solid white; color: white; padding: 0.8rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">
-                   Schedule direct consultation
-                </a>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("### Ready to start your transformation?")
+        st.info("While you wait for our clinical team to contact you, learn more about our proven rapid transformation method.")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.link_button("Learn about our method", "https://hypnotherapy.streamlit.app")
+        with col2:
+            st.link_button("Schedule direct consultation", "https://calendly.com/laetitiasheppard/discovery")
         
         # Additional support information
+        st.markdown("#### Questions or need immediate support?")
         st.markdown("""
-        <div class="insight-card">
-            <h4 style="color: #273548; margin-bottom: 0.5rem;">Questions or need immediate support?</h4>
-            <p style="color: #556D7A; margin: 0.5rem 0;">
-                <strong>Email:</strong> Reply to any assessment email you receive from us<br>
-                <strong>Direct contact:</strong> Our clinical team will reach out to you personally<br>
-                <strong>Emergency support:</strong> If you're experiencing crisis, please contact your local emergency services
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+        **Email:** Reply to any assessment email you receive from us  
+        **Direct contact:** Our clinical team will reach out to you personally  
+        **Emergency support:** If you're experiencing crisis, please contact your local emergency services
+        """)
         
         # Clinical analysis access
         self._render_clinical_analysis_section()
+    
+    def _render_empowerment_section(self):
+        """Render empowerment section using Streamlit components"""
+        readiness_indicators = self._extract_readiness_indicators()
+        user_insights = self._extract_user_insights()
+        
+        st.markdown("#### You have everything needed for rapid transformation")
+        
+        st.markdown("**Your transformation readiness indicators:**")
+        st.markdown(readiness_indicators, unsafe_allow_html=True)
+        
+        st.success("**Key insight:** Your pattern recognition ability is already strong - that's 60% of the transformation work already complete.")
+        
+        if user_insights:
+            st.markdown(user_insights, unsafe_allow_html=True)
+        
+        st.markdown("**Most people see initial shifts within 48 hours of Session 1**")
+    
+    def _render_value_comparison(self):
+        """Render value comparison using Streamlit components"""
+        st.markdown("#### Investment comparison")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.error("**Traditional therapy approach**")
+            st.markdown("18+ months, $15,000+")
+            st.caption("Gradual talk therapy with uncertain outcomes for pattern-based issues")
+        
+        with col2:
+            st.success("**Specialized hypnotherapy**")
+            st.markdown("2-3 sessions, $3,000-4,000")
+            st.caption("Direct subconscious intervention with 85% success rate")
+        
+        st.info("**Time to initial results: 48-72 hours vs 3-6 months**")
+    
+    def _render_enhanced_paywall_preview(self):
+        """Render enhanced paywall preview using Streamlit components"""
+        core_belief_hint = self._extract_core_belief_hint()
+        resistance_preview = self._predict_specific_resistance()
+        rarity_stat = self._calculate_pattern_rarity()
+        
+        st.markdown("#### Unlock your complete psychological blueprint")
+        
+        # Create tabs for different analysis sections
+        tab1, tab2, tab3, tab4 = st.tabs(["Deep psychology", "Intervention design", "Sequence interruption", "Success optimization"])
+        
+        with tab1:
+            st.markdown("**Deep psychology profile**")
+            st.markdown("Core limiting beliefs, secondary gains, identity threats, and systemic resistance mapping")
+            st.info(f'**Preview:** Your assessment suggests the core belief "{core_belief_hint}"')
+        
+        with tab2:
+            st.markdown("**Neuroplasticity intervention design**")
+            st.markdown("Session-by-session blueprints with exact hypnotic language patterns for your brain type")
+            st.info(f"**Preview:** Likely resistance point - {resistance_preview}")
+        
+        with tab3:
+            st.markdown("**Behavioral sequence interruption**")
+            st.markdown("Early warning system and circuit breakers specific to your trigger patterns")
+        
+        with tab4:
+            st.markdown("**Success optimization plan**")
+            st.markdown("Personalized timeline and probability enhancers to increase success from 85% to 95%+")
+        
+        st.warning(f"**Pattern rarity:** Only {rarity_stat}% of people show this specific pattern combination")
+        
+        st.caption("This detailed analysis is based on 500+ successful transformations with similar patterns")
+    
+    def _extract_future_vision(self):
+        """Extract user's future vision from their responses"""
+        for response_data in st.session_state.assessment_responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, str) and any(keyword in response_data.get('question_text', '').lower() 
+                                               for keyword in ['completely resolved', 'different about your daily life', 'first thing you\'d do']):
+                return response[:100] + "..." if len(response) > 100 else response
+        return None
+    
+    def _calculate_pattern_cost(self):
+        """Calculate estimated weekly cost of patterns"""
+        pattern_count = len(st.session_state.pattern_scores)
+        intensity_avg = sum(st.session_state.pattern_scores.values()) / len(st.session_state.pattern_scores) if st.session_state.pattern_scores else 0
+        
+        # Base calculation: more patterns and higher intensity = more weekly cost
+        base_hours = 8
+        pattern_multiplier = min(pattern_count * 1.5, 10)  # Cap at 10
+        intensity_multiplier = min(intensity_avg / 5, 2)   # Cap at 2x
+        
+        total_hours = int(base_hours + pattern_multiplier + intensity_multiplier)
+        
+        return {'hours': total_hours}
+    
+    def _identify_hidden_mechanisms(self):
+        """Identify hidden protective mechanisms"""
+        mechanisms = []
+        
+        # Analyze top patterns for hidden mechanisms
+        if st.session_state.pattern_scores:
+            sorted_patterns = sorted(st.session_state.pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            
+            mechanism_map = {
+                1: "Happiness deflection to avoid disappointment",
+                2: "Control seeking to prevent vulnerability", 
+                3: "Preemptive rejection to avoid abandonment",
+                4: "Binary thinking to simplify complex emotions",
+                5: "Achievement addiction to earn worth",
+                6: "Identity shifting to avoid rejection",
+                7: "Self-sacrifice to maintain connection",
+                8: "Mission inheritance to avoid family conflict",
+                9: "Boundary collapse to avoid confrontation"
+            }
+            
+            for pattern_id, score in sorted_patterns[:3]:
+                if score >= 3:
+                    mechanisms.append(mechanism_map.get(pattern_id, "Protective response pattern"))
+        
+        return mechanisms
+    
+    def _generate_future_prediction(self):
+        """Generate pattern trajectory prediction"""
+        pattern_count = len(st.session_state.pattern_scores)
+        
+        if pattern_count >= 4:
+            return "Based on this pattern constellation, without intervention these protective mechanisms typically strengthen over time, creating increasing life restriction and relationship difficulties."
+        elif pattern_count >= 2:
+            return "These patterns tend to become more automatic and entrenched without conscious intervention, gradually limiting life satisfaction and authentic relationships."
+        else:
+            return "This pattern will likely solidify further without intervention, making future change more challenging."
+    
+    def _extract_core_belief_hint(self):
+        """Extract hint about core limiting belief"""
+        # Analyze text responses for belief indicators
+        belief_indicators = {
+            "not good enough": "I'm not good enough as I am",
+            "can't trust": "I can't trust others to be there for me", 
+            "must do": "I must constantly prove my worth",
+            "don't deserve": "I don't deserve good things",
+            "can't handle": "I can't handle difficult emotions"
+        }
+        
+        for response_data in st.session_state.assessment_responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, str):
+                for indicator, belief in belief_indicators.items():
+                    if indicator in response.lower():
+                        return belief
+        
+        return "Deep exploration needed in clinical analysis"
+    
+    def _predict_specific_resistance(self):
+        """Predict specific resistance point"""
+        if st.session_state.pattern_scores:
+            top_pattern = max(st.session_state.pattern_scores.items(), key=lambda x: x[1])[0]
+            
+            resistance_map = {
+                1: "May resist feeling genuine joy",
+                2: "May challenge collaborative approach",
+                3: "May question therapeutic relationship",
+                4: "May resist nuanced solutions", 
+                5: "May fear identity change",
+                6: "May struggle with consistency",
+                7: "May feel guilty about self-focus",
+                8: "May feel disloyal to family",
+                9: "May fear setting boundaries"
+            }
+            
+            return resistance_map.get(top_pattern, "Standard change resistance")
+        
+        return "To be determined in clinical analysis"
+    
+    def _calculate_pattern_rarity(self):
+        """Calculate pattern combination rarity"""
+        pattern_count = len(st.session_state.pattern_scores)
+        
+        if pattern_count >= 5:
+            return "8"
+        elif pattern_count >= 4:
+            return "12"
+        elif pattern_count >= 3:
+            return "18"
+        else:
+            return "25"
+    
+    def _extract_readiness_indicators(self):
+        """Extract readiness indicators from responses - simplified for Streamlit"""
+        indicators = []
+        
+        # Check completion rate
+        completion_rate = st.session_state.assessment_results.get('completion_rate', 0)
+        if completion_rate >= 0.9:
+            indicators.append(f"- High assessment engagement - completed {completion_rate * 100:.0f}% of questions")
+        
+        # Check for specific readiness responses
+        for response_data in st.session_state.assessment_responses.values():
+            response = response_data.get('response', '')
+            question_text = response_data.get('question_text', '')
+            
+            if 'ready' in question_text.lower() and isinstance(response, dict) and response.get('rating', 0) >= 7:
+                indicators.append(f"- High readiness score: {response['rating']}/10")
+            
+            if isinstance(response, str):
+                if any(phrase in response.lower() for phrase in ['want to change', 'ready for', 'tired of']):
+                    indicators.append("- Clear motivation expressed in responses")
+                
+                if len(response) > 50:
+                    indicators.append("- Thoughtful, detailed responses showing self-reflection")
+        
+        if st.session_state.is_digital_native:
+            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
+                indicators.append("- Pattern recognition despite digital conditioning shows strong awareness")
+        
+        return "\n".join(indicators) if indicators else "- Completion of comprehensive assessment shows readiness to explore change"
+    
+    def _extract_user_insights(self):
+        """Extract user insights - simplified for Streamlit"""
+        for response_data in st.session_state.assessment_responses.values():
+            response = response_data.get('response', '')
+            question_text = response_data.get('question_text', '')
+            
+            if 'different about your daily life' in question_text and isinstance(response, str) and len(response) > 30:
+                return f'**Your transformation vision:** "{response[:150]}{"..." if len(response) > 150 else ""}"'
+        
+        return None
+    
+    def _render_clinical_analysis_section(self):
+        """Render clinical analysis section using Streamlit components"""
+        st.markdown("---")
+        st.markdown("### Complete clinical analysis")
+        
+        if PAYWALL_AVAILABLE:
+            try:
+                paywall = create_clinical_paywall()
+                assessment_data = {
+                    'assessment_results': st.session_state.assessment_results,
+                    'assessment_responses': st.session_state.assessment_responses,
+                    'intensity_responses': st.session_state.get('intensity_responses', {}),
+                    'is_digital_native': st.session_state.is_digital_native,
+                    'digital_despair_analysis': st.session_state.assessment_results.get('digital_despair_analysis')
+                }
+                
+                # Add contact info if available
+                if 'contact_info' in st.session_state:
+                    assessment_data.update(st.session_state.contact_info)
+                
+                if paywall.check_payment_status():
+                    paywall.render_premium_analysis(assessment_data)
+                else:
+                    self._render_enhanced_paywall_preview()
+                    
+                    with st.expander("Access complete clinical analysis", expanded=False):
+                        paywall.render_paywall_interface(assessment_data)
+                        
+            except Exception as e:
+                st.error(f"Error loading premium analysis: {str(e)}")
+                self._render_simple_analysis_preview()
+        else:
+            st.info("Complete clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning are available with premium access.")
+            self._render_simple_analysis_preview()
     
     # def _render_clinical_analysis_section(self):
     #     """Render clinical analysis with paywall integration"""
@@ -2487,69 +2716,6 @@ optimal intervention design.
     #     else:
     #         st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
     #         self._render_analysis_preview()
-
-    def _render_clinical_analysis_section(self):
-        """Render clinical analysis with paywall integration"""
-        st.markdown("---")
-        st.markdown("### Complete clinical analysis")
-        
-        if PAYWALL_AVAILABLE:
-            try:
-                paywall = create_clinical_paywall()
-                assessment_data = {
-                    'assessment_results': st.session_state.assessment_results,
-                    'assessment_responses': st.session_state.assessment_responses,
-                    'intensity_responses': st.session_state.get('intensity_responses', {}),
-                    'is_digital_native': st.session_state.is_digital_native,
-                    'digital_despair_analysis': st.session_state.assessment_results.get('digital_despair_analysis')
-                }
-                
-                # Add contact info if available
-                if 'contact_info' in st.session_state:
-                    assessment_data.update(st.session_state.contact_info)
-                
-                if paywall.check_payment_status():
-                    paywall.render_premium_analysis(assessment_data)
-                else:
-                    # Enhanced preview section
-                    st.markdown("""
-                    <div class="insight-card" style="border: 2px solid #4CA1A3;">
-                        <h4 style="color: #273548; margin-bottom: 1rem;">Unlock your complete clinical analysis</h4>
-                        
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1rem 0;">
-                            <div style="background: #F3F6F8; padding: 1rem; border-radius: 6px;">
-                                <strong style="color: #4CA1A3;">Pattern interactions</strong>
-                                <p style="margin: 0.5rem 0 0 0; color: #556D7A; font-size: 0.9rem;">How your patterns reinforce each other and optimal intervention points</p>
-                            </div>
-                            <div style="background: #F3F6F8; padding: 1rem; border-radius: 6px;">
-                                <strong style="color: #4CA1A3;">Behavioral sequence mapping</strong>
-                                <p style="margin: 0.5rem 0 0 0; color: #556D7A; font-size: 0.9rem;">Complete trigger-to-outcome chain with breaking points identified</p>
-                            </div>
-                            <div style="background: #F3F6F8; padding: 1rem; border-radius: 6px;">
-                                <strong style="color: #4CA1A3;">Personalized session design</strong>
-                                <p style="margin: 0.5rem 0 0 0; color: #556D7A; font-size: 0.9rem;">Exact hypnotic approach and session structure for your patterns</p>
-                            </div>
-                            <div style="background: #F3F6F8; padding: 1rem; border-radius: 6px;">
-                                <strong style="color: #4CA1A3;">Resistance prediction</strong>
-                                <p style="margin: 0.5rem 0 0 0; color: #556D7A; font-size: 0.9rem;">Likely resistance points and how to navigate them</p>
-                            </div>
-                        </div>
-                        
-                        <p style="color: #556D7A; margin: 1rem 0; text-align: center; font-style: italic;">
-                            This detailed analysis complements your upcoming clinical consultation
-                        </p>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    with st.expander("Access complete clinical analysis", expanded=False):
-                        paywall.render_paywall_interface(assessment_data)
-                        
-            except Exception as e:
-                st.error(f"Error loading premium analysis: {str(e)}")
-                self._render_simple_analysis_preview()
-        else:
-            st.info("Complete clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning are available with premium access.")
-            self._render_simple_analysis_preview()
 
     def _render_simple_analysis_preview(self):
         """Render simple analysis preview when paywall is not available"""
