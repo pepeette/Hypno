@@ -4360,12 +4360,12 @@ optimal intervention design.
                 severity = digital_analysis['severity_level']
                 score = digital_analysis['digital_despair_score']
                 
-                if severity in ['SEVERE', 'MODERATE']:
-                    st.markdown(f"""
-                    <div class="digital-indicator">
-                    📲 Algorithmic Syndrome Detected: {severity} ({score:.0f}% score) - Specialized intervention required
-                    </div>
-                    """, unsafe_allow_html=True)
+                # if severity in ['SEVERE', 'MODERATE']:
+                #     st.markdown(f"""
+                #     <div class="digital-indicator">
+                #     📲 Algorithmic Syndrome Detected: {severity} ({score:.0f}% score) - Specialized intervention required
+                #     </div>
+                #     """, unsafe_allow_html=True)
         
         # Direct to clinical analysis
         self._render_clinical_analysis_section()
