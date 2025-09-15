@@ -2895,14 +2895,17 @@ optimal intervention design.
         # CHANGED FROM ### to **
         st.markdown("**Price comparison**")
         
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns([4, 1, 4])
         
         with col1:
-            st.error("Traditional therapy with gradual talk and uncertain outcomes for pattern-based issues")
+            st.markdown("**Traditional therapy** with gradual talk and uncertain outcomes for pattern-based issues")
             st.markdown("**18+ months, ฿15,000+**")
         
         with col2:
-            st.success("Specialized hypnotherapy for direct subconscious intervention with 85% success rate")
+            st.markdown("🆚")
+        
+        with col3:
+            st.markdown("**Specialized hypnotherapy** for direct subconscious intervention with 85% success rate")
             st.markdown("**2 to 3 sessions, ~฿3,000-4,000**")
         
         st.info("**Time to initial results: 48-72 hours vs 3-6 months**")
