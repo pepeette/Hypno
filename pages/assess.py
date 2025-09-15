@@ -2386,7 +2386,10 @@ optimal intervention design.
                 
                 # STEP 4: Add digital pattern analysis if applicable
                 self._render_digital_insights_at_top(preview_data)
-                
+
+                # STEP 5: Blueprint access - call without parameters, let method generate its own data, access behind paywall
+                self._render_blueprint_access()
+
             except Exception as e:
                 st.error(f"Error loading results analysis: {str(e)}")
                 st.info("Please complete the full assessment for detailed insights.")
@@ -2843,20 +2846,19 @@ optimal intervention design.
         2. **Personal contact** (48-72 hours): We reach out via your preferred method  
         3. **Custom protocol** (within 72 hours): Personalized hypnotherapy approach designed for your specific patterns
         
-        **Want to understand our proven method?** Visit **[hypnotherapy.streamlit.app](https://hypnotherapy.streamlit.app)** to learn about our rapid transformation approach.
-        
         """)
         
         # Call to action section
         st.markdown("**Ready to start your transformation?**")
-        st.info("While you wait for our clinical team to contact you, learn more about our proven rapid transformation method.")
-        self._render_value_comparison()
         
         col1, col2 = st.columns(2)
         with col1:
-            st.link_button("Learn about our method", "https://hypnotherapy.streamlit.app")
-        with col2:
             st.link_button("Schedule direct consultation", "https://calendly.com/laetitiasheppard/discovery")
+        with col2:
+            st.link_button("Learn about our method", "https://hypnotherapy.streamlit.app")
+            
+        self._render_value_comparison()
+        
         
         # # Additional support information
         # st.markdown("**Questions or need immediate support?**")
