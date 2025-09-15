@@ -53,8 +53,7 @@ class ClinicalAnalysisPaywall:
     
     def render_paywall_interface(self, assessment_data):
         """Render the paywall interface for clinical analysis"""
-        st.markdown("### 🔒 Premium behavioral analysis")
-        
+       
         # Show what's included
         self._render_premium_features()
         
@@ -80,23 +79,23 @@ class ClinicalAnalysisPaywall:
         💬 **Personalized approach** - Communication and learning style adaptations for your sessions
         """)
         
-        # Pricing
-        st.markdown(f"""
-        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
-                    border-radius: 12px; padding: 2rem; text-align: center; margin: 1rem 0;">
-            <h3 style="color: white; margin-bottom: 1rem;">Complete Analysis Report</h3>
-            <div style="color: white; font-size: 2rem; font-weight: bold; margin: 1rem 0;">
-                ฿{self.analysis_price}
-            </div>
-            <p style="color: white; opacity: 0.9; margin: 0;">
-                One-time payment • Instant access • Delivered via email
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+        # # Pricing
+        # st.markdown(f"""
+        # <div style="background: linear-gradient(135deg, #4CA1A3 0%, #E1F0F0 100%); 
+        #             border-radius: 12px; padding: 2rem; text-align: center; margin: 1rem 0;">
+        #     <h3 style="color: white; margin-bottom: 1rem;">Complete Analysis Report</h3>
+        #     <div style="color: white; font-size: 2rem; font-weight: bold; margin: 1rem 0;">
+        #         ฿{self.analysis_price}
+        #     </div>
+        #     <p style="color: white; opacity: 0.9; margin: 0;">
+        #         One-time payment • Instant access • Delivered via email
+        #     </p>
+        # </div>
+        # """, unsafe_allow_html=True)
     
     def _render_payment_options(self, assessment_data):
         """Render payment options"""
-        st.markdown("### Payment Options")
+        st.markdown("**Payment Options**")
         
         col1, col2 = st.columns(2)
         
@@ -171,7 +170,7 @@ class ClinicalAnalysisPaywall:
         **Important:** Include the reference number in your transfer description.
         
         After transfer, send proof of payment to: laetitiasheppard@gmail.com
-        You'll receive your analysis within 2 hours of payment confirmation.
+        You'll receive your analysis upon proof of payment shared.
         """)
         
         # Store reference for tracking
