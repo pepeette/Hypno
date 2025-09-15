@@ -2270,9 +2270,10 @@ optimal intervention design.
         # if st.session_state.is_digital_native:
         #     self._render_digital_insights()
         # self._render_transformation_roadmap()
+        # self._render_empowerment_section()
         
         # Jump directly to empowerment and next steps
-        self._render_empowerment_section()
+
         self._render_next_steps_section()
 
         # Add blueprint access after basic results
@@ -2416,14 +2417,18 @@ optimal intervention design.
                 with col2:
                     st.markdown(f"{badge_color} {intensity_text}")
                 
-                st.markdown("This primary pattern has been identified and will be addressed in your personalized sessions.")
-                st.markdown("---")
         
         # Show count of additional patterns if present
         if len(sorted_patterns) > 1:
             additional_count = len(sorted_patterns) - 1
-            st.markdown(f"**Plus {additional_count} additional pattern{'s' if additional_count > 1 else ''} identified**")
-            st.caption("Complete pattern analysis and interaction mapping available in your clinical consultation.")
+            st.markdown(f"Plus {additional_count} additional pattern{'s' if additional_count > 1 else ''} identified")
+            st.markdown("Complete pattern analysis and interaction mapping available during your consultation.")
+
+        st.success("**Key insight:** Your pattern recognition ability is already strong - that's 60% of the transformation work already complete.")
+        st.markdown("Most people see initial shifts within 48 hours of Session 2")
+
+        # Clinical analysis access
+        self._render_clinical_analysis_section()
         
         # COMMENTED OUT SECTIONS FOR LATER USE:
         """
@@ -2613,50 +2618,62 @@ optimal intervention design.
         """Render next steps using Streamlit components"""
         contact_info = st.session_state.get('contact_info', {})
         urgency = contact_info.get('urgency', '')
+
+        st.markdown("""
+        **What happens next:**
+    
+        1. **Clinical review** (24-48 hours): Licensed therapist analyzes your comprehensive assessment
+        2. **Personal contact** (48-72 hours): We reach out via your preferred method  
+        3. **Custom protocol** (within 72 hours): Personalized hypnotherapy approach designed for your specific patterns
         
-        st.markdown("### What happens next")
+        **Want to understand our proven method?** Visit **[hypnotherapy.streamlit.app](https://hypnotherapy.streamlit.app)** to learn about our rapid transformation approach.
         
-        # Immediate next steps based on urgency
-        if 'extremely urgent' in urgency.lower() or 'very urgent' in urgency.lower():
-            contact_timeline = "within 24 hours"
-            priority_text = "Given your urgency level, you're on our priority contact list."
-        else:
-            contact_timeline = "within 48-72 hours"
-            priority_text = "You'll hear from our clinical team soon."
+        """)
         
-        next_steps = [
-            {
-                "title": "Clinical review",
-                "timeline": "24-48 hours",
-                "description": f"Licensed therapist analyzes your comprehensive assessment and designs your personalized approach. {priority_text}"
-            },
-            {
-                "title": "Personal contact", 
-                "timeline": contact_timeline,
-                "description": "We reach out via your preferred method to schedule your first transformation session."
-            },
-            {
-                "title": "Transformation begins",
-                "timeline": "Within 1 week",
-                "description": "Your personalized hypnotherapy protocol begins, targeting your specific pattern constellation."
-            }
-        ]
+        # st.markdown("### What happens next")
         
-        for i, step in enumerate(next_steps):
-            with st.container():
-                st.markdown(f"**{i+1}. {step['title']}**")
-                st.markdown(f"*{step['timeline']}*")
-                st.markdown(step['description'])
-                if i < len(next_steps) - 1:
-                    st.markdown("---")
+        # # Immediate next steps based on urgency
+        # if 'extremely urgent' in urgency.lower() or 'very urgent' in urgency.lower():
+        #     contact_timeline = "within 24 hours"
+        #     priority_text = "Given your urgency level, you're on our priority contact list."
+        # else:
+        #     contact_timeline = "within 48-72 hours"
+        #     priority_text = "You'll hear from our clinical team soon."
         
-        # Add empowerment and value sections
-        self._render_empowerment_section()
-        self._render_value_comparison()
+        # next_steps = [
+        #     {
+        #         "title": "Clinical review",
+        #         "timeline": "24-48 hours",
+        #         "description": f"Licensed therapist analyzes your comprehensive assessment and designs your personalized approach. {priority_text}"
+        #     },
+        #     {
+        #         "title": "Personal contact", 
+        #         "timeline": contact_timeline,
+        #         "description": "We reach out via your preferred method to schedule your first transformation session."
+        #     },
+        #     {
+        #         "title": "Transformation begins",
+        #         "timeline": "Within 1 week",
+        #         "description": "Your personalized hypnotherapy protocol begins, targeting your specific pattern constellation."
+        #     }
+        # ]
+        
+        # for i, step in enumerate(next_steps):
+        #     with st.container():
+        #         st.markdown(f"**{i+1}. {step['title']}**")
+        #         st.markdown(f"*{step['timeline']}*")
+        #         st.markdown(step['description'])
+        #         if i < len(next_steps) - 1:
+        #             st.markdown("---")
+        
+        # # Add empowerment and value sections
+        # self._render_empowerment_section()
+        
         
         # Call to action section
         st.markdown("### Ready to start your transformation?")
         st.info("While you wait for our clinical team to contact you, learn more about our proven rapid transformation method.")
+        self._render_value_comparison()
         
         col1, col2 = st.columns(2)
         with col1:
@@ -2664,52 +2681,50 @@ optimal intervention design.
         with col2:
             st.link_button("Schedule direct consultation", "https://calendly.com/laetitiasheppard/discovery")
         
-        # Additional support information
-        st.markdown("#### Questions or need immediate support?")
-        st.markdown("""
-        **Email:** Reply to any assessment email you receive from us  
-        **Direct contact:** Our clinical team will reach out to you personally  
-        **Emergency support:** If you're experiencing crisis, please contact your local emergency services
-        """)
-        
-        # Clinical analysis access
-        self._render_clinical_analysis_section()
+        # # Additional support information
+        # st.markdown("#### Questions or need immediate support?")
+        # st.markdown("""
+        # **Email:** Reply to any assessment email you receive from us  
+        # **Direct contact:** Our clinical team will reach out to you personally  
+        # **Emergency support:** If you're experiencing crisis, please contact your local emergency services
+        # """)
+
     
     def _render_empowerment_section(self):
         """Render empowerment section using Streamlit components"""
         # COMMENTED OUT FOR NOW:
-        # readiness_indicators = self._extract_readiness_indicators()
-        # user_insights = self._extract_user_insights()
+        readiness_indicators = self._extract_readiness_indicators()
+        user_insights = self._extract_user_insights()
         
         st.markdown("#### You have everything needed for rapid transformation")
         
         # COMMENTED OUT:
-        # st.markdown("**Your transformation readiness indicators:**")
-        # st.markdown(readiness_indicators, unsafe_allow_html=True)
+        st.markdown("**Your transformation readiness indicators:**")
+        st.markdown(readiness_indicators, unsafe_allow_html=True)
         
         st.success("**Key insight:** Your pattern recognition ability is already strong - that's 60% of the transformation work already complete.")
         
         # COMMENTED OUT:
-        # if user_insights:
-        #     st.markdown(user_insights, unsafe_allow_html=True)
+        if user_insights:
+            st.markdown(user_insights, unsafe_allow_html=True)
         
-        st.markdown("**Most people see initial shifts within 48 hours of Session 1**")
+        # st.markdown("**Most people see initial shifts within 48 hours of Session 1**")
     
     def _render_value_comparison(self):
         """Render value comparison using Streamlit components"""
-        st.markdown("#### Investment comparison")
+        st.markdown("Price comparison")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.error("**Traditional therapy approach**")
-            st.markdown("18+ months, $15,000+")
-            st.caption("Gradual talk therapy with uncertain outcomes for pattern-based issues")
+            st.error("Traditional therapy with gradual talk and uncertain outcomes for pattern-based issues")
+            st.markdown("**18+ months, $15,000+**")
+            #st.caption("Gradual talk therapy with uncertain outcomes for pattern-based issues")
         
         with col2:
-            st.success("**Specialized hypnotherapy**")
-            st.markdown("2-3 sessions, $3,000-4,000")
-            st.caption("Direct subconscious intervention with 85% success rate")
+            st.success("Specialized hypnotherapy for direct subconscious intervention with 85% success rate")
+            st.markdown("**2-3 sessions, $3,000-4,000**")
+            #st.caption("Direct subconscious intervention with 85% success rate")
         
         st.info("**Time to initial results: 48-72 hours vs 3-6 months**")
     
