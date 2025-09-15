@@ -582,13 +582,19 @@ class HypnotherapyApp:
         if self.hidden_page:
             # Minimal footer for hidden pages
             st.markdown("---")
-            st.markdown("""
-            <div style="text-align: center; color: #556D7A; font-size: 0.8rem; padding: 1rem;">
-                Rapid Transformation Hypnotherapy &copy; 2024 | Confidential Portal
+            # Copyright notice with clean styling
+            st.markdown(f"""
+            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; 
+                        border-top: 1px solid #CBD5E1; color: #556D7A;">
+                <p style="margin: 0;">© {current_year} Laetitia Sheppard • Confidential Portal • All Rights Reserved</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
+                    🔒 All sessions are strictly confidential • Licensed & Insured • Professional Standards Guaranteed
+                </p>
             </div>
             """, unsafe_allow_html=True)
             return
-            
+
+
         if self.footer:
             self.footer.render()
 
