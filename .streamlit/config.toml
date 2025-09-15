@@ -1,0 +1,21 @@
+"""
+Create .streamlit/config.toml:
+"""
+"""
+[global]
+developmentMode = false
+
+[server]
+runOnSave = true
+address = "0.0.0.0"
+port = 8501
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+primaryColor = "#4CA1A3"
+backgroundColor = "#F3F6F8"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#273548"
+"""
