@@ -2201,44 +2201,44 @@ optimal intervention design.
 
         def render(self):
         # TEMPORARY: Quick jump to results for testing
-        if st.sidebar.button("🚀 Jump to Results (Testing)"):
-            # Set up minimal test data
-            st.session_state.assessment_completed = True
-            st.session_state.contact_provided = True
-            st.session_state.is_digital_native = True
-            st.session_state.pattern_scores = {1: 6.5, 2: 4.2, 3: 5.8}
-            st.session_state.assessment_results = {
-                'pattern_scores': {1: 6.5, 2: 4.2, 3: 5.8},
-                'total_questions_answered': 25,
-                'completion_rate': 0.95,
-                'digital_despair_analysis': {
-                    'digital_despair_score': 65.0,
-                    'severity_level': 'MODERATE',
-                    'component_scores': {
-                        'attention_fragmentation': 3,
-                        'algorithmic_dependency': 4,
-                        'ironic_detachment': 3
+            if st.sidebar.button("🚀 Jump to Results (Testing)"):
+                # Set up minimal test data
+                st.session_state.assessment_completed = True
+                st.session_state.contact_provided = True
+                st.session_state.is_digital_native = True
+                st.session_state.pattern_scores = {1: 6.5, 2: 4.2, 3: 5.8}
+                st.session_state.assessment_results = {
+                    'pattern_scores': {1: 6.5, 2: 4.2, 3: 5.8},
+                    'total_questions_answered': 25,
+                    'completion_rate': 0.95,
+                    'digital_despair_analysis': {
+                        'digital_despair_score': 65.0,
+                        'severity_level': 'MODERATE',
+                        'component_scores': {
+                            'attention_fragmentation': 3,
+                            'algorithmic_dependency': 4,
+                            'ironic_detachment': 3
+                        }
                     }
                 }
-            }
-            st.session_state.assessment_session_id = str(uuid.uuid4())
-            st.session_state.contact_info = {
-                'name': 'Test User',
-                'email': 'test@example.com'
-            }
-            st.rerun()
-        
-        apply_clinical_styles()
-        self._render_header()
-        
-        if not st.session_state.contact_provided:
-            if not st.session_state.assessment_completed:
-                self._render_current_question()
-            else:
-                self._render_contact_form()
-        else:
-            self._render_results()
+                st.session_state.assessment_session_id = str(uuid.uuid4())
+                st.session_state.contact_info = {
+                    'name': 'Test User',
+                    'email': 'test@example.com'
+                }
+                st.rerun()
             
+            apply_clinical_styles()
+            self._render_header()
+            
+            if not st.session_state.contact_provided:
+                if not st.session_state.assessment_completed:
+                    self._render_current_question()
+                else:
+                    self._render_contact_form()
+            else:
+                self._render_results()
+                
     def _render_results(self):
         """Render user-centric results page with comprehensive insights"""
         self._render_results_hero_at_top()
