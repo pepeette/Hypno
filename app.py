@@ -583,7 +583,7 @@ class HypnotherapyApp:
             # Minimal footer for hidden pages
             st.markdown("---")
             # Copyright notice with clean styling
-            st.markdown(f"""© {current_year} Laetitia Sheppard • Confidential Portal • All Rights Reserved""")
+            st.markdown(f"""© 2025 Laetitia Sheppard • Confidential Portal • All Rights Reserved""")
             return
 
 
