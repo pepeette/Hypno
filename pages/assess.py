@@ -1827,7 +1827,7 @@ class ComprehensiveBehavioralAssessment:
                 }
                 description = severity_descriptions.get(severity, 'Assessment incomplete')
                 
-                st.metric("", "Digital patterns}", f"{digital_score:.0f}%")
+                st.metric("", "Digital patterns", f"{digital_score:.0f}%")
                 #st.metric("Digital patterns", f"{severity}", f"{digital_score:.0f}%")
                 #st.caption(description)
             with col4:
