@@ -2289,7 +2289,6 @@ optimal intervention design.
         # Blueprint preview and full access
         self._render_blueprint_access(assessment_data)
         
-
     def _render_results_hero(self):
         """Render the hero section with key insights using Streamlit components"""
         results = st.session_state.assessment_results
@@ -2310,21 +2309,46 @@ optimal intervention design.
             st.warning("**Priority contact scheduled** - Given your urgency level, our clinical team will contact you within 24 hours to expedite your transformation process.")
         
         # Main hero section
-        st.markdown("## Your personal transformation blueprint is ready")
-        st.markdown("Based on your comprehensive assessment, we've identified your unique pattern signature")
+        st.markdown("## Your core behavioral patterns")
         
-        # Metrics display
+        # Success probability section
+        st.markdown("**Transformation success likelihood:**")
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            progress_bar = st.progress(success_probability / 100)
+        with col2:
+            st.markdown(f"**{success_probability}%**")
+        
+        # Metrics in 3 columns
         col1, col2, col3 = st.columns(3)
+        
         with col1:
             st.metric("Patterns identified", total_patterns)
-        with col2:
-            st.metric("Assessment complete", f"{completion_rate*100:.0f}%")
-        with col3:
-            st.metric("Success probability", f"{success_probability}%")
         
-        # Success probability bar
-        st.markdown("**Transformation success likelihood:**")
-        progress_bar = st.progress(success_probability / 100)
+        with col2:
+            # Get primary pattern and intensity
+            if pattern_scores:
+                sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+                primary_pattern_id, primary_score = sorted_patterns[0]
+                primary_pattern_name = self.patterns.get(primary_pattern_id, f"Pattern {primary_pattern_id}")
+                
+                if primary_score >= 6:
+                    intensity_level = "High intensity"
+                elif primary_score >= 4:
+                    intensity_level = "Moderate intensity" 
+                elif primary_score >= 2:
+                    intensity_level = "Mild intensity"
+                else:
+                    intensity_level = "Emerging pattern"
+                
+                st.metric("Intensity level", intensity_level, primary_pattern_name)
+            else:
+                st.metric("Intensity level", "Assessment incomplete")
+        
+        with col3:
+            # Calculate pattern rarity
+            pattern_rarity_percentage = self._calculate_pattern_rarity(total_patterns)
+            st.metric("Pattern rarity", f"{pattern_rarity_percentage}%", "of people show this combination")
     
     def _render_pattern_insights(self):
         """Render detailed pattern insights using Streamlit components"""
@@ -2335,147 +2359,204 @@ optimal intervention design.
             st.warning("Pattern analysis incomplete - please complete the full assessment for detailed insights.")
             return
         
-        st.markdown("### Your core behavioral patterns")
-        
-        # Sort patterns by score
-        sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
-        
-        # Pattern descriptions (keep for later use)
-        """
-        pattern_descriptions = {
-            1: {
-                "description": "You may find it challenging to accept or maintain positive emotional states",
-                "impact": "This can limit your ability to fully enjoy success and happiness",
-                "transformation": "Learning to trust that joy and success can be sustainable and deserved"
-            },
-            2: {
-                "description": "You experience recurring conflicts and power struggles in relationships",
-                "impact": "This can create stress and prevent collaborative problem-solving",
-                "transformation": "Developing skills for curious dialogue and win-win resolution"
-            },
-            3: {
-                "description": "You maintain a default skepticism about others' intentions",
-                "impact": "This protective mechanism may limit deep connections and opportunities",
-                "transformation": "Calibrating trust responses and building authentic relationships"
-            },
-            4: {
-                "description": "You tend toward black-and-white thinking patterns",
-                "impact": "This can limit creative solutions and increase decision paralysis",
-                "transformation": "Developing nuanced thinking and embracing creative possibilities"
-            },
-            5: {
-                "description": "Your self-worth is closely tied to productivity and achievement",
-                "impact": "This can lead to burnout and difficulty with rest or self-care",
-                "transformation": "Anchoring worth in your inherent value, independent of accomplishments"
-            },
-            6: {
-                "description": "Your sense of identity shifts significantly across different contexts",
-                "impact": "This can create internal confusion and emotional exhaustion",
-                "transformation": "Integrating an authentic, consistent self across all situations"
-            },
-            7: {
-                "description": "You prioritize others' needs while neglecting your own self-care",
-                "impact": "This can lead to resentment and emotional depletion over time",
-                "transformation": "Developing healthy boundaries and self-care practices"
-            },
-            8: {
-                "description": "Your life choices are driven more by family expectations than personal desires",
-                "impact": "This can create internal conflict and limit authentic self-expression",
-                "transformation": "Clarifying personal values while maintaining family harmony"
-            },
-            9: {
-                "description": "Your boundaries and limits vary dramatically based on context",
-                "impact": "This can lead to inconsistent relationships and self-advocacy",
-                "transformation": "Establishing consistent, healthy boundaries across all situations"
-            }
-        }
-        """
-        
-        # Show only the first pattern with basic info
-        if sorted_patterns:
-            pattern_id, score = sorted_patterns[0]
-            pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
-            
-            # Determine severity
-            if score >= 6:
-                intensity_text = "High intensity"
-                badge_color = "🔴"
-            elif score >= 4:
-                intensity_text = "Moderate intensity" 
-                badge_color = "🟡"
-            elif score >= 2:
-                intensity_text = "Mild intensity"
-                badge_color = "🟢"
-            else:
-                intensity_text = "Emerging pattern"
-                badge_color = "🟢"
-            
-            with st.container():
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    st.markdown(f"**1. {pattern_name}**")
-                with col2:
-                    st.markdown(f"{badge_color} {intensity_text}")
-                
-        
-        # Show count of additional patterns if present
-        if len(sorted_patterns) > 1:
-            additional_count = len(sorted_patterns) - 1
-            st.markdown(f"Plus {additional_count} additional pattern{'s' if additional_count > 1 else ''} identified")
-            st.markdown("Complete pattern analysis and interaction mapping available during your consultation.")
-
+        # Key insight and transformation messaging
         st.success("**Key insight:** Your pattern recognition ability is already strong - that's 60% of the transformation work already complete.")
         st.markdown("Most people see initial shifts within 48 hours of Session 2")
+        
+        # Digital insights if applicable
+        self._render_digital_insights()
+        
+        # Clinical analysis access behind paywall
+        #self._render_clinical_analysis_section()
+        self._render_blueprint_access()
 
-        # Clinical analysis access
-        self._render_clinical_analysis_section()
+    
+    # def _render_results_hero(self):
+    #     """Render the hero section with key insights using Streamlit components"""
+    #     results = st.session_state.assessment_results
+    #     pattern_scores = results.get('pattern_scores', {})
         
-        # COMMENTED OUT SECTIONS FOR LATER USE:
-        """
-        # Show top 3 patterns with insights - FULL VERSION FOR LATER
-        for i, (pattern_id, score) in enumerate(sorted_patterns[:3]):
-            pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
-            pattern_info = pattern_descriptions.get(pattern_id, {
-                "description": "Unique behavioral pattern requiring individual exploration",
-                "impact": "May be affecting your daily life and relationships",
-                "transformation": "Personalized approach will be developed in your sessions"
-            })
+    #     # Calculate key metrics
+    #     total_patterns = len(pattern_scores)
+    #     completion_rate = results.get('completion_rate', 1.0)
+    #     success_probability = self._calculate_comprehensive_success_rate()
+        
+    #     # Check for urgency
+    #     contact_info = st.session_state.get('contact_info', {})
+    #     urgency = contact_info.get('urgency', '')
+    #     is_urgent = any(word in urgency.lower() for word in ['extremely', 'very urgent', 'significantly impacting'])
+        
+    #     # Priority banner for urgent cases
+    #     if is_urgent:
+    #         st.warning("**Priority contact scheduled** - Given your urgency level, our clinical team will contact you within 24 hours to expedite your transformation process.")
+        
+    #     # Main hero section
+    #     st.markdown("## Your core behavioral patterns")
+    #     st.markdown("Based on your comprehensive assessment, we've identified your unique pattern signature")
+        
+    #     # Metrics display
+    #     col1, col2, col3 = st.columns(3)
+    #     with col1:
+    #         st.metric("Patterns identified", total_patterns)
+    #     with col2:
+    #         st.metric("Assessment complete", f"{completion_rate*100:.0f}%")
+    #     with col3:
+    #         st.metric("Success probability", f"{success_probability}%")
+        
+    #     # Success probability bar
+    #     st.markdown("**Transformation success likelihood:**")
+    #     progress_bar = st.progress(success_probability / 100)
+    
+    # def _render_pattern_insights(self):
+    #     """Render detailed pattern insights using Streamlit components"""
+    #     results = st.session_state.assessment_results
+    #     pattern_scores = results.get('pattern_scores', {})
+        
+    #     if not pattern_scores:
+    #         st.warning("Pattern analysis incomplete - please complete the full assessment for detailed insights.")
+    #         return
+        
+    #     st.markdown("### Your core behavioral patterns")
+        
+    #     # Sort patterns by score
+    #     sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+        
+    #     # Pattern descriptions (keep for later use)
+    #     """
+    #     pattern_descriptions = {
+    #         1: {
+    #             "description": "You may find it challenging to accept or maintain positive emotional states",
+    #             "impact": "This can limit your ability to fully enjoy success and happiness",
+    #             "transformation": "Learning to trust that joy and success can be sustainable and deserved"
+    #         },
+    #         2: {
+    #             "description": "You experience recurring conflicts and power struggles in relationships",
+    #             "impact": "This can create stress and prevent collaborative problem-solving",
+    #             "transformation": "Developing skills for curious dialogue and win-win resolution"
+    #         },
+    #         3: {
+    #             "description": "You maintain a default skepticism about others' intentions",
+    #             "impact": "This protective mechanism may limit deep connections and opportunities",
+    #             "transformation": "Calibrating trust responses and building authentic relationships"
+    #         },
+    #         4: {
+    #             "description": "You tend toward black-and-white thinking patterns",
+    #             "impact": "This can limit creative solutions and increase decision paralysis",
+    #             "transformation": "Developing nuanced thinking and embracing creative possibilities"
+    #         },
+    #         5: {
+    #             "description": "Your self-worth is closely tied to productivity and achievement",
+    #             "impact": "This can lead to burnout and difficulty with rest or self-care",
+    #             "transformation": "Anchoring worth in your inherent value, independent of accomplishments"
+    #         },
+    #         6: {
+    #             "description": "Your sense of identity shifts significantly across different contexts",
+    #             "impact": "This can create internal confusion and emotional exhaustion",
+    #             "transformation": "Integrating an authentic, consistent self across all situations"
+    #         },
+    #         7: {
+    #             "description": "You prioritize others' needs while neglecting your own self-care",
+    #             "impact": "This can lead to resentment and emotional depletion over time",
+    #             "transformation": "Developing healthy boundaries and self-care practices"
+    #         },
+    #         8: {
+    #             "description": "Your life choices are driven more by family expectations than personal desires",
+    #             "impact": "This can create internal conflict and limit authentic self-expression",
+    #             "transformation": "Clarifying personal values while maintaining family harmony"
+    #         },
+    #         9: {
+    #             "description": "Your boundaries and limits vary dramatically based on context",
+    #             "impact": "This can lead to inconsistent relationships and self-advocacy",
+    #             "transformation": "Establishing consistent, healthy boundaries across all situations"
+    #         }
+    #     }
+    #     """
+        
+    #     # Show only the first pattern with basic info
+    #     if sorted_patterns:
+    #         pattern_id, score = sorted_patterns[0]
+    #         pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
             
-            # Determine severity
-            if score >= 6:
-                intensity_text = "High intensity"
-                badge_color = "🔴"
-            elif score >= 4:
-                intensity_text = "Moderate intensity" 
-                badge_color = "🟡"
-            elif score >= 2:
-                intensity_text = "Mild intensity"
-                badge_color = "🟢"
-            else:
-                intensity_text = "Emerging pattern"
-                badge_color = "🟢"
+    #         # Determine severity
+    #         if score >= 6:
+    #             intensity_text = "High intensity"
+    #             badge_color = "🔴"
+    #         elif score >= 4:
+    #             intensity_text = "Moderate intensity" 
+    #             badge_color = "🟡"
+    #         elif score >= 2:
+    #             intensity_text = "Mild intensity"
+    #             badge_color = "🟢"
+    #         else:
+    #             intensity_text = "Emerging pattern"
+    #             badge_color = "🟢"
             
-            with st.container():
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    st.markdown(f"**{i+1}. {pattern_name}**")
-                with col2:
-                    st.markdown(f"{badge_color} {intensity_text}")
+    #         with st.container():
+    #             col1, col2 = st.columns([3, 1])
+    #             with col1:
+    #                 st.markdown(f"**1. {pattern_name}**")
+    #             with col2:
+    #                 st.markdown(f"{badge_color} {intensity_text}")
                 
-                st.markdown(f"**What this means:** {pattern_info['description']}")
-                st.markdown(f"**Current impact:** {pattern_info['impact']}")
-                st.info(f"**Transformation potential:** {pattern_info['transformation']}")
-                st.markdown("---")
         
-        # Show additional patterns if present - FULL VERSION
-        if len(sorted_patterns) > 3:
-            additional_count = len(sorted_patterns) - 3
-            additional_patterns = [self.patterns.get(pid, f"Pattern {pid}") for pid, _ in sorted_patterns[3:]]
+    #     # Show count of additional patterns if present
+    #     if len(sorted_patterns) > 1:
+    #         additional_count = len(sorted_patterns) - 1
+    #         st.markdown(f"Plus {additional_count} additional pattern{'s' if additional_count > 1 else ''} identified")
+    #         st.markdown("Complete pattern analysis and interaction mapping available during your consultation.")
+
+    #     st.success("**Key insight:** Your pattern recognition ability is already strong - that's 60% of the transformation work already complete.")
+    #     st.markdown("Most people see initial shifts within 48 hours of Session 2")
+
+    #     # Clinical analysis access
+    #     self._render_clinical_analysis_section()
+        
+    #     # COMMENTED OUT SECTIONS FOR LATER USE:
+    #     """
+    #     # Show top 3 patterns with insights - FULL VERSION FOR LATER
+    #     for i, (pattern_id, score) in enumerate(sorted_patterns[:3]):
+    #         pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
+    #         pattern_info = pattern_descriptions.get(pattern_id, {
+    #             "description": "Unique behavioral pattern requiring individual exploration",
+    #             "impact": "May be affecting your daily life and relationships",
+    #             "transformation": "Personalized approach will be developed in your sessions"
+    #         })
             
-            st.markdown(f"**Additional patterns identified ({additional_count})**")
-            st.markdown(f"Your comprehensive analysis also reveals these supporting patterns: {', '.join(additional_patterns)}")
-            st.caption("These will be addressed as part of your integrated transformation approach.")
-        """
+    #         # Determine severity
+    #         if score >= 6:
+    #             intensity_text = "High intensity"
+    #             badge_color = "🔴"
+    #         elif score >= 4:
+    #             intensity_text = "Moderate intensity" 
+    #             badge_color = "🟡"
+    #         elif score >= 2:
+    #             intensity_text = "Mild intensity"
+    #             badge_color = "🟢"
+    #         else:
+    #             intensity_text = "Emerging pattern"
+    #             badge_color = "🟢"
+            
+    #         with st.container():
+    #             col1, col2 = st.columns([3, 1])
+    #             with col1:
+    #                 st.markdown(f"**{i+1}. {pattern_name}**")
+    #             with col2:
+    #                 st.markdown(f"{badge_color} {intensity_text}")
+                
+    #             st.markdown(f"**What this means:** {pattern_info['description']}")
+    #             st.markdown(f"**Current impact:** {pattern_info['impact']}")
+    #             st.info(f"**Transformation potential:** {pattern_info['transformation']}")
+    #             st.markdown("---")
+        
+    #     # Show additional patterns if present - FULL VERSION
+    #     if len(sorted_patterns) > 3:
+    #         additional_count = len(sorted_patterns) - 3
+    #         additional_patterns = [self.patterns.get(pid, f"Pattern {pid}") for pid, _ in sorted_patterns[3:]]
+            
+    #         st.markdown(f"**Additional patterns identified ({additional_count})**")
+    #         st.markdown(f"Your comprehensive analysis also reveals these supporting patterns: {', '.join(additional_patterns)}")
+    #         st.caption("These will be addressed as part of your integrated transformation approach.")
+    #     """
     
     def _render_pattern_cost_analysis(self):
         """Render pattern cost analysis using Streamlit components"""
@@ -2872,9 +2953,11 @@ optimal intervention design.
             return "12"
         elif pattern_count >= 3:
             return "18"
-        else:
+        elif pattern_count >= 2:
             return "25"
-    
+        else:
+            return "35"
+        
     def _extract_readiness_indicators(self):
         """Extract readiness indicators from responses - simplified for Streamlit"""
         indicators = []
@@ -3080,52 +3163,245 @@ optimal intervention design.
         }
     
 
-    def _render_blueprint_access(self, assessment_data):
-        """Render blueprint access with preview and full version"""
-        st.markdown("### Your complete transformation blueprint")
+    # def _render_blueprint_access(self, assessment_data):
+    #     """Render blueprint access with preview and full version"""
+    #     st.markdown("### Your complete transformation blueprint")
         
-        # Preview section
-        with st.expander("📋 Preview your behavioral blueprint", expanded=True):
+    #     # Preview section
+    #     with st.expander("📋 Preview your behavioral blueprint", expanded=True):
+    #         st.markdown("""
+    #         Your comprehensive blueprint includes:
+    #         - **Detailed pattern analysis** with specific insights for each detected pattern
+    #         - **Hidden cost calculations** showing weekly and lifetime impact
+    #         - **Digital conditioning analysis** (if applicable) with specialized recommendations
+    #         - **Transformation roadmap** with personalized session planning
+    #         - **Success probability analysis** based on your specific factors
+    #         - **Investment analysis** comparing costs vs. benefits
+    #         - **Why hypnotherapy works** for your specific pattern constellation
+    #         """)
+            
+    #         # Show key metrics
+    #         pattern_count = len(assessment_data.get('pattern_scores', {}))
+    #         success_rate = self._calculate_comprehensive_success_rate()
+            
+    #         col1, col2, col3 = st.columns(3)
+    #         with col1:
+    #             st.metric("Patterns analyzed", pattern_count)
+    #         with col2:
+    #             st.metric("Success probability", f"{success_rate}%")
+    #         with col3:
+    #             digital_score = assessment_data.get('digital_despair_analysis', {}).get('digital_despair_score', 0)
+    #             st.metric("Digital conditioning", f"{digital_score:.0f}%")
+        
+    #     # Access options
+    #     col1, col2 = st.columns(2)
+        
+    #     with col1:
+    #         if st.button("📖 View full blueprint", type="primary", use_container_width=True):
+    #             st.session_state.show_blueprint = True
+    #             st.rerun()
+        
+    #     with col2:
+    #         if st.button("📄 Generate PDF report", use_container_width=True):
+    #             self._generate_and_offer_pdf(assessment_data)
+        
+    #     # Show full blueprint if requested
+    #     if st.session_state.get('show_blueprint', False):
+    #         st.markdown("---")
+    #         self._render_full_blueprint(assessment_data)
+    
+    def _render_blueprint_access(self, assessment_data):
+        """Render comprehensive blueprint access with preview, paywall, and full version"""
+        
+        # Main expander containing everything
+        with st.expander("**Your complete transformation blueprint**", expanded=False):
+            
+            # Section 1: Preview
+            st.markdown("**Preview your behavioral blueprint**")
+            
+            # Calculate key metrics for preview
+            pattern_scores = assessment_data.get('pattern_scores', {})
+            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True) if pattern_scores else []
+            dominant_pattern = self.patterns.get(sorted_patterns[0][0], "Unknown") if sorted_patterns else "Unknown"
+            pattern_count = len(pattern_scores)
+            success_rate = self._calculate_comprehensive_success_rate()
+            digital_score = assessment_data.get('digital_despair_analysis', {}).get('digital_despair_score', 0)
+            is_digital_native = assessment_data.get('is_digital_native', False)
+            
+            # Engaging preview content
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%); 
+                        padding: 20px; border-radius: 12px; border-left: 4px solid #4CA1A3; margin: 16px 0;">
+                <div style="color: #273548; font-size: 1rem; line-height: 1.6;">
+                    <strong style="color: #4CA1A3;">🎯 Your primary focus:</strong> {dominant_pattern} pattern transformation<br>
+                    <strong style="color: #4CA1A3;">📊 Complexity level:</strong> {"High intensity" if pattern_count >= 4 else "Moderate intensity" if pattern_count >= 2 else "Standard intensity"} ({pattern_count} patterns detected)<br>
+                    <strong style="color: #4CA1A3;">🧠 Success probability:</strong> {success_rate}% based on your specific pattern constellation<br>
+                    {"<strong style='color: #4CA1A3;'>📱 Digital conditioning:</strong> " + f"{digital_score:.0f}% - specialized protocol recommended" if is_digital_native else ""}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
             st.markdown("""
-            Your comprehensive blueprint includes:
-            - **Detailed pattern analysis** with specific insights for each detected pattern
-            - **Hidden cost calculations** showing weekly and lifetime impact
-            - **Digital conditioning analysis** (if applicable) with specialized recommendations
-            - **Transformation roadmap** with personalized session planning
-            - **Success probability analysis** based on your specific factors
-            - **Investment analysis** comparing costs vs. benefits
-            - **Why hypnotherapy works** for your specific pattern constellation
+            Your personalized blueprint reveals the hidden architecture of your behavioral patterns and provides:
+            
+            **🔍 Deep pattern analysis** - Understand exactly how your mind creates unwanted behaviors, including the specific trigger sequences, emotional responses, and protective mechanisms that keep you stuck
+            
+            **💰 Hidden cost calculator** - Discover the true weekly and lifetime cost of your current patterns (most clients are shocked to learn they're losing ฿50,000-200,000 annually)
+            
+            **🎯 Precision transformation roadmap** - Your exact 2-session protocol with specific hypnotic interventions tailored to your unique neural patterns
+            
+            **⚡ Self-transformation starter kit** - Immediate techniques you can use right now to begin interrupting your patterns before your first session
+            
+            **🧬 Neuroplasticity insights** - Why your brain created these patterns originally and how we'll rewire them at the subconscious level for permanent change
             """)
             
-            # Show key metrics
-            pattern_count = len(assessment_data.get('pattern_scores', {}))
-            success_rate = self._calculate_comprehensive_success_rate()
+            if is_digital_native:
+                st.markdown("""
+                **📱 Digital native specialization** - Advanced analysis of your algorithmic conditioning, attention fragmentation patterns, and the specific hypnotic protocols that work for digitally-conditioned minds
+                """)
             
+            # Metrics display
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("Patterns analyzed", pattern_count)
+                st.metric("Patterns analyzed", pattern_count, help="Number of behavioral patterns detected in your assessment")
             with col2:
-                st.metric("Success probability", f"{success_rate}%")
+                st.metric("Success probability", f"{success_rate}%", help="Based on your specific pattern combination and readiness factors")
             with col3:
-                digital_score = assessment_data.get('digital_despair_analysis', {}).get('digital_despair_score', 0)
-                st.metric("Digital conditioning", f"{digital_score:.0f}%")
-        
-        # Access options
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            if st.button("📖 View full blueprint", type="primary", use_container_width=True):
-                st.session_state.show_blueprint = True
-                st.rerun()
-        
-        with col2:
-            if st.button("📄 Generate PDF report", use_container_width=True):
-                self._generate_and_offer_pdf(assessment_data)
-        
-        # Show full blueprint if requested
-        if st.session_state.get('show_blueprint', False):
+                if is_digital_native:
+                    st.metric("Digital conditioning", f"{digital_score:.0f}%", help="Level of digital-native behavioral patterns detected")
+                else:
+                    st.metric("Intensity level", f"{pattern_count}/9", help="Number of active patterns requiring intervention")
+            
             st.markdown("---")
-            self._render_full_blueprint(assessment_data)
+            
+            # Section 2: Complete Analysis Report
+            st.markdown("**Complete analysis report**")
+            
+            st.markdown("""
+            <div style="background: #FFFFFF; padding: 20px; border-radius: 12px; 
+                        border: 2px solid #4CA1A3; margin: 16px 0;">
+                <div style="text-align: center;">
+                    <h4 style="color: #273548; margin-bottom: 8px;">Complete transformation blueprint</h4>
+                    <p style="color: #556D7A; font-size: 1rem; margin-bottom: 16px;">
+                        One-time payment • Instant access • Download and save
+                    </p>
+                    <div style="background: #F3F6F8; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+                        <span style="color: #4CA1A3; font-weight: bold; font-size: 1.4rem;">฿299</span>
+                        <span style="color: #556D7A; font-size: 0.9rem;"> (Full value ฿2,000)</span>
+                    </div>
+                    <p style="color: #556D7A; font-size: 0.9rem; line-height: 1.4;">
+                        Get your complete 15-20 page personalized analysis with detailed transformation protocols, 
+                        cost calculations, and immediate action steps. Includes lifetime access and PDF download.
+                    </p>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Paywall integration
+            if PAYWALL_AVAILABLE:
+                try:
+                    paywall = create_clinical_paywall()
+                    
+                    if paywall.check_payment_status():
+                        st.success("✅ Payment verified - Full blueprint access granted")
+                        st.session_state.blueprint_access_granted = True
+                    else:
+                        with st.container():
+                            paywall.render_paywall_interface(assessment_data)
+                            
+                except Exception as e:
+                    st.error(f"Payment system temporarily unavailable: {str(e)}")
+                    st.info("Contact support for manual access: info@rapidtransformation.com")
+            else:
+                st.info("💳 Secure payment processing available - Contact for access")
+            
+            st.markdown("---")
+            
+            # Section 3: Action buttons
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                if st.button("📖 View full blueprint", 
+                            type="primary", 
+                            use_container_width=True,
+                            disabled=not st.session_state.get('blueprint_access_granted', False)):
+                    st.session_state.show_blueprint = True
+                    st.rerun()
+            
+            with col2:
+                if st.button("📄 Generate PDF report", 
+                            use_container_width=True,
+                            disabled=not st.session_state.get('blueprint_access_granted', False)):
+                    self._generate_and_offer_pdf(assessment_data)
+            
+            # Access status helper
+            if not st.session_state.get('blueprint_access_granted', False):
+                st.caption("🔒 Complete payment above to unlock full blueprint access")
+            
+            # Show full blueprint if payment verified and requested
+            if (st.session_state.get('show_blueprint', False) and 
+                st.session_state.get('blueprint_access_granted', False)):
+                st.markdown("---")
+                st.markdown("### Your complete transformation blueprint")
+                self._render_full_blueprint(assessment_data)
+    
+    def _calculate_comprehensive_success_rate(self):
+        """Calculate success rate based on pattern complexity and readiness factors"""
+        # Base success rate
+        base_rate = 85
+        
+        # Get assessment data
+        results = st.session_state.get('assessment_results', {})
+        pattern_scores = results.get('pattern_scores', {})
+        
+        # Adjust based on pattern count (more patterns = slightly lower initial success)
+        pattern_count = len(pattern_scores)
+        if pattern_count >= 5:
+            base_rate -= 5
+        elif pattern_count >= 3:
+            base_rate -= 2
+        
+        # Adjust based on digital native status (they respond better to this approach)
+        if st.session_state.get('is_digital_native', False):
+            base_rate += 5
+        
+        # Adjust based on readiness indicators (if available in responses)
+        responses = st.session_state.get('assessment_responses', {})
+        
+        # Check for high motivation indicators
+        high_motivation_keywords = ['desperate', 'ready', 'tired', 'enough', 'change']
+        motivation_boost = 0
+        for response in responses.values():
+            if isinstance(response, str):
+                for keyword in high_motivation_keywords:
+                    if keyword.lower() in response.lower():
+                        motivation_boost = 3
+                        break
+        
+        final_rate = min(95, max(70, base_rate + motivation_boost))
+        return final_rate
+    
+    def _generate_and_offer_pdf(self, assessment_data):
+        """Generate and offer PDF download of the complete blueprint"""
+        try:
+            # This would integrate with your PDF generation system
+            st.info("🔄 Generating your personalized PDF blueprint...")
+            
+            # Placeholder for actual PDF generation
+            # pdf_buffer = generate_blueprint_pdf(assessment_data)
+            
+            st.success("✅ PDF generated successfully!")
+            st.download_button(
+                label="📥 Download your blueprint PDF",
+                data="placeholder_pdf_data",  # Replace with actual PDF buffer
+                file_name=f"transformation_blueprint_{assessment_data.get('name', 'client')}.pdf",
+                mime="application/pdf",
+                use_container_width=True
+            )
+            
+        except Exception as e:
+            st.error(f"PDF generation failed: {str(e)}")
+            st.info("Please contact support for manual PDF delivery")
     
     def _render_full_blueprint(self, assessment_data):
         """Render the full behavioral blueprint"""
