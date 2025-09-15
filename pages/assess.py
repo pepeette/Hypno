@@ -3458,7 +3458,7 @@ optimal intervention design.
                         Complete 15-20 page analysis • Immediate access • Lifetime download
                     </p>
                     <div style="background: #F3F6F8; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                        <span style="color: #4CA1A3; font-weight: bold; font-size: 1.6rem;">฿299</span>
+                        <span style="color: #4CA1A3; font-weight: bold; font-size: 1.6rem;">฿1000</span>
                         <span style="color: #556D7A; font-size: 1rem;"> (Clinical value ฿2,500)</span>
                     </div>
                 </div>
