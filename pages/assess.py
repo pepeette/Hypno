@@ -1803,7 +1803,7 @@ class ComprehensiveBehavioralAssessment:
 
     def _render_contact_form(self):
         """Render contact form for results with enhanced clinical data"""
-        #st.markdown("### Assessment complete!")
+        #st.markdown("**Assessment complete!**")
         st.success("Your comprehensive behavioral pattern analysis is ready!")
         
         results = st.session_state.assessment_results
@@ -2197,68 +2197,53 @@ Session 1 will focus on completing any missing sequence components for
 optimal intervention design.
 """
 
-    # def _render_results(self):
-    #     """Render final results page"""
-    #     st.markdown("## Your behavioral pattern analysis")
-        
-    #     # Show digital native indicator if applicable
-    #     if st.session_state.is_digital_native:
-    #         digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-    #         if digital_analysis:
-    #             severity = digital_analysis['severity_level']
-    #             score = digital_analysis['digital_despair_score']
-                
-    #             # if severity in ['SEVERE', 'MODERATE']:
-    #             #     st.markdown(f"""
-    #             #     <div class="digital-indicator">
-    #             #     📲 Algorithmic Syndrome Detected: {severity} ({score:.0f}% score) - Specialized intervention required
-    #             #     </div>
-    #             #     """, unsafe_allow_html=True)
-        
-    #     # Direct to clinical analysis
-    #     self._render_clinical_analysis_section()
-    
-    #     st.markdown("### Your next steps")
-        
-    #     contact_info = st.session_state.get('contact_info', {})
-    #     urgency = contact_info.get('urgency', '')
-        
-    #     if 'extremely urgent' in urgency.lower() or 'very urgent' in urgency.lower():
-    #         st.warning("⚠️ **Priority contact**: Given your urgency level, our clinical team will contact you within 24 hours.")
-        
-    #     # Show different messaging for digital natives
-    #     if st.session_state.is_digital_native:
-    #         digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-    #         if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
-    #             st.info("💡 **Specialized approach**: Your assessment indicates algorithmical divide patterns that require adapted hypnotherapy techniques for optimal results.")
-        
-    #     st.markdown("""
-    #     **What happens next:**
-    
-    #     1. **Clinical review** (24-48 hours): Licensed therapist analyzes your responses
-    #     2. **Initial contact** (48-72 hours): We have reached out via your preferred method  
-    #     3. **Personalized protocol** (within 72 hours): Custom hypnotherapy approach designed for your patterns
-        
-    #     **Want to understand our proven method?** Visit **[hypnotherapy.streamlit.app](https://hypnotherapy.streamlit.app)** to learn about our rapid transformation hypnotherapy approach.
-        
-    #     **Questions?** Reply to any email from us or contact our clinical team directly.
-    #     """)
-        
-    #     # Add bottom CTA button
-    #     st.markdown(f"""
-    #     <div class="text-center">
-    #         <a href="{self.discovery_url}" 
-    #            target="_blank" 
-    #            class="cta-button">
-    #            📞 Schedule your session
-    #         </a>
-    #     </div>
-    #     """, unsafe_allow_html=True)
 
+
+        def render(self):
+        # TEMPORARY: Quick jump to results for testing
+        if st.sidebar.button("🚀 Jump to Results (Testing)"):
+            # Set up minimal test data
+            st.session_state.assessment_completed = True
+            st.session_state.contact_provided = True
+            st.session_state.is_digital_native = True
+            st.session_state.pattern_scores = {1: 6.5, 2: 4.2, 3: 5.8}
+            st.session_state.assessment_results = {
+                'pattern_scores': {1: 6.5, 2: 4.2, 3: 5.8},
+                'total_questions_answered': 25,
+                'completion_rate': 0.95,
+                'digital_despair_analysis': {
+                    'digital_despair_score': 65.0,
+                    'severity_level': 'MODERATE',
+                    'component_scores': {
+                        'attention_fragmentation': 3,
+                        'algorithmic_dependency': 4,
+                        'ironic_detachment': 3
+                    }
+                }
+            }
+            st.session_state.assessment_session_id = str(uuid.uuid4())
+            st.session_state.contact_info = {
+                'name': 'Test User',
+                'email': 'test@example.com'
+            }
+            st.rerun()
+        
+        apply_clinical_styles()
+        self._render_header()
+        
+        if not st.session_state.contact_provided:
+            if not st.session_state.assessment_completed:
+                self._render_current_question()
+            else:
+                self._render_contact_form()
+        else:
+            self._render_results()
+            
     def _render_results(self):
         """Render user-centric results page with comprehensive insights"""
-        self._render_results_hero()
-        self._render_pattern_insights()
+        self._render_results_hero_at_top()
+        # self._render_results_hero()
+        # self._render_pattern_insights()
         
         # COMMENTED OUT FOR NOW - WILL BE ENABLED IN COMPLETE BLUEPRINT:
         # self._render_pattern_cost_analysis()
@@ -2271,10 +2256,7 @@ optimal intervention design.
         # Jump directly to empowerment and next steps
 
         self._render_next_steps_section()
-
-        # Add blueprint access after basic results
-        st.markdown("---")
-        
+       
         # Generate unique session ID for this assessment
         if 'assessment_session_id' not in st.session_state:
             st.session_state.assessment_session_id = str(uuid.uuid4())
@@ -2284,7 +2266,75 @@ optimal intervention design.
         
         # # Blueprint preview and full access
         # #self._render_blueprint_access(assessment_data)
-        
+
+
+    def _render_results_hero_at_top(self):
+        """Render hero section at top of results page"""
+        try:
+            # Generate assessment data
+            assessment_data = self._compile_complete_assessment_data()
+            preview_data = self._extract_preview_insights(assessment_data)
+            
+            # STEP 2: Compelling personalized preview header at top
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%); 
+                        padding: 24px; border-radius: 12px; border-left: 4px solid #4CA1A3; margin: 16px 0;">
+                <div style="color: #273548; font-size: 1.1rem; line-height: 1.6; margin-bottom: 16px;">
+                    <strong style="color: #4CA1A3; font-size: 1.3rem;">🎯 Your unique pattern signature revealed</strong><br><br>
+                    <strong>Primary pattern:</strong> {preview_data['dominant_pattern_name']} - {preview_data['intensity_description']}<br>
+                    <strong>Complexity level:</strong> {preview_data['complexity_description']} ({preview_data['pattern_count']} interconnected patterns)<br>
+                    <strong>Success probability:</strong> {preview_data['success_rate']}% (above average due to {preview_data['success_factors']})<br>
+                    {preview_data['digital_summary']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # STEP 3: Add transformation success likelihood and progress bar
+            st.markdown("**Transformation success likelihood:**")
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                progress_bar = st.progress(preview_data['success_rate'] / 100)
+            with col2:
+                st.markdown(f"**{preview_data['success_rate']}%**")
+            
+            # STEP 4: Add digital pattern analysis if applicable
+            self._render_digital_insights_at_top(preview_data)
+            
+        except Exception as e:
+            st.error(f"Error loading results: {str(e)}")
+            st.info("Please refresh the page")
+
+    def _render_digital_insights_at_top(self, preview_data):
+        """Render digital insights at top of page if applicable"""
+        if preview_data.get('digital_insights'):
+            st.markdown("**Digital pattern analysis:**")
+            
+            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            if digital_analysis:
+                severity = digital_analysis['severity_level']
+                score = digital_analysis['digital_despair_score']
+                
+                # Enhanced digital insights display
+                insight_colors = {
+                    'SEVERE': '#ef4444',
+                    'MODERATE': '#eab308', 
+                    'MILD': '#4CA1A3',
+                    'MINIMAL': '#22c55e'
+                }
+                
+                color = insight_colors.get(severity, '#4CA1A3')
+                
+                st.markdown(f"""
+                <div style="background: {color}20; border-left: 4px solid {color}; 
+                            padding: 16px; border-radius: 8px; margin: 16px 0;">
+                    <strong style="color: {color};">📱 Digital conditioning: {score:.0f}% ({severity})</strong><br>
+                    <span style="color: #273548;">
+                        {preview_data['digital_insights']['attention_pattern']}<br>
+                        <strong>Specialized approach:</strong> {preview_data['digital_insights']['adaptation_needed']}
+                    </span>
+                </div>
+                """, unsafe_allow_html=True)
+                
     def _render_results_hero(self):
         """Render the hero section with key insights using Streamlit components"""
         results = st.session_state.assessment_results
@@ -2305,7 +2355,7 @@ optimal intervention design.
             st.warning("**Priority contact scheduled** - Given your urgency level, our clinical team will contact you within 24 hours to expedite your transformation process.")
         
         # Main hero section
-        st.markdown("## Your core behavioral patterns")
+        st.markdown("**Your core behavioral patterns**")
         
         # Success probability section
         st.markdown("**Transformation success likelihood:**")
@@ -2387,7 +2437,7 @@ optimal intervention design.
     #         st.warning("**Priority contact scheduled** - Given your urgency level, our clinical team will contact you within 24 hours to expedite your transformation process.")
         
     #     # Main hero section
-    #     st.markdown("## Your core behavioral patterns")
+    #     st.markdown("**Your core behavioral patterns**")
     #     st.markdown("Based on your comprehensive assessment, we've identified your unique pattern signature")
         
     #     # Metrics display
@@ -2412,7 +2462,7 @@ optimal intervention design.
     #         st.warning("Pattern analysis incomplete - please complete the full assessment for detailed insights.")
     #         return
         
-    #     st.markdown("### Your core behavioral patterns")
+    #     st.markdown("**Your core behavioral patterns**")
         
     #     # Sort patterns by score
     #     sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
@@ -2559,7 +2609,7 @@ optimal intervention design.
         future_vision = self._extract_future_vision()
         current_cost = self._calculate_pattern_cost()
         
-        st.markdown("#### The hidden cost of your current patterns")
+        st.markdown("**The hidden cost of your current patterns**")
         
         st.warning(f"**Weekly impact:** This pattern sequence is likely costing you approximately **{current_cost['hours']} hours of peace and productivity per week**")
         
@@ -2573,7 +2623,7 @@ optimal intervention design.
         hidden_mechanisms = self._identify_hidden_mechanisms()
         future_prediction = self._generate_future_prediction()
         
-        st.markdown("### The hidden layer")
+        st.markdown("**The hidden layer**")
         
         with st.container():
             st.markdown("**Protective mechanisms detected:**")
@@ -2632,7 +2682,7 @@ optimal intervention design.
     
     def _render_transformation_roadmap(self):
         """Render transformation roadmap using Streamlit components"""
-        st.markdown("### Your transformation roadmap")
+        st.markdown("**Your transformation roadmap**")
         
         # Estimate timeline and sessions needed
         pattern_count = len(st.session_state.pattern_scores)
@@ -2707,48 +2757,8 @@ optimal intervention design.
         
         """)
         
-        # st.markdown("### What happens next")
-        
-        # # Immediate next steps based on urgency
-        # if 'extremely urgent' in urgency.lower() or 'very urgent' in urgency.lower():
-        #     contact_timeline = "within 24 hours"
-        #     priority_text = "Given your urgency level, you're on our priority contact list."
-        # else:
-        #     contact_timeline = "within 48-72 hours"
-        #     priority_text = "You'll hear from our clinical team soon."
-        
-        # next_steps = [
-        #     {
-        #         "title": "Clinical review",
-        #         "timeline": "24-48 hours",
-        #         "description": f"Licensed therapist analyzes your comprehensive assessment and designs your personalized approach. {priority_text}"
-        #     },
-        #     {
-        #         "title": "Personal contact", 
-        #         "timeline": contact_timeline,
-        #         "description": "We reach out via your preferred method to schedule your first transformation session."
-        #     },
-        #     {
-        #         "title": "Transformation begins",
-        #         "timeline": "Within 1 week",
-        #         "description": "Your personalized hypnotherapy protocol begins, targeting your specific pattern constellation."
-        #     }
-        # ]
-        
-        # for i, step in enumerate(next_steps):
-        #     with st.container():
-        #         st.markdown(f"**{i+1}. {step['title']}**")
-        #         st.markdown(f"*{step['timeline']}*")
-        #         st.markdown(step['description'])
-        #         if i < len(next_steps) - 1:
-        #             st.markdown("---")
-        
-        # # Add empowerment and value sections
-        # self._render_empowerment_section()
-        
-        
         # Call to action section
-        st.markdown("### Ready to start your transformation?")
+        st.markdown("**Ready to start your transformation?**")
         st.info("While you wait for our clinical team to contact you, learn more about our proven rapid transformation method.")
         self._render_value_comparison()
         
@@ -2759,7 +2769,7 @@ optimal intervention design.
             st.link_button("Schedule direct consultation", "https://calendly.com/laetitiasheppard/discovery")
         
         # # Additional support information
-        # st.markdown("#### Questions or need immediate support?")
+        # st.markdown("**Questions or need immediate support?**")
         # st.markdown("""
         # **Email:** Reply to any assessment email you receive from us  
         # **Direct contact:** Our clinical team will reach out to you personally  
@@ -2773,7 +2783,7 @@ optimal intervention design.
         readiness_indicators = self._extract_readiness_indicators()
         user_insights = self._extract_user_insights()
         
-        st.markdown("#### You have everything needed for rapid transformation")
+        st.markdown("**You have everything needed for rapid transformation**")
         
         # COMMENTED OUT:
         st.markdown("**Your transformation readiness indicators:**")
@@ -2789,19 +2799,18 @@ optimal intervention design.
     
     def _render_value_comparison(self):
         """Render value comparison using Streamlit components"""
-        st.markdown("Price comparison")
+        # CHANGED FROM ### to **
+        st.markdown("**Price comparison**")
         
         col1, col2 = st.columns(2)
         
         with col1:
             st.error("Traditional therapy with gradual talk and uncertain outcomes for pattern-based issues")
-            st.markdown("**18+ months, $15,000+**")
-            #st.caption("Gradual talk therapy with uncertain outcomes for pattern-based issues")
+            st.markdown("**18+ months, ฿15,000+**")
         
         with col2:
             st.success("Specialized hypnotherapy for direct subconscious intervention with 85% success rate")
-            st.markdown("**2-3 sessions, $3,000-4,000**")
-            #st.caption("Direct subconscious intervention with 85% success rate")
+            st.markdown("**2 to 3 sessions, ~฿3,000-4,000**")
         
         st.info("**Time to initial results: 48-72 hours vs 3-6 months**")
     
@@ -2811,7 +2820,7 @@ optimal intervention design.
         resistance_preview = self._predict_specific_resistance()
         rarity_stat = self._calculate_pattern_rarity()
         
-        st.markdown("#### Unlock your complete psychological blueprint")
+        st.markdown("**Unlock your complete psychological blueprint**")
         
         # Create tabs for different analysis sections
         tab1, tab2, tab3, tab4 = st.tabs(["Deep psychology", "Intervention design", "Sequence interruption", "Success optimization"])
@@ -3000,7 +3009,7 @@ optimal intervention design.
     def _render_clinical_analysis_section(self):
         """Render clinical analysis section using Streamlit components"""
         st.markdown("---")
-        st.markdown("### Complete clinical analysis")
+        st.markdown("**Complete clinical analysis**")
         
         if PAYWALL_AVAILABLE:
             try:
@@ -3162,7 +3171,7 @@ optimal intervention design.
 
     # def _render_blueprint_access(self, assessment_data):
     #     """Render blueprint access with preview and full version"""
-    #     st.markdown("### Your complete transformation blueprint")
+    #     st.markdown("**Your complete transformation blueprint**")
         
     #     # Preview section
     #     with st.expander("📋 Preview your behavioral blueprint", expanded=True):
@@ -3209,45 +3218,39 @@ optimal intervention design.
     
 
     def _render_blueprint_access(self):
-        """Render comprehensive blueprint access with rich, personalized preview"""
+        """Render blueprint access with preview and full version"""
         try:
             # Generate assessment data
             assessment_data = self._compile_complete_assessment_data()
-            
-            # Extract preview data with error handling
+
             try:
                 preview_data = self._extract_preview_insights(assessment_data)
-            except Exception as e:
-                st.error(f"Error generating preview: {str(e)}")
-                return
-       
-            # Main expander containing everything
+            except KeyError as e:
+                st.warning(f"Preview data incomplete - some assessment responses may be missing")
+                # Provide minimal preview data
+                preview_data = {
+                    'dominant_pattern_name': 'Assessment incomplete',
+                    'trigger_sequence': None,
+                    'cost_preview': {'weekly_hours': 8, 'annual_cost': '฿331,200', 'relationship_impact': 'Assessment needed'},
+                    'pattern_interactions': ['Pattern analysis needed'],
+                    'session_plan': {
+                        'session_1_preview': 'Comprehensive assessment and rapport building',
+                        'session_2_preview': 'Core transformation and programming',
+                        'results_timeline': '2-4 weeks',
+                        'optimization_factor': 'Assessment completion needed'
+                    },
+                    'immediate_techniques': {
+                        'technique_1': {'name': 'Mindful Pause', 'description': 'Take 3 breaths before reacting'},
+                        'technique_2': {'name': 'Choice Point', 'description': 'Ask: Is this serving me?'}
+                    },
+                    'digital_insights': None,
+                    'pattern_count': 0
+                }
+            
+            # STEP 5: Expander with only blueprint content
             with st.expander("**Your complete transformation blueprint**", expanded=False):
                 
-                # Section 1: Enhanced Preview with Rich Assessment Data
-                st.markdown("**Preview your behavioral blueprint**")
-                
-                # Extract rich data for personalized preview
-                preview_data = self._extract_preview_insights(assessment_data)
-                
-                # Compelling personalized preview header
-                st.markdown(f"""
-                <div style="background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%); 
-                            padding: 24px; border-radius: 12px; border-left: 4px solid #4CA1A3; margin: 16px 0;">
-                    <div style="color: #273548; font-size: 1.1rem; line-height: 1.6; margin-bottom: 16px;">
-                        <strong style="color: #4CA1A3; font-size: 1.3rem;">🎯 Your unique pattern signature revealed</strong><br><br>
-                        <strong>Primary pattern:</strong> {preview_data['dominant_pattern_name']} - {preview_data['intensity_description']}<br>
-                        <strong>Complexity level:</strong> {preview_data['complexity_description']} ({preview_data['pattern_count']} interconnected patterns)<br>
-                        <strong>Success probability:</strong> {preview_data['success_rate']}% (above average due to {preview_data['success_factors']})<br>
-                        {preview_data['digital_summary']}
-                    </div>
-                    <div style="background: #E1F0F0; padding: 12px; border-radius: 8px; font-style: italic; color: #273548;">
-                        💡 <strong>Key insight from your responses:</strong> {preview_data['key_insight']}
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                # What you'll discover section with specific findings
+                # Only show "What your complete blueprint reveals" section
                 st.markdown("**What your complete blueprint reveals:**")
                 
                 # Behavioral sequence preview
@@ -3309,135 +3312,85 @@ optimal intervention design.
                     *Complete blueprint includes 5-7 personalized techniques with step-by-step instructions*
                     """)
                 
-                # Digital insights preview if applicable
-                if preview_data['digital_insights']:
-                    st.markdown(f"""
-                    **📱 Digital conditioning insights:**
-                    - **Attention pattern:** {preview_data['digital_insights']['attention_pattern']}
-                    - **Validation source:** {preview_data['digital_insights']['validation_source']}
-                    - **Therapeutic adaptation:** {preview_data['digital_insights']['adaptation_needed']}
-                    
-                    *Specialized digital-native protocol with modified approach included*
-                    """)
-                
-                # Success probability breakdown
-                st.markdown("**Why your success probability is high:**")
-                col1, col2, col3 = st.columns(3)
-                
-                with col1:
-                    st.metric(
-                        "Pattern clarity", 
-                        f"{preview_data['clarity_score']}/10",
-                        help="How clearly your patterns are defined"
-                    )
-                with col2:
-                    st.metric(
-                        "Readiness level", 
-                        f"{preview_data['readiness_score']}/10",
-                        help="Your motivation and readiness for change"
-                    )
-                with col3:
-                    st.metric(
-                        "Complexity match", 
-                        f"{preview_data['match_score']}/10",
-                        help="How well our method matches your pattern type"
-                    )
-                
                 st.markdown("---")
                 
-                # Section 2: Complete Analysis Report with enhanced value proposition
-                st.markdown("**Complete analysis report**")
+                # STEP 7: Paywall and buttons section
+                self._render_paywall_and_buttons(assessment_data)
                 
-                st.markdown(f"""
-                <div style="background: #FFFFFF; padding: 24px; border-radius: 12px; 
-                            border: 2px solid #4CA1A3; margin: 16px 0;">
-                    <div style="text-align: center;">
-                        <h4 style="color: #273548; margin-bottom: 8px;">Your personalized transformation blueprint</h4>
-                        <p style="color: #556D7A; font-size: 1rem; margin-bottom: 16px;">
-                            Complete 15-20 page analysis • Immediate access • Lifetime download
-                        </p>
-                        <div style="background: #F3F6F8; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                            <span style="color: #4CA1A3; font-weight: bold; font-size: 1.6rem;">฿299</span>
-                            <span style="color: #556D7A; font-size: 1rem;"> (Clinical value ฿2,500)</span>
-                        </div>
-                        <div style="background: #E1F0F0; padding: 12px; border-radius: 8px; margin-bottom: 16px; text-align: left;">
-                            <strong style="color: #273548;">Your complete blueprint includes:</strong><br>
-                            • Complete behavioral sequence maps with intervention points<br>
-                            • Hidden cost calculator ({preview_data['cost_preview']['weekly_hours']} hours/week × lifetime)<br>
-                            • {preview_data['pattern_count']} detailed pattern analyses with transformation protocols<br>
-                            • Session-by-session hypnotherapy scripts and techniques<br>
-                            • 5-7 immediate self-help techniques you can use today<br>
-                            • Success optimization plan to increase probability to 95%+<br>
-                            {f"• Specialized digital-native adaptations and protocols<br>" if preview_data['digital_insights'] else ""}
-                            • Downloadable PDF for lifetime access and reference
-                        </div>
-                        <p style="color: #556D7A; font-size: 0.9rem; line-height: 1.4;">
-                            <strong>One-time investment:</strong> Get the complete analysis that typically requires 
-                            3-4 clinical sessions to develop. Immediate access with secure payment.
-                        </p>
+        except Exception as e:
+            st.error(f"Error loading blueprint: {str(e)}")
+            st.info("Please refresh the page")
+
+    def _render_paywall_and_buttons(self, assessment_data):
+        """Render paywall integration and action buttons"""
+        try:
+            # Complete analysis report
+            st.markdown("**Complete analysis report**")
+            
+            st.markdown(f"""
+            <div style="background: #FFFFFF; padding: 24px; border-radius: 12px; 
+                        border: 2px solid #4CA1A3; margin: 16px 0;">
+                <div style="text-align: center;">
+                    <h4 style="color: #273548; margin-bottom: 8px;">Your personalized transformation blueprint</h4>
+                    <p style="color: #556D7A; font-size: 1rem; margin-bottom: 16px;">
+                        Complete 15-20 page analysis • Immediate access • Lifetime download
+                    </p>
+                    <div style="background: #F3F6F8; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                        <span style="color: #4CA1A3; font-weight: bold; font-size: 1.6rem;">฿299</span>
+                        <span style="color: #556D7A; font-size: 1rem;"> (Clinical value ฿2,500)</span>
                     </div>
                 </div>
-                """, unsafe_allow_html=True)
-                
-                # Paywall integration
-                if PAYWALL_AVAILABLE:
-                    try:
-                        paywall = create_clinical_paywall()
-                        
-                        if paywall.check_payment_status():
-                            st.success("✅ Payment verified - Full blueprint access granted")
-                            st.session_state.blueprint_access_granted = True
-                        else:
-                            with st.container():
-                                paywall.render_paywall_interface(assessment_data)
-                                
-                    except Exception as e:
-                        st.error(f"Payment system temporarily unavailable: {str(e)}")
-                        st.info("Contact support for manual access: info@rapidtransformation.com")
-                else:
-                    st.info("💳 Secure payment processing available - Contact for access")
-                
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Paywall integration
+            if PAYWALL_AVAILABLE:
+                try:
+                    paywall = create_clinical_paywall()
+                    
+                    if paywall.check_payment_status():
+                        st.success("✅ Payment verified - Full blueprint access granted")
+                        st.session_state.blueprint_access_granted = True
+                    else:
+                        with st.container():
+                            paywall.render_paywall_interface(assessment_data)
+                            
+                except Exception as e:
+                    st.error(f"Payment system temporarily unavailable: {str(e)}")
+                    st.info("Contact support for manual access: info@rapidtransformation.com")
+            else:
+                st.info("💳 Secure payment processing available - Contact for access")
+            
+            st.markdown("---")
+            
+            # Action buttons
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                button_text = "📖 Access your complete blueprint" if st.session_state.get('blueprint_access_granted', False) else "📖 View full blueprint (payment required)"
+                if st.button(button_text, 
+                            type="primary", 
+                            use_container_width=True,
+                            disabled=not st.session_state.get('blueprint_access_granted', False)):
+                    st.session_state.show_blueprint = True
+                    st.rerun()
+            
+            with col2:
+                pdf_text = "📄 Download PDF report" if st.session_state.get('blueprint_access_granted', False) else "📄 Generate PDF (payment required)"
+                if st.button(pdf_text, 
+                            use_container_width=True,
+                            disabled=not st.session_state.get('blueprint_access_granted', False)):
+                    self._generate_and_offer_pdf(assessment_data)
+            
+            # Show full blueprint if payment verified and requested
+            if (st.session_state.get('show_blueprint', False) and 
+                st.session_state.get('blueprint_access_granted', False)):
                 st.markdown("---")
+                st.markdown("**Your complete transformation blueprint**")
+                self._render_full_blueprint(assessment_data)
                 
-                # Section 3: Action buttons with enhanced messaging
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    button_text = "📖 Access your complete blueprint" if st.session_state.get('blueprint_access_granted', False) else "📖 View full blueprint (payment required)"
-                    if st.button(button_text, 
-                                type="primary", 
-                                use_container_width=True,
-                                disabled=not st.session_state.get('blueprint_access_granted', False)):
-                        st.session_state.show_blueprint = True
-                        st.rerun()
-                
-                with col2:
-                    pdf_text = "📄 Download PDF report" if st.session_state.get('blueprint_access_granted', False) else "📄 Generate PDF (payment required)"
-                    if st.button(pdf_text, 
-                                use_container_width=True,
-                                disabled=not st.session_state.get('blueprint_access_granted', False)):
-                        self._generate_and_offer_pdf(assessment_data)
-                
-                # Access status helper
-                if not st.session_state.get('blueprint_access_granted', False):
-                    st.markdown("""
-                    <div style="text-align: center; padding: 12px; background: #FEF3C7; border-radius: 8px; margin-top: 8px;">
-                        🔒 <strong>Complete payment above to unlock your personalized blueprint</strong><br>
-                        <small>Instant access • Secure payment • Lifetime download rights</small>
-                    </div>
-                    """, unsafe_allow_html=True)
-                
-                # Show full blueprint if payment verified and requested
-                if (st.session_state.get('show_blueprint', False) and 
-                    st.session_state.get('blueprint_access_granted', False)):
-                    st.markdown("---")
-                    st.markdown("### Your complete transformation blueprint")
-                    self._render_full_blueprint(assessment_data)
-        
         except Exception as e:
-            st.error(f"Error loading blueprint access: {str(e)}")
-            st.info("Please refresh the page or contact support if the issue persists.")
-
+            st.error(f"Error with paywall integration: {str(e)}")
     
     def _extract_preview_insights(self, assessment_data):
         """Extract rich insights from assessment data for compelling preview"""
@@ -3599,7 +3552,7 @@ optimal intervention design.
         
         sequence = {}
         
-        # Extract trigger information
+        # Extract trigger information with safe key access
         for response_data in responses.values():
             question_text = response_data.get('question_text', '').lower()
             response = response_data.get('response', '')
@@ -3610,15 +3563,27 @@ optimal intervention design.
                 sequence['physical'] = response
             elif 'thought automatically appears' in question_text and isinstance(response, str):
                 sequence['thought'] = response[:60] + "..." if len(response) > 60 else response
-            elif 'typically feel' in question_text and isinstance(response, str):
-                sequence['emotion'] = response
+            elif 'typically feel' in question_text and isinstance(response, (str, dict)):
+                if isinstance(response, dict):
+                    sequence['emotion'] = "Multiple emotions detected"
+                else:
+                    sequence['emotion'] = response
             elif 'you typically:' in question_text and isinstance(response, str):
                 sequence['behavior'] = response
         
-        # Return only if we have at least trigger and one other element
-        if len(sequence) >= 2:
-            return sequence
-        return None
+        # Provide defaults for missing sequence elements
+        if 'trigger' not in sequence:
+            sequence['trigger'] = "Situation analysis needed"
+        if 'physical' not in sequence:
+            sequence['physical'] = "Body awareness exploration needed"
+        if 'thought' not in sequence:
+            sequence['thought'] = "Automatic thought mapping needed"
+        if 'emotion' not in sequence:
+            sequence['emotion'] = "Emotional response identification needed"
+        if 'behavior' not in sequence:
+            sequence['behavior'] = "Behavioral pattern assessment needed"
+        
+        return sequence
     
     def _calculate_detailed_cost_preview(self, pattern_count, dominant_score):
         """Calculate detailed cost preview with specific numbers"""
@@ -3789,7 +3754,6 @@ optimal intervention design.
             blueprint.render_complete_blueprint(assessment_data)
             
             # Add download and save options at the bottom
-            st.markdown("---")
             col1, col2, col3 = st.columns(3)
             
             with col1:
