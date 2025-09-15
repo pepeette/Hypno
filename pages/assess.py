@@ -3448,7 +3448,6 @@ optimal intervention design.
         """Render paywall integration and action buttons"""
         try:
             # Complete analysis report
-            st.markdown("**Complete analysis report**")
             
             st.markdown(f"""
             <div style="background: #FFFFFF; padding: 24px; border-radius: 12px; 
