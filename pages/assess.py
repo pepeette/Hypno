@@ -3435,8 +3435,8 @@ optimal intervention design.
                     self._render_full_blueprint(assessment_data)
         
         except Exception as e:
-        st.error(f"Error loading blueprint access: {str(e)}")
-        st.info("Please refresh the page or contact support if the issue persists.")
+            st.error(f"Error loading blueprint access: {str(e)}")
+            st.info("Please refresh the page or contact support if the issue persists.")
 
     
     def _extract_preview_insights(self, assessment_data):
