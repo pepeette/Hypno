@@ -3342,9 +3342,12 @@ optimal intervention design.
             
             # STEP 5: Expander with only blueprint content
             with st.expander("**Your complete transformation blueprint**", expanded=False):
+
+                # STEP 7: Paywall and buttons section
+                self._render_paywall_and_buttons(assessment_data)
                 
                 # Only show "What your complete blueprint reveals" section
-                st.markdown("**What your complete blueprint reveals:**")
+                st.markdown("*What your complete blueprint reveals:*")
                 
                 # Behavioral sequence preview
                 if preview_data['trigger_sequence']:
@@ -3407,8 +3410,32 @@ optimal intervention design.
                 
                 st.markdown("---")
                 
-                # STEP 7: Paywall and buttons section
-                self._render_paywall_and_buttons(assessment_data)
+                # Action buttons
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    button_text = "📖 Access your complete blueprint" if st.session_state.get('blueprint_access_granted', False) else "📖 View full blueprint (payment required)"
+                    if st.button(button_text, 
+                                type="primary", 
+                                use_container_width=True,
+                                disabled=not st.session_state.get('blueprint_access_granted', False)):
+                        st.session_state.show_blueprint = True
+                        st.rerun()
+                
+                with col2:
+                    pdf_text = "📄 Download PDF report" if st.session_state.get('blueprint_access_granted', False) else "📄 Generate PDF (payment required)"
+                    if st.button(pdf_text, 
+                                use_container_width=True,
+                                disabled=not st.session_state.get('blueprint_access_granted', False)):
+                        self._generate_and_offer_pdf(assessment_data)
+                
+                # Show full blueprint if payment verified and requested
+                if (st.session_state.get('show_blueprint', False) and 
+                    st.session_state.get('blueprint_access_granted', False)):
+                    st.markdown("---")
+                    st.markdown("**Your complete transformation blueprint**")
+                    self._render_full_blueprint(assessment_data)
+                    
                 
         except Exception as e:
             st.error(f"Error loading blueprint: {str(e)}")
@@ -3424,7 +3451,9 @@ optimal intervention design.
             <div style="background: #FFFFFF; padding: 24px; border-radius: 12px; 
                         border: 2px solid #4CA1A3; margin: 16px 0;">
                 <div style="text-align: center;">
-                    <h4 style="color: #273548; margin-bottom: 8px;">Your personalized transformation blueprint</h4>
+                    <div style="color: #273548; font-size: 1.8rem; font-weight: 600; margin-bottom: 8px;">
+                        <strong>Your personalized transformation blueprint</strong>
+                    </div>
                     <p style="color: #556D7A; font-size: 1rem; margin-bottom: 16px;">
                         Complete 15-20 page analysis • Immediate access • Lifetime download
                     </p>
@@ -3454,34 +3483,6 @@ optimal intervention design.
             else:
                 st.info("💳 Secure payment processing available - Contact for access")
             
-            st.markdown("---")
-            
-            # Action buttons
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                button_text = "📖 Access your complete blueprint" if st.session_state.get('blueprint_access_granted', False) else "📖 View full blueprint (payment required)"
-                if st.button(button_text, 
-                            type="primary", 
-                            use_container_width=True,
-                            disabled=not st.session_state.get('blueprint_access_granted', False)):
-                    st.session_state.show_blueprint = True
-                    st.rerun()
-            
-            with col2:
-                pdf_text = "📄 Download PDF report" if st.session_state.get('blueprint_access_granted', False) else "📄 Generate PDF (payment required)"
-                if st.button(pdf_text, 
-                            use_container_width=True,
-                            disabled=not st.session_state.get('blueprint_access_granted', False)):
-                    self._generate_and_offer_pdf(assessment_data)
-            
-            # Show full blueprint if payment verified and requested
-            if (st.session_state.get('show_blueprint', False) and 
-                st.session_state.get('blueprint_access_granted', False)):
-                st.markdown("---")
-                st.markdown("**Your complete transformation blueprint**")
-                self._render_full_blueprint(assessment_data)
-                
         except Exception as e:
             st.error(f"Error with paywall integration: {str(e)}")
     
