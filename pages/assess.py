@@ -2418,7 +2418,8 @@ optimal intervention design.
                 color = insight_colors.get(severity, '#4CA1A3')
                 
                 st.markdown(f"""
-                <div style="background: {color}20; border-left: 4px solid {color}; 
+                <div style="background: linear-gradient(135deg, {color}20 0%, #FFFFFF 100%); 
+                            border-left: 4px solid {color}; 
                             padding: 16px; border-radius: 8px; margin: 16px 0;">
                     <strong style="color: {color};">📱 Digital conditioning: {score:.0f}% ({severity})</strong><br>
                     <span style="color: #273548;">
