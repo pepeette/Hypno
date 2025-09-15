@@ -290,23 +290,15 @@
 """
 Main application entry point for the Hypnotherapy website
 Enhanced with hidden assessment page accessible only via direct URL
-Updated with storage client and admin interface integration
+Streamlined for Streamlit Community Cloud deployment
 """
 import streamlit as st
 import os
-
 from datetime import datetime
 
 # Disable file watching in production
 if os.getenv('STREAMLIT_ENV') == 'production':
     st.set_option('server.fileWatcherType', 'none')
-
-# Import storage utilities with error handling
-try:
-    from utils.storage_factory import create_storage_client
-except ImportError:
-    def create_storage_client():
-        return None
 
 # Import page modules with error handling
 try:
@@ -345,13 +337,6 @@ try:
     AssessPage = create_assess_page
 except ImportError:
     AssessPage = None
-
-# Import admin interface (hidden)
-try:
-    from utils.admin_interface import render_admin_interface
-    AdminInterface = render_admin_interface
-except ImportError:
-    AdminInterface = None
 
 # Import shared components with error handling
 try:
@@ -398,7 +383,6 @@ class HypnotherapyApp:
         self.setup_page_config()
         self.setup_styling()
         self.setup_session_state()
-        self.setup_storage()
         
         # Initialize components
         self.navigation = Navigation() if Navigation else None
@@ -409,7 +393,7 @@ class HypnotherapyApp:
         self.hidden_page = self._check_hidden_page_access()
         
     def setup_page_config(self):
-        """Configure Streamlit page settings using config"""
+        """Configure Streamlit page settings"""
         if PageConfig:
             PageConfig.setup()
         else:
@@ -433,20 +417,11 @@ class HypnotherapyApp:
         if 'assessment_session_id' not in st.session_state:
             import uuid
             st.session_state.assessment_session_id = str(uuid.uuid4())
-    
-    def setup_storage(self):
-        """Initialize storage client for assessment data"""
-        try:
-            if 'storage_client' not in st.session_state:
-                st.session_state.storage_client = create_storage_client()
-        except Exception as e:
-            if st.secrets.get("debug_mode", False):
-                st.sidebar.error(f"Storage setup error: {str(e)}")
 
     def _check_hidden_page_access(self):
         """Check URL parameters for hidden page access"""
         try:
-            # Get URL parameters - Using st.query_params
+            # Get URL parameters
             query_params = st.query_params
             
             # Check for assessment page access
@@ -463,51 +438,38 @@ class HypnotherapyApp:
     
     def _render_admin_sidebar(self):
         """Render admin controls in sidebar for assessment pages"""
-        if self.hidden_page == 'assess' or self.hidden_page == 'admin':
+        if self.hidden_page in ['assess', 'admin']:
             with st.sidebar:
                 st.markdown("---")
                 st.markdown("### 🔧 Admin Tools")
                 
-                # Admin access toggle
-                if st.button("⚙️ Admin Access", help="Access admin interface"):
-                    st.session_state.show_admin = not st.session_state.get('show_admin', False)
-                
                 # Storage info
-                storage_type = st.secrets.get("storage", {}).get("storage_type", "session")
-                st.caption(f"Storage: {storage_type.title()}")
+                storage_count = len(st.session_state.get('assessment_storage', {}))
+                email_count = len(st.session_state.get('email_queue', []))
                 
-                # Show session storage stats
-                if hasattr(st.session_state, 'cloud_storage'):
-                    storage_count = len(st.session_state.cloud_storage)
-                    if storage_count > 0:
-                        st.caption(f"Stored items: {storage_count}")
+                st.caption(f"Assessments: {storage_count}")
+                st.caption(f"Email queue: {email_count}")
                 
-                # Show admin interface if toggled
-                if st.session_state.get('show_admin', False) and AdminInterface:
-                    st.markdown("---")
-                    AdminInterface()
+                # Admin access link
+                if st.button("⚙️ Admin Dashboard"):
+                    st.query_params.page = "admin"
+                    st.rerun()
     
     def render_navigation(self):
         """Render the main navigation menu (only for public pages)"""
         if self.hidden_page:
-            # Don't show navigation for hidden pages, just return the hidden page name
+            # Don't show navigation for hidden pages
             return self.hidden_page
             
         if self.navigation:
             return self.navigation.create_menu()
         else:
-            # Import navigation options from config
-            try:
-                from utils.config import AppConstants
-                options = AppConstants.NAVIGATION_OPTIONS
-                icons = AppConstants.NAVIGATION_ICONS
-            except ImportError:
-                options = ["Home", "Method", "Blog", "Testimonials", "Book Now"]
-                icons = ["house", "gear", "book", "star", "calendar"]
-            
             # Simple fallback navigation
             try:
                 from streamlit_option_menu import option_menu
+                
+                options = ["Home", "Method", "Blog", "Testimonials", "Book Now"]
+                icons = ["house", "gear", "book", "star", "calendar"]
                 
                 return option_menu(
                     menu_title=None,
@@ -524,7 +486,7 @@ class HypnotherapyApp:
                 )
             except ImportError:
                 # Fallback to selectbox if option_menu not available
-                return st.selectbox("Navigate to:", options, key="main_navigation_fallback")
+                return st.selectbox("Navigate to:", ["Home", "Method", "Blog", "Testimonials", "Book Now"])
     
     def render_page_content(self, selected_page):
         """Render content based on selected navigation page"""
@@ -534,7 +496,7 @@ class HypnotherapyApp:
                 self._render_hidden_assessment_page()
                 return
                 
-            elif selected_page == "admin" and AdminInterface:
+            elif selected_page == "admin":
                 self._render_admin_page()
                 return
                 
@@ -572,7 +534,7 @@ class HypnotherapyApp:
     def _render_hidden_assessment_page(self):
         """Render the hidden assessment page"""
         if AssessPage:
-            # Add a discrete header indicating this is a hidden page
+            # Add discrete header
             st.markdown("""
             <div style="background: #f0f8ff; padding: 0.5rem 1rem; border-radius: 4px; 
                         margin-bottom: 1rem; border-left: 4px solid #4CA1A3;">
@@ -582,11 +544,6 @@ class HypnotherapyApp:
             </div>
             """, unsafe_allow_html=True)
             
-            # Show storage status
-            storage_type = st.secrets.get("storage", {}).get("storage_type", "session")
-            if storage_type == "session":
-                st.info("💾 Assessment data will be stored in your browser session and available for download.")
-            
             page_instance = AssessPage()
             page_instance.render()
         else:
@@ -594,17 +551,19 @@ class HypnotherapyApp:
     
     def _render_admin_page(self):
         """Render the admin interface page"""
-        if AdminInterface:
-            st.markdown("""
-            <div style="background: #fff3cd; padding: 0.5rem 1rem; border-radius: 4px; 
-                        margin-bottom: 1rem; border-left: 4px solid #ffc107;">
-                <small style="color: #856404;">
-                    ⚠️ Administrative interface - authorized personnel only
-                </small>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            AdminInterface()
+        st.markdown("""
+        <div style="background: #fff3cd; padding: 0.5rem 1rem; border-radius: 4px; 
+                    margin-bottom: 1rem; border-left: 4px solid #ffc107;">
+            <small style="color: #856404;">
+                ⚠️ Administrative interface - authorized personnel only
+            </small>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Import and render admin interface from the assessment page
+        if AssessPage:
+            from pages.assess import render_admin_interface
+            render_admin_interface()
         else:
             st.error("Admin interface not available.")
     
@@ -618,10 +577,10 @@ class HypnotherapyApp:
             self.booking_form.render()
     
     def render_footer(self):
-        """Render the footer section on public pages only"""
+        """Render the footer section"""
         # Don't show footer on hidden pages
         if self.hidden_page:
-            # Instead show minimal footer for hidden pages
+            # Minimal footer for hidden pages
             st.markdown("---")
             st.markdown("""
             <div style="text-align: center; color: #556D7A; font-size: 0.8rem; padding: 1rem;">
@@ -648,7 +607,7 @@ class HypnotherapyApp:
             # Render booking form (except on hidden pages and Book Now page)
             self.render_booking_form(selected_page)
             
-            # Always render footer (with special handling for hidden pages)
+            # Always render footer
             self.render_footer()
             
         except Exception as e:
@@ -657,13 +616,8 @@ class HypnotherapyApp:
                 st.exception(e)
 
 def main():
-    """Application entry point with storage initialization"""
+    """Application entry point"""
     try:
-        # Initialize storage client at app level
-        if 'storage_client' not in st.session_state:
-            st.session_state.storage_client = create_storage_client()
-        
-        # Run the main application
         app = HypnotherapyApp()
         app.run()
         
