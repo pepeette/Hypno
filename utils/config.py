@@ -156,3 +156,33 @@ class TestimonialConfig:
             "duration": "2 sessions"
         }
     ]
+
+
+# Add to utils/config.py
+class PatternDefinitions:
+    """Centralized pattern definitions"""
+    PATTERNS = {
+        1: "Unhappiness Culture", 
+        2: "Power Struggles", 
+        3: "Systematic Mistrust",
+        4: "Separation and Division", 
+        5: "Doing versus Being", 
+        6: "Compartmentalized Authenticity",
+        7: "Self Sacrifice and Care Avoidance", 
+        8: "Inherited Missions", 
+        9: "Context Dependent Weakness"
+    }
+    
+    DIGITAL_THRESHOLDS = {
+        'SEVERE': 70,
+        'MODERATE': 50, 
+        'MILD': 30,
+        'MINIMAL': 0
+    }
+
+class EmailConfig:
+    """Email system configuration"""
+    SMTP_SERVER = "smtp.gmail.com"
+    SMTP_PORT = 587
+    SENDER_EMAIL = "laetitiasheppard@gmail.com"
+    RECIPIENT_EMAIL = "laetitiasheppard@gmail.com"
