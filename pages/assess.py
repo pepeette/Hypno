@@ -7,12 +7,44 @@ import streamlit as st
 from datetime import datetime
 import re
 
-from components.blueprint import create_behavioral_blueprint
-from utils.cloud_storage_streamlit import StreamlitCloudStorage
-from utils.storage_factory import create_storage_client
-from utils.pdf_generator import PDFGenerator
-from utils.config import PatternDefinitions, EmailConfig
-from utils.email_handler import UnifiedEmailHandler
+# Import components with error handling
+try:
+    from components.blueprint import create_behavioral_blueprint
+    BLUEPRINT_AVAILABLE = True
+except ImportError:
+    BLUEPRINT_AVAILABLE = False
+    st.warning("Blueprint component not available")
+
+try:
+    from utils.cloud_storage_streamlit import StreamlitCloudStorage
+    CLOUD_STORAGE_AVAILABLE = True
+except ImportError:
+    CLOUD_STORAGE_AVAILABLE = False
+
+try:
+    from utils.storage_factory import create_storage_client
+    STORAGE_FACTORY_AVAILABLE = True
+except ImportError:
+    STORAGE_FACTORY_AVAILABLE = False
+
+try:
+    from utils.pdf_generator import PDFGenerator
+    PDF_AVAILABLE = True
+except ImportError:
+    PDF_AVAILABLE = False
+
+try:
+    from utils.config import PatternDefinitions, EmailConfig
+    CONFIG_AVAILABLE = True
+except ImportError:
+    CONFIG_AVAILABLE = False
+
+try:
+    from utils.email_handler import UnifiedEmailHandler
+    EMAIL_AVAILABLE = True
+except ImportError:
+    EMAIL_AVAILABLE = False
+
 import uuid
 import base64
 import json
@@ -444,8 +476,17 @@ class ComprehensiveBehavioralAssessment:
         #     4: "Separation and Division", 5: "Doing versus Being", 6: "Compartmentalized Authenticity", 
         #     7: "Self Sacrifice and Care Avoidance", 8: "Inherited Missions", 9: "Context Dependent Weakness"
         # }
-        self.patterns = PatternDefinitions.PATTERNS
-        self.email_config = EmailConfig()
+        # Fallback pattern definitions if config not available
+        if CONFIG_AVAILABLE:
+            self.patterns = PatternDefinitions.PATTERNS
+            self.email_config = EmailConfig()
+        else:
+            self.patterns = {
+                1: "Unhappiness Culture", 2: "Power Struggles", 3: "Systematic Mistrust", 
+                4: "Separation and Division", 5: "Doing versus Being", 6: "Compartmentalized Authenticity", 
+                7: "Self Sacrifice and Care Avoidance", 8: "Inherited Missions", 9: "Context Dependent Weakness"
+            }
+            self.email_config = None
         
         # Question pools organized by integrated phase system
         self.age_screening_questions = self._get_age_screening_questions()
@@ -1698,16 +1739,7 @@ class ComprehensiveBehavioralAssessment:
 
     def _render_header(self):
         if not st.session_state.assessment_completed:
-            time_remaining = self._estimate_time_remaining()
-            
-            # # Show digital native indicator if applicable
-            # if st.session_state.is_digital_native and st.session_state.current_phase != 'age_screening':
-            #     st.markdown("""
-            #     <div class="digital-indicator">
-            #     🖥️ Digital-native assessment active - specialized approach enabled
-            #     </div>
-            #     """, unsafe_allow_html=True)
-            
+            time_remaining = self._estimate_time_remaining()           
             st.info(f"Understanding **your unique behavioral patterns** is the key to **targeted, effective hypnotherapy** that brings rapid, lasting change. This assessment takes about {time_remaining:.0f} minutes to complete.")
             st.markdown("<h2 style='text-align: center;'>Behavioral pattern assessment</h1>", unsafe_allow_html=True)
 
@@ -1885,34 +1917,34 @@ class ComprehensiveBehavioralAssessment:
                 "I consent to receiving follow-up communications about my assessment results and relevant therapeutic services."
             )
             
-            submit_button_html = """
-            <style>
-            .custom-submit-button {
-                background-color: #4CA1A3 !important;
-                color: #FFFFFF !important;
-                border: 2px solid #4CA1A3 !important;
-                border-radius: 8px !important;
-                padding: 12px 24px !important;
-                font-size: 1rem !important;
-                font-weight: 600 !important;
-                width: 100% !important;
-                margin: 8px 0 !important;
-                cursor: pointer !important;
-                transition: all 0.3s ease !important;
-                text-align: center !important;
-                min-height: 2.5rem !important;
-            }
+            # submit_button_html = """
+            # <style>
+            # .custom-submit-button {
+            #     background-color: #4CA1A3 !important;
+            #     color: #FFFFFF !important;
+            #     border: 2px solid #4CA1A3 !important;
+            #     border-radius: 8px !important;
+            #     padding: 12px 24px !important;
+            #     font-size: 1rem !important;
+            #     font-weight: 600 !important;
+            #     width: 100% !important;
+            #     margin: 8px 0 !important;
+            #     cursor: pointer !important;
+            #     transition: all 0.3s ease !important;
+            #     text-align: center !important;
+            #     min-height: 2.5rem !important;
+            # }
             
-            .custom-submit-button:hover {
-                background-color: #E1F0F0 !important;
-                color: #273548 !important;
-                border-color: #E1F0F0 !important;
-                transform: translateY(-1px) !important;
-                box-shadow: 0 4px 12px rgba(243,246,248,0.6) !important;
-            }
-            </style>
-            """
-            st.markdown(submit_button_html, unsafe_allow_html=True)
+            # .custom-submit-button:hover {
+            #     background-color: #E1F0F0 !important;
+            #     color: #273548 !important;
+            #     border-color: #E1F0F0 !important;
+            #     transform: translateY(-1px) !important;
+            #     box-shadow: 0 4px 12px rgba(243,246,248,0.6) !important;
+            # }
+            # </style>
+            # """
+            # st.markdown(submit_button_html, unsafe_allow_html=True)
             
             # Use the regular streamlit submit button but with custom styling
             submitted = st.form_submit_button("Get my personalized analysis", type="primary", use_container_width=True)
@@ -1988,15 +2020,15 @@ class ComprehensiveBehavioralAssessment:
                     st.session_state.contact_provided = True
                     st.rerun()
 
-    # ADD THIS NEW METHOD at the end of the class for email sent to client:
-    def _send_assessment_email(self, assessment_data):
-        """Send assessment email using unified email handler"""
-        try:
-            email_handler = UnifiedEmailHandler()
-            return email_handler.send_assessment_results(assessment_data, "standard")
-        except Exception as e:
-            print(f"Error sending assessment email: {str(e)}")
-            return False
+    # # ADD THIS NEW METHOD at the end of the class for email sent to client:
+    # def _send_assessment_email(self, assessment_data):
+    #     """Send assessment email using unified email handler"""
+    #     try:
+    #         email_handler = UnifiedEmailHandler()
+    #         return email_handler.send_assessment_results(assessment_data, "standard")
+    #     except Exception as e:
+    #         print(f"Error sending assessment email: {str(e)}")
+    #         return False
     
 
     def _format_comprehensive_clinical_template(self):
