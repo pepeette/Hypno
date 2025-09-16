@@ -12,6 +12,7 @@ from utils.cloud_storage_streamlit import StreamlitCloudStorage
 from utils.storage_factory import create_storage_client
 from utils.pdf_generator import PDFGenerator
 from utils.config import PatternDefinitions, EmailConfig
+from utils.email_handler import UnifiedEmailHandler
 import uuid
 import base64
 import json
@@ -2711,7 +2712,76 @@ optimal intervention design.
     #         st.markdown(f"Your comprehensive analysis also reveals these supporting patterns: {', '.join(additional_patterns)}")
     #         st.caption("These will be addressed as part of your integrated transformation approach.")
     #     """
+
     
+    def _extract_response_by_keywords(self, responses, keywords):
+        """Extract specific responses based on question keywords"""
+        for response_data in responses.values():
+            question_text = response_data.get('question_text', '').lower()
+            if any(keyword.lower() in question_text for keyword in keywords):
+                return response_data.get('response', 'Not specified')
+        return 'Assessment incomplete'
+    
+    def _find_question_id_for_content(self, responses, content):
+        """Find question ID that matches content"""
+        for q_id, response_data in responses.items():
+            if response_data.get('response') == content:
+                return q_id
+        return None
+    
+    def _question_relates_to_pattern(self, q_id, pattern_id, responses):
+        """Check if a question relates to a specific pattern"""
+        question_text = responses.get(q_id, {}).get('question_text', '').lower()
+        
+        pattern_keywords = {
+            1: ['happy', 'joy', 'success', 'good things'],
+            2: ['conflict', 'argument', 'disagree', 'defensive'],
+            3: ['trust', 'suspicious', 'motives', 'skeptical'],
+            4: ['choice', 'decision', 'either', 'both'],
+            5: ['productive', 'busy', 'achievement', 'worth'],
+            6: ['different', 'personality', 'authentic', 'real'],
+            7: ['others', 'help', 'needs', 'care'],
+            8: ['family', 'expectations', 'should', 'duty'],
+            9: ['boundaries', 'limits', 'context', 'situation']
+        }
+        
+        keywords = pattern_keywords.get(pattern_id, [])
+        return any(keyword in question_text for keyword in keywords)
+    
+    def _determine_discovery_phase(self, adaptive_path, phase_progress):
+        """Determine which phase a pattern was discovered in"""
+        if 'pattern_1' in adaptive_path or 'pattern_2' in adaptive_path:
+            return 'Early engagement'
+        elif 'pattern_3' in adaptive_path or 'pattern_4' in adaptive_path:
+            return 'Trigger mapping'
+        else:
+            return 'Pattern-specific questioning'
+    
+    def _generate_success_indicators(self, component, score):
+        """Generate specific success indicators for digital components"""
+        indicators_map = {
+            'reality_dissociation': [
+                'Feeling equally authentic online and offline',
+                'Preferring face-to-face conversations over digital',
+                'Natural eye contact during conversations'
+            ],
+            'ironic_detachment': [
+                'Expressing genuine emotions without self-mockery',
+                'Sincere enthusiasm without embarrassment',
+                'Connecting emotionally with others naturally'
+            ],
+            'attention_fragmentation': [
+                'Reading for 30+ minutes without distraction',
+                'Having complete conversations without phone checking',
+                'Deep focus on single tasks for extended periods'
+            ]
+        }
+        
+        return indicators_map.get(component, ['Improved well-being in this area'])
+
+
+
+
     def _render_pattern_cost_analysis(self):
         """Render pattern cost analysis using Streamlit components"""
         future_vision = self._extract_future_vision()
@@ -3254,6 +3324,28 @@ optimal intervention design.
     #     # Info section outside the expander
     #     st.info("💡 **Premium analysis available**: Comprehensive clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning available with premium access.")
 
+
+    def _compile_assessment_data_for_blueprint(self):
+        """Compile assessment data in the format expected by blueprint"""
+        return {
+            'session_id': st.session_state.get('assessment_session_id', str(uuid.uuid4())),
+            'assessment_responses': st.session_state.get('assessment_responses', {}),
+            'pattern_scores': st.session_state.get('pattern_scores', {}),
+            'intensity_responses': st.session_state.get('intensity_responses', {}),
+            'trigger_chain': st.session_state.get('trigger_chain', {}),
+            'digital_responses': st.session_state.get('digital_responses', {}),
+            'is_digital_native': st.session_state.get('is_digital_native', False),
+            'digital_despair_analysis': st.session_state.get('assessment_results', {}).get('digital_despair_analysis'),
+            'contact_info': st.session_state.get('contact_info', {}),
+            'completion_rate': st.session_state.get('assessment_results', {}).get('completion_rate', 1.0),
+            'triggered_patterns': list(st.session_state.get('triggered_patterns', set())),
+            'adaptive_paths': st.session_state.get('adaptive_paths', []),
+            'risk_flags': st.session_state.get('risk_flags', []),
+            'start_time': st.session_state.get('start_time'),
+            'completion_timestamp': datetime.now().isoformat(),
+            'phase_completion': st.session_state.get('phase_progress', {}),
+            'assessment_version': '2.0'
+        }
     
     def _compile_complete_assessment_data(self):
         """Compile complete assessment data for blueprint"""
@@ -3894,9 +3986,12 @@ optimal intervention design.
             'adaptation_needed': adaptation_needed
         }
     
-    def _render_full_blueprint(self, assessment_data):
+    def _render_full_blueprint(self, assessment_data=None):
         """Render the full behavioral blueprint"""
         try:
+            if assessment_data is None:
+                assessment_data = self._compile_assessment_data_for_blueprint()
+                
             blueprint = create_behavioral_blueprint()
             blueprint.render_complete_blueprint(assessment_data)
             
@@ -3952,6 +4047,26 @@ optimal intervention design.
         except Exception as e:
             st.error(f"Error generating PDF: {str(e)}")
             st.info("Please try again or contact support if the issue persists.")
+
+    def _send_assessment_email(self, assessment_data):
+        """Send assessment email using unified email handler"""
+        try:
+            # Try to import and use the handler
+            try:
+                from utils.email_handler import UnifiedEmailHandler
+                email_handler = UnifiedEmailHandler()
+                return email_handler.send_assessment_results(assessment_data, "standard")
+            except ImportError:
+                # Fallback to existing email queue system
+                self.email_queue.add_request({
+                    'recipient': assessment_data.get('contact_info', {}).get('email'),
+                    'assessment_data': assessment_data,
+                    'type': 'assessment_results'
+                })
+                return True
+        except Exception as e:
+            print(f"Error sending assessment email: {str(e)}")
+            return False
     
     def _save_to_cloud(self, assessment_data):
         """Save assessment data to cloud storage"""
