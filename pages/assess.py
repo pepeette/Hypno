@@ -477,7 +477,8 @@ class ComprehensiveBehavioralAssessment:
             'intensity_responses': {},
             'trigger_chain': {},
             'digital_responses': {},
-            'adaptive_paths': []
+            'adaptive_paths': [],
+            'assessment_session_id': str(uuid.uuid4())
         }
         for key, value in defaults.items():
             if key not in st.session_state:
@@ -3233,6 +3234,8 @@ optimal intervention design.
     
     def _compile_complete_assessment_data(self):
         """Compile complete assessment data for blueprint"""
+        if 'assessment_session_id' not in st.session_state:
+            st.session_state.assessment_session_id = str(uuid.uuid4())
         return {
             'session_id': st.session_state.assessment_session_id,
             'assessment_results': st.session_state.assessment_results,
