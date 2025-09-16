@@ -1721,7 +1721,7 @@ class ComprehensiveBehavioralAssessment:
             'digital_despair_analysis': digital_analysis,
             'completion_rate': len(st.session_state.assessment_responses) / self._estimate_total_questions() if self._estimate_total_questions() > 0 else 1.0
         }
-        #st.rerun()
+        st.rerun()
 
     # ---- Rendering Functions ----
     def render(self):
