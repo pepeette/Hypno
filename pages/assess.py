@@ -518,8 +518,7 @@ class ComprehensiveBehavioralAssessment:
             'intensity_responses': {},
             'trigger_chain': {},
             'digital_responses': {},
-            'adaptive_paths': [],
-            'assessment_session_id': str(uuid.uuid4())
+            'adaptive_paths': []
         }
         for key, value in defaults.items():
             if key not in st.session_state:
@@ -1722,7 +1721,7 @@ class ComprehensiveBehavioralAssessment:
             'digital_despair_analysis': digital_analysis,
             'completion_rate': len(st.session_state.assessment_responses) / self._estimate_total_questions() if self._estimate_total_questions() > 0 else 1.0
         }
-        st.rerun()
+        #st.rerun()
 
     # ---- Rendering Functions ----
     def render(self):
@@ -2264,9 +2263,9 @@ optimal intervention design.
 
         self._render_next_steps_section()
        
-        # Generate unique session ID for this assessment
-        if 'assessment_session_id' not in st.session_state:
-            st.session_state.assessment_session_id = str(uuid.uuid4())
+        # # Generate unique session ID for this assessment
+        # if 'assessment_session_id' not in st.session_state:
+        #     st.session_state.assessment_session_id = str(uuid.uuid4())
         
         # # Create comprehensive assessment data package
         # assessment_data = self._compile_complete_assessment_data()
@@ -2278,17 +2277,17 @@ optimal intervention design.
             """Render hero section at top of results page"""
             try:
                 # Check if we have minimum required data
-                if not hasattr(st.session_state, 'assessment_results') or not st.session_state.assessment_results:
-                    st.warning("⚠️ Assessment data incomplete. Please complete the full assessment for detailed analysis.")
-                    return
+                # if not hasattr(st.session_state, 'assessment_results') or not st.session_state.assessment_results:
+                #     st.warning("⚠️ Assessment data incomplete. Please complete the full assessment for detailed analysis.")
+                #     return
     
                 # Generate assessment data
                 assessment_data = self._compile_complete_assessment_data()
                 
                 # Check if assessment_data has required fields
-                if not assessment_data or not assessment_data.get('pattern_scores'):
-                    st.info("📊 Complete the assessment to unlock your personalized behavioral analysis.")
-                    return
+                # if not assessment_data or not assessment_data.get('pattern_scores'):
+                #     st.info("📊 Complete the assessment to unlock your personalized behavioral analysis.")
+                #     return
                     
                 preview_data = self._extract_preview_insights(assessment_data)
                 
@@ -3242,10 +3241,9 @@ optimal intervention design.
 
     def _compile_assessment_data_for_blueprint(self):
         """Compile assessment data in the format expected by blueprint"""
-        if 'assessment_session_id' not in st.session_state:
-            st.session_state.assessment_session_id = str(uuid.uuid4())
+        # if 'assessment_session_id' not in st.session_state:
+        #     st.session_state.assessment_session_id = str(uuid.uuid4())
         return {
-            'session_id': st.session_state.assessment_session_id,
             'assessment_responses': st.session_state.get('assessment_responses', {}),
             'pattern_scores': st.session_state.get('pattern_scores', {}),
             'intensity_responses': st.session_state.get('intensity_responses', {}),
@@ -3266,10 +3264,9 @@ optimal intervention design.
     
     def _compile_complete_assessment_data(self):
         """Compile complete assessment data for blueprint"""
-        if 'assessment_session_id' not in st.session_state:
-            st.session_state.assessment_session_id = str(uuid.uuid4())
+        # if 'assessment_session_id' not in st.session_state:
+        #     st.session_state.assessment_session_id = str(uuid.uuid4())
         return {
-            'session_id': st.session_state.assessment_session_id,
             'assessment_results': st.session_state.assessment_results,
             'assessment_responses': st.session_state.assessment_responses,
             'pattern_scores': st.session_state.pattern_scores,
