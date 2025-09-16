@@ -9,7 +9,9 @@ import re
 
 from components.blueprint import create_behavioral_blueprint
 from utils.cloud_storage_streamlit import StreamlitCloudStorage
+from utils.storage_factory import create_storage_client
 from utils.pdf_generator import PDFGenerator
+from utils.config import PatternDefinitions, EmailConfig
 import uuid
 import base64
 import json
@@ -250,6 +252,7 @@ class SimpleStorage:
     def __init__(self):
         if 'assessment_storage' not in st.session_state:
             st.session_state.assessment_storage = {}
+            self.storage = create_storage_client()
     
     def save_assessment(self, session_id, data):
         """Save assessment data"""
@@ -435,11 +438,13 @@ class ComprehensiveBehavioralAssessment:
         self.storage = SimpleStorage()
         self.email_queue = EmailQueue()
         self.discovery_url = "https://calendly.com/laetitiasheppard/discovery"
-        self.patterns = {
-            1: "Unhappiness Culture", 2: "Power Struggles", 3: "Systematic Mistrust", 
-            4: "Separation and Division", 5: "Doing versus Being", 6: "Compartmentalized Authenticity", 
-            7: "Self Sacrifice and Care Avoidance", 8: "Inherited Missions", 9: "Context Dependent Weakness"
-        }
+        # self.patterns = {
+        #     1: "Unhappiness Culture", 2: "Power Struggles", 3: "Systematic Mistrust", 
+        #     4: "Separation and Division", 5: "Doing versus Being", 6: "Compartmentalized Authenticity", 
+        #     7: "Self Sacrifice and Care Avoidance", 8: "Inherited Missions", 9: "Context Dependent Weakness"
+        # }
+        self.patterns = PatternDefinitions.PATTERNS
+        self.email_config = EmailConfig()
         
         # Question pools organized by integrated phase system
         self.age_screening_questions = self._get_age_screening_questions()
@@ -1964,9 +1969,7 @@ class ComprehensiveBehavioralAssessment:
                     
                     # Send comprehensive clinical assessment email
                     try:
-                        from utils.email_assess import send_clinical_assessment_results
-                        
-                        email_success = send_clinical_assessment_results(assessment_data)
+                        email_success = self._send_assessment_email(assessment_data)
                         
                         if email_success:
                             st.success("✅ Assessment completed and clinical team notified!")
@@ -1982,6 +1985,17 @@ class ComprehensiveBehavioralAssessment:
                     
                     st.session_state.contact_provided = True
                     st.rerun()
+
+    # ADD THIS NEW METHOD at the end of the class for email sent to client:
+    def _send_assessment_email(self, assessment_data):
+        """Send assessment email using unified email handler"""
+        try:
+            email_handler = UnifiedEmailHandler()
+            return email_handler.send_assessment_results(assessment_data, "standard")
+        except Exception as e:
+            print(f"Error sending assessment email: {str(e)}")
+            return False
+    
 
     def _format_comprehensive_clinical_template(self):
         """Format comprehensive clinical template integrating traditional patterns + digital analysis"""
