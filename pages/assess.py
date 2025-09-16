@@ -4066,6 +4066,8 @@ class AssessPage:
 # ---- Page Factory Function ----
 def create_assess_page():
     """Factory function to create the assessment page"""
+    st.write("Secrets loaded:", st.secrets.keys())
+    st.write("GMAIL_APP_PASSWORD present?", "GMAIL_APP_PASSWORD" in st.secrets)
     return AssessPage()
 
 
