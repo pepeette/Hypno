@@ -1916,34 +1916,34 @@ class ComprehensiveBehavioralAssessment:
                 "I consent to receiving follow-up communications about my assessment results and relevant therapeutic services."
             )
             
-            # submit_button_html = """
-            # <style>
-            # .custom-submit-button {
-            #     background-color: #4CA1A3 !important;
-            #     color: #FFFFFF !important;
-            #     border: 2px solid #4CA1A3 !important;
-            #     border-radius: 8px !important;
-            #     padding: 12px 24px !important;
-            #     font-size: 1rem !important;
-            #     font-weight: 600 !important;
-            #     width: 100% !important;
-            #     margin: 8px 0 !important;
-            #     cursor: pointer !important;
-            #     transition: all 0.3s ease !important;
-            #     text-align: center !important;
-            #     min-height: 2.5rem !important;
-            # }
+            submit_button_html = """
+            <style>
+            .custom-submit-button {
+                background-color: #4CA1A3 !important;
+                color: #FFFFFF !important;
+                border: 2px solid #4CA1A3 !important;
+                border-radius: 8px !important;
+                padding: 12px 24px !important;
+                font-size: 1rem !important;
+                font-weight: 600 !important;
+                width: 100% !important;
+                margin: 8px 0 !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                text-align: center !important;
+                min-height: 2.5rem !important;
+            }
             
-            # .custom-submit-button:hover {
-            #     background-color: #E1F0F0 !important;
-            #     color: #273548 !important;
-            #     border-color: #E1F0F0 !important;
-            #     transform: translateY(-1px) !important;
-            #     box-shadow: 0 4px 12px rgba(243,246,248,0.6) !important;
-            # }
-            # </style>
-            # """
-            # st.markdown(submit_button_html, unsafe_allow_html=True)
+            .custom-submit-button:hover {
+                background-color: #E1F0F0 !important;
+                color: #273548 !important;
+                border-color: #E1F0F0 !important;
+                transform: translateY(-1px) !important;
+                box-shadow: 0 4px 12px rgba(243,246,248,0.6) !important;
+            }
+            </style>
+            """
+            st.markdown(submit_button_html, unsafe_allow_html=True)
             
             # Use the regular streamlit submit button but with custom styling
             submitted = st.form_submit_button("Get my personalized analysis", type="primary", use_container_width=True)
