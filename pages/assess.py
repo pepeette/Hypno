@@ -6,6 +6,7 @@
 import streamlit as st
 from datetime import datetime
 import re
+from utils.email_assess import send_clinical_assessment_results
 
 # Import components with error handling
 try:
@@ -2002,7 +2003,9 @@ class ComprehensiveBehavioralAssessment:
                     
                     # Send comprehensive clinical assessment email
                     try:
-                        email_success = self._send_assessment_email(assessment_data)
+                        from utils.email_assess import send_clinical_assessment_results      
+                        email_success = send_clinical_assessment_results(assessment_data)
+                        # email_success = self._send_assessment_email(assessment_data)
                         
                         if email_success:
                             st.success("✅ Assessment completed and clinical team notified!")
