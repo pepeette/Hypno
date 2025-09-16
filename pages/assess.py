@@ -2213,124 +2213,6 @@ optimal intervention design.
 """
 
 
-
-    def render(self):
-            """Main render method for the assessment"""
-            # TEMPORARY: Quick jump to results for testing - MOVED TO TOP
-            with st.sidebar:
-                st.markdown("### 🔧 Testing Tools")
-                if st.button("🚀 Jump to Results (Testing)", use_container_width=True):
-                    # Set up comprehensive test data
-                    st.session_state.assessment_completed = True
-                    st.session_state.contact_provided = True
-                    st.session_state.is_digital_native = True
-                    st.session_state.pattern_scores = {1: 6.5, 2: 4.2, 3: 5.8}
-                    st.session_state.assessment_results = {
-                        'pattern_scores': {1: 6.5, 2: 4.2, 3: 5.8},
-                        'total_questions_answered': 25,
-                        'completion_rate': 0.95,
-                        'dominant_pattern': 1,
-                        'triggered_patterns': [1, 2, 3],
-                        'risk_flags': [],
-                        'completion_timestamp': datetime.now().isoformat(),
-                        'adaptive_paths_triggered': ['pattern_1', 'pattern_2'],
-                        'intensity_data': {1: 7, 2: 5, 3: 6},
-                        'trigger_chain': {
-                            'awareness_point': 'Physical sensation',
-                            'physical_response': 'Chest tightness',
-                            'automatic_thought': 'Something bad will happen',
-                            'emotional_response': 'Anxious',
-                            'behavioral_response': 'Withdraw or avoid'
-                        },
-                        'phase_completion': {
-                            'age_screening': 1,
-                            'digital_screening': 8,
-                            'engagement': 5,
-                            'trigger_mapping': 8,
-                            'pattern_specific': 6,
-                            'integration': 4
-                        },
-                        'digital_despair_analysis': {
-                            'digital_despair_score': 65.0,
-                            'severity_level': 'MODERATE',
-                            'clinical_recommendation': 'Modified approach with digital awareness',
-                            'component_scores': {
-                                'digital_native_status': 4,
-                                'reality_dissociation': 3,
-                                'binary_success_pressure': 4,
-                                'ironic_detachment': 3,
-                                'algorithmic_dependency': 4,
-                                'nihilistic_worldview': 2,
-                                'hope_avoidance': 3,
-                                'attention_fragmentation': 3
-                            },
-                            'therapeutic_adaptations_needed': [
-                                'Modified session length: 45-60 minutes with breaks',
-                                'Authority resistance awareness: Reduce directive language',
-                                'Cynicism validation: Acknowledge systemic problems while building agency'
-                            ]
-                        }
-                    }
-                    st.session_state.assessment_session_id = str(uuid.uuid4())
-                    st.session_state.contact_info = {
-                        'name': 'Test User',
-                        'email': 'test@example.com',
-                        'phone': '+1 234 567 8900',
-                        'urgency': 'Moderately urgent - noticeable impact',
-                        'primary_concern': 'Testing the assessment system with comprehensive data',
-                        'next_step': 'Schedule free consultation call',
-                        'marketing_consent': True,
-                        'timestamp': datetime.now().isoformat()
-                    }
-                    # Add sample responses
-                    st.session_state.assessment_responses = {
-                        0: {'response': '23-27', 'question_text': 'Age range', 'phase': 'age_screening'},
-                        1: {'response': '6-8 hours', 'question_text': 'Digital device usage', 'phase': 'digital_screening'},
-                        10: {'response': 'I would feel more confident in relationships and stop second-guessing myself constantly. I would pursue opportunities without fear of failure.', 'question_text': 'Future vision', 'phase': 'engagement'},
-                        17: {'response': 'I\'m not good enough and everyone will see through me', 'question_text': 'Automatic thought', 'phase': 'trigger_mapping'}
-                    }
-                    st.session_state.intensity_responses = {1: 7, 2: 5, 3: 6}
-                    st.session_state.triggered_patterns = {1, 2, 3}
-                    st.session_state.adaptive_paths = ['pattern_1', 'pattern_2', 'pattern_3']
-                    st.session_state.digital_responses = {
-                        1: '6-8 hours',
-                        2: 'In online communities and digital spaces',
-                        3: 'Extraordinary wealth, fame, or achievement'
-                    }
-                    st.session_state.digital_despair_score = 65.0
-                    st.session_state.digital_severity = 'MODERATE'
-                    
-                    st.success("✅ Test data loaded!")
-                    st.rerun()
-                
-                if st.button("🔄 Reset Assessment", use_container_width=True):
-                    # Reset all assessment data
-                    keys_to_reset = [
-                        'assessment_responses', 'current_question', 'current_phase', 'phase_progress',
-                        'is_digital_native', 'digital_despair_score', 'digital_severity',
-                        'triggered_patterns', 'pattern_scores', 'risk_flags', 'assessment_completed', 
-                        'contact_provided', 'assessment_results', 'intensity_responses', 
-                        'trigger_chain', 'digital_responses', 'adaptive_paths', 'contact_info',
-                        'assessment_session_id', 'show_blueprint', 'blueprint_access_granted'
-                    ]
-                    for key in keys_to_reset:
-                        if key in st.session_state:
-                            del st.session_state[key]
-                    st.success("✅ Assessment reset!")
-                    st.rerun()
-            
-            # Apply styles and render main content
-            apply_clinical_styles()
-            self._render_header()
-            
-            if not st.session_state.contact_provided:
-                if not st.session_state.assessment_completed:
-                    self._render_current_question()
-                else:
-                    self._render_contact_form()
-            else:
-                self._render_results()
-                
     def _render_results(self):
         """Render user-centric results page with comprehensive insights"""
         self._render_results_hero_at_top()
@@ -3327,8 +3209,10 @@ optimal intervention design.
 
     def _compile_assessment_data_for_blueprint(self):
         """Compile assessment data in the format expected by blueprint"""
+        if 'assessment_session_id' not in st.session_state:
+            st.session_state.assessment_session_id = str(uuid.uuid4())
         return {
-            'session_id': st.session_state.get('assessment_session_id', str(uuid.uuid4())),
+            'session_id': st.session_state.assessment_session_id,
             'assessment_responses': st.session_state.get('assessment_responses', {}),
             'pattern_scores': st.session_state.get('pattern_scores', {}),
             'intensity_responses': st.session_state.get('intensity_responses', {}),
