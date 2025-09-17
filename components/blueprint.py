@@ -2455,3 +2455,42 @@ def render_sample_blueprint():
     
     blueprint = create_behavioral_blueprint()
     blueprint.render_complete_blueprint(sample_data)
+
+
+
+
+
+# # Handles client-facing detailed blueprint + client communications
+# # Behind paywall, can generate client emails and PDFs
+
+# class BehavioralBlueprint:
+    
+#     def render_complete_blueprint(self, processed_results):
+#         """Render detailed client-facing blueprint"""
+        
+#         # Use pre-calculated results for display
+#         self._render_pattern_insights(processed_results['pattern_analysis'])
+#         self._render_cost_analysis(processed_results['impact_metrics']) 
+#         self._render_transformation_roadmap(processed_results['session_plan'])
+#         self._render_next_steps(processed_results['contact_info'])
+        
+#         # Client communication options (behind paywall)
+#         col1, col2 = st.columns(2)
+#         with col1:
+#             if st.button("Email Blueprint"):
+#                 self._send_client_email(processed_results)
+#         with col2:
+#             if st.button("Generate PDF Report"):
+#                 self._generate_pdf_report(processed_results)
+    
+#     def _send_client_email(self, results):
+#         """Send client-friendly version of blueprint"""
+#         from utils.email_handler import ClientEmailHandler
+        
+#         email_handler = ClientEmailHandler()
+#         email_handler.send_blueprint_to_client(results)
+    
+#     def _generate_pdf_report(self, results):
+#         """Generate PDF version of blueprint"""
+#         # PDF generation logic
+#         pass
