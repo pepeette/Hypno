@@ -642,6 +642,14 @@ class MasterAnalytics:
             }
         
         return self._generate_basic_digital_analysis(digital_responses)
+
+    def _generate_basic_digital_analysis(self, digital_responses):
+        """Fallback digital analysis when no detailed analysis exists"""
+        return {
+            'severity_level': 'MINIMAL',
+            'score': sum(len(str(v)) for v in digital_responses.values()),
+            'observations': list(digital_responses.values())
+        }
     
     def _calculate_master_costs(self, assessment_data):
         """Single comprehensive cost calculation - replaces ALL duplicate cost methods"""
@@ -916,7 +924,7 @@ class ComprehensiveBehavioralAssessment:
                     'patterns': PatternDefinitions.PATTERNS,
                     'pattern_descriptions': PatternDefinitions.PATTERN_DESCRIPTIONS,
                     'digital_thresholds': PatternDefinitions.DIGITAL_THRESHOLDS,
-                    'belief_hints': BELIEF_HINTS,
+                    'belief_hints': PatternDefinitions.BELIEF_HINTS,
                     'questions': {
                         'age_screening': QuestionSets.AGE_SCREENING,
                         'digital_screening': QuestionSets.DIGITAL_SCREENING,
