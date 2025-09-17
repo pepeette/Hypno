@@ -6,14 +6,10 @@
 import streamlit as st
 from datetime import datetime
 import re
-from utils.email_assess import send_clinical_assessment_results
-from utils.config import (
-    PatternDefinitions,
-    QuestionSets,
-    DIGITAL_SCORING_RULES,
-    PATTERN_SCORING_RULES,
-    EmailConfig
-)
+import uuid
+import base64
+import json
+import hashlib
 
 # Import components with error handling
 try:
@@ -29,6 +25,12 @@ try:
 except ImportError:
     PDF_AVAILABLE = False
 
+try:
+    from utils.email_assess import send_clinical_assessment_results
+
+    SEND_CLINICAL_AVAILABLE = True
+except Exception:
+    SEND_CLINICAL_AVAILABLE = False
 
 try:
     from utils.email_handler import UnifiedEmailHandler
@@ -36,10 +38,48 @@ try:
 except ImportError:
     EMAIL_AVAILABLE = False
 
-import uuid
-import base64
-import json
-import hashlib
+# Try to import centralized config; if unavailable, create minimal fallbacks
+try:
+    from utils.config import (
+        PatternDefinitions,
+        QuestionSets,
+        DIGITAL_SCORING_RULES,
+        PATTERN_SCORING_RULES,
+        EmailConfig,
+    )
+    CONFIG_AVAILABLE = True
+except Exception:
+    CONFIG_AVAILABLE = False
+
+    # Minimal fallback (keeps app from crashing if config import fails)
+    class PatternDefinitions:
+        PATTERNS = {
+            1: "Unhappiness Culture",
+            2: "Power Struggles",
+            3: "Systematic Mistrust",
+            4: "Separation and Division",
+            5: "Doing versus Being",
+            6: "Compartmentalized Authenticity",
+            7: "Self Sacrifice and Care Avoidance",
+            8: "Inherited Missions",
+            9: "Context Dependent Weakness",
+        }
+        PATTERN_DESCRIPTIONS = {}
+        DIGITAL_THRESHOLDS = {}
+
+    class QuestionSets:
+        AGE_SCREENING = {}
+        DIGITAL_SCREENING = {}
+        ENGAGEMENT = {}
+        TRIGGER_MAPPING = {}
+        PATTERN_SPECIFIC = {}
+        INTEGRATION = {}
+
+    DIGITAL_SCORING_RULES = {}
+    PATTERN_SCORING_RULES = {}
+    EmailConfig = None
+
+
 
 # ---- Paywall Integration ----
 try:
@@ -269,7 +309,10 @@ def apply_clinical_styles():
     """, unsafe_allow_html=True)
 
 
-# ---- Simple Storage Implementation ----
+# -------------------------
+# Simple Storage & Email Queue
+# -------------------------
+
 class SimpleStorage:
     def __init__(self):
         if 'assessment_storage' not in st.session_state:
@@ -448,7 +491,10 @@ class SimpleStorage:
 
 
 
-# ---- Enhanced Assessment Class ----
+# -------------------------
+# Core Assessment Class
+# -------------------------
+
 class ComprehensiveBehavioralAssessment:
     """Clinical-grade behavioral pattern assessment with algorithmical divide Syndrome integration"""
     
@@ -457,30 +503,25 @@ class ComprehensiveBehavioralAssessment:
         self.storage = SimpleStorage()
         self.email_queue = EmailQueue()
         self.discovery_url = "https://calendly.com/laetitiasheppard/discovery"
-        # self.patterns = {
-        #     1: "Unhappiness Culture", 2: "Power Struggles", 3: "Systematic Mistrust", 
-        #     4: "Separation and Division", 5: "Doing versus Being", 6: "Compartmentalized Authenticity", 
-        #     7: "Self Sacrifice and Care Avoidance", 8: "Inherited Missions", 9: "Context Dependent Weakness"
-        # }
-        # Fallback pattern definitions if config not available
-        if CONFIG_AVAILABLE:
-            self.patterns = PatternDefinitions.PATTERNS
-            self.email_config = EmailConfig()
-        else:
-            self.patterns = {
-                1: "Unhappiness Culture", 2: "Power Struggles", 3: "Systematic Mistrust", 
-                4: "Separation and Division", 5: "Doing versus Being", 6: "Compartmentalized Authenticity", 
-                7: "Self Sacrifice and Care Avoidance", 8: "Inherited Missions", 9: "Context Dependent Weakness"
-            }
-            self.email_config = None
         
-        # Question pools organized by integrated phase system
-        self.age_screening_questions = self._get_age_screening_questions()
-        self.digital_screening_questions = self._get_digital_screening_questions()
-        self.engagement_questions = self._get_engagement_questions()
-        self.trigger_mapping_questions = self._get_trigger_mapping_questions()
-        self.pattern_specific_questions = self._get_pattern_specific_questions()
-        self.integration_questions = self._get_integration_questions()
+        # patterns & email config imported from config
+        self.patterns = PatternDefinitions.PATTERNS if CONFIG_AVAILABLE else PatternDefinitions.PATTERNS
+        self.pattern_descriptions = (
+            PatternDefinitions.PATTERN_DESCRIPTIONS if CONFIG_AVAILABLE else PatternDefinitions.PATTERN_DESCRIPTIONS
+        )
+        self.digital_thresholds = (
+            PatternDefinitions.DIGITAL_THRESHOLDS if CONFIG_AVAILABLE else getattr(PatternDefinitions, "DIGITAL_THRESHOLDS", {})
+        )
+        self.email_config = EmailConfig if CONFIG_AVAILABLE else None
+
+        # load question pools from config (or fallback empty dicts)
+        self.age_screening_questions = getattr(QuestionSets, "AGE_SCREENING", {})
+        self.digital_screening_questions = getattr(QuestionSets, "DIGITAL_SCREENING", {})
+        self.engagement_questions = getattr(QuestionSets, "ENGAGEMENT", {})
+        self.trigger_mapping_questions = getattr(QuestionSets, "TRIGGER_MAPPING", {})
+        self.pattern_specific_questions = getattr(QuestionSets, "PATTERN_SPECIFIC", {})
+        self.integration_questions = getattr(QuestionSets, "INTEGRATION", {})
+
 
     def _init_session_state(self):
         defaults = {
@@ -510,594 +551,7 @@ class ComprehensiveBehavioralAssessment:
             if key not in st.session_state:
                 st.session_state[key] = value
 
-     # -- Question sets --
-    
-    def _get_age_screening_questions(self):
-        """Phase 0: Age Screening for Digital Native Assessment"""
-        return {
-            0: {
-                "text": "What is your age range?",
-                "type": "single_choice",
-                "options": [
-                    "Under 18", "18-22", "23-27", "28-32", 
-                    "33-37", "38-42", "43-50", "Over 50"
-                ],
-                "digital_native_scoring": [3, 5, 4, 3, 2, 1, 0, 0],
-                "phase": "age_screening",
-                "determines_flow": True
-            }
-        }
-
-    def _get_digital_screening_questions(self):
-        """Phase 1: Algorithmic Syndrome Screening (for digital natives)"""
-        return {
-            1: {
-                "text": "On average, how many hours per day do you spend on digital devices (excluding required work)?",
-                "type": "single_choice",
-                "options": [
-                    "Less than 2 hours", "2-4 hours", "4-6 hours",
-                    "6-8 hours", "8-10 hours", "Over 10 hours"
-                ],
-                "digital_despair_weights": [0, 1, 2, 3, 4, 5],
-                "phase": "digital_screening"
-            },
-            2: {
-                "text": "Where do you feel most like your authentic self?",
-                "type": "single_choice_with_intensity",
-                "options": [
-                    "In offline, face-to-face interactions",
-                    "In online communities and digital spaces", 
-                    "Both online and offline equally",
-                    "Neither - I don't feel authentic anywhere",
-                    "It varies completely depending on the situation"
-                ],
-                "digital_despair_indicators": {
-                    1: 3,  # Strong offline dissociation indicator
-                    3: 2,  # Identity fragmentation 
-                    4: 4   # Complete authenticity loss
-                },
-                "phase": "digital_screening"
-            },
-            3: {
-                "text": "When you imagine a successful life, you typically think:",
-                "type": "single_choice",
-                "options": [
-                    "Meaningful relationships and personal fulfillment",
-                    "Extraordinary wealth, fame, or achievement",
-                    "Being significantly better than most people at something",
-                    "Just being happy and content with normal life",
-                    "Success feels impossible or meaningless to me"
-                ],
-                "digital_despair_patterns": {
-                    1: 4,  # Extraordinary achievement pressure
-                    2: 3,  # Comparative inadequacy 
-                    4: 4   # Nihilistic worldview
-                },
-                "phase": "digital_screening"
-            },
-            4: {
-                "text": "When expressing genuine emotions or enthusiasm:",
-                "type": "single_choice_with_intensity",
-                "options": [
-                    "I express them naturally and directly",
-                    "I tend to use humor or irony to deflect",
-                    "I feel embarrassed or 'cringe' about sincerity",
-                    "I mainly express emotions through memes or online references",
-                    "I rarely express genuine emotions at all"
-                ],
-                "ironic_detachment_scoring": [0, 2, 3, 3, 4],
-                "phase": "digital_screening"
-            },
-            5: {
-                "text": "What primarily influences your daily emotional state?",
-                "type": "single_choice",
-                "options": [
-                    "Interactions with family and friends in person",
-                    "Social media feeds and online content",
-                    "Work or school experiences", 
-                    "Internal thoughts and self-reflection",
-                    "Online communities and digital relationships"
-                ],
-                "algorithmic_dependency": {
-                    1: 3,  # Social media primary
-                    4: 3   # Digital relationships primary
-                },
-                "phase": "digital_screening"
-            },
-            6: {
-                "text": "You feel more emotionally connected to:",
-                "type": "single_choice",
-                "options": [
-                    "People in your physical daily life",
-                    "Online personalities (streamers, influencers, content creators)",
-                    "Online friends and communities",
-                    "Fictional characters or media personalities",
-                    "No significant emotional connections anywhere"
-                ],
-                "parasocial_indicators": {
-                    1: 2,  # Online personalities
-                    2: 2,  # Online communities over offline
-                    3: 3,  # Fictional over real
-                    4: 4   # Complete disconnection
-                },
-                "phase": "digital_screening"
-            },
-            7: {
-                "text": "When someone suggests things could get better or offers optimistic perspectives:",
-                "type": "single_choice_with_intensity",
-                "options": [
-                    "I feel encouraged and want to believe them",
-                    "I appreciate it but remain cautiously skeptical", 
-                    "I immediately think of reasons why they're wrong",
-                    "I feel annoyed because they don't understand reality",
-                    "I dismiss it as naive or manipulative"
-                ],
-                "hope_avoidance_indicators": {
-                    2: 2,  # Automatic negativity
-                    3: 3,  # Irritated by optimism
-                    4: 4   # Complete hope dismissal
-                },
-                "phase": "digital_screening"
-            },
-            8: {
-                "text": "Your attention span for non-digital activities (reading books, conversations, offline tasks):",
-                "type": "single_choice",
-                "options": [
-                    "Same as always - can focus for hours when interested",
-                    "Slightly shorter but manageable",
-                    "Noticeably fragmented - need frequent stimulation",
-                    "Very difficult - mind wanders constantly",
-                    "Almost impossible without background digital stimulation"
-                ],
-                "attention_fragmentation": [0, 1, 2, 3, 4],
-                "phase": "digital_screening"
-            }
-        }
-
-    def _get_engagement_questions(self):
-        """Phase 2: Engagement & Initial Pattern Detection"""
-        return {
-            9: {
-                "text": "What made you decide to explore hypnotherapy for this particular issue?",
-                "type": "single_choice",
-                "options": [
-                    "I've tried other approaches without lasting success",
-                    "I want faster results than traditional methods",
-                    "Something about the subconscious mind approach appeals to me",
-                    "Someone recommended it specifically for my type of issue",
-                    "I'm curious but also skeptical about whether it will work"
-                ],
-                "pattern_triggers": {
-                    0: [5], 1: [5], 2: [3], 3: [8], 4: [3]
-                },
-                "phase": "engagement"
-            },
-            10: {
-                "text": "If this issue completely resolved, what would be different about your daily life?",
-                "type": "text_completion",
-                "placeholder": "Describe what you'd be doing differently in 6 months - be as specific as possible about the changes you'd see...",
-                "min_chars": 3,
-                "pattern_analysis": True,
-                "keywords": {
-                    "productivity": [5], "relationships": [2, 3, 6, 7], "peace": [1], 
-                    "authentic": [6], "happy": [1], "control": [2, 4], "boundaries": [7, 9]
-                },
-                "phase": "engagement"
-            },
-            11: {
-                "text": "How ready are you to completely let go of this pattern?",
-                "type": "scale_10",
-                "labels": ["Not ready at all", "Completely ready"],
-                "follow_up_trigger": 7,  # If 7 or below, ask follow-up
-                "phase": "engagement"
-            },
-            12: {
-                "text": "When did this issue most recently show up?",
-                "type": "single_choice",
-                "options": [
-                    "Today",
-                    "Yesterday", 
-                    "This week",
-                    "Last week",
-                    "I can't recall the last specific time"
-                ],
-                "pattern_triggers": {
-                    4: [1, 6]  # Can't recall suggests normalization or compartmentalization
-                },
-                "phase": "engagement"
-            },
-            13: {
-                "text": "This issue tends to show up more:",
-                "type": "single_choice",
-                "options": [
-                    "At work or in professional settings",
-                    "In family or close relationships",
-                    "In social situations with acquaintances", 
-                    "When I'm alone with my thoughts",
-                    "Across all situations equally"
-                ],
-                "pattern_triggers": {
-                    0: [5, 8], 1: [7, 8, 9], 2: [2, 3, 6], 3: [1], 4: [1, 4]
-                },
-                "phase": "engagement"
-            }
-        }
-
-    def _get_trigger_mapping_questions(self):
-        """Phase 3: Core Trigger Mapping"""
-        return {
-            14: {
-                "text": "Thinking of the most recent time, what was happening in the 30 seconds right before this pattern kicked in?",
-                "type": "text_completion",
-                "placeholder": "Be specific: Where were you? Who was present? What was being discussed or happening? What did you see, hear, or notice?",
-                "min_chars": 5,
-                "trigger_analysis": True,
-                "phase": "trigger_mapping"
-            },
-            15: {
-                "text": "In that situation, what did you notice first?",
-                "type": "single_choice",
-                "options": [
-                    "A physical sensation somewhere in my body",
-                    "A specific thought or worry popping up",
-                    "An emotional shift or feeling change",
-                    "Something another person said or did",
-                    "A change in the environment around me"
-                ],
-                "chain_mapping": "awareness_point",
-                "phase": "trigger_mapping"
-            },
-            16: {
-                "text": "When this pattern activates, the first physical sensation is usually:",
-                "type": "single_choice_with_intensity",
-                "options": [
-                    "Chest tightness, racing heart, or breathing changes",
-                    "Stomach drop, nausea, or digestive upset", 
-                    "Muscle tension, jaw clenching, or physical rigidity",
-                    "Hot/cold flashes, sweating, or temperature changes",
-                    "Numbness, disconnection, or feeling 'outside yourself'",
-                    "Restlessness, fidgeting, or urge to move/escape",
-                    "Fatigue, heaviness, or sudden energy drain"
-                ],
-                "pattern_indicators": {
-                    0: [1, 3, 4], 1: [1, 3, 4], 2: [2, 5], 3: [2, 5], 
-                    4: [6, 9], 5: [2, 5], 6: [1, 7]
-                },
-                "chain_mapping": "physical_response",
-                "phase": "trigger_mapping"
-            },
-            17: {
-                "text": "What thought automatically appears when you feel that physical sensation?",
-                "type": "text_completion",
-                "placeholder": "The actual words that go through your mind - even if they seem harsh or unreasonable. What does your inner voice say?",
-                "min_chars": 3,
-                "pattern_keywords": {
-                    "not good enough": [1], "fight": [2], "can't trust": [3], 
-                    "either or": [4], "must do": [5], "can't be real": [6],
-                    "others need": [7], "should": [8], "can't handle": [9]
-                },
-                "chain_mapping": "automatic_thought",
-                "phase": "trigger_mapping"
-            },
-            18: {
-                "text": "After that thought, you typically feel:",
-                "type": "multi_select_weighted",
-                "max_selections": 3,
-                "options": [
-                    "Anxious or worried", "Angry or frustrated", "Ashamed or embarrassed",
-                    "Sad or defeated", "Guilty or self-blaming", "Overwhelmed or panicked",
-                    "Numb or disconnected", "Confused or uncertain"
-                ],
-                "chain_mapping": "emotional_response",
-                "phase": "trigger_mapping"
-            },
-            19: {
-                "text": "When you feel that emotion at that intensity, you typically:",
-                "type": "single_choice",
-                "options": [
-                    "Withdraw, avoid, or postpone dealing with it",
-                    "Become more active, busy, or productive",
-                    "Seek reassurance or validation from others",
-                    "Become argumentative or defensive", 
-                    "Try to control or fix the situation",
-                    "Please others or put their needs first",
-                    "Shut down emotionally or 'check out'",
-                    "Analyze or overthink the situation"
-                ],
-                "pattern_mapping": {
-                    0: [1, 4, 9], 1: [5], 2: [3, 7], 3: [2], 
-                    4: [2, 5], 5: [7], 6: [6, 9], 7: [4, 5]
-                },
-                "chain_mapping": "behavioral_response",
-                "phase": "trigger_mapping"
-            },
-            20: {
-                "text": "Right after you respond that way, you usually feel:",
-                "type": "single_choice",
-                "options": [
-                    "Temporary relief but underlying tension remains",
-                    "More agitated or upset than before",
-                    "Emotionally numb or disconnected",
-                    "Guilty about how you handled it",
-                    "Justified in your response",
-                    "Confused about what just happened",
-                    "Physically exhausted or drained"
-                ],
-                "chain_mapping": "immediate_consequence",
-                "phase": "trigger_mapping"
-            },
-            21: {
-                "text": "A few hours later, you're typically:",
-                "type": "single_choice", 
-                "options": [
-                    "Have moved on and forgotten about it",
-                    "Still replaying what happened",
-                    "Planning how to avoid it next time",
-                    "Angry at yourself for reacting that way",
-                    "Feeling misunderstood by others involved",
-                    "Resigned that this is just how things are"
-                ],
-                "pattern_reinforcement": {
-                    1: [5], 2: [1, 4, 9], 3: [5], 4: [1], 5: [1]
-                },
-                "chain_mapping": "longer_term_impact",
-                "phase": "trigger_mapping"
-            }
-        }
-
-    def _get_pattern_specific_questions(self):
-        """Phase 4: Adaptive Pattern-Specific Deep Dives"""
-        return {
-            # Pattern 1: Unhappiness Culture
-            "pattern_1": {
-                22: {
-                    "text": "When something genuinely good happens to you, your first reaction is usually:",
-                    "type": "single_choice_with_intensity",
-                    "options": [
-                        "Pure enjoyment and celebration",
-                        "Immediately looking for the catch or downside", 
-                        "Feeling guilty or undeserving of good things",
-                        "Minimizing its importance",
-                        "Anxiety about when it will end"
-                    ],
-                    "weights": [0, 3, 3, 2, 2],
-                    "pattern": 1
-                },
-                23: {
-                    "text": "Growing up, the message about happiness in your family was:",
-                    "type": "single_choice",
-                    "options": [
-                        "Happiness is natural and should be enjoyed",
-                        "Happiness must be earned through hard work",
-                        "Too much happiness leads to disappointment", 
-                        "Other people's happiness comes first",
-                        "Happiness is selfish or shallow"
-                    ],
-                    "weights": [0, 2, 3, 2, 3],
-                    "pattern": 1
-                },
-                24: {
-                    "text": "What would you lose if you allowed yourself to be genuinely happy?",
-                    "type": "text_completion",
-                    "placeholder": "Think about identity, relationships, what others might think, or what might change...",
-                    "min_chars": 3,
-                    "pattern": 1
-                }
-            },
-            
-            # Pattern 2: Power Struggles
-            "pattern_2": {
-                25: {
-                    "text": "When someone disagrees with you, your nervous system:",
-                    "type": "single_choice_with_intensity",
-                    "options": [
-                        "Stays curious about their perspective",
-                        "Immediately activates into combat mode",
-                        "Feels threatened or attacked",
-                        "Shuts down to avoid confrontation",
-                        "Searches for ways to prove them wrong"
-                    ],
-                    "weights": [0, 3, 2, 1, 3],
-                    "pattern": 2
-                },
-                26: {
-                    "text": "In your family growing up, disagreements typically:",
-                    "type": "single_choice",
-                    "options": [
-                        "Were handled through calm discussion",
-                        "Escalated into arguments or fights",
-                        "Were avoided at all costs",
-                        "Involved guilt, manipulation, or silent treatment",
-                        "Had clear winners and losers"
-                    ],
-                    "weights": [0, 3, 2, 3, 4],
-                    "pattern": 2
-                }
-            },
-            
-            # Pattern 3: Systematic Mistrust
-            "pattern_3": {
-                27: {
-                    "text": "When meeting new people, you assume they:",
-                    "type": "single_choice_with_intensity",
-                    "options": [
-                        "Are generally well-intentioned",
-                        "Are judging or evaluating you",
-                        "Want something from you",
-                        "Will eventually disappoint you",
-                        "Are basically indifferent"
-                    ],
-                    "weights": [0, 2, 3, 3, 1],
-                    "pattern": 3
-                },
-                28: {
-                    "text": "When someone is unexpectedly kind to you, you:",
-                    "type": "single_choice",
-                    "options": [
-                        "Feel grateful and warmed",
-                        "Wonder what they want from you",
-                        "Feel suspicious of their motives",
-                        "Feel unworthy of their kindness",
-                        "Barely notice or dismiss it"
-                    ],
-                    "weights": [0, 3, 3, 2, 1],
-                    "pattern": 3
-                }
-            },
-            
-            # Pattern 4: Separation/Division
-            "pattern_4": {
-                29: {
-                    "text": "When facing important decisions, you typically:",
-                    "type": "single_choice_with_intensity",
-                    "options": [
-                        "See multiple creative possibilities",
-                        "Feel trapped between two impossible choices",
-                        "Get paralyzed by perfectionist analysis",
-                        "Create artificial deadlines or urgency",
-                        "Defer to what others expect"
-                    ],
-                    "weights": [0, 2, 3, 2, 1],
-                    "pattern": 4
-                }
-            },
-            
-            # Pattern 5: Doing vs Being
-            "pattern_5": {
-                30: {
-                    "text": "You feel most valuable when you're:",
-                    "type": "single_choice_with_intensity",
-                    "options": [
-                        "Simply existing as yourself",
-                        "Accomplishing something significant",
-                        "Being productive or busy",
-                        "Helping others achieve their goals",
-                        "Receiving recognition for your work"
-                    ],
-                    "weights": [0, 2, 3, 2, 2],
-                    "pattern": 5
-                }
-            },
-            
-            # Pattern 6: Compartmentalized Authenticity
-            "pattern_6": {
-                31: {
-                    "text": "Your personality tends to:",
-                    "type": "single_choice_with_intensity",
-                    "options": [
-                        "Stay consistent across all situations",
-                        "Shift significantly based on who you're with",
-                        "Change between professional and personal settings",
-                        "Adapt to what others seem to want",
-                        "Feel fragmented or inconsistent"
-                    ],
-                    "weights": [0, 2, 2, 3, 4],
-                    "pattern": 6
-                }
-            },
-            
-            # Pattern 7: Self-Sacrifice/Care Avoidance
-            "pattern_7": {
-                32: {
-                    "text": "When it comes to your own needs versus others' needs:",
-                    "type": "single_choice_with_intensity",
-                    "options": [
-                        "I naturally balance both",
-                        "Others' needs usually come first",
-                        "I feel guilty focusing on my own needs",
-                        "I often don't even know what I need",
-                        "Taking care of myself feels selfish"
-                    ],
-                    "weights": [0, 2, 3, 3, 4],
-                    "pattern": 7
-                }
-            },
-            
-            # Pattern 8: Inherited Missions
-            "pattern_8": {
-                33: {
-                    "text": "Your major life goals are primarily:",
-                    "type": "single_choice_with_intensity",
-                    "options": [
-                        "Based on your own genuine desires",
-                        "Influenced by family expectations",
-                        "Meant to honor someone's sacrifices",
-                        "Designed to prove your worth",
-                        "A reaction against others' expectations"
-                    ],
-                    "weights": [0, 2, 3, 3, 2],
-                    "pattern": 8
-                }
-            },
-            
-            # Pattern 9: Context-Dependent Weakness
-            "pattern_9": {
-                34: {
-                    "text": "Your boundaries and limits:",
-                    "type": "single_choice_with_intensity",
-                    "options": [
-                        "Stay pretty consistent across situations",
-                        "Vary significantly based on who you're with",
-                        "Disappear completely in certain contexts",
-                        "Are stronger in some areas than others",
-                        "Feel almost non-existent sometimes"
-                    ],
-                    "weights": [0, 2, 3, 2, 4],
-                    "pattern": 9
-                }
-            }
-        }
-
-    def _get_integration_questions(self):
-        """Phase 5: Integration & Change Readiness"""
-        return {
-            35: {
-                "text": "If you had to guess, this pattern might be trying to:",
-                "type": "single_choice",
-                "options": [
-                    "Protect you from emotional pain",
-                    "Keep you safe from rejection or judgment",
-                    "Maintain some sense of control",
-                    "Help you belong or fit in",
-                    "Avoid disappointing important people",
-                    "Ensure you're prepared for worst-case scenarios"
-                ],
-                "secondary_gain": True,
-                "phase": "integration"
-            },
-            36: {
-                "text": "What would need to be true for you to feel completely safe changing this pattern?",
-                "type": "text_completion",
-                "placeholder": "Think about what guarantees, support, or conditions you'd need to feel safe letting go...",
-                "min_chars": 3,
-                "safety_assessment": True,
-                "phase": "integration"
-            },
-            37: {
-                "text": "When learning or changing, you respond best to:",
-                "type": "single_choice",
-                "options": [
-                    "Direct, clear guidance and instructions",
-                    "Gentle, permissive suggestions",
-                    "Stories, metaphors, and imagery",
-                    "Logical explanations and understanding",
-                    "Collaborative exploration and discovery"
-                ],
-                "hypnotic_preference": True,
-                "phase": "integration"
-            },
-            38: {
-                "text": "Imagine you've completely transformed this pattern. What's the first thing you'd do that you can't do now?",
-                "type": "text_completion",
-                "placeholder": "Be specific about the first action, conversation, or decision you'd make...",
-                "min_chars": 5,
-                "outcome_visualization": True,
-                "phase": "integration"
-            }
-        }
-
-
-    # ---- Response Analysis ----
+    # ---- Response analysis & digital calculations ----
     
     def _analyze_digital_despair_indicators(self, responses):
         """Analyze responses for algorithmical divide Syndrome indicators"""
@@ -1117,7 +571,7 @@ class ComprehensiveBehavioralAssessment:
         
         # Determine if digital native assessment was triggered
         if digital_native_score < 2:
-            return None  # Skip algorithmical divide analysis for non-digital natives
+            return None  # Skip digital despair analysis for non-digital natives
         
         # Extract component scores
         reality_dissociation = self._extract_reality_dissociation_score(responses)
@@ -1136,25 +590,25 @@ class ComprehensiveBehavioralAssessment:
         
         digital_despair_percentage = (raw_score / total_possible) * 100
         
-        # Severity classification
-        if digital_despair_percentage >= 70:
-            severity = "SEVERE"
-            recommendation = "Specialized digital-native intervention required"
-        elif digital_despair_percentage >= 50:
-            severity = "MODERATE" 
-            recommendation = "Modified approach with digital awareness"
-        elif digital_despair_percentage >= 30:
-            severity = "MILD"
-            recommendation = "Standard approach with digital considerations"
-        else:
-            severity = "MINIMAL"
-            recommendation = "Traditional hypnotherapy approach suitable"
-        
+        # severity lookup using thresholds in config when available
+        severity = "MINIMAL"
+        recommendation = "Traditional hypnotherapy approach suitable"
+        if self.digital_thresholds:
+            for level, data in sorted(
+                self.digital_thresholds.items(),
+                key=lambda x: x[1]["threshold"],
+                reverse=True
+            ):
+                if digital_despair_percentage >= data["threshold"]:
+                    severity = level
+                    recommendation = data.get("title", "")
+                    break
+    
         return {
-            'digital_despair_score': digital_despair_percentage,
-            'severity_level': severity,
-            'clinical_recommendation': recommendation,
-            'component_scores': {
+            "digital_despair_score": digital_despair_percentage,
+            "severity_level": severity,
+            "clinical_recommendation": recommendation,
+            "component_scores": {
                 'digital_native_status': digital_native_score,
                 'reality_dissociation': reality_dissociation,
                 'binary_success_pressure': binary_thinking,
@@ -1164,46 +618,11 @@ class ComprehensiveBehavioralAssessment:
                 'hope_avoidance': hope_avoidance,
                 'attention_fragmentation': attention_fragmentation
             },
-            'therapeutic_adaptations_needed': self._get_therapeutic_adaptations(severity)
+            "therapeutic_adaptations_needed": self.digital_thresholds[severity].get("adaptations", []),
         }
 
-    def _get_therapeutic_adaptations(self, severity):
-        """Get required therapeutic adaptations based on algorithmical divide severity"""
-        
-        adaptations = {
-            "SEVERE": [
-                "Attention span optimization: 15-30 minute focused segments",
-                "Anti-authority language: Collaborative, non-directive approach",
-                "Ironic armor dissolution: Validate intelligence while accessing authentic emotion",
-                "Digital bridge-building: Connect online competencies to offline confidence",
-                "Binary thinking interruption: Install 'both/and' processing patterns",
-                "Hope introduction protocol: Gradual realistic optimism vs. overwhelming positivity",
-                "Meaning-making assistance: Personal contribution vs. extraordinary achievement"
-            ],
-            "MODERATE": [
-                "Modified session length: 45-60 minutes with movement breaks",
-                "Authority resistance awareness: Reduce directive language", 
-                "Cynicism validation: Acknowledge systemic problems while building agency",
-                "Digital competency honor: Validate online achievements and skills",
-                "Nuanced goal-setting: Meaningful vs. extraordinary success redefinition",
-                "Gradual hope building: Evidence-based optimism introduction"
-            ],
-            "MILD": [
-                "Digital literacy integration: Use familiar cultural references",
-                "Achievement pressure awareness: Expand success definitions",
-                "Authentic expression permission: Reduce 'cringe' about sincerity",
-                "Real-world confidence transfer: Apply online skills offline"
-            ],
-            "MINIMAL": [
-                "Standard approach with generational awareness",
-                "Technology balance considerations",
-                "Modern stress factor acknowledgment"
-            ]
-        }
-        
-        return adaptations.get(severity, adaptations["MINIMAL"])
-
-    # Helper functions for extracting specific scores
+    
+    # ---Helper functions for extracting specific scores
     def _extract_reality_dissociation_score(self, responses):
         """Extract reality dissociation indicators from responses"""
         score = 0
@@ -1363,7 +782,7 @@ class ComprehensiveBehavioralAssessment:
                             self._add_pattern_score(pattern, 1.0)
                 except (ValueError, IndexError):
                     pass
-        
+        # pattern_mapping
         elif question.get('pattern_mapping') and isinstance(response, str):
             if 'options' in question:
                 try:
@@ -1374,12 +793,12 @@ class ComprehensiveBehavioralAssessment:
                             self._add_pattern_score(pattern, 1.5)
                 except (ValueError, IndexError):
                     pass
-        
+        # pattern_keywords (analysis of free-text)
         elif question.get('pattern_keywords') and isinstance(response, str):
             detected_patterns = self._analyze_text_for_patterns(response, question['pattern_keywords'])
             for pattern in detected_patterns:
                 self._add_pattern_score(pattern, 2.0)
-        
+        # keywords (less strong)
         elif question.get('keywords') and isinstance(response, str):
             detected_patterns = self._analyze_text_for_patterns(response, question['keywords'])
             for pattern in detected_patterns:
@@ -1413,6 +832,9 @@ class ComprehensiveBehavioralAssessment:
                 st.session_state.triggered_patterns.add(pattern_id)
                 st.session_state.adaptive_paths.append(f"pattern_{pattern_id}")
 
+
+    # ---- Response persistence ----
+    
     def _save_response(self, q_id, response, question, intensity=None):
         """Save response and update scoring"""
         st.session_state.assessment_responses[q_id] = {
@@ -1437,7 +859,6 @@ class ComprehensiveBehavioralAssessment:
         
         # Update pattern scores
         self._update_pattern_scores(q_id, response, question)
-        
         # Check for adaptive triggers
         self._check_adaptive_triggers(q_id, response, question)
         
@@ -1446,92 +867,87 @@ class ComprehensiveBehavioralAssessment:
         if phase in st.session_state.phase_progress:
             st.session_state.phase_progress[phase] += 1
 
-    # ---- Question Navigation Logic ----
+    # ---- Question Navigation Logic based on config question pools ----
     
     def _get_next_question(self):
         """Determine next question based on current phase and responses"""
         answered = set(st.session_state.assessment_responses.keys())
-        
-        # Phase 0: Age Screening (Question 0)
-        if st.session_state.current_phase == 'age_screening':
-            if 0 not in answered:
+
+        # Phase 0: age screening (single question expected)
+        if st.session_state.current_phase == "age_screening":
+            # If question 0 not answered, return it
+            if 0 in self.age_screening_questions and 0 not in answered:
                 return 0, self.age_screening_questions[0]
-            else:
-                # Determine if digital native
-                age_response = st.session_state.assessment_responses.get(0, {}).get('response', '')
-                age_options = ["Under 18", "18-22", "23-27", "28-32", "33-37", "38-42", "43-50", "Over 50"]
-                scoring = [3, 5, 4, 3, 2, 1, 0, 0]
-                
-                try:
-                    age_index = age_options.index(age_response)
-                    digital_native_score = scoring[age_index]
-                    st.session_state.is_digital_native = digital_native_score >= 2
-                except (ValueError, IndexError):
-                    st.session_state.is_digital_native = False
-                
-                # Move to appropriate next phase
-                if st.session_state.is_digital_native:
-                    st.session_state.current_phase = 'digital_screening'
-                else:
-                    st.session_state.current_phase = 'engagement'
-        
-        # Phase 1: Digital Screening (Questions 1-8) - Only for digital natives
-        if st.session_state.current_phase == 'digital_screening':
-            for q_id in range(1, 9):
+            # determine digital native flag
+            age_response = st.session_state.assessment_responses.get(0, {}).get("response", "")
+            age_options = self.age_screening_questions.get(0, {}).get("options", [])
+            scoring = self.age_screening_questions.get(0, {}).get("digital_native_scoring", [])
+            try:
+                idx = age_options.index(age_response)
+                st.session_state.is_digital_native = scoring[idx] >= 2
+            except Exception:
+                st.session_state.is_digital_native = False
+            # advance
+            st.session_state.current_phase = "digital_screening" if st.session_state.is_digital_native else "engagement"
+
+        # Phase 1: digital screening (1..8)
+        if st.session_state.current_phase == "digital_screening":
+            for q_id in sorted(self.digital_screening_questions.keys()):
                 if q_id not in answered:
                     return q_id, self.digital_screening_questions[q_id]
-            st.session_state.current_phase = 'engagement'
-        
-        # Phase 2: Engagement (Questions 9-13)
-        if st.session_state.current_phase == 'engagement':
-            for q_id in range(9, 14):
+            st.session_state.current_phase = "engagement"
+
+        # Phase 2: engagement (9..13)
+        if st.session_state.current_phase == "engagement":
+            for q_id in sorted(self.engagement_questions.keys()):
                 if q_id not in answered:
                     return q_id, self.engagement_questions[q_id]
-            st.session_state.current_phase = 'trigger_mapping'
-        
-        # Phase 3: Trigger Mapping (Questions 14-21)
-        if st.session_state.current_phase == 'trigger_mapping':
-            for q_id in range(14, 22):
+            st.session_state.current_phase = "trigger_mapping"
+
+        # Phase 3: trigger mapping (14..21)
+        if st.session_state.current_phase == "trigger_mapping":
+            for q_id in sorted(self.trigger_mapping_questions.keys()):
                 if q_id not in answered:
                     return q_id, self.trigger_mapping_questions[q_id]
-            st.session_state.current_phase = 'pattern_specific'
-        
-        # Phase 4: Pattern-Specific Questions
-        if st.session_state.current_phase == 'pattern_specific':
-            for pattern_id in st.session_state.triggered_patterns:
+            st.session_state.current_phase = "pattern_specific"
+
+        # Phase 4: pattern-specific (adaptive)
+        if st.session_state.current_phase == "pattern_specific":
+            # iterate triggered patterns first
+            for pattern_id in list(st.session_state.triggered_patterns):
                 pattern_key = f"pattern_{pattern_id}"
                 if pattern_key in self.pattern_specific_questions:
-                    pattern_questions = self.pattern_specific_questions[pattern_key]
-                    for q_id, question in pattern_questions.items():
+                    for q_id, question in self.pattern_specific_questions[pattern_key].items():
                         if q_id not in answered:
                             return q_id, question
-            st.session_state.current_phase = 'integration'
-        
-        # Phase 5: Integration (Questions 35-38)
-        if st.session_state.current_phase == 'integration':
-            for q_id in range(35, 39):
+            # if none left, move to integration
+            st.session_state.current_phase = "integration"
+
+        # Phase 5: integration (last set)
+        if st.session_state.current_phase == "integration":
+            for q_id in sorted(self.integration_questions.keys()):
                 if q_id not in answered:
                     return q_id, self.integration_questions[q_id]
-        
+
         return None, None
 
     def _estimate_total_questions(self):
-        """Estimate total questions based on triggered patterns and digital native status"""
-        base_questions = 1  # age screening
-        
+        base = 1  # age question
         if st.session_state.is_digital_native:
-            base_questions += 8  # digital screening
-        
-        base_questions += 5 + 8 + 4  # engagement + trigger_mapping + integration
-        pattern_questions = len(st.session_state.triggered_patterns) * 2  # avg 2 questions per pattern
-        return base_questions + pattern_questions
+            base += len(self.digital_screening_questions)
+        base += len(self.engagement_questions) + len(self.trigger_mapping_questions) + len(self.integration_questions)
+        # pattern questions depending on triggered
+        pattern_qs = 0
+        for pid in st.session_state.triggered_patterns:
+            pk = f"pattern_{pid}"
+            pattern_qs += len(self.pattern_specific_questions.get(pk, {}))
+        return base + pattern_qs
 
     def _estimate_time_remaining(self):
         """Estimate remaining time"""
         total_q = self._estimate_total_questions()
         answered = len(st.session_state.assessment_responses)
         remaining = max(0, total_q - answered)
-        
         # Adjust time estimate based on digital native status
         if st.session_state.is_digital_native and st.session_state.digital_severity == 'SEVERE':
             return remaining * 0.8  # Faster pacing for digital natives
@@ -1681,6 +1097,7 @@ class ComprehensiveBehavioralAssessment:
                 if last_key in st.session_state.intensity_responses:
                     del st.session_state.intensity_responses[last_key]
 
+    # ---- Completion & Results ----
     def _complete_assessment(self):
         """Complete the assessment and prepare results"""
         st.session_state.assessment_completed = True
@@ -1716,7 +1133,7 @@ class ComprehensiveBehavioralAssessment:
         }
         st.rerun()
 
-    # ---- Rendering UI Functions ----
+    # ---- Rendering Questionnaire Functions ----
     def render(self):
         apply_clinical_styles()
         self._render_header()
@@ -1764,30 +1181,8 @@ class ComprehensiveBehavioralAssessment:
         <div class="time-estimate"> ~ {time_remaining:.0f} minutes remaining</div>
         """, unsafe_allow_html=True)
 
-        # Phase indicator
-        current_phase = question.get('phase', 'unknown')
-        phase_names = {
-            'age_screening': 'Initial Screening',
-            'digital_screening': 'Digital Pattern Assessment',
-            'engagement': 'Pattern Discovery',
-            'trigger_mapping': 'Trigger Analysis',
-            'pattern_specific': 'Deep Pattern Exploration',
-            'integration': 'Integration & Planning'
-        }
-        phase_display = phase_names.get(current_phase, current_phase.title())
-        
-        # if current_phase != 'age_screening':
-        #     st.caption(f"**Phase:** {phase_display}")
-
         # Question display
         st.markdown(f"### {question['text']}")
-        
-        # Show pattern detection hints for engaged users
-        if completed > 8 and st.session_state.pattern_scores:
-            top_pattern = max(st.session_state.pattern_scores.items(), key=lambda x: x[1])
-            if top_pattern[1] >= 2.0:
-                pattern_name = self.patterns.get(top_pattern[0], "Unknown Pattern")
-                # Only show hints in later phases to avoid influencing responses
 
         # Handle different question types
         q_type = question['type']
@@ -1812,8 +1207,7 @@ class ComprehensiveBehavioralAssessment:
             if len(st.session_state.assessment_responses) > 0:
                 if st.button("← Back", key="nav_back", use_container_width=True):
                     self._go_back()
-                    st.rerun()
-        
+                    st.rerun()        
         with col2:
             answered_count = len(st.session_state.assessment_responses)
             total_count = self._estimate_total_questions()
@@ -1831,6 +1225,8 @@ class ComprehensiveBehavioralAssessment:
                     self._save_response(current_q_id, "Skipped", skip_question)
                     self._advance_question()
                     st.rerun()
+
+    
 
     # ---- Build calculation and mapping  ----
 
@@ -2568,7 +1964,7 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
 
 
     # ---- Result Rendering contact form ----
-    
+
     def _render_contact_form(self):
         """
         Render the contact form after completion. Gathers email and optional data.
