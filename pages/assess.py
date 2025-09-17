@@ -279,17 +279,17 @@ def apply_clinical_styles():
     """, unsafe_allow_html=True)
 
 
-# ---- Simplified Storage Class ----
+# ---- Simple Storage Implementation ----
 class SimpleStorage:
-    """Simplified storage for Streamlit Community Cloud"""
-    
     def __init__(self):
         if 'assessment_storage' not in st.session_state:
             st.session_state.assessment_storage = {}
+        if STORAGE_FACTORY_AVAILABLE:
             self.storage = create_storage_client()
+        else:
+            self.storage = None
     
     def save_assessment(self, session_id, data):
-        """Save assessment data"""
         st.session_state.assessment_storage[session_id] = {
             'data': data,
             'saved_at': datetime.now().isoformat(),
@@ -298,167 +298,162 @@ class SimpleStorage:
         return f"session://{session_id}"
     
     def get_assessment(self, session_id):
-        """Get assessment data"""
         return st.session_state.assessment_storage.get(session_id, {}).get('data')
 
-# ---- Email Queue System ----
-class EmailQueue:
-    """Simple email queue for manual processing"""
+
+# # ---- Email Queue System ----
+# class EmailQueue:
+#     def __init__(self):
+#         if 'email_queue' not in st.session_state:
+#             st.session_state.email_queue = []
     
-    def __init__(self):
-        if 'email_queue' not in st.session_state:
-            st.session_state.email_queue = []
+#     def add_request(self, email_data):
+#         st.session_state.email_queue.append({
+#             **email_data,
+#             'timestamp': datetime.now().isoformat(),
+#             'processed': False
+#         })
     
-    def add_request(self, email_data):
-        """Add email request to queue"""
-        st.session_state.email_queue.append({
-            **email_data,
-            'timestamp': datetime.now().isoformat(),
-            'processed': False
-        })
+#     def get_pending(self):
+#         return [req for req in st.session_state.email_queue if not req.get('processed')]
     
-    def get_pending(self):
-        """Get pending email requests"""
-        return [req for req in st.session_state.email_queue if not req.get('processed')]
+#     def mark_processed(self, index):
+#         if 0 <= index < len(st.session_state.email_queue):
+#             st.session_state.email_queue[index]['processed'] = True
+
+# # ---- Simplified PDF Generator ----
+# def generate_simple_pdf_content(assessment_data):
+#     """Generate PDF content as text (fallback when reportlab unavailable)"""
+#     contact_info = assessment_data.get('contact_info', {})
+#     pattern_scores = assessment_data.get('pattern_scores', {})
     
-    def mark_processed(self, index):
-        """Mark email as processed"""
-        if 0 <= index < len(st.session_state.email_queue):
-            st.session_state.email_queue[index]['processed'] = True
-
-# ---- Simplified PDF Generator ----
-def generate_simple_pdf_content(assessment_data):
-    """Generate PDF content as text (fallback when reportlab unavailable)"""
-    contact_info = assessment_data.get('contact_info', {})
-    pattern_scores = assessment_data.get('pattern_scores', {})
+#     patterns = {
+#         1: "Unhappiness Culture", 2: "Power Struggles", 3: "Systematic Mistrust", 
+#         4: "Separation and Division", 5: "Doing versus Being", 6: "Compartmentalized Authenticity", 
+#         7: "Self Sacrifice and Care Avoidance", 8: "Inherited Missions", 9: "Context Dependent Weakness"
+#     }
     
-    patterns = {
-        1: "Unhappiness Culture", 2: "Power Struggles", 3: "Systematic Mistrust", 
-        4: "Separation and Division", 5: "Doing versus Being", 6: "Compartmentalized Authenticity", 
-        7: "Self Sacrifice and Care Avoidance", 8: "Inherited Missions", 9: "Context Dependent Weakness"
-    }
+#     content = f"""
+# BEHAVIORAL TRANSFORMATION BLUEPRINT
+# Personalized Analysis for {contact_info.get('name', 'Valued Client')}
+# Generated: {datetime.now().strftime('%B %d, %Y')}
+
+# EXECUTIVE SUMMARY
+# ==============
+# Patterns Identified: {len(pattern_scores)}
+# Assessment Completion: {assessment_data.get('completion_rate', 1.0)*100:.0f}%
+# Digital Native: {'Yes' if assessment_data.get('is_digital_native') else 'No'}
+
+# PATTERN ANALYSIS
+# ===============
+# """
     
-    content = f"""
-BEHAVIORAL TRANSFORMATION BLUEPRINT
-Personalized Analysis for {contact_info.get('name', 'Valued Client')}
-Generated: {datetime.now().strftime('%B %d, %Y')}
-
-EXECUTIVE SUMMARY
-==============
-Patterns Identified: {len(pattern_scores)}
-Assessment Completion: {assessment_data.get('completion_rate', 1.0)*100:.0f}%
-Digital Native: {'Yes' if assessment_data.get('is_digital_native') else 'No'}
-
-PATTERN ANALYSIS
-===============
-"""
+#     if pattern_scores:
+#         sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+#         for i, (pattern_id, score) in enumerate(sorted_patterns[:3]):
+#             pattern_name = patterns.get(pattern_id, f"Pattern {pattern_id}")
+#             intensity = "High" if score >= 6 else "Moderate" if score >= 4 else "Mild"
+#             content += f"{i+1}. {pattern_name} - {intensity} Intensity (Score: {score:.1f}/10)\n"
     
-    if pattern_scores:
-        sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
-        for i, (pattern_id, score) in enumerate(sorted_patterns[:3]):
-            pattern_name = patterns.get(pattern_id, f"Pattern {pattern_id}")
-            intensity = "High" if score >= 6 else "Moderate" if score >= 4 else "Mild"
-            content += f"{i+1}. {pattern_name} - {intensity} Intensity (Score: {score:.1f}/10)\n"
+#     content += f"""
+
+# TRANSFORMATION ROADMAP
+# =====================
+# Recommended Protocol: 2-3 sessions over 2-4 weeks
+# Success Probability: 85-92%
+# Timeline for Results: 24-48 hours for initial shifts
+
+# SESSION BREAKDOWN:
+# Session 1: Deep Pattern Analysis & Rapport Building (90 minutes)
+# Session 2: Core Transformation & Neural Rewiring (90 minutes)
+# Session 3: Integration & Mastery (60 minutes - if needed)
+
+# INVESTMENT ANALYSIS
+# ==================
+# Transformation Investment: $3,000-4,000
+# Traditional Therapy Alternative: $15,000-25,000 over 18+ months
+# Success Rate: 85% vs 30-40% traditional approaches
+# Break-even Time: 2-6 months typically
+
+# NEXT STEPS
+# ==========
+# 1. Clinical Review (24-48 hours)
+# 2. Personal Contact (48-72 hours)
+# 3. First Transformation Session (within 1 week)
+
+# Contact: hypnotherapy.streamlit.app
+# Direct Scheduling: calendly.com/laetitiasheppard/discovery
+
+# © 2024 Rapid Transformation Hypnotherapy - Confidential Report
+# Assessment ID: {assessment_data.get('session_id', 'Unknown')[:8]}
+# """
     
-    content += f"""
+#     return content
 
-TRANSFORMATION ROADMAP
-=====================
-Recommended Protocol: 2-3 sessions over 2-4 weeks
-Success Probability: 85-92%
-Timeline for Results: 24-48 hours for initial shifts
-
-SESSION BREAKDOWN:
-Session 1: Deep Pattern Analysis & Rapport Building (90 minutes)
-Session 2: Core Transformation & Neural Rewiring (90 minutes)
-Session 3: Integration & Mastery (60 minutes - if needed)
-
-INVESTMENT ANALYSIS
-==================
-Transformation Investment: $3,000-4,000
-Traditional Therapy Alternative: $15,000-25,000 over 18+ months
-Success Rate: 85% vs 30-40% traditional approaches
-Break-even Time: 2-6 months typically
-
-NEXT STEPS
-==========
-1. Clinical Review (24-48 hours)
-2. Personal Contact (48-72 hours)
-3. First Transformation Session (within 1 week)
-
-Contact: hypnotherapy.streamlit.app
-Direct Scheduling: calendly.com/laetitiasheppard/discovery
-
-© 2024 Rapid Transformation Hypnotherapy - Confidential Report
-Assessment ID: {assessment_data.get('session_id', 'Unknown')[:8]}
-"""
-    
-    return content
-
-# ---- Admin Interface ----
-def render_admin_interface():
-    """Simple admin interface for email queue management"""
-    if not st.session_state.get('admin_authenticated', False):
-        with st.sidebar:
-            st.markdown("### 🔐 Admin Access")
-            admin_password = st.text_input("Password", type="password", key="admin_pass")
+# # ---- Admin Interface ----
+# def render_admin_interface():
+#     """Simple admin interface for email queue management"""
+#     if not st.session_state.get('admin_authenticated', False):
+#         with st.sidebar:
+#             st.markdown("### 🔐 Admin Access")
+#             admin_password = st.text_input("Password", type="password", key="admin_pass")
             
-            if st.button("Login"):
-                # Simple password check - use environment variable in production
-                if admin_password == st.secrets.get("admin", {}).get("password", "admin123"):
-                    st.session_state.admin_authenticated = True
-                    st.rerun()
-                else:
-                    st.error("Invalid password")
-    else:
-        with st.sidebar:
-            st.success("✅ Admin Access")
+#             if st.button("Login"):
+#                 # Simple password check - use environment variable in production
+#                 if admin_password == st.secrets.get("admin", {}).get("password", "admin123"):
+#                     st.session_state.admin_authenticated = True
+#                     st.rerun()
+#                 else:
+#                     st.error("Invalid password")
+#     else:
+#         with st.sidebar:
+#             st.success("✅ Admin Access")
             
-            if st.button("Logout"):
-                st.session_state.admin_authenticated = False
-                st.rerun()
+#             if st.button("Logout"):
+#                 st.session_state.admin_authenticated = False
+#                 st.rerun()
         
-        # Main admin interface
-        st.markdown("### Admin Dashboard")
+#         # Main admin interface
+#         st.markdown("### Admin Dashboard")
         
-        tab1, tab2 = st.tabs(["📧 Email Queue", "📊 Analytics"])
+#         tab1, tab2 = st.tabs(["📧 Email Queue", "📊 Analytics"])
         
-        with tab1:
-            email_queue = EmailQueue()
-            pending_emails = email_queue.get_pending()
+#         with tab1:
+#             email_queue = EmailQueue()
+#             pending_emails = email_queue.get_pending()
             
-            st.markdown(f"**Pending email requests: {len(pending_emails)}**")
+#             st.markdown(f"**Pending email requests: {len(pending_emails)}**")
             
-            if pending_emails:
-                for i, request in enumerate(pending_emails):
-                    with st.expander(f"Email {i+1}: {request['recipient']} - {request['assessment_summary']['urgency']}"):
-                        st.json(request)
+#             if pending_emails:
+#                 for i, request in enumerate(pending_emails):
+#                     with st.expander(f"Email {i+1}: {request['recipient']} - {request['assessment_summary']['urgency']}"):
+#                         st.json(request)
                         
-                        if st.button(f"Mark as processed", key=f"process_{i}"):
-                            email_queue.mark_processed(i)
-                            st.success("Request marked as processed")
-                            st.rerun()
-            else:
-                st.info("No pending email requests")
+#                         if st.button(f"Mark as processed", key=f"process_{i}"):
+#                             email_queue.mark_processed(i)
+#                             st.success("Request marked as processed")
+#                             st.rerun()
+#             else:
+#                 st.info("No pending email requests")
         
-        with tab2:
-            # Storage analytics
-            storage_count = len(st.session_state.get('assessment_storage', {}))
-            email_count = len(st.session_state.get('email_queue', []))
+#         with tab2:
+#             # Storage analytics
+#             storage_count = len(st.session_state.get('assessment_storage', {}))
+#             email_count = len(st.session_state.get('email_queue', []))
             
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("Stored Assessments", storage_count)
-            with col2:
-                st.metric("Email Requests", email_count)
+#             col1, col2 = st.columns(2)
+#             with col1:
+#                 st.metric("Stored Assessments", storage_count)
+#             with col2:
+#                 st.metric("Email Requests", email_count)
             
-            # Show recent assessments
-            if st.session_state.get('assessment_storage'):
-                st.markdown("**Recent Assessments:**")
-                for session_id, data in list(st.session_state.assessment_storage.items())[-5:]:
-                    assessment_data = data.get('data', {})
-                    contact_info = assessment_data.get('contact_info', {})
-                    st.markdown(f"• {session_id[:8]} - {contact_info.get('name', 'Anonymous')} - {data.get('saved_at', 'Unknown')}")
+#             # Show recent assessments
+#             if st.session_state.get('assessment_storage'):
+#                 st.markdown("**Recent Assessments:**")
+#                 for session_id, data in list(st.session_state.assessment_storage.items())[-5:]:
+#                     assessment_data = data.get('data', {})
+#                     contact_info = assessment_data.get('contact_info', {})
+#                     st.markdown(f"• {session_id[:8]} - {contact_info.get('name', 'Anonymous')} - {data.get('saved_at', 'Unknown')}")
 
 
 
@@ -525,6 +520,8 @@ class ComprehensiveBehavioralAssessment:
             if key not in st.session_state:
                 st.session_state[key] = value
 
+     # -- Question sets --
+    
     def _get_age_screening_questions(self):
         """Phase 0: Age Screening for Digital Native Assessment"""
         return {
@@ -1109,7 +1106,9 @@ class ComprehensiveBehavioralAssessment:
             }
         }
 
-    # ---- algorithmical divide Analysis Methods ----
+
+    # ---- Response Analysis ----
+    
     def _analyze_digital_despair_indicators(self, responses):
         """Analyze responses for algorithmical divide Syndrome indicators"""
         
@@ -1349,6 +1348,7 @@ class ComprehensiveBehavioralAssessment:
         return min(5, score)
 
     # ---- Pattern Detection and Scoring ----
+    
     def _analyze_text_for_patterns(self, text, keywords_dict):
         """Analyze text response for pattern indicators"""
         text_lower = text.lower()
@@ -1457,6 +1457,7 @@ class ComprehensiveBehavioralAssessment:
             st.session_state.phase_progress[phase] += 1
 
     # ---- Question Navigation Logic ----
+    
     def _get_next_question(self):
         """Determine next question based on current phase and responses"""
         answered = set(st.session_state.assessment_responses.keys())
@@ -1548,6 +1549,7 @@ class ComprehensiveBehavioralAssessment:
             return remaining * 1.0
 
     # ---- Response Type Handlers ----
+    
     def _handle_single_choice(self, q_id, question):
         """Handle single choice questions"""
         for i, option in enumerate(question['options']):
@@ -1724,7 +1726,7 @@ class ComprehensiveBehavioralAssessment:
         }
         st.rerun()
 
-    # ---- Rendering Functions ----
+    # ---- Rendering UI Functions ----
     def render(self):
         apply_clinical_styles()
         self._render_header()
@@ -1840,8 +1842,13 @@ class ComprehensiveBehavioralAssessment:
                     self._advance_question()
                     st.rerun()
 
+    # ---- Result Rendering contact form ----
+    
     def _render_contact_form(self):
-        """Render contact form for results with enhanced clinical data"""
+        """
+        Render the contact form after completion. Gathers email and optional data.
+        Sends results via email if system available.
+        """
         #st.markdown("**Assessment complete!**")
         st.success("Your comprehensive behavioral pattern analysis is ready!")
         
@@ -1983,7 +1990,7 @@ class ComprehensiveBehavioralAssessment:
                     clinical_template = self._format_comprehensive_clinical_template()
                     
                     # Prepare assessment data for email with enhanced clinical template
-                    assessment_data = {
+                    email_data = {
                         'contact_info': st.session_state.contact_info,
                         'assessment_results': st.session_state.assessment_results,
                         'responses': st.session_state.assessment_responses,
@@ -2004,7 +2011,7 @@ class ComprehensiveBehavioralAssessment:
                     # Send comprehensive clinical assessment email
                     try:
                         from utils.email_assess import send_clinical_assessment_results      
-                        email_success = send_clinical_assessment_results(assessment_data)
+                        email_success = send_clinical_assessment_results(email_data)
                         # email_success = self._send_assessment_email(assessment_data)
                         
                         if email_success:
@@ -2022,16 +2029,7 @@ class ComprehensiveBehavioralAssessment:
                     st.session_state.contact_provided = True
                     st.rerun()
 
-    # # ADD THIS NEW METHOD at the end of the class for email sent to client:
-    # def _send_assessment_email(self, assessment_data):
-    #     """Send assessment email using unified email handler"""
-    #     try:
-    #         email_handler = UnifiedEmailHandler()
-    #         return email_handler.send_assessment_results(assessment_data, "standard")
-    #     except Exception as e:
-    #         print(f"Error sending assessment email: {str(e)}")
-    #         return False
-    
+   
 
     def _format_comprehensive_clinical_template(self):
         """Format comprehensive clinical template integrating traditional patterns + digital analysis"""
