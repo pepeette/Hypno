@@ -45,6 +45,10 @@ try:
         QuestionSets,
         DIGITAL_SCORING_RULES,
         PATTERN_SCORING_RULES,
+        BELIEF_HINTS,
+        DISCOVERY_PHASE_RULES,
+        DIGITAL_SUCCESS_INDICATORS,
+        DIGITAL_THRESHOLDS
         EmailConfig,
     )
     CONFIG_AVAILABLE = True
