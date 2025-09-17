@@ -601,6 +601,7 @@ class MasterAnalytics:
     def _analyze_all_patterns(self, assessment_data):
         """Single comprehensive pattern analysis - replaces 5+ duplicate methods"""
         pattern_scores = assessment_data.get('pattern_scores', {})
+        pattern_scores = {k: (v or 0) for k, v in pattern_scores.items()}
         responses = assessment_data.get('assessment_responses', {})
         intensity_data = assessment_data.get('intensity_responses', {})
         
@@ -1536,7 +1537,12 @@ class ComprehensiveBehavioralAssessment:
                 'timestamp': datetime.now().isoformat(),
                 'phase': question.get('phase', 'unknown')
             }
-            
+            qt = response_data.get("question_text", "")
+            if isinstance(qt, str):
+                question_text = qt.lower()
+            else:
+                question_text = ""
+                        
             # Store intensity separately if provided
             if intensity is not None:
                 st.session_state.intensity_responses[q_id] = intensity
