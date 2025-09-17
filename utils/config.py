@@ -189,6 +189,10 @@ class PatternDefinitions:
                 "impact": "This can limit your ability to fully enjoy success and happiness",
                 "transformation": "Learning to trust that joy and success can be sustainable and deserved",
                 "insights_map":"Your mind has learned to deflect happiness as protection against disappointment - but this same mechanism is preventing the joy you deserve",
+                "what_you_notice": "Feeling guilty when things go well, waiting for the other shoe to drop, minimizing achievements",
+                "what_others_see": "Someone who deflects compliments, seems uncomfortable with praise, or finds problems in good situations",
+                "hidden_cost": "Missing out on life's genuine pleasures and the motivation that comes from celebrating wins",
+                "breakthrough_moment": "Realizing that happiness doesn't make you vulnerable - it makes you stronger and more resilient",
                 "session_1_focuses":"Happiness permission protocols and safety anchoring",
                 "session_2_focuses":"Joy sustainability and positive emotion anchoring"
         },
@@ -204,6 +208,10 @@ class PatternDefinitions:
                 "impact": "This can create stress and prevent collaborative problem-solving",
                 "transformation": "Developing skills for curious dialogue and win-win resolution",
                 "insights_map":"You're fighting battles that don't need to be fought - your nervous system activates 'combat mode' even in collaborative situations",
+                "what_you_notice": "Feeling defensive quickly, needing to be right, seeing disagreements as threats",
+                "what_others_see": "Someone who argues their point intensely, seems confrontational, or withdraws when challenged",
+                "hidden_cost": "Exhausting mental energy on conflicts instead of creative collaboration and genuine connection",
+                "breakthrough_moment": "Discovering that being curious about others' perspectives actually strengthens your position",
                 "session_1_focuses":"Nervous system regulation and collaborative response installation",
                 "session_2_focuses":"Conflict transformation and win-win response automation"
         },
@@ -219,6 +227,10 @@ class PatternDefinitions:
                 "impact": "This protective mechanism may limit deep connections and opportunities",
                 "transformation": "Calibrating trust responses and building authentic relationships",
                 "insights_map":"Your protective skepticism, while once useful, is now creating the very rejection and isolation you're trying to avoid",
+                "what_you_notice": "Analyzing people's motives, feeling suspicious of kindness, expecting hidden agendas",
+                "what_others_see": "Someone who seems guarded, asks probing questions, or appears cynical about human nature",
+                "hidden_cost": "Living in emotional isolation and missing genuine opportunities for support and connection",
+                "breakthrough_moment": "Understanding that discernment and openness can coexist - you can be wise AND trusting",
                 "session_1_focuses":"Trust calibration and authentic connection programming",
                 "session_2_focuses":"Healthy skepticism calibration and openness programming"
         },
@@ -234,6 +246,10 @@ class PatternDefinitions:
                 "impact": "This can limit creative solutions and increase decision paralysis",
                 "transformation": "Developing nuanced thinking and embracing creative possibilities",
                 "insights_map":"Your brilliant analytical mind gets trapped in 'either/or' thinking when 'both/and' solutions would serve you better",
+                "what_you_notice": "Feeling stuck between two options, seeing things as all good or all bad, struggling with grey areas",
+                "what_others_see": "Someone who wants clear answers, seems frustrated by ambiguity, or makes quick either/or judgments",
+                "hidden_cost": "Missing innovative solutions that require holding multiple perspectives simultaneously",
+                "breakthrough_moment": "Realizing that complexity isn't confusion - it's where the most elegant solutions hide",
                 "session_1_focuses":"Binary thinking dissolution and creative possibility expansion",
                 "session_2_focuses":"Creative problem-solving and nuanced thinking installation"
         },
@@ -249,6 +265,10 @@ class PatternDefinitions:
                 "impact": "This can lead to burnout and difficulty with rest or self-care",
                 "transformation": "Anchoring worth in your inherent value, independent of accomplishments",
                 "insights_map":"You've created an equation where doing = worth, but your actual value exists independent of any achievement",
+                "what_you_notice": "Feeling anxious when not productive, equating rest with laziness, measuring yourself by output",
+                "what_others_see": "Someone who's always busy, seems uncomfortable with downtime, or talks about achievements frequently",
+                "hidden_cost": "Chronic stress, missed opportunities for reflection and creativity that come from mental space",
+                "breakthrough_moment": "Discovering that your value exists completely separate from what you do or achieve",
                 "session_1_focuses":"Worth anchoring independent of achievement",
                 "session_2_focuses":"Intrinsic worth recognition and balanced achievement"
         },
@@ -264,6 +284,10 @@ class PatternDefinitions:
                 "impact": "This can create internal confusion and emotional exhaustion",
                 "transformation": "Integrating an authentic, consistent self across all situations",
                 "insights_map":"You're exhausting yourself maintaining different versions of yourself instead of trusting that your authentic self is enough",
+                "what_you_notice": "Feeling like different people in different settings, adapting personality to fit in, losing sense of 'real self'",
+                "what_others_see": "Someone who seems different depending on the group, appears to chameleon, or seems inconsistent",
+                "hidden_cost": "Emotional exhaustion from performance, loss of authentic self-expression and genuine connections",
+                "breakthrough_moment": "Realizing that your authentic self is actually more likeable and magnetic than any persona",
                 "session_1_focuses": "Authentic self integration and consistency programming",
                 "session_2_focuses":"Integrated identity and consistent self-expression"
         },
@@ -279,6 +303,10 @@ class PatternDefinitions:
                 "impact": "This can lead to resentment and emotional depletion over time",
                 "transformation": "Developing healthy boundaries and self-care practices",
                 "insights_map":"Your generous heart has learned to give to others but forgotten how to receive - creating an unsustainable energy drain",
+                "what_you_notice": "Feeling guilty when focusing on yourself, automatically saying yes to requests, feeling responsible for others' emotions",
+                "what_others_see": "Someone who's always helpful, never seems to have needs, or appears stressed but won't ask for help",
+                "hidden_cost": "Resentment buildup, burnout, and becoming less effective at helping others when you're depleted",
+                "breakthrough_moment": "Understanding that taking care of yourself is actually the most loving thing you can do for others",
                 "session_1_focuses": "Boundary establishment and self-care permission",
                 "session_2_focuses":"Reciprocal relationship patterns and energy management"
         },
@@ -294,6 +322,10 @@ class PatternDefinitions:
                 "impact": "This can create internal conflict and limit authentic self-expression",
                 "transformation": "Clarifying personal values while maintaining family harmony",
                 "insights_map":"You're living someone else's dream while your own authentic desires remain buried under family expectations",
+                "what_you_notice": "Feeling torn between what you want and what's expected, guilt about disappointing family, unclear about your own desires",
+                "what_others_see": "Someone who references family expectations often, seems conflicted about decisions, or appears to live for others",
+                "hidden_cost": "Living someone else's life instead of your own, missing your unique contribution to the world",
+                "breakthrough_moment": "Realizing you can honor your family AND live authentically - they're not mutually exclusive",
                 "session_1_focuses":"Personal values clarification and family harmony balance",
                 "session_2_focuses":"Authentic life direction and confident decision-making"
         },
@@ -309,19 +341,61 @@ class PatternDefinitions:
                 "impact": "This can lead to inconsistent relationships and self-advocacy",
                 "transformation": "Establishing consistent, healthy boundaries across all situations",
                 "insights_map":"Your boundaries disappear in certain contexts because you've never learned you can be both loved and boundaried",
+                "what_you_notice": "Being strong in some situations but passive in others, feeling like you lose yourself in certain contexts",
+                "what_others_see": "Someone who seems confident sometimes but submissive other times, appears unpredictable in their responses",
+                "hidden_cost": "Confusion about your own limits, relationships built on false premises, accumulated resentment",
+                "breakthrough_moment": "Discovering that consistent boundaries actually make you more trustworthy and respected",
                 "session_1_focuses": "Context-independent boundary installation",
                 "session_2_focuses":"Consistent boundary maintenance across all contexts"
         }
     }
 
     DIGITAL_THRESHOLDS = {
-        'SEVERE': 70,
-        'MODERATE': 50, 
-        'MILD': 30,
-        'MINIMAL': 0
+            'SEVERE': {
+                'threshold':70,
+                'title': 'Specialized digital-native approach required',
+                'description': 'Your assessment reveals significant digital conditioning patterns that require adapted therapeutic techniques.',
+                'what_you_notice': 'Feeling more authentic online than offline, struggling with attention span for real-world activities, emotional states tied to digital feeds',
+                'what_others_see': 'Someone who seems more engaged with their phone than present conversations, appears cynical about traditional approaches',
+                'hidden_cost': 'Living in digital reality while real life passes by, missing genuine human connections and embodied experiences',
+                'benefits': 'With proper specialized approach, you can integrate your digital competencies with real-world confidence and authentic emotional expression.',
+                'why_traditional_fails': 'Traditional therapy expects attention spans and emotional patterns that digital conditioning has fundamentally altered',
+                'hypnotherapy_advantage': 'Bypasses conscious resistance and works directly with the neural patterns that digital conditioning has created'
+            },
+            'MODERATE': {
+                'threshold':50,
+                'title': 'Enhanced digital-aware therapy recommended', 
+                'description': 'You show moderate digital conditioning that benefits from modified therapeutic approaches.',
+                'what_you_notice': 'Some difficulty with extended focus, occasional preference for online interactions, influence of social media on mood',
+                'what_others_see': 'Someone who checks their phone regularly, seems more comfortable texting than calling, references online culture',
+                'hidden_cost': 'Fragmented attention reducing deep thinking capacity, some authentic emotions filtered through digital expression',
+                'benefits': 'Standard techniques enhanced with digital awareness will optimize your transformation process.',
+                'why_traditional_fails': 'Traditional approaches don\'t account for how digital environments have shaped your neural pathways',
+                'hypnotherapy_advantage': 'Can work with both traditional patterns and digital conditioning simultaneously'
+            },
+            'MILD': {
+                'threshold':30,
+                'title': 'Digital considerations integrated',
+                'description': 'Some digital influence detected that will be incorporated into your standard approach.',
+                'what_you_notice': 'Balanced online and offline life with occasional digital overwhelm, mostly traditional attention patterns',
+                'what_others_see': 'Someone who uses technology normally without it dominating their personality or relationships',
+                'hidden_cost': 'Minor attention fragmentation and occasional comparison triggered by social media',
+                'benefits': 'Your digital skills can be leveraged as strengths in your transformation journey.',
+                'why_traditional_fails': 'Standard approaches work well but miss opportunities to leverage your digital competencies',
+                'hypnotherapy_advantage': 'Can enhance traditional patterns while optimizing your relationship with technology'
+            },
+            'MINIMAL': {
+                'threshold':0,
+                'title': 'Traditional approach optimal',
+                'description': 'Minimal digital conditioning detected - standard hypnotherapy approach is ideal.',
+                'what_you_notice': 'Technology serves you rather than controlling you, strong attention span for offline activities',
+                'what_others_see': 'Someone who uses technology as a tool without being dominated by it, present in conversations',
+                'hidden_cost': 'Minimal digital interference with authentic living and relationships',
+                'benefits': 'You can benefit from proven traditional techniques without modification.',
+                'why_traditional_fails': 'Traditional approaches work well for you - this is about optimizing what already works',
+                'hypnotherapy_advantage': 'Direct access to your subconscious without digital conditioning interference'
+            }
     }
-
-
 
 
 class EmailConfig:
