@@ -160,6 +160,7 @@ class TestimonialConfig:
 
 # for ASSESS.PY
 from datetime import datetime
+import streamlit as st
 import re
 # -------------------------
 # Pattern Definitions
@@ -525,10 +526,8 @@ class QuestionSets:
                     "Neither - I don't feel authentic anywhere",
                     "It varies completely depending on the situation"
                 ],
-                "digital_despair_indicators": {
-                    1: 3,  # Strong offline dissociation indicator
-                    3: 2,  # Identity fragmentation 
-                    4: 4   # Complete authenticity loss
+                "pattern_triggers": {  # Changed from digital_despair_indicators
+                    1: [6], 3: [3, 6], 4: [6]
                 },
                 "phase": "digital_screening"
             },
@@ -542,10 +541,8 @@ class QuestionSets:
                     "Just being happy and content with normal life",
                     "Success feels impossible or meaningless to me"
                 ],
-                "digital_despair_patterns": {
-                    1: 4,  # Extraordinary achievement pressure
-                    2: 3,  # Comparative inadequacy 
-                    4: 4   # Nihilistic worldview
+                "pattern_triggers": {  # Changed from digital_despair_patterns
+                    1: [5], 2: [2, 5], 4: [3]
                 },
                 "phase": "digital_screening"
             },
@@ -559,7 +556,9 @@ class QuestionSets:
                     "I mainly express emotions through memes or online references",
                     "I rarely express genuine emotions at all"
                 ],
-                "ironic_detachment_scoring": [0, 2, 3, 3, 4],
+                "pattern_triggers": {  # Added pattern triggers
+                    1: [1], 2: [1, 3], 3: [1, 3, 6], 4: [6]
+                },
                 "phase": "digital_screening"
             },
             5: {
@@ -606,10 +605,8 @@ class QuestionSets:
                     "I feel annoyed because they don't understand reality",
                     "I dismiss it as naive or manipulative"
                 ],
-                "hope_avoidance_indicators": {
-                    2: 2,  # Automatic negativity
-                    3: 3,  # Irritated by optimism
-                    4: 4   # Complete hope dismissal
+                "pattern_triggers": {  # Changed from hope_avoidance_indicators
+                    2: [3], 3: [3, 2], 4: [3, 2]
                 },
                 "phase": "digital_screening"
             },
@@ -650,7 +647,6 @@ class QuestionSets:
                 "type": "text_completion",
                 "placeholder": "Describe what you'd be doing differently in 6 months - be as specific as possible about the changes you'd see...",
                 "min_chars": 3,
-                "pattern_analysis": True,
                 "keywords": {
                     "productivity": [5], "relationships": [2, 3, 6, 7], "peace": [1], 
                     "authentic": [6], "happy": [1], "control": [2, 4], "boundaries": [7, 9]
@@ -698,12 +694,12 @@ class QuestionSets:
 
     TRIGGER_MAPPING = {
         """Phase 3: Core Trigger Mapping"""
-        14: {
+            14: {
                 "text": "Thinking of the most recent time, what was happening in the 30 seconds right before this pattern kicked in?",
                 "type": "text_completion",
                 "placeholder": "Be specific: Where were you? Who was present? What was being discussed or happening? What did you see, hear, or notice?",
                 "min_chars": 5,
-                "trigger_analysis": True,
+                "chain_mapping": "trigger",
                 "phase": "trigger_mapping"
             },
             15: {
@@ -731,7 +727,7 @@ class QuestionSets:
                     "Restlessness, fidgeting, or urge to move/escape",
                     "Fatigue, heaviness, or sudden energy drain"
                 ],
-                "pattern_indicators": {
+                "pattern_triggers": {
                     0: [1, 3, 4], 1: [1, 3, 4], 2: [2, 5], 3: [2, 5], 
                     4: [6, 9], 5: [2, 5], 6: [1, 7]
                 },
