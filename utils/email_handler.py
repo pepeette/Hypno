@@ -24,7 +24,7 @@ class EmailHandler:
         self.password = EmailConfig.MAIL_APP_PASSWORD
         
         # Clinical pattern analysis tables
-        self.pattern_structures = PatternDefinitions.STRUCTURES
+        self.pattern_structures = PatternDefinitions.PATTERN_DESCRIPTIONS
         
         # Intervention mapping tables
         self.hypnotic_language_map = {
