@@ -3,9 +3,6 @@ Clean configuration module for the Hypnotherapy website
 Centralizes all settings and constants
 """
 
-from datetime import datetime
-import re
-
 class AppConstants:
     """Application-wide constants"""
     
@@ -162,6 +159,12 @@ class TestimonialConfig:
 
 
 # for ASSESS.PY
+from datetime import datetime
+import re
+# -------------------------
+# Pattern Definitions
+# -------------------------
+
 class PatternDefinitions:
     """Centralized pattern definitions"""
     PATTERNS = {
@@ -178,225 +181,1012 @@ class PatternDefinitions:
 
     PATTERN_DESCRIPTIONS = {
         1: {
-                "name": "Unhappiness Culture",
-                "root_structure": "Positive states = danger/loss/punishment",
-                "core_belief": "Happiness leads to disappointment or makes me a target",
-                "systemic_factors": ["Family depression patterns", "Cultural suffering valorization", "Positive suppression rewards"],
-                "identity_conflict": "Happy self vs. Familiar/safe suffering self",
-                "hidden_loyalties": ["Family unhappiness solidarity", "Suffering = virtue beliefs", "Protection from envy/attacks"],
-                "intervention_strategy": "Permission installation for positive states with safety anchoring",
-                "description": "You may find it challenging to accept or maintain positive emotional states",
-                "impact": "This can limit your ability to fully enjoy success and happiness",
-                "transformation": "Learning to trust that joy and success can be sustainable and deserved",
-                "insights_map":"Your mind has learned to deflect happiness as protection against disappointment - but this same mechanism is preventing the joy you deserve",
-                "what_you_notice": "Feeling guilty when things go well, waiting for the other shoe to drop, minimizing achievements",
-                "what_others_see": "Someone who deflects compliments, seems uncomfortable with praise, or finds problems in good situations",
-                "hidden_cost": "Missing out on life's genuine pleasures and the motivation that comes from celebrating wins",
-                "breakthrough_moment": "Realizing that happiness doesn't make you vulnerable - it makes you stronger and more resilient",
-                "session_1_focuses":"Happiness permission protocols and safety anchoring",
-                "session_2_focuses":"Joy sustainability and positive emotion anchoring"
+            "name": "Unhappiness Culture",
+            "root_structure": "Positive states = danger/loss/punishment",
+            "core_belief": "Happiness leads to disappointment or makes me a target",
+            "systemic_factors": ["Family depression patterns", "Cultural suffering valorization", "Positive suppression rewards"],
+            "identity_conflict": "Happy self vs. Familiar/safe suffering self",
+            "hidden_loyalties": ["Family unhappiness solidarity", "Suffering = virtue beliefs", "Protection from envy/attacks"],
+            "intervention_strategy": "Permission installation for positive states with safety anchoring",
+            "description": "You may find it challenging to accept or maintain positive emotional states",
+            "impact": "This can limit your ability to fully enjoy success and happiness",
+            "transformation": "Learning to trust that joy and success can be sustainable and deserved",
+            "keywords_matching": ["happy", "joy", "success", "good things"],
+            "pattern_mechanism": "Happiness deflection to avoid disappointment",
+            "pattern_resistance": "May resist feeling genuine joy",
+            "insights_map": "Your mind has learned to deflect happiness as protection against disappointment - but this same mechanism is preventing the joy you deserve",
+            "what_you_notice": "Feeling guilty when things go well, waiting for the other shoe to drop, minimizing achievements",
+            "what_others_see": "Someone who deflects compliments, seems uncomfortable with praise, or finds problems in good situations",
+            "hidden_cost": "Missing out on life's genuine pleasures and the motivation that comes from celebrating wins",
+            "breakthrough_moment": "Realizing that happiness doesn't make you vulnerable - it makes you stronger and more resilient",
+            "session_1_focuses": "Happiness permission protocols and safety anchoring",
+            "session_2_focuses": "Joy sustainability and positive emotion anchoring"
         },
         2: {
-                "name": "Power Struggles", 
-                "root_structure": "Submission = death/annihilation of self",
-                "core_belief": "I must fight to exist/maintain my identity",
-                "systemic_factors": ["Authoritarian family dynamics", "Competition-based relationships", "Win-lose paradigms"],
-                "identity_conflict": "Collaborative self vs. Fighter/survivor self",
-                "hidden_loyalties": ["Family fight patterns", "Strength = resistance beliefs", "Protection from domination"],
-                "intervention_strategy": "Collaborative empowerment with maintained autonomy",
-                "description": "You experience recurring conflicts and power struggles in relationships",
-                "impact": "This can create stress and prevent collaborative problem-solving",
-                "transformation": "Developing skills for curious dialogue and win-win resolution",
-                "insights_map":"You're fighting battles that don't need to be fought - your nervous system activates 'combat mode' even in collaborative situations",
-                "what_you_notice": "Feeling defensive quickly, needing to be right, seeing disagreements as threats",
-                "what_others_see": "Someone who argues their point intensely, seems confrontational, or withdraws when challenged",
-                "hidden_cost": "Exhausting mental energy on conflicts instead of creative collaboration and genuine connection",
-                "breakthrough_moment": "Discovering that being curious about others' perspectives actually strengthens your position",
-                "session_1_focuses":"Nervous system regulation and collaborative response installation",
-                "session_2_focuses":"Conflict transformation and win-win response automation"
+            "name": "Power Struggles", 
+            "root_structure": "Submission = death/annihilation of self",
+            "core_belief": "I must fight to exist/maintain my identity",
+            "systemic_factors": ["Authoritarian family dynamics", "Competition-based relationships", "Win-lose paradigms"],
+            "identity_conflict": "Collaborative self vs. Fighter/survivor self",
+            "hidden_loyalties": ["Family fight patterns", "Strength = resistance beliefs", "Protection from domination"],
+            "intervention_strategy": "Collaborative empowerment with maintained autonomy",
+            "description": "You experience recurring conflicts and power struggles in relationships",
+            "impact": "This can create stress and prevent collaborative problem-solving",
+            "transformation": "Developing skills for curious dialogue and win-win resolution",
+            "keywords_matching": ["conflict", "argument", "disagree", "defensive"],
+            "pattern_mechanism": "Control seeking to prevent vulnerability",
+            "pattern_resistance": "May challenge collaborative approach",
+            "insights_map": "You're fighting battles that don't need to be fought - your nervous system activates 'combat mode' even in collaborative situations",
+            "what_you_notice": "Feeling defensive quickly, needing to be right, seeing disagreements as threats",
+            "what_others_see": "Someone who argues their point intensely, seems confrontational, or withdraws when challenged",
+            "hidden_cost": "Exhausting mental energy on conflicts instead of creative collaboration and genuine connection",
+            "breakthrough_moment": "Discovering that being curious about others' perspectives actually strengthens your position",
+            "session_1_focuses": "Nervous system regulation and collaborative response installation",
+            "session_2_focuses": "Conflict transformation and win-win response automation"
         },
         3: {
-                "name": "Systematic Mistrust",
-                "root_structure": "Others = eventual betrayal/harm",
-                "core_belief": "Trust leads to being hurt, used, or abandoned",
-                "systemic_factors": ["Early betrayal experiences", "Inconsistent caregiving", "Trust violation patterns"],
-                "identity_conflict": "Trusting self vs. Protected/vigilant self", 
-                "hidden_loyalties": ["Loyalty to hurt parts", "Vigilance = safety beliefs", "Protection from re-injury"],
-                "intervention_strategy": "Gradual trust building with transparent safety protocols",
-                "description": "You maintain a default skepticism about others' intentions",
-                "impact": "This protective mechanism may limit deep connections and opportunities",
-                "transformation": "Calibrating trust responses and building authentic relationships",
-                "insights_map":"Your protective skepticism, while once useful, is now creating the very rejection and isolation you're trying to avoid",
-                "what_you_notice": "Analyzing people's motives, feeling suspicious of kindness, expecting hidden agendas",
-                "what_others_see": "Someone who seems guarded, asks probing questions, or appears cynical about human nature",
-                "hidden_cost": "Living in emotional isolation and missing genuine opportunities for support and connection",
-                "breakthrough_moment": "Understanding that discernment and openness can coexist - you can be wise AND trusting",
-                "session_1_focuses":"Trust calibration and authentic connection programming",
-                "session_2_focuses":"Healthy skepticism calibration and openness programming"
+            "name": "Systematic Mistrust",
+            "root_structure": "Others = eventual betrayal/harm",
+            "core_belief": "Trust leads to being hurt, used, or abandoned",
+            "systemic_factors": ["Early betrayal experiences", "Inconsistent caregiving", "Trust violation patterns"],
+            "identity_conflict": "Trusting self vs. Protected/vigilant self", 
+            "hidden_loyalties": ["Loyalty to hurt parts", "Vigilance = safety beliefs", "Protection from re-injury"],
+            "intervention_strategy": "Gradual trust building with transparent safety protocols",
+            "description": "You maintain a default skepticism about others' intentions",
+            "impact": "This protective mechanism may limit deep connections and opportunities",
+            "transformation": "Calibrating trust responses and building authentic relationships",
+            "keywords_matching": ["trust", "suspicious", "motives", "skeptical"],
+            "pattern_mechanism": "Preemptive rejection to avoid abandonment",
+            "pattern_resistance": "May question therapeutic relationship",
+            "insights_map": "Your protective skepticism, while once useful, is now creating the very rejection and isolation you're trying to avoid",
+            "what_you_notice": "Analyzing people's motives, feeling suspicious of kindness, expecting hidden agendas",
+            "what_others_see": "Someone who seems guarded, asks probing questions, or appears cynical about human nature",
+            "hidden_cost": "Living in emotional isolation and missing genuine opportunities for support and connection",
+            "breakthrough_moment": "Understanding that discernment and openness can coexist - you can be wise AND trusting",
+            "session_1_focuses": "Trust calibration and authentic connection programming",
+            "session_2_focuses": "Healthy skepticism calibration and openness programming"
         },
         4: {
-                "name": "Separation and Division",
-                "root_structure": "Gray areas = chaos/uncertainty/danger",
-                "core_belief": "Things must be clearly defined or everything falls apart",
-                "systemic_factors": ["Rigid family rules", "Religious absolutism", "Chaotic early environment"],
-                "identity_conflict": "Flexible self vs. Clear/defined self",
-                "hidden_loyalties": ["Family certainty patterns", "Order = safety beliefs", "Protection from confusion"],
-                "intervention_strategy": "Both/and integration with safety in uncertainty",
-                "description": "You tend toward black-and-white thinking patterns",
-                "impact": "This can limit creative solutions and increase decision paralysis",
-                "transformation": "Developing nuanced thinking and embracing creative possibilities",
-                "insights_map":"Your brilliant analytical mind gets trapped in 'either/or' thinking when 'both/and' solutions would serve you better",
-                "what_you_notice": "Feeling stuck between two options, seeing things as all good or all bad, struggling with grey areas",
-                "what_others_see": "Someone who wants clear answers, seems frustrated by ambiguity, or makes quick either/or judgments",
-                "hidden_cost": "Missing innovative solutions that require holding multiple perspectives simultaneously",
-                "breakthrough_moment": "Realizing that complexity isn't confusion - it's where the most elegant solutions hide",
-                "session_1_focuses":"Binary thinking dissolution and creative possibility expansion",
-                "session_2_focuses":"Creative problem-solving and nuanced thinking installation"
+            "name": "Separation and Division",
+            "root_structure": "Gray areas = chaos/uncertainty/danger",
+            "core_belief": "Things must be clearly defined or everything falls apart",
+            "systemic_factors": ["Rigid family rules", "Religious absolutism", "Chaotic early environment"],
+            "identity_conflict": "Flexible self vs. Clear/defined self",
+            "hidden_loyalties": ["Family certainty patterns", "Order = safety beliefs", "Protection from confusion"],
+            "intervention_strategy": "Both/and integration with safety in uncertainty",
+            "description": "You tend toward black-and-white thinking patterns",
+            "impact": "This can limit creative solutions and increase decision paralysis",
+            "transformation": "Developing nuanced thinking and embracing creative possibilities",
+            "keywords_matching": ["choice", "decision", "either", "both"],
+            "pattern_mechanism": "Binary thinking to simplify complex emotions",
+            "pattern_resistance": "May resist nuanced solutions",
+            "insights_map": "Your brilliant analytical mind gets trapped in 'either/or' thinking when 'both/and' solutions would serve you better",
+            "what_you_notice": "Feeling stuck between two options, seeing things as all good or all bad, struggling with grey areas",
+            "what_others_see": "Someone who wants clear answers, seems frustrated by ambiguity, or makes quick either/or judgments",
+            "hidden_cost": "Missing innovative solutions that require holding multiple perspectives simultaneously",
+            "breakthrough_moment": "Realizing that complexity isn't confusion - it's where the most elegant solutions hide",
+            "session_1_focuses": "Binary thinking dissolution and creative possibility expansion",
+            "session_2_focuses": "Creative problem-solving and nuanced thinking installation"
         },
         5: {
-                "name": "Doing versus Being",
-                "root_structure": "Worth = productivity/achievement only",
-                "core_belief": "I am only valuable when I'm producing/achieving",
-                "systemic_factors": ["Achievement-focused family", "Work/school performance pressure", "Productivity culture"],
-                "identity_conflict": "Being self vs. Achieving self",
-                "hidden_loyalties": ["Family achievement patterns", "Worth = doing beliefs", "Protection from worthlessness"],
-                "intervention_strategy": "Inherent worth installation with productivity reframing",
-                "description": "Your self-worth is closely tied to productivity and achievement",
-                "impact": "This can lead to burnout and difficulty with rest or self-care",
-                "transformation": "Anchoring worth in your inherent value, independent of accomplishments",
-                "insights_map":"You've created an equation where doing = worth, but your actual value exists independent of any achievement",
-                "what_you_notice": "Feeling anxious when not productive, equating rest with laziness, measuring yourself by output",
-                "what_others_see": "Someone who's always busy, seems uncomfortable with downtime, or talks about achievements frequently",
-                "hidden_cost": "Chronic stress, missed opportunities for reflection and creativity that come from mental space",
-                "breakthrough_moment": "Discovering that your value exists completely separate from what you do or achieve",
-                "session_1_focuses":"Worth anchoring independent of achievement",
-                "session_2_focuses":"Intrinsic worth recognition and balanced achievement"
+            "name": "Doing versus Being",
+            "root_structure": "Worth = productivity/achievement only",
+            "core_belief": "I am only valuable when I'm producing/achieving",
+            "systemic_factors": ["Achievement-focused family", "Work/school performance pressure", "Productivity culture"],
+            "identity_conflict": "Being self vs. Achieving self",
+            "hidden_loyalties": ["Family achievement patterns", "Worth = doing beliefs", "Protection from worthlessness"],
+            "intervention_strategy": "Inherent worth installation with productivity reframing",
+            "description": "Your self-worth is closely tied to productivity and achievement",
+            "impact": "This can lead to burnout and difficulty with rest or self-care",
+            "transformation": "Anchoring worth in your inherent value, independent of accomplishments",
+            "keywords_matching": ["productive", "busy", "achievement", "worth"],
+            "pattern_mechanism": "Achievement addiction to earn worth",
+            "pattern_resistance": "May fear identity change",
+            "insights_map": "You've created an equation where doing = worth, but your actual value exists independent of any achievement",
+            "what_you_notice": "Feeling anxious when not productive, equating rest with laziness, measuring yourself by output",
+            "what_others_see": "Someone who's always busy, seems uncomfortable with downtime, or talks about achievements frequently",
+            "hidden_cost": "Chronic stress, missed opportunities for reflection and creativity that come from mental space",
+            "breakthrough_moment": "Discovering that your value exists completely separate from what you do or achieve",
+            "session_1_focuses": "Worth anchoring independent of achievement",
+            "session_2_focuses": "Intrinsic worth recognition and balanced achievement"
         },
         6: {
-                "name": "Compartmentalized Authenticity",
-                "root_structure": "Real self = rejection/abandonment",
-                "core_belief": "I must be different selves to be accepted",
-                "systemic_factors": ["Conditional family acceptance", "Social role expectations", "Authenticity punishment"],
-                "identity_conflict": "Authentic self vs. Acceptable/safe selves",
-                "hidden_loyalties": ["Family role patterns", "Adaptation = survival beliefs", "Protection from rejection"],
-                "intervention_strategy": "Authentic self integration with safety across contexts",
-                "description": "Your sense of identity shifts significantly across different contexts",
-                "impact": "This can create internal confusion and emotional exhaustion",
-                "transformation": "Integrating an authentic, consistent self across all situations",
-                "insights_map":"You're exhausting yourself maintaining different versions of yourself instead of trusting that your authentic self is enough",
-                "what_you_notice": "Feeling like different people in different settings, adapting personality to fit in, losing sense of 'real self'",
-                "what_others_see": "Someone who seems different depending on the group, appears to chameleon, or seems inconsistent",
-                "hidden_cost": "Emotional exhaustion from performance, loss of authentic self-expression and genuine connections",
-                "breakthrough_moment": "Realizing that your authentic self is actually more likeable and magnetic than any persona",
-                "session_1_focuses": "Authentic self integration and consistency programming",
-                "session_2_focuses":"Integrated identity and consistent self-expression"
+            "name": "Compartmentalized Authenticity",
+            "root_structure": "Real self = rejection/abandonment",
+            "core_belief": "I must be different selves to be accepted",
+            "systemic_factors": ["Conditional family acceptance", "Social role expectations", "Authenticity punishment"],
+            "identity_conflict": "Authentic self vs. Acceptable/safe selves",
+            "hidden_loyalties": ["Family role patterns", "Adaptation = survival beliefs", "Protection from rejection"],
+            "intervention_strategy": "Authentic self integration with safety across contexts",
+            "description": "Your sense of identity shifts significantly across different contexts",
+            "impact": "This can create internal confusion and emotional exhaustion",
+            "transformation": "Integrating an authentic, consistent self across all situations",
+            "keywords_matching": ["different", "personality", "authentic", "real"],
+            "pattern_mechanism": "Identity shifting to avoid rejection",
+            "pattern_resistance": "May struggle with consistency",
+            "insights_map": "You're exhausting yourself maintaining different versions of yourself instead of trusting that your authentic self is enough",
+            "what_you_notice": "Feeling like different people in different settings, adapting personality to fit in, losing sense of 'real self'",
+            "what_others_see": "Someone who seems different depending on the group, appears to chameleon, or seems inconsistent",
+            "hidden_cost": "Emotional exhaustion from performance, loss of authentic self-expression and genuine connections",
+            "breakthrough_moment": "Realizing that your authentic self is actually more likeable and magnetic than any persona",
+            "session_1_focuses": "Authentic self integration and consistency programming",
+            "session_2_focuses": "Integrated identity and consistent self-expression"
         },
         7: {
-                "name": "Self Sacrifice and Care Avoidance",
-                "root_structure": "My needs = selfish/wrong/dangerous",
-                "core_belief": "I am only good/loveable when serving others",
-                "systemic_factors": ["Caretaker family roles", "Self-sacrifice modeling", "Need-shaming patterns"],
-                "identity_conflict": "Self-caring self vs. Service/giving self",
-                "hidden_loyalties": ["Family service patterns", "Sacrifice = love beliefs", "Protection from selfishness"],
-                "intervention_strategy": "Self-care as service reframing with boundary installation",
-                "description": "You prioritize others' needs while neglecting your own self-care",
-                "impact": "This can lead to resentment and emotional depletion over time",
-                "transformation": "Developing healthy boundaries and self-care practices",
-                "insights_map":"Your generous heart has learned to give to others but forgotten how to receive - creating an unsustainable energy drain",
-                "what_you_notice": "Feeling guilty when focusing on yourself, automatically saying yes to requests, feeling responsible for others' emotions",
-                "what_others_see": "Someone who's always helpful, never seems to have needs, or appears stressed but won't ask for help",
-                "hidden_cost": "Resentment buildup, burnout, and becoming less effective at helping others when you're depleted",
-                "breakthrough_moment": "Understanding that taking care of yourself is actually the most loving thing you can do for others",
-                "session_1_focuses": "Boundary establishment and self-care permission",
-                "session_2_focuses":"Reciprocal relationship patterns and energy management"
+            "name": "Self Sacrifice and Care Avoidance",
+            "root_structure": "My needs = selfish/wrong/dangerous",
+            "core_belief": "I am only good/loveable when serving others",
+            "systemic_factors": ["Caretaker family roles", "Self-sacrifice modeling", "Need-shaming patterns"],
+            "identity_conflict": "Self-caring self vs. Service/giving self",
+            "hidden_loyalties": ["Family service patterns", "Sacrifice = love beliefs", "Protection from selfishness"],
+            "intervention_strategy": "Self-care as service reframing with boundary installation",
+            "description": "You prioritize others' needs while neglecting your own self-care",
+            "impact": "This can lead to resentment and emotional depletion over time",
+            "transformation": "Developing healthy boundaries and self-care practices",
+            "keywords_matching": ["others", "help", "needs", "care"],
+            "pattern_mechanism": "Self-sacrifice to maintain connection",
+            "pattern_resistance": "May feel guilty about self-focus",
+            "insights_map": "Your generous heart has learned to give to others but forgotten how to receive - creating an unsustainable energy drain",
+            "what_you_notice": "Feeling guilty when focusing on yourself, automatically saying yes to requests, feeling responsible for others' emotions",
+            "what_others_see": "Someone who's always helpful, never seems to have needs, or appears stressed but won't ask for help",
+            "hidden_cost": "Resentment buildup, burnout, and becoming less effective at helping others when you're depleted",
+            "breakthrough_moment": "Understanding that taking care of yourself is actually the most loving thing you can do for others",
+            "session_1_focuses": "Boundary establishment and self-care permission",
+            "session_2_focuses": "Reciprocal relationship patterns and energy management"
         },
         8: {
-                "name": "Inherited Missions",
-                "root_structure": "My path = betrayal of family/ancestors",
-                "core_belief": "I must fulfill family dreams/expectations to be loyal",
-                "systemic_factors": ["Family sacrifice stories", "Generational expectations", "Dream inheritance patterns"],
-                "identity_conflict": "Personal desire self vs. Family loyal self",
-                "hidden_loyalties": ["Ancestral sacrifice honor", "Family dream continuation", "Protection from guilt/betrayal"],
-                "intervention_strategy": "Honor family while claiming personal path integration",
-                "description": "Your life choices are driven more by family expectations than personal desires",
-                "impact": "This can create internal conflict and limit authentic self-expression",
-                "transformation": "Clarifying personal values while maintaining family harmony",
-                "insights_map":"You're living someone else's dream while your own authentic desires remain buried under family expectations",
-                "what_you_notice": "Feeling torn between what you want and what's expected, guilt about disappointing family, unclear about your own desires",
-                "what_others_see": "Someone who references family expectations often, seems conflicted about decisions, or appears to live for others",
-                "hidden_cost": "Living someone else's life instead of your own, missing your unique contribution to the world",
-                "breakthrough_moment": "Realizing you can honor your family AND live authentically - they're not mutually exclusive",
-                "session_1_focuses":"Personal values clarification and family harmony balance",
-                "session_2_focuses":"Authentic life direction and confident decision-making"
+            "name": "Inherited Missions",
+            "root_structure": "My path = betrayal of family/ancestors",
+            "core_belief": "I must fulfill family dreams/expectations to be loyal",
+            "systemic_factors": ["Family sacrifice stories", "Generational expectations", "Dream inheritance patterns"],
+            "identity_conflict": "Personal desire self vs. Family loyal self",
+            "hidden_loyalties": ["Ancestral sacrifice honor", "Family dream continuation", "Protection from guilt/betrayal"],
+            "intervention_strategy": "Honor family while claiming personal path integration",
+            "description": "Your life choices are driven more by family expectations than personal desires",
+            "impact": "This can create internal conflict and limit authentic self-expression",
+            "transformation": "Clarifying personal values while maintaining family harmony",
+            "keywords_matching": ["family", "expectations", "should", "duty"],
+            "pattern_mechanism": "Mission inheritance to avoid family conflict",
+            "pattern_resistance": "May feel disloyal to family",
+            "insights_map": "You're living someone else's dream while your own authentic desires remain buried under family expectations",
+            "what_you_notice": "Feeling torn between what you want and what's expected, guilt about disappointing family, unclear about your own desires",
+            "what_others_see": "Someone who references family expectations often, seems conflicted about decisions, or appears to live for others",
+            "hidden_cost": "Living someone else's life instead of your own, missing your unique contribution to the world",
+            "breakthrough_moment": "Realizing you can honor your family AND live authentically - they're not mutually exclusive",
+            "session_1_focuses": "Personal values clarification and family harmony balance",
+            "session_2_focuses": "Authentic life direction and confident decision-making"
         },
         9: {
-                "name": "Context Dependent Weakness",
-                "root_structure": "Certain contexts = powerlessness/helplessness",
-                "core_belief": "I lose myself in specific situations/with certain people",
-                "systemic_factors": ["Trauma context associations", "Power dynamic patterns", "Learned helplessness"],
-                "identity_conflict": "Strong self vs. Overwhelmed/powerless self",
-                "hidden_loyalties": ["Trauma bond maintenance", "Powerlessness = safety beliefs", "Protection from responsibility"],
-                "intervention_strategy": "Universal strength anchoring with context-independent resources",
-                "description": "Your boundaries and limits vary dramatically based on context",
-                "impact": "This can lead to inconsistent relationships and self-advocacy",
-                "transformation": "Establishing consistent, healthy boundaries across all situations",
-                "insights_map":"Your boundaries disappear in certain contexts because you've never learned you can be both loved and boundaried",
-                "what_you_notice": "Being strong in some situations but passive in others, feeling like you lose yourself in certain contexts",
-                "what_others_see": "Someone who seems confident sometimes but submissive other times, appears unpredictable in their responses",
-                "hidden_cost": "Confusion about your own limits, relationships built on false premises, accumulated resentment",
-                "breakthrough_moment": "Discovering that consistent boundaries actually make you more trustworthy and respected",
-                "session_1_focuses": "Context-independent boundary installation",
-                "session_2_focuses":"Consistent boundary maintenance across all contexts"
+            "name": "Context Dependent Weakness",
+            "root_structure": "Certain contexts = powerlessness/helplessness",
+            "core_belief": "I lose myself in specific situations/with certain people",
+            "systemic_factors": ["Trauma context associations", "Power dynamic patterns", "Learned helplessness"],
+            "identity_conflict": "Strong self vs. Overwhelmed/powerless self",
+            "hidden_loyalties": ["Trauma bond maintenance", "Powerlessness = safety beliefs", "Protection from responsibility"],
+            "intervention_strategy": "Universal strength anchoring with context-independent resources",
+            "description": "Your boundaries and limits vary dramatically based on context",
+            "impact": "This can lead to inconsistent relationships and self-advocacy",
+            "transformation": "Establishing consistent, healthy boundaries across all situations",
+            "keywords_matching": ["boundaries", "limits", "context", "situation"],
+            "pattern_mechanism": "Boundary collapse to avoid confrontation",
+            "pattern_resistance": "May fear setting boundaries",
+            "insights_map": "Your boundaries disappear in certain contexts because you've never learned you can be both loved and boundaried",
+            "what_you_notice": "Being strong in some situations but passive in others, feeling like you lose yourself in certain contexts",
+            "what_others_see": "Someone who seems confident sometimes but submissive other times, appears unpredictable in their responses",
+            "hidden_cost": "Confusion about your own limits, relationships built on false premises, accumulated resentment",
+            "breakthrough_moment": "Discovering that consistent boundaries actually make you more trustworthy and respected",
+            "session_1_focuses": "Context-independent boundary installation",
+            "session_2_focuses": "Consistent boundary maintenance across all contexts"
         }
     }
 
+
+    # -------------------------
+    # Core belief hint keywords
+    # -------------------------
+    BELIEF_HINTS = {
+        "not good enough": "I'm not good enough as I am",
+        "can't trust": "I can't trust others to be there for me", 
+        "must do": "I must constantly prove my worth",
+        "don't deserve": "I don't deserve good things",
+        "can't handle": "I can't handle difficult emotions"
+    }
+    
+    # -------------------------
+    # Discovery phase rules
+    # -------------------------
+    DISCOVERY_PHASE_RULES = {
+        "early": ["pattern_1", "pattern_2"],
+        "trigger_mapping": ["pattern_3", "pattern_4"],
+        "default": "Pattern-specific questioning"
+    }
+    
+    # -------------------------
+    # Success indicators for digital components
+    # -------------------------
+    DIGITAL_SUCCESS_INDICATORS = {
+        'reality_dissociation': [
+            'Feeling equally authentic online and offline',
+            'Preferring face-to-face conversations over digital',
+            'Natural eye contact during conversations'
+        ],
+        'ironic_detachment': [
+            'Expressing genuine emotions without self-mockery',
+            'Sincere enthusiasm without embarrassment',
+            'Connecting emotionally with others naturally'
+        ],
+        'attention_fragmentation': [
+            'Reading for 30+ minutes without distraction',
+            'Having complete conversations without phone checking',
+            'Deep focus on single tasks for extended periods'
+        ]
+    }
+    # -------------------------
+    # Expand DIGITAL_THRESHOLDS with adaptations & benefits
+    # -------------------------
     DIGITAL_THRESHOLDS = {
-            'SEVERE': {
-                'threshold':70,
-                'title': 'Specialized digital-native approach required',
-                'description': 'Your assessment reveals significant digital conditioning patterns that require adapted therapeutic techniques.',
-                'what_you_notice': 'Feeling more authentic online than offline, struggling with attention span for real-world activities, emotional states tied to digital feeds',
-                'what_others_see': 'Someone who seems more engaged with their phone than present conversations, appears cynical about traditional approaches',
-                'hidden_cost': 'Living in digital reality while real life passes by, missing genuine human connections and embodied experiences',
-                'benefits': 'With proper specialized approach, you can integrate your digital competencies with real-world confidence and authentic emotional expression.',
-                'why_traditional_fails': 'Traditional therapy expects attention spans and emotional patterns that digital conditioning has fundamentally altered',
-                'hypnotherapy_advantage': 'Bypasses conscious resistance and works directly with the neural patterns that digital conditioning has created'
-            },
-            'MODERATE': {
-                'threshold':50,
-                'title': 'Enhanced digital-aware therapy recommended', 
-                'description': 'You show moderate digital conditioning that benefits from modified therapeutic approaches.',
-                'what_you_notice': 'Some difficulty with extended focus, occasional preference for online interactions, influence of social media on mood',
-                'what_others_see': 'Someone who checks their phone regularly, seems more comfortable texting than calling, references online culture',
-                'hidden_cost': 'Fragmented attention reducing deep thinking capacity, some authentic emotions filtered through digital expression',
-                'benefits': 'Standard techniques enhanced with digital awareness will optimize your transformation process.',
-                'why_traditional_fails': 'Traditional approaches don\'t account for how digital environments have shaped your neural pathways',
-                'hypnotherapy_advantage': 'Can work with both traditional patterns and digital conditioning simultaneously'
-            },
-            'MILD': {
-                'threshold':30,
-                'title': 'Digital considerations integrated',
-                'description': 'Some digital influence detected that will be incorporated into your standard approach.',
-                'what_you_notice': 'Balanced online and offline life with occasional digital overwhelm, mostly traditional attention patterns',
-                'what_others_see': 'Someone who uses technology normally without it dominating their personality or relationships',
-                'hidden_cost': 'Minor attention fragmentation and occasional comparison triggered by social media',
-                'benefits': 'Your digital skills can be leveraged as strengths in your transformation journey.',
-                'why_traditional_fails': 'Standard approaches work well but miss opportunities to leverage your digital competencies',
-                'hypnotherapy_advantage': 'Can enhance traditional patterns while optimizing your relationship with technology'
-            },
-            'MINIMAL': {
-                'threshold':0,
-                'title': 'Traditional approach optimal',
-                'description': 'Minimal digital conditioning detected - standard hypnotherapy approach is ideal.',
-                'what_you_notice': 'Technology serves you rather than controlling you, strong attention span for offline activities',
-                'what_others_see': 'Someone who uses technology as a tool without being dominated by it, present in conversations',
-                'hidden_cost': 'Minimal digital interference with authentic living and relationships',
-                'benefits': 'You can benefit from proven traditional techniques without modification.',
-                'why_traditional_fails': 'Traditional approaches work well for you - this is about optimizing what already works',
-                'hypnotherapy_advantage': 'Direct access to your subconscious without digital conditioning interference'
-            }
+        'SEVERE': {
+            'threshold': 70,
+            'title': 'Specialized digital-native approach required',
+            'description': 'Your assessment reveals significant digital conditioning patterns that require adapted therapeutic techniques.',
+            'benefits': 'With proper specialized approach, you can integrate your digital competencies with real-world confidence and authentic emotional expression.',
+            'adaptations': [
+                "Attention span optimization: 15-30 minute focused segments",
+                "Anti-authority language: Collaborative, non-directive approach",
+                "Ironic armor dissolution: Validate intelligence while accessing authentic emotion",
+                "Digital bridge-building: Connect online competencies to offline confidence",
+                "Binary thinking interruption: Install 'both/and' processing patterns",
+                "Hope introduction protocol: Gradual realistic optimism vs. overwhelming positivity",
+                "Meaning-making assistance: Personal contribution vs. extraordinary achievement",
+            ]
+        },
+        'MODERATE': {
+            'threshold': 50,
+            'title': 'Enhanced digital-aware therapy recommended',
+            'description': 'You show moderate digital conditioning that benefits from modified therapeutic approaches.',
+            'benefits': 'Standard techniques enhanced with digital awareness will optimize your transformation process.',
+            'adaptations': [
+                "Modified session length: 45-60 minutes with movement breaks",
+                "Authority resistance awareness: Reduce directive language",
+                "Cynicism validation: Acknowledge systemic problems while building agency",
+                "Digital competency honor: Validate online achievements and skills",
+                "Nuanced goal-setting: Meaningful vs. extraordinary success redefinition",
+                "Gradual hope building: Evidence-based optimism introduction",
+            ]
+        },
+        'MILD': {
+            'threshold': 30,
+            'title': 'Digital considerations integrated',
+            'description': 'Some digital influence detected that will be incorporated into your standard approach.',
+            'benefits': 'Your digital skills can be leveraged as strengths in your transformation journey.',
+            'adaptations': [
+                "Digital literacy integration: Use familiar cultural references",
+                "Achievement pressure awareness: Expand success definitions",
+                "Authentic expression permission: Reduce 'cringe' about sincerity",
+                "Real-world confidence transfer: Apply online skills offline",
+            ]
+        },
+        'MINIMAL': {
+            'threshold': 0,
+            'title': 'Traditional approach optimal',
+            'description': 'Minimal digital conditioning detected - standard hypnotherapy approach is ideal.',
+            'benefits': 'You can benefit from proven traditional techniques without modification.',
+            'adaptations': [
+                "Standard approach with generational awareness",
+                "Technology balance considerations",
+                "Modern stress factor acknowledgment",
+            ]
+        }
     }
 
+
+
+
+# -------------------------
+# Question Sets
+# -------------------------
+
+class QuestionSets:
+    """All question pools for each assessment phase"""
+
+    AGE_SCREENING = {
+        0: {
+            "text": "What is your age range?",
+            "type": "single_choice",
+            "options": [
+                "Under 18", "18-22", "23-27", "28-32",
+                "33-37", "38-42", "43-50", "Over 50"
+            ],
+            "digital_native_scoring": [3, 5, 4, 3, 2, 1, 0, 0],
+            "phase": "age_screening",
+            "determines_flow": True
+        }
+    }
+
+    DIGITAL_SCREENING = {    
+        """Phase 1: Algorithmic Syndrome Screening (for digital natives)"""
+        1: {
+                "text": "On average, how many hours per day do you spend on digital devices (excluding required work)?",
+                "type": "single_choice",
+                "options": [
+                    "Less than 2 hours", "2-4 hours", "4-6 hours",
+                    "6-8 hours", "8-10 hours", "Over 10 hours"
+                ],
+                "digital_despair_weights": [0, 1, 2, 3, 4, 5],
+                "phase": "digital_screening"
+            },
+            2: {
+                "text": "Where do you feel most like your authentic self?",
+                "type": "single_choice_with_intensity",
+                "options": [
+                    "In offline, face-to-face interactions",
+                    "In online communities and digital spaces", 
+                    "Both online and offline equally",
+                    "Neither - I don't feel authentic anywhere",
+                    "It varies completely depending on the situation"
+                ],
+                "digital_despair_indicators": {
+                    1: 3,  # Strong offline dissociation indicator
+                    3: 2,  # Identity fragmentation 
+                    4: 4   # Complete authenticity loss
+                },
+                "phase": "digital_screening"
+            },
+            3: {
+                "text": "When you imagine a successful life, you typically think:",
+                "type": "single_choice",
+                "options": [
+                    "Meaningful relationships and personal fulfillment",
+                    "Extraordinary wealth, fame, or achievement",
+                    "Being significantly better than most people at something",
+                    "Just being happy and content with normal life",
+                    "Success feels impossible or meaningless to me"
+                ],
+                "digital_despair_patterns": {
+                    1: 4,  # Extraordinary achievement pressure
+                    2: 3,  # Comparative inadequacy 
+                    4: 4   # Nihilistic worldview
+                },
+                "phase": "digital_screening"
+            },
+            4: {
+                "text": "When expressing genuine emotions or enthusiasm:",
+                "type": "single_choice_with_intensity",
+                "options": [
+                    "I express them naturally and directly",
+                    "I tend to use humor or irony to deflect",
+                    "I feel embarrassed or 'cringe' about sincerity",
+                    "I mainly express emotions through memes or online references",
+                    "I rarely express genuine emotions at all"
+                ],
+                "ironic_detachment_scoring": [0, 2, 3, 3, 4],
+                "phase": "digital_screening"
+            },
+            5: {
+                "text": "What primarily influences your daily emotional state?",
+                "type": "single_choice",
+                "options": [
+                    "Interactions with family and friends in person",
+                    "Social media feeds and online content",
+                    "Work or school experiences", 
+                    "Internal thoughts and self-reflection",
+                    "Online communities and digital relationships"
+                ],
+                "algorithmic_dependency": {
+                    1: 3,  # Social media primary
+                    4: 3   # Digital relationships primary
+                },
+                "phase": "digital_screening"
+            },
+            6: {
+                "text": "You feel more emotionally connected to:",
+                "type": "single_choice",
+                "options": [
+                    "People in your physical daily life",
+                    "Online personalities (streamers, influencers, content creators)",
+                    "Online friends and communities",
+                    "Fictional characters or media personalities",
+                    "No significant emotional connections anywhere"
+                ],
+                "parasocial_indicators": {
+                    1: 2,  # Online personalities
+                    2: 2,  # Online communities over offline
+                    3: 3,  # Fictional over real
+                    4: 4   # Complete disconnection
+                },
+                "phase": "digital_screening"
+            },
+            7: {
+                "text": "When someone suggests things could get better or offers optimistic perspectives:",
+                "type": "single_choice_with_intensity",
+                "options": [
+                    "I feel encouraged and want to believe them",
+                    "I appreciate it but remain cautiously skeptical", 
+                    "I immediately think of reasons why they're wrong",
+                    "I feel annoyed because they don't understand reality",
+                    "I dismiss it as naive or manipulative"
+                ],
+                "hope_avoidance_indicators": {
+                    2: 2,  # Automatic negativity
+                    3: 3,  # Irritated by optimism
+                    4: 4   # Complete hope dismissal
+                },
+                "phase": "digital_screening"
+            },
+            8: {
+                "text": "Your attention span for non-digital activities (reading books, conversations, offline tasks):",
+                "type": "single_choice",
+                "options": [
+                    "Same as always - can focus for hours when interested",
+                    "Slightly shorter but manageable",
+                    "Noticeably fragmented - need frequent stimulation",
+                    "Very difficult - mind wanders constantly",
+                    "Almost impossible without background digital stimulation"
+                ],
+                "attention_fragmentation": [0, 1, 2, 3, 4],
+                "phase": "digital_screening"
+            }
+        }
+
+    ENGAGEMENT = {
+        """Phase 2: Engagement & Initial Pattern Detection"""
+        9: {
+                "text": "What made you decide to explore hypnotherapy for this particular issue?",
+                "type": "single_choice",
+                "options": [
+                    "I've tried other approaches without lasting success",
+                    "I want faster results than traditional methods",
+                    "Something about the subconscious mind approach appeals to me",
+                    "Someone recommended it specifically for my type of issue",
+                    "I'm curious but also skeptical about whether it will work"
+                ],
+                "pattern_triggers": {
+                    0: [5], 1: [5], 2: [3], 3: [8], 4: [3]
+                },
+                "phase": "engagement"
+            },
+            10: {
+                "text": "If this issue completely resolved, what would be different about your daily life?",
+                "type": "text_completion",
+                "placeholder": "Describe what you'd be doing differently in 6 months - be as specific as possible about the changes you'd see...",
+                "min_chars": 3,
+                "pattern_analysis": True,
+                "keywords": {
+                    "productivity": [5], "relationships": [2, 3, 6, 7], "peace": [1], 
+                    "authentic": [6], "happy": [1], "control": [2, 4], "boundaries": [7, 9]
+                },
+                "phase": "engagement"
+            },
+            11: {
+                "text": "How ready are you to completely let go of this pattern?",
+                "type": "scale_10",
+                "labels": ["Not ready at all", "Completely ready"],
+                "follow_up_trigger": 7,  # If 7 or below, ask follow-up
+                "phase": "engagement"
+            },
+            12: {
+                "text": "When did this issue most recently show up?",
+                "type": "single_choice",
+                "options": [
+                    "Today",
+                    "Yesterday", 
+                    "This week",
+                    "Last week",
+                    "I can't recall the last specific time"
+                ],
+                "pattern_triggers": {
+                    4: [1, 6]  # Can't recall suggests normalization or compartmentalization
+                },
+                "phase": "engagement"
+            },
+            13: {
+                "text": "This issue tends to show up more:",
+                "type": "single_choice",
+                "options": [
+                    "At work or in professional settings",
+                    "In family or close relationships",
+                    "In social situations with acquaintances", 
+                    "When I'm alone with my thoughts",
+                    "Across all situations equally"
+                ],
+                "pattern_triggers": {
+                    0: [5, 8], 1: [7, 8, 9], 2: [2, 3, 6], 3: [1], 4: [1, 4]
+                },
+                "phase": "engagement"
+            }
+        }
+
+    TRIGGER_MAPPING = {
+        """Phase 3: Core Trigger Mapping"""
+        14: {
+                "text": "Thinking of the most recent time, what was happening in the 30 seconds right before this pattern kicked in?",
+                "type": "text_completion",
+                "placeholder": "Be specific: Where were you? Who was present? What was being discussed or happening? What did you see, hear, or notice?",
+                "min_chars": 5,
+                "trigger_analysis": True,
+                "phase": "trigger_mapping"
+            },
+            15: {
+                "text": "In that situation, what did you notice first?",
+                "type": "single_choice",
+                "options": [
+                    "A physical sensation somewhere in my body",
+                    "A specific thought or worry popping up",
+                    "An emotional shift or feeling change",
+                    "Something another person said or did",
+                    "A change in the environment around me"
+                ],
+                "chain_mapping": "awareness_point",
+                "phase": "trigger_mapping"
+            },
+            16: {
+                "text": "When this pattern activates, the first physical sensation is usually:",
+                "type": "single_choice_with_intensity",
+                "options": [
+                    "Chest tightness, racing heart, or breathing changes",
+                    "Stomach drop, nausea, or digestive upset", 
+                    "Muscle tension, jaw clenching, or physical rigidity",
+                    "Hot/cold flashes, sweating, or temperature changes",
+                    "Numbness, disconnection, or feeling 'outside yourself'",
+                    "Restlessness, fidgeting, or urge to move/escape",
+                    "Fatigue, heaviness, or sudden energy drain"
+                ],
+                "pattern_indicators": {
+                    0: [1, 3, 4], 1: [1, 3, 4], 2: [2, 5], 3: [2, 5], 
+                    4: [6, 9], 5: [2, 5], 6: [1, 7]
+                },
+                "chain_mapping": "physical_response",
+                "phase": "trigger_mapping"
+            },
+            17: {
+                "text": "What thought automatically appears when you feel that physical sensation?",
+                "type": "text_completion",
+                "placeholder": "The actual words that go through your mind - even if they seem harsh or unreasonable. What does your inner voice say?",
+                "min_chars": 3,
+                "pattern_keywords": {
+                    "not good enough": [1], "fight": [2], "can't trust": [3], 
+                    "either or": [4], "must do": [5], "can't be real": [6],
+                    "others need": [7], "should": [8], "can't handle": [9]
+                },
+                "chain_mapping": "automatic_thought",
+                "phase": "trigger_mapping"
+            },
+            18: {
+                "text": "After that thought, you typically feel:",
+                "type": "multi_select_weighted",
+                "max_selections": 3,
+                "options": [
+                    "Anxious or worried", "Angry or frustrated", "Ashamed or embarrassed",
+                    "Sad or defeated", "Guilty or self-blaming", "Overwhelmed or panicked",
+                    "Numb or disconnected", "Confused or uncertain"
+                ],
+                "chain_mapping": "emotional_response",
+                "phase": "trigger_mapping"
+            },
+            19: {
+                "text": "When you feel that emotion at that intensity, you typically:",
+                "type": "single_choice",
+                "options": [
+                    "Withdraw, avoid, or postpone dealing with it",
+                    "Become more active, busy, or productive",
+                    "Seek reassurance or validation from others",
+                    "Become argumentative or defensive", 
+                    "Try to control or fix the situation",
+                    "Please others or put their needs first",
+                    "Shut down emotionally or 'check out'",
+                    "Analyze or overthink the situation"
+                ],
+                "pattern_mapping": {
+                    0: [1, 4, 9], 1: [5], 2: [3, 7], 3: [2], 
+                    4: [2, 5], 5: [7], 6: [6, 9], 7: [4, 5]
+                },
+                "chain_mapping": "behavioral_response",
+                "phase": "trigger_mapping"
+            },
+            20: {
+                "text": "Right after you respond that way, you usually feel:",
+                "type": "single_choice",
+                "options": [
+                    "Temporary relief but underlying tension remains",
+                    "More agitated or upset than before",
+                    "Emotionally numb or disconnected",
+                    "Guilty about how you handled it",
+                    "Justified in your response",
+                    "Confused about what just happened",
+                    "Physically exhausted or drained"
+                ],
+                "chain_mapping": "immediate_consequence",
+                "phase": "trigger_mapping"
+            },
+            21: {
+                "text": "A few hours later, you're typically:",
+                "type": "single_choice", 
+                "options": [
+                    "Have moved on and forgotten about it",
+                    "Still replaying what happened",
+                    "Planning how to avoid it next time",
+                    "Angry at yourself for reacting that way",
+                    "Feeling misunderstood by others involved",
+                    "Resigned that this is just how things are"
+                ],
+                "pattern_reinforcement": {
+                    1: [5], 2: [1, 4, 9], 3: [5], 4: [1], 5: [1]
+                },
+                "chain_mapping": "longer_term_impact",
+                "phase": "trigger_mapping"
+            }
+        }
+
+    PATTERN_SPECIFIC = {
+        """Phase 4: Adaptive Pattern-Specific Deep Dives"""
+        # Pattern 1: Unhappiness Culture
+            "pattern_1": {
+                22: {
+                    "text": "When something genuinely good happens to you, your first reaction is usually:",
+                    "type": "single_choice_with_intensity",
+                    "options": [
+                        "Pure enjoyment and celebration",
+                        "Immediately looking for the catch or downside", 
+                        "Feeling guilty or undeserving of good things",
+                        "Minimizing its importance",
+                        "Anxiety about when it will end"
+                    ],
+                    "weights": [0, 3, 3, 2, 2],
+                    "pattern": 1
+                },
+                23: {
+                    "text": "Growing up, the message about happiness in your family was:",
+                    "type": "single_choice",
+                    "options": [
+                        "Happiness is natural and should be enjoyed",
+                        "Happiness must be earned through hard work",
+                        "Too much happiness leads to disappointment", 
+                        "Other people's happiness comes first",
+                        "Happiness is selfish or shallow"
+                    ],
+                    "weights": [0, 2, 3, 2, 3],
+                    "pattern": 1
+                },
+                24: {
+                    "text": "What would you lose if you allowed yourself to be genuinely happy?",
+                    "type": "text_completion",
+                    "placeholder": "Think about identity, relationships, what others might think, or what might change...",
+                    "min_chars": 3,
+                    "pattern": 1
+                }
+            },
+            
+            # Pattern 2: Power Struggles
+            "pattern_2": {
+                25: {
+                    "text": "When someone disagrees with you, your nervous system:",
+                    "type": "single_choice_with_intensity",
+                    "options": [
+                        "Stays curious about their perspective",
+                        "Immediately activates into combat mode",
+                        "Feels threatened or attacked",
+                        "Shuts down to avoid confrontation",
+                        "Searches for ways to prove them wrong"
+                    ],
+                    "weights": [0, 3, 2, 1, 3],
+                    "pattern": 2
+                },
+                26: {
+                    "text": "In your family growing up, disagreements typically:",
+                    "type": "single_choice",
+                    "options": [
+                        "Were handled through calm discussion",
+                        "Escalated into arguments or fights",
+                        "Were avoided at all costs",
+                        "Involved guilt, manipulation, or silent treatment",
+                        "Had clear winners and losers"
+                    ],
+                    "weights": [0, 3, 2, 3, 4],
+                    "pattern": 2
+                }
+            },
+            
+            # Pattern 3: Systematic Mistrust
+            "pattern_3": {
+                27: {
+                    "text": "When meeting new people, you assume they:",
+                    "type": "single_choice_with_intensity",
+                    "options": [
+                        "Are generally well-intentioned",
+                        "Are judging or evaluating you",
+                        "Want something from you",
+                        "Will eventually disappoint you",
+                        "Are basically indifferent"
+                    ],
+                    "weights": [0, 2, 3, 3, 1],
+                    "pattern": 3
+                },
+                28: {
+                    "text": "When someone is unexpectedly kind to you, you:",
+                    "type": "single_choice",
+                    "options": [
+                        "Feel grateful and warmed",
+                        "Wonder what they want from you",
+                        "Feel suspicious of their motives",
+                        "Feel unworthy of their kindness",
+                        "Barely notice or dismiss it"
+                    ],
+                    "weights": [0, 3, 3, 2, 1],
+                    "pattern": 3
+                }
+            },
+            
+            # Pattern 4: Separation/Division
+            "pattern_4": {
+                29: {
+                    "text": "When facing important decisions, you typically:",
+                    "type": "single_choice_with_intensity",
+                    "options": [
+                        "See multiple creative possibilities",
+                        "Feel trapped between two impossible choices",
+                        "Get paralyzed by perfectionist analysis",
+                        "Create artificial deadlines or urgency",
+                        "Defer to what others expect"
+                    ],
+                    "weights": [0, 2, 3, 2, 1],
+                    "pattern": 4
+                }
+            },
+            
+            # Pattern 5: Doing vs Being
+            "pattern_5": {
+                30: {
+                    "text": "You feel most valuable when you're:",
+                    "type": "single_choice_with_intensity",
+                    "options": [
+                        "Simply existing as yourself",
+                        "Accomplishing something significant",
+                        "Being productive or busy",
+                        "Helping others achieve their goals",
+                        "Receiving recognition for your work"
+                    ],
+                    "weights": [0, 2, 3, 2, 2],
+                    "pattern": 5
+                }
+            },
+            
+            # Pattern 6: Compartmentalized Authenticity
+            "pattern_6": {
+                31: {
+                    "text": "Your personality tends to:",
+                    "type": "single_choice_with_intensity",
+                    "options": [
+                        "Stay consistent across all situations",
+                        "Shift significantly based on who you're with",
+                        "Change between professional and personal settings",
+                        "Adapt to what others seem to want",
+                        "Feel fragmented or inconsistent"
+                    ],
+                    "weights": [0, 2, 2, 3, 4],
+                    "pattern": 6
+                }
+            },
+            
+            # Pattern 7: Self-Sacrifice/Care Avoidance
+            "pattern_7": {
+                32: {
+                    "text": "When it comes to your own needs versus others' needs:",
+                    "type": "single_choice_with_intensity",
+                    "options": [
+                        "I naturally balance both",
+                        "Others' needs usually come first",
+                        "I feel guilty focusing on my own needs",
+                        "I often don't even know what I need",
+                        "Taking care of myself feels selfish"
+                    ],
+                    "weights": [0, 2, 3, 3, 4],
+                    "pattern": 7
+                }
+            },
+            
+            # Pattern 8: Inherited Missions
+            "pattern_8": {
+                33: {
+                    "text": "Your major life goals are primarily:",
+                    "type": "single_choice_with_intensity",
+                    "options": [
+                        "Based on your own genuine desires",
+                        "Influenced by family expectations",
+                        "Meant to honor someone's sacrifices",
+                        "Designed to prove your worth",
+                        "A reaction against others' expectations"
+                    ],
+                    "weights": [0, 2, 3, 3, 2],
+                    "pattern": 8
+                }
+            },
+            
+            # Pattern 9: Context-Dependent Weakness
+            "pattern_9": {
+                34: {
+                    "text": "Your boundaries and limits:",
+                    "type": "single_choice_with_intensity",
+                    "options": [
+                        "Stay pretty consistent across situations",
+                        "Vary significantly based on who you're with",
+                        "Disappear completely in certain contexts",
+                        "Are stronger in some areas than others",
+                        "Feel almost non-existent sometimes"
+                    ],
+                    "weights": [0, 2, 3, 2, 4],
+                    "pattern": 9
+                }
+            }
+        }
+
+    INTEGRATION = {
+        """Phase 5: Integration & Change Readiness"""
+        
+35: {
+                "text": "If you had to guess, this pattern might be trying to:",
+                "type": "single_choice",
+                "options": [
+                    "Protect you from emotional pain",
+                    "Keep you safe from rejection or judgment",
+                    "Maintain some sense of control",
+                    "Help you belong or fit in",
+                    "Avoid disappointing important people",
+                    "Ensure you're prepared for worst-case scenarios"
+                ],
+                "secondary_gain": True,
+                "phase": "integration"
+            },
+            36: {
+                "text": "What would need to be true for you to feel completely safe changing this pattern?",
+                "type": "text_completion",
+                "placeholder": "Think about what guarantees, support, or conditions you'd need to feel safe letting go...",
+                "min_chars": 3,
+                "safety_assessment": True,
+                "phase": "integration"
+            },
+            37: {
+                "text": "When learning or changing, you respond best to:",
+                "type": "single_choice",
+                "options": [
+                    "Direct, clear guidance and instructions",
+                    "Gentle, permissive suggestions",
+                    "Stories, metaphors, and imagery",
+                    "Logical explanations and understanding",
+                    "Collaborative exploration and discovery"
+                ],
+                "hypnotic_preference": True,
+                "phase": "integration"
+            },
+            38: {
+                "text": "Imagine you've completely transformed this pattern. What's the first thing you'd do that you can't do now?",
+                "type": "text_completion",
+                "placeholder": "Be specific about the first action, conversation, or decision you'd make...",
+                "min_chars": 5,
+                "outcome_visualization": True,
+                "phase": "integration"
+            }
+        }
+
+# -------------------------
+# Digital Scoring Rules
+# -------------------------
+
+DIGITAL_SCORING_RULES = {
+    "reality_dissociation": {
+        "question_id": 2,
+        "conditions": {
+            "online communities and digital spaces": 3,
+            "don't feel authentic anywhere": 4,
+            "varies completely depending": 2
+        },
+        "max_score": 5
+    },
+    "binary_success": {
+        "question_id": 3,
+        "conditions": {
+            "Extraordinary wealth": 4,
+            "Success feels impossible": 4,
+            "significantly better than most people": 3
+        },
+        "max_score": 5
+    },
+    "ironic_detachment": {
+        "question_id": 4,
+        "conditions": {
+            "embarrassed or 'cringe'": 3,
+            "through memes or online references": 3,
+            "rarely express genuine emotions": 4,
+            "humor or irony to deflect": 2
+        },
+        "max_score": 5
+    },
+    "algorithmic_dependency": {
+        "question_id": [5, 6],
+        "conditions": {
+            "Social media feeds": 3,
+            "Online communities and digital relationships": 3,
+            "Online personalities": 2,
+            "Fictional characters": 3
+        },
+        "max_score": 5
+    },
+    "nihilistic_worldview": {
+        "question_id": 3,
+        "conditions": {"Success feels impossible": 4},
+        "max_score": 5
+    },
+    "hope_avoidance": {
+        "question_id": 7,
+        "conditions": {
+            "dismiss it as naive": 4,
+            "annoyed because": 3,
+            "reasons why they're wrong": 2
+        },
+        "max_score": 5
+    },
+    "attention_fragmentation": {
+        "question_id": 8,
+        "options": [
+            "Same as always - can focus for hours when interested",
+            "Slightly shorter but manageable",
+            "Noticeably fragmented - need frequent stimulation",
+            "Very difficult - mind wanders constantly",
+            "Almost impossible without background digital stimulation"
+        ],
+        "scores": [0, 1, 2, 3, 4],
+        "max_score": 5
+    }
+}
+
+# -------------------------
+# Pattern Scoring Rules
+# -------------------------
+
+PATTERN_SCORING_RULES = {
+    "pattern_triggers": {
+        # Example from engagement Qs
+        9: {0: [5], 1: [5], 2: [3], 3: [8], 4: [3]},
+        13: {0: [5, 8], 1: [7, 8, 9], 2: [2, 3, 6], 3: [1], 4: [1, 4]}
+    },
+    "pattern_mapping": {
+        19: {0: [1, 4, 9], 1: [5], 2: [3, 7], 3: [2], 4: [2, 5], 5: [7], 6: [6, 9], 7: [4, 5]}
+    },
+    "pattern_keywords": {
+        17: {
+            "not good enough": [1],
+            "fight": [2],
+            "can't trust": [3],
+            "either or": [4],
+            "must do": [5],
+            "can't be real": [6],
+            "others need": [7],
+            "should": [8],
+            "can't handle": [9]
+        }
+    },
+    "keywords": {
+        10: {
+            "productivity": [5],
+            "relationships": [2, 3, 6, 7],
+            "peace": [1],
+            "authentic": [6],
+            "happy": [1],
+            "control": [2, 4],
+            "boundaries": [7, 9]
+        }
+    },
+    "weights": {
+        # Example for pattern-specific questions
+        22: {"pattern": 1, "weights": [0, 3, 3, 2, 2]},
+        25: {"pattern": 2, "weights": [0, 3, 2, 1, 3]}
+    }
+}
+
+
+
+# -------------------------
+# Emails 
+# -------------------------
 
 class EmailConfig:
     """Email system configuration"""
