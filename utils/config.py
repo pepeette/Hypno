@@ -3,6 +3,9 @@ Clean configuration module for the Hypnotherapy website
 Centralizes all settings and constants
 """
 
+from datetime import datetime
+import re
+
 class AppConstants:
     """Application-wide constants"""
     
@@ -158,7 +161,7 @@ class TestimonialConfig:
     ]
 
 
-# Add to utils/config.py
+# for ASSESS.PY
 class PatternDefinitions:
     """Centralized pattern definitions"""
     PATTERNS = {
@@ -173,7 +176,7 @@ class PatternDefinitions:
         9: "Context Dependent Weakness"
     }
 
-    STRUCTURES = {
+    PATTERN_DESCRIPTIONS = {
         1: {
                 "name": "Unhappiness Culture",
                 "root_structure": "Positive states = danger/loss/punishment",
@@ -181,7 +184,13 @@ class PatternDefinitions:
                 "systemic_factors": ["Family depression patterns", "Cultural suffering valorization", "Positive suppression rewards"],
                 "identity_conflict": "Happy self vs. Familiar/safe suffering self",
                 "hidden_loyalties": ["Family unhappiness solidarity", "Suffering = virtue beliefs", "Protection from envy/attacks"],
-                "intervention_strategy": "Permission installation for positive states with safety anchoring"
+                "intervention_strategy": "Permission installation for positive states with safety anchoring",
+                "description": "You may find it challenging to accept or maintain positive emotional states",
+                "impact": "This can limit your ability to fully enjoy success and happiness",
+                "transformation": "Learning to trust that joy and success can be sustainable and deserved",
+                "insights_map":"Your mind has learned to deflect happiness as protection against disappointment - but this same mechanism is preventing the joy you deserve",
+                "session_1_focuses":"Happiness permission protocols and safety anchoring",
+                "session_2_focuses":"Joy sustainability and positive emotion anchoring"
         },
         2: {
                 "name": "Power Struggles", 
@@ -190,7 +199,13 @@ class PatternDefinitions:
                 "systemic_factors": ["Authoritarian family dynamics", "Competition-based relationships", "Win-lose paradigms"],
                 "identity_conflict": "Collaborative self vs. Fighter/survivor self",
                 "hidden_loyalties": ["Family fight patterns", "Strength = resistance beliefs", "Protection from domination"],
-                "intervention_strategy": "Collaborative empowerment with maintained autonomy"
+                "intervention_strategy": "Collaborative empowerment with maintained autonomy",
+                "description": "You experience recurring conflicts and power struggles in relationships",
+                "impact": "This can create stress and prevent collaborative problem-solving",
+                "transformation": "Developing skills for curious dialogue and win-win resolution",
+                "insights_map":"You're fighting battles that don't need to be fought - your nervous system activates 'combat mode' even in collaborative situations",
+                "session_1_focuses":"Nervous system regulation and collaborative response installation",
+                "session_2_focuses":"Conflict transformation and win-win response automation"
         },
         3: {
                 "name": "Systematic Mistrust",
@@ -199,7 +214,13 @@ class PatternDefinitions:
                 "systemic_factors": ["Early betrayal experiences", "Inconsistent caregiving", "Trust violation patterns"],
                 "identity_conflict": "Trusting self vs. Protected/vigilant self", 
                 "hidden_loyalties": ["Loyalty to hurt parts", "Vigilance = safety beliefs", "Protection from re-injury"],
-                "intervention_strategy": "Gradual trust building with transparent safety protocols"
+                "intervention_strategy": "Gradual trust building with transparent safety protocols",
+                "description": "You maintain a default skepticism about others' intentions",
+                "impact": "This protective mechanism may limit deep connections and opportunities",
+                "transformation": "Calibrating trust responses and building authentic relationships",
+                "insights_map":"Your protective skepticism, while once useful, is now creating the very rejection and isolation you're trying to avoid",
+                "session_1_focuses":"Trust calibration and authentic connection programming",
+                "session_2_focuses":"Healthy skepticism calibration and openness programming"
         },
         4: {
                 "name": "Separation and Division",
@@ -208,7 +229,13 @@ class PatternDefinitions:
                 "systemic_factors": ["Rigid family rules", "Religious absolutism", "Chaotic early environment"],
                 "identity_conflict": "Flexible self vs. Clear/defined self",
                 "hidden_loyalties": ["Family certainty patterns", "Order = safety beliefs", "Protection from confusion"],
-                "intervention_strategy": "Both/and integration with safety in uncertainty"
+                "intervention_strategy": "Both/and integration with safety in uncertainty",
+                "description": "You tend toward black-and-white thinking patterns",
+                "impact": "This can limit creative solutions and increase decision paralysis",
+                "transformation": "Developing nuanced thinking and embracing creative possibilities",
+                "insights_map":"Your brilliant analytical mind gets trapped in 'either/or' thinking when 'both/and' solutions would serve you better",
+                "session_1_focuses":"Binary thinking dissolution and creative possibility expansion",
+                "session_2_focuses":"Creative problem-solving and nuanced thinking installation"
         },
         5: {
                 "name": "Doing versus Being",
@@ -217,7 +244,13 @@ class PatternDefinitions:
                 "systemic_factors": ["Achievement-focused family", "Work/school performance pressure", "Productivity culture"],
                 "identity_conflict": "Being self vs. Achieving self",
                 "hidden_loyalties": ["Family achievement patterns", "Worth = doing beliefs", "Protection from worthlessness"],
-                "intervention_strategy": "Inherent worth installation with productivity reframing"
+                "intervention_strategy": "Inherent worth installation with productivity reframing",
+                "description": "Your self-worth is closely tied to productivity and achievement",
+                "impact": "This can lead to burnout and difficulty with rest or self-care",
+                "transformation": "Anchoring worth in your inherent value, independent of accomplishments",
+                "insights_map":"You've created an equation where doing = worth, but your actual value exists independent of any achievement",
+                "session_1_focuses":"Worth anchoring independent of achievement",
+                "session_2_focuses":"Intrinsic worth recognition and balanced achievement"
         },
         6: {
                 "name": "Compartmentalized Authenticity",
@@ -226,7 +259,13 @@ class PatternDefinitions:
                 "systemic_factors": ["Conditional family acceptance", "Social role expectations", "Authenticity punishment"],
                 "identity_conflict": "Authentic self vs. Acceptable/safe selves",
                 "hidden_loyalties": ["Family role patterns", "Adaptation = survival beliefs", "Protection from rejection"],
-                "intervention_strategy": "Authentic self integration with safety across contexts"
+                "intervention_strategy": "Authentic self integration with safety across contexts",
+                "description": "Your sense of identity shifts significantly across different contexts",
+                "impact": "This can create internal confusion and emotional exhaustion",
+                "transformation": "Integrating an authentic, consistent self across all situations",
+                "insights_map":"You're exhausting yourself maintaining different versions of yourself instead of trusting that your authentic self is enough",
+                "session_1_focuses": "Authentic self integration and consistency programming",
+                "session_2_focuses":"Integrated identity and consistent self-expression"
         },
         7: {
                 "name": "Self Sacrifice and Care Avoidance",
@@ -235,7 +274,13 @@ class PatternDefinitions:
                 "systemic_factors": ["Caretaker family roles", "Self-sacrifice modeling", "Need-shaming patterns"],
                 "identity_conflict": "Self-caring self vs. Service/giving self",
                 "hidden_loyalties": ["Family service patterns", "Sacrifice = love beliefs", "Protection from selfishness"],
-                "intervention_strategy": "Self-care as service reframing with boundary installation"
+                "intervention_strategy": "Self-care as service reframing with boundary installation",
+                "description": "You prioritize others' needs while neglecting your own self-care",
+                "impact": "This can lead to resentment and emotional depletion over time",
+                "transformation": "Developing healthy boundaries and self-care practices",
+                "insights_map":"Your generous heart has learned to give to others but forgotten how to receive - creating an unsustainable energy drain",
+                "session_1_focuses": "Boundary establishment and self-care permission",
+                "session_2_focuses":"Reciprocal relationship patterns and energy management"
         },
         8: {
                 "name": "Inherited Missions",
@@ -244,7 +289,13 @@ class PatternDefinitions:
                 "systemic_factors": ["Family sacrifice stories", "Generational expectations", "Dream inheritance patterns"],
                 "identity_conflict": "Personal desire self vs. Family loyal self",
                 "hidden_loyalties": ["Ancestral sacrifice honor", "Family dream continuation", "Protection from guilt/betrayal"],
-                "intervention_strategy": "Honor family while claiming personal path integration"
+                "intervention_strategy": "Honor family while claiming personal path integration",
+                "description": "Your life choices are driven more by family expectations than personal desires",
+                "impact": "This can create internal conflict and limit authentic self-expression",
+                "transformation": "Clarifying personal values while maintaining family harmony",
+                "insights_map":"You're living someone else's dream while your own authentic desires remain buried under family expectations",
+                "session_1_focuses":"Personal values clarification and family harmony balance",
+                "session_2_focuses":"Authentic life direction and confident decision-making"
         },
         9: {
                 "name": "Context Dependent Weakness",
@@ -253,7 +304,13 @@ class PatternDefinitions:
                 "systemic_factors": ["Trauma context associations", "Power dynamic patterns", "Learned helplessness"],
                 "identity_conflict": "Strong self vs. Overwhelmed/powerless self",
                 "hidden_loyalties": ["Trauma bond maintenance", "Powerlessness = safety beliefs", "Protection from responsibility"],
-                "intervention_strategy": "Universal strength anchoring with context-independent resources"
+                "intervention_strategy": "Universal strength anchoring with context-independent resources",
+                "description": "Your boundaries and limits vary dramatically based on context",
+                "impact": "This can lead to inconsistent relationships and self-advocacy",
+                "transformation": "Establishing consistent, healthy boundaries across all situations",
+                "insights_map":"Your boundaries disappear in certain contexts because you've never learned you can be both loved and boundaried",
+                "session_1_focuses": "Context-independent boundary installation",
+                "session_2_focuses":"Consistent boundary maintenance across all contexts"
         }
     }
 
@@ -263,6 +320,9 @@ class PatternDefinitions:
         'MILD': 30,
         'MINIMAL': 0
     }
+
+
+
 
 class EmailConfig:
     """Email system configuration"""
