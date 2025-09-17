@@ -2,6 +2,11 @@
 Clean configuration module for the Hypnotherapy website
 Centralizes all settings and constants
 """
+
+import streamlit as st
+from datetime import datetime
+import re
+
 #for HOME.py
 class AppConstants:
     """Application-wide constants"""
@@ -159,9 +164,7 @@ class TestimonialConfig:
 
 
 # for ASSESS.PY
-from datetime import datetime
-import streamlit as st
-import re
+
 # -------------------------
 # Pattern Definitions
 # -------------------------
@@ -486,10 +489,14 @@ class PatternDefinitions:
 # -------------------------
 # Question Sets
 # -------------------------
+"""All question pools for each assessment phase"""
+"""Phase 1: Algorithmic Syndrome Screening (for digital natives)"""
+"""Phase 2: Engagement & Initial Pattern Detection"""
+"""Phase 3: Core Trigger Mapping"""
+"""Phase 4: Adaptive Pattern-Specific Deep Dives"""
+"""Phase 5: Integration & Change Readiness"""
 
 class QuestionSets:
-    """All question pools for each assessment phase"""
-
     AGE_SCREENING = {
         0: {
             "text": "What is your age range?",
@@ -504,9 +511,8 @@ class QuestionSets:
         }
     }
 
-    DIGITAL_SCREENING = {    
-        """Phase 1: Algorithmic Syndrome Screening (for digital natives)"""
-        1: {
+    DIGITAL_SCREENING = {   
+            1: {
                 "text": "On average, how many hours per day do you spend on digital devices (excluding required work)?",
                 "type": "single_choice",
                 "options": [
@@ -626,7 +632,6 @@ class QuestionSets:
         }
 
     ENGAGEMENT = {
-        """Phase 2: Engagement & Initial Pattern Detection"""
         9: {
                 "text": "What made you decide to explore hypnotherapy for this particular issue?",
                 "type": "single_choice",
@@ -693,7 +698,6 @@ class QuestionSets:
         }
 
     TRIGGER_MAPPING = {
-        """Phase 3: Core Trigger Mapping"""
             14: {
                 "text": "Thinking of the most recent time, what was happening in the 30 seconds right before this pattern kicked in?",
                 "type": "text_completion",
@@ -814,7 +818,6 @@ class QuestionSets:
         }
 
     PATTERN_SPECIFIC = {
-        """Phase 4: Adaptive Pattern-Specific Deep Dives"""
         # Pattern 1: Unhappiness Culture
             "pattern_1": {
                 22: {
@@ -1016,7 +1019,6 @@ class QuestionSets:
         }
 
     INTEGRATION = {
-        """Phase 5: Integration & Change Readiness"""
         
             35: {
                 "text": "If you had to guess, this pattern might be trying to:",
