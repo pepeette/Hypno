@@ -17,18 +17,6 @@ except ImportError:
     st.warning("Blueprint component not available")
 
 try:
-    from utils.cloud_storage_streamlit import StreamlitCloudStorage
-    CLOUD_STORAGE_AVAILABLE = True
-except ImportError:
-    CLOUD_STORAGE_AVAILABLE = False
-
-try:
-    from utils.storage_factory import create_storage_client
-    STORAGE_FACTORY_AVAILABLE = True
-except ImportError:
-    STORAGE_FACTORY_AVAILABLE = False
-
-try:
     from utils.pdf_generator import PDFGenerator
     PDF_AVAILABLE = True
 except ImportError:
