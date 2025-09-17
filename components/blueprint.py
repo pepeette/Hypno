@@ -8,143 +8,16 @@ from datetime import datetime
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
+from utils.config import PatternDefinitions
+
 
 class BehavioralBlueprint:
     """Comprehensive blueprint component providing detailed pattern insights"""
     
     def __init__(self):
-        self.patterns = {
-            1: "Unhappiness Culture", 2: "Power Struggles", 3: "Systematic Mistrust", 
-            4: "Separation and Division", 5: "Doing versus Being", 6: "Compartmentalized Authenticity", 
-            7: "Self Sacrifice and Care Avoidance", 8: "Inherited Missions", 9: "Context Dependent Weakness"
-        }
-        
-        self.pattern_descriptions = {
-            1: {
-                "description": "You may find it challenging to accept or maintain positive emotional states",
-                "impact": "This can limit your ability to fully enjoy success and happiness, creating cycles of self-sabotage",
-                "transformation": "Learning to trust that joy and success can be sustainable and deserved",
-                "what_you_notice": "Feeling guilty when things go well, waiting for the other shoe to drop, minimizing achievements",
-                "what_others_see": "Someone who deflects compliments, seems uncomfortable with praise, or finds problems in good situations",
-                "hidden_cost": "Missing out on life's genuine pleasures and the motivation that comes from celebrating wins",
-                "breakthrough_moment": "Realizing that happiness doesn't make you vulnerable - it makes you stronger and more resilient"
-            },
-            2: {
-                "description": "You experience recurring conflicts and power struggles in relationships",
-                "impact": "This can create stress and prevent collaborative problem-solving, damaging important relationships",
-                "transformation": "Developing skills for curious dialogue and win-win resolution",
-                "what_you_notice": "Feeling defensive quickly, needing to be right, seeing disagreements as threats",
-                "what_others_see": "Someone who argues their point intensely, seems confrontational, or withdraws when challenged",
-                "hidden_cost": "Exhausting mental energy on conflicts instead of creative collaboration and genuine connection",
-                "breakthrough_moment": "Discovering that being curious about others' perspectives actually strengthens your position"
-            },
-            3: {
-                "description": "You maintain a default skepticism about others' intentions",
-                "impact": "This protective mechanism may limit deep connections and opportunities for growth",
-                "transformation": "Calibrating trust responses and building authentic relationships",
-                "what_you_notice": "Analyzing people's motives, feeling suspicious of kindness, expecting hidden agendas",
-                "what_others_see": "Someone who seems guarded, asks probing questions, or appears cynical about human nature",
-                "hidden_cost": "Living in emotional isolation and missing genuine opportunities for support and connection",
-                "breakthrough_moment": "Understanding that discernment and openness can coexist - you can be wise AND trusting"
-            },
-            4: {
-                "description": "You tend toward black-and-white thinking patterns",
-                "impact": "This can limit creative solutions and increase decision paralysis when faced with complexity",
-                "transformation": "Developing nuanced thinking and embracing creative possibilities",
-                "what_you_notice": "Feeling stuck between two options, seeing things as all good or all bad, struggling with grey areas",
-                "what_others_see": "Someone who wants clear answers, seems frustrated by ambiguity, or makes quick either/or judgments",
-                "hidden_cost": "Missing innovative solutions that require holding multiple perspectives simultaneously",
-                "breakthrough_moment": "Realizing that complexity isn't confusion - it's where the most elegant solutions hide"
-            },
-            5: {
-                "description": "Your self-worth is closely tied to productivity and achievement",
-                "impact": "This can lead to burnout and difficulty with rest or self-care without feeling guilty",
-                "transformation": "Anchoring worth in your inherent value, independent of accomplishments",
-                "what_you_notice": "Feeling anxious when not productive, equating rest with laziness, measuring yourself by output",
-                "what_others_see": "Someone who's always busy, seems uncomfortable with downtime, or talks about achievements frequently",
-                "hidden_cost": "Chronic stress, missed opportunities for reflection and creativity that come from mental space",
-                "breakthrough_moment": "Discovering that your value exists completely separate from what you do or achieve"
-            },
-            6: {
-                "description": "Your sense of identity shifts significantly across different contexts",
-                "impact": "This can create internal confusion and emotional exhaustion from maintaining multiple personas",
-                "transformation": "Integrating an authentic, consistent self across all situations",
-                "what_you_notice": "Feeling like different people in different settings, adapting personality to fit in, losing sense of 'real self'",
-                "what_others_see": "Someone who seems different depending on the group, appears to chameleon, or seems inconsistent",
-                "hidden_cost": "Emotional exhaustion from performance, loss of authentic self-expression and genuine connections",
-                "breakthrough_moment": "Realizing that your authentic self is actually more likeable and magnetic than any persona"
-            },
-            7: {
-                "description": "You prioritize others' needs while neglecting your own self-care",
-                "impact": "This can lead to resentment and emotional depletion over time, hurting the very relationships you're trying to protect",
-                "transformation": "Developing healthy boundaries and self-care practices that actually improve your relationships",
-                "what_you_notice": "Feeling guilty when focusing on yourself, automatically saying yes to requests, feeling responsible for others' emotions",
-                "what_others_see": "Someone who's always helpful, never seems to have needs, or appears stressed but won't ask for help",
-                "hidden_cost": "Resentment buildup, burnout, and becoming less effective at helping others when you're depleted",
-                "breakthrough_moment": "Understanding that taking care of yourself is actually the most loving thing you can do for others"
-            },
-            8: {
-                "description": "Your life choices are driven more by family expectations than personal desires",
-                "impact": "This can create internal conflict and limit authentic self-expression and life satisfaction",
-                "transformation": "Clarifying personal values while maintaining family harmony",
-                "what_you_notice": "Feeling torn between what you want and what's expected, guilt about disappointing family, unclear about your own desires",
-                "what_others_see": "Someone who references family expectations often, seems conflicted about decisions, or appears to live for others",
-                "hidden_cost": "Living someone else's life instead of your own, missing your unique contribution to the world",
-                "breakthrough_moment": "Realizing you can honor your family AND live authentically - they're not mutually exclusive"
-            },
-            9: {
-                "description": "Your boundaries and limits vary dramatically based on context",
-                "impact": "This can lead to inconsistent relationships and difficulty with self-advocacy across different situations",
-                "transformation": "Establishing consistent, healthy boundaries across all situations",
-                "what_you_notice": "Being strong in some situations but passive in others, feeling like you lose yourself in certain contexts",
-                "what_others_see": "Someone who seems confident sometimes but submissive other times, appears unpredictable in their responses",
-                "hidden_cost": "Confusion about your own limits, relationships built on false premises, accumulated resentment",
-                "breakthrough_moment": "Discovering that consistent boundaries actually make you more trustworthy and respected"
-            }
-        }
-        
-        self.digital_insights = {
-            'SEVERE': {
-                'title': 'Specialized digital-native approach required',
-                'description': 'Your assessment reveals significant digital conditioning patterns that require adapted therapeutic techniques.',
-                'what_you_notice': 'Feeling more authentic online than offline, struggling with attention span for real-world activities, emotional states tied to digital feeds',
-                'what_others_see': 'Someone who seems more engaged with their phone than present conversations, appears cynical about traditional approaches',
-                'hidden_cost': 'Living in digital reality while real life passes by, missing genuine human connections and embodied experiences',
-                'benefits': 'With proper specialized approach, you can integrate your digital competencies with real-world confidence and authentic emotional expression.',
-                'why_traditional_fails': 'Traditional therapy expects attention spans and emotional patterns that digital conditioning has fundamentally altered',
-                'hypnotherapy_advantage': 'Bypasses conscious resistance and works directly with the neural patterns that digital conditioning has created'
-            },
-            'MODERATE': {
-                'title': 'Enhanced digital-aware therapy recommended', 
-                'description': 'You show moderate digital conditioning that benefits from modified therapeutic approaches.',
-                'what_you_notice': 'Some difficulty with extended focus, occasional preference for online interactions, influence of social media on mood',
-                'what_others_see': 'Someone who checks their phone regularly, seems more comfortable texting than calling, references online culture',
-                'hidden_cost': 'Fragmented attention reducing deep thinking capacity, some authentic emotions filtered through digital expression',
-                'benefits': 'Standard techniques enhanced with digital awareness will optimize your transformation process.',
-                'why_traditional_fails': 'Traditional approaches don\'t account for how digital environments have shaped your neural pathways',
-                'hypnotherapy_advantage': 'Can work with both traditional patterns and digital conditioning simultaneously'
-            },
-            'MILD': {
-                'title': 'Digital considerations integrated',
-                'description': 'Some digital influence detected that will be incorporated into your standard approach.',
-                'what_you_notice': 'Balanced online and offline life with occasional digital overwhelm, mostly traditional attention patterns',
-                'what_others_see': 'Someone who uses technology normally without it dominating their personality or relationships',
-                'hidden_cost': 'Minor attention fragmentation and occasional comparison triggered by social media',
-                'benefits': 'Your digital skills can be leveraged as strengths in your transformation journey.',
-                'why_traditional_fails': 'Standard approaches work well but miss opportunities to leverage your digital competencies',
-                'hypnotherapy_advantage': 'Can enhance traditional patterns while optimizing your relationship with technology'
-            },
-            'MINIMAL': {
-                'title': 'Traditional approach optimal',
-                'description': 'Minimal digital conditioning detected - standard hypnotherapy approach is ideal.',
-                'what_you_notice': 'Technology serves you rather than controlling you, strong attention span for offline activities',
-                'what_others_see': 'Someone who uses technology as a tool without being dominated by it, present in conversations',
-                'hidden_cost': 'Minimal digital interference with authentic living and relationships',
-                'benefits': 'You can benefit from proven traditional techniques without modification.',
-                'why_traditional_fails': 'Traditional approaches work well for you - this is about optimizing what already works',
-                'hypnotherapy_advantage': 'Direct access to your subconscious without digital conditioning interference'
-            }
-        }
+        self.patterns = PatternDefinitions.PATTERNS
+        self.pattern_descriptions = PatternDefinitions.PATTERN_DESCRIPTIONS
+        self.digital_insights = PatternDefinitions.DIGITAL_THRESHOLDS
     
     def apply_styles(self):
         """Apply consistent styling aligned with global styles"""
