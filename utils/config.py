@@ -2,7 +2,7 @@
 Clean configuration module for the Hypnotherapy website
 Centralizes all settings and constants
 """
-
+#for HOME.py
 class AppConstants:
     """Application-wide constants"""
     
