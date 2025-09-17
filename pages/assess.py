@@ -7,7 +7,13 @@ import streamlit as st
 from datetime import datetime
 import re
 from utils.email_assess import send_clinical_assessment_results
-from utils.config import PatternDefinitions
+from utils.config import (
+    PatternDefinitions,
+    QuestionSets,
+    DIGITAL_SCORING_RULES,
+    PATTERN_SCORING_RULES,
+    EmailConfig
+)
 
 # Import components with error handling
 try:
@@ -23,11 +29,6 @@ try:
 except ImportError:
     PDF_AVAILABLE = False
 
-try:
-    from utils.config import PatternDefinitions, EmailConfig
-    CONFIG_AVAILABLE = True
-except ImportError:
-    CONFIG_AVAILABLE = False
 
 try:
     from utils.email_handler import UnifiedEmailHandler
