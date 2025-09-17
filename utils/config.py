@@ -182,7 +182,8 @@ class PatternDefinitions:
 
 class EmailConfig:
     """Email system configuration"""
-    SMTP_SERVER = "smtp.gmail.com"
-    SMTP_PORT = 587
-    SENDER_EMAIL = "laetitiasheppard@gmail.com"
-    RECIPIENT_EMAIL = "laetitiasheppard@gmail.com"
+    SMTP_SERVER = st.secrets["email"]["SMTP_SERVER"]
+    SMTP_PORT = st.secrets["email"]["SMTP_PORT"]
+    SENDER_EMAIL = st.secrets["email"]["SENDER_EMAIL"]
+    RECIPIENT_EMAIL = st.secrets["email"]["RECIPIENT_EMAIL"]
+    MAIL_APP_PASSWORD = st.secrets["email"]["GMAIL_APP_PASSWORD"]
