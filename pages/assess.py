@@ -1229,283 +1229,880 @@ class ComprehensiveBehavioralAssessment:
     
 
     # ---- Build calculation and mapping  ----
+# ---- Build calculation and mapping  ----
 
-    
-    def _extract_response_by_keywords(self, responses, keywords):
-        """Extract specific responses based on question keywords"""
-        for response_data in responses.values():
-            question_text = response_data.get('question_text', '').lower()
-            if any(keyword.lower() in question_text for keyword in keywords):
-                return response_data.get('response', 'Not specified')
-        return 'Assessment incomplete'
-    
-    def _find_question_id_for_content(self, responses, content):
-        """Find question ID that matches content"""
-        for q_id, response_data in responses.items():
-            if response_data.get('response') == content:
-                return q_id
-        return None
-    
-    def _question_relates_to_pattern(self, q_id, pattern_id, responses):
-        """Check if a question relates to a specific pattern"""
-        question_text = responses.get(q_id, {}).get('question_text', '').lower()
+    def _analyze_digital_despair_indicators(self, responses):
+        """Analyze responses for digital despair syndrome indicators using config rules"""
         
-        pattern_keywords = {
-            1: ['happy', 'joy', 'success', 'good things'],
-            2: ['conflict', 'argument', 'disagree', 'defensive'],
-            3: ['trust', 'suspicious', 'motives', 'skeptical'],
-            4: ['choice', 'decision', 'either', 'both'],
-            5: ['productive', 'busy', 'achievement', 'worth'],
-            6: ['different', 'personality', 'authentic', 'real'],
-            7: ['others', 'help', 'needs', 'care'],
-            8: ['family', 'expectations', 'should', 'duty'],
-            9: ['boundaries', 'limits', 'context', 'situation']
+        # Extract age-based digital native scoring from config
+        age_response = responses.get(0, {}).get('response', '')
+        age_data = self.age_screening_questions.get(0, {})
+        age_options = age_data.get('options', [])
+        digital_scoring = age_data.get('digital_native_scoring', [0] * len(age_options))
+        
+        try:
+            age_index = age_options.index(age_response)
+            digital_native_score = digital_scoring[age_index]
+        except (ValueError, IndexError):
+            digital_native_score = 0
+        
+        # Skip digital analysis for non-digital natives
+        if digital_native_score < 2:
+            return None
+            
+        # Calculate component scores using centralized scoring rules
+        component_scores = self._calculate_digital_components(responses)
+        
+        # Calculate composite score
+        total_possible = 35  # Maximum across all components
+        raw_score = digital_native_score + sum(component_scores.values())
+        digital_despair_percentage = (raw_score / total_possible) * 100
+        
+        # Determine severity using thresholds from config
+        severity_data = self._determine_digital_severity(digital_despair_percentage)
+        
+        return {
+            "digital_despair_score": digital_despair_percentage,
+            "severity_level": severity_data['level'],
+            "clinical_recommendation": severity_data['title'],
+            "component_scores": {
+                'digital_native_status': digital_native_score,
+                **component_scores
+            },
+            "therapeutic_adaptations_needed": severity_data.get('adaptations', []),
+        }
+
+    def _calculate_digital_components(self, responses):
+        """Calculate digital component scores using centralized rules"""
+        components = {}
+        
+        # Use DIGITAL_SCORING_RULES from config for each component
+        for component, rules in DIGITAL_SCORING_RULES.items():
+            if component == 'attention_fragmentation':
+                # Handle special case with direct scoring array
+                score = self._score_attention_fragmentation(responses, rules)
+            else:
+                # Handle condition-based scoring
+                score = self._score_digital_component(responses, rules)
+            
+            components[component] = min(rules.get('max_score', 5), score)
+        
+        return components
+
+    def _score_digital_component(self, responses, rules):
+        """Score individual digital component using condition matching"""
+        score = 0
+        question_ids = rules['question_id'] if isinstance(rules['question_id'], list) else [rules['question_id']]
+        
+        for q_id in question_ids:
+            response_data = responses.get(q_id, {})
+            response = response_data.get('response', '')
+            intensity = response_data.get('intensity', 1)
+            
+            # Check conditions for this component
+            for condition, condition_score in rules.get('conditions', {}).items():
+                if condition.lower() in response.lower():
+                    score += condition_score
+                    # Apply intensity multiplier if available
+                    if intensity > 1:
+                        score *= (intensity / 4)
+                    break
+        
+        return score
+
+    def _score_attention_fragmentation(self, responses, rules):
+        """Score attention fragmentation using direct option mapping"""
+        response = responses.get(rules['question_id'], {}).get('response', '')
+        try:
+            option_index = rules['options'].index(response)
+            return rules['scores'][option_index]
+        except (ValueError, IndexError):
+            return 0
+
+    def _determine_digital_severity(self, percentage):
+        """Determine severity level using thresholds from config"""
+        for level, data in sorted(
+            self.digital_thresholds.items(),
+            key=lambda x: x[1]["threshold"],
+            reverse=True
+        ):
+            if percentage >= data["threshold"]:
+                return {'level': level, **data}
+        
+        return {
+            'level': 'MINIMAL',
+            'title': 'Traditional approach optimal',
+            'adaptations': []
+        }
+
+    # ---- Pattern Detection and Scoring ----
+    
+    def _update_pattern_scores(self, question_id, response, question):
+        """Update pattern scores using centralized scoring rules"""
+        
+        # Handle different scoring types from config
+        scoring_handlers = {
+            'pattern_triggers': self._handle_pattern_triggers,
+            'pattern_mapping': self._handle_pattern_mapping,
+            'pattern_keywords': self._handle_pattern_keywords,
+            'keywords': self._handle_keywords,
+            'weights': self._handle_weighted_patterns
         }
         
-        keywords = pattern_keywords.get(pattern_id, [])
-        return any(keyword in question_text for keyword in keywords)
-    
-    def _determine_discovery_phase(self, adaptive_path, phase_progress):
-        """Determine which phase a pattern was discovered in"""
-        if 'pattern_1' in adaptive_path or 'pattern_2' in adaptive_path:
-            return 'Early engagement'
-        elif 'pattern_3' in adaptive_path or 'pattern_4' in adaptive_path:
-            return 'Trigger mapping'
-        else:
-            return 'Pattern-specific questioning'
-    
-    def _generate_success_indicators(self, component, score):
-        """Generate specific success indicators for digital components"""
-        indicators_map = {
-            'reality_dissociation': [
-                'Feeling equally authentic online and offline',
-                'Preferring face-to-face conversations over digital',
-                'Natural eye contact during conversations'
-            ],
-            'ironic_detachment': [
-                'Expressing genuine emotions without self-mockery',
-                'Sincere enthusiasm without embarrassment',
-                'Connecting emotionally with others naturally'
-            ],
-            'attention_fragmentation': [
-                'Reading for 30+ minutes without distraction',
-                'Having complete conversations without phone checking',
-                'Deep focus on single tasks for extended periods'
-            ]
-        }
-        
-        return indicators_map.get(component, ['Improved well-being in this area'])
+        for score_type, handler in scoring_handlers.items():
+            if score_type in question:
+                handler(question_id, response, question, score_type)
 
-    def _render_pattern_insights(self):
-        """Render detailed pattern insights using Streamlit components"""
-        results = st.session_state.assessment_results
-        pattern_scores = results.get('pattern_scores', {})
-        
-        if not pattern_scores:
-            st.warning("Pattern analysis incomplete - please complete the full assessment for detailed insights.")
+    def _handle_pattern_triggers(self, question_id, response, question, score_type):
+        """Handle pattern trigger scoring"""
+        if not isinstance(response, str) or 'options' not in question:
             return
-        
-        # Key insight and transformation messaging
-        st.success("**Key insight:** Your pattern recognition ability is already strong - that's 60% of the transformation work already complete.")
-        st.markdown("Most people see initial shifts within 48 hours of Session 2")
-        
-        # Digital insights if applicable
-        self._render_digital_insights()
-        
-        # Blueprint access - call without parameters, let method generate its own data, access behind paywall
-        self._render_blueprint_access()
-        #self._render_clinical_analysis_section()
-    
+            
+        try:
+            option_index = question['options'].index(response)
+            if option_index in question[score_type]:
+                patterns = question[score_type][option_index]
+                for pattern in patterns:
+                    self._add_pattern_score(pattern, 1.0)
+        except (ValueError, IndexError):
+            pass
 
+    def _handle_pattern_mapping(self, question_id, response, question, score_type):
+        """Handle pattern mapping scoring with higher weight"""
+        if not isinstance(response, str) or 'options' not in question:
+            return
+            
+        try:
+            option_index = question['options'].index(response)
+            if option_index in question[score_type]:
+                patterns = question[score_type][option_index]
+                for pattern in patterns:
+                    self._add_pattern_score(pattern, 1.5)
+        except (ValueError, IndexError):
+            pass
+
+    def _handle_pattern_keywords(self, question_id, response, question, score_type):
+        """Handle keyword analysis for text responses"""
+        if not isinstance(response, str):
+            return
+            
+        detected_patterns = self._analyze_text_for_patterns(response, question[score_type])
+        for pattern in detected_patterns:
+            self._add_pattern_score(pattern, 2.0)
+
+    def _handle_keywords(self, question_id, response, question, score_type):
+        """Handle general keyword scoring"""
+        if not isinstance(response, str):
+            return
+            
+        detected_patterns = self._analyze_text_for_patterns(response, question[score_type])
+        for pattern in detected_patterns:
+            self._add_pattern_score(pattern, 1.0)
+
+    def _handle_weighted_patterns(self, question_id, response, question, score_type):
+        """Handle pattern-specific weighted scoring"""
+        pattern_id = question.get('pattern')
+        weights = question.get('weights', [])
+        
+        if not pattern_id or not weights or not isinstance(response, str):
+            return
+            
+        if 'options' in question:
+            try:
+                option_index = question['options'].index(response)
+                if option_index < len(weights):
+                    weight = weights[option_index]
+                    if weight > 0:
+                        self._add_pattern_score(pattern_id, weight)
+            except (ValueError, IndexError):
+                pass
+
+    def _analyze_text_for_patterns(self, text, keywords_dict):
+        """Analyze text response for pattern indicators using config keywords"""
+        text_lower = text.lower()
+        detected_patterns = set()
+        
+        for keyword, patterns in keywords_dict.items():
+            if keyword in text_lower:
+                detected_patterns.update(patterns)
+        
+        return detected_patterns
+
+    def _add_pattern_score(self, pattern_id, score):
+        """Add score to pattern with intensity consideration"""
+        current_score = st.session_state.pattern_scores.get(pattern_id, 0)
+        st.session_state.pattern_scores[pattern_id] = current_score + score
+        
+        # Check for adaptive triggers
+        self._check_adaptive_triggers(pattern_id, current_score + score)
+
+    def _check_adaptive_triggers(self, pattern_id, score):
+        """Check if pattern score triggers adaptive questioning"""
+        if score >= 3.0 and pattern_id not in st.session_state.triggered_patterns:
+            st.session_state.triggered_patterns.add(pattern_id)
+            st.session_state.adaptive_paths.append(f"pattern_{pattern_id}")
+
+    # ---- Clinical Analysis Methods (using config data) ----
+    
+    def _extract_clinical_insights(self):
+        """Extract clinical insights using pattern descriptions from config"""
+        pattern_scores = st.session_state.pattern_scores
+        if not pattern_scores:
+            return self._get_default_clinical_insights()
+            
+        # Get dominant pattern insights from config
+        dominant_pattern_id = max(pattern_scores.items(), key=lambda x: x[1])[0]
+        pattern_info = self.pattern_descriptions.get(dominant_pattern_id, {})
+        
+        return {
+            'core_limiting_belief': pattern_info.get('core_belief', 'Requires session exploration'),
+            'hidden_benefits': self._extract_hidden_loyalties(pattern_info),
+            'systemic_resistance': pattern_info.get('pattern_resistance', 'Standard resistance expected'),
+            'identity_conflict': pattern_info.get('identity_conflict', 'Identity evolution requires navigation'),
+            'intervention_strategy': pattern_info.get('intervention_strategy', 'Collaborative approach'),
+            'intervention_keywords': self._extract_intervention_keywords(pattern_info),
+            'avoid_language': ['Pressure', 'criticism', 'commands'],
+            'resistance_points': [pattern_info.get('pattern_resistance', 'Standard change resistance')]
+        }
+
+    def _extract_hidden_loyalties(self, pattern_info):
+        """Extract hidden loyalties from pattern configuration"""
+        loyalties = pattern_info.get('hidden_loyalties', [])
+        if loyalties:
+            return '; '.join(loyalties[:2])  # First two loyalties
+        return 'Emotional protection and familiar identity'
+
+    def _extract_intervention_keywords(self, pattern_info):
+        """Extract intervention approach from pattern configuration"""
+        strategy = pattern_info.get('intervention_strategy', '')
+        if 'collaborative' in strategy.lower():
+            return 'Collaborative, gentle, permissive'
+        elif 'permission' in strategy.lower():
+            return 'Permission-based, safety-focused'
+        elif 'gradual' in strategy.lower():
+            return 'Gradual, trust-building, transparent'
+        else:
+            return 'Adaptive, person-centered'
+
+    def _get_default_clinical_insights(self):
+        """Provide default insights when pattern analysis is incomplete"""
+        return {
+            'core_limiting_belief': 'Assessment incomplete - requires full evaluation',
+            'hidden_benefits': 'Pattern provides emotional protection and familiar identity',
+            'systemic_resistance': 'To be determined in clinical analysis',
+            'identity_conflict': 'Identity evolution assessment needed',
+            'intervention_strategy': 'Collaborative exploration required',
+            'intervention_keywords': 'Gentle, curious, supportive',
+            'avoid_language': ['Pressure', 'urgency', 'criticism'],
+            'resistance_points': ['Assessment completion needed']
+        }
+
+    def _generate_session_plan(self, pattern_scores, clinical_insights):
+        """Generate session planning using pattern-specific focuses from config"""
+        if not pattern_scores:
+            return self._get_default_session_plan()
+            
+        dominant_pattern_id = max(pattern_scores.items(), key=lambda x: x[1])[0]
+        pattern_info = self.pattern_descriptions.get(dominant_pattern_id, {})
+        
+        return {
+            'session_1_focus': pattern_info.get('session_1_focuses', 'Comprehensive pattern analysis and rapport building'),
+            'session_2_target': pattern_info.get('session_2_focuses', 'Core transformation and positive programming'),
+            'session_3_need': self._determine_session_3_need(pattern_scores)
+        }
+
+    def _determine_session_3_need(self, pattern_scores):
+        """Determine if third session is needed based on complexity"""
+        pattern_count = len(pattern_scores)
+        max_score = max(pattern_scores.values()) if pattern_scores else 0
+        
+        if pattern_count >= 4 or max_score >= 7:
+            return "Recommended for complex pattern integration"
+        elif pattern_count >= 2 or max_score >= 5:
+            return "Optional reinforcement session"
+        else:
+            return "Unlikely to be needed"
+
+    def _get_default_session_plan(self):
+        """Default session plan when pattern analysis incomplete"""
+        return {
+            'session_1_focus': 'Complete assessment and initial rapport building',
+            'session_2_target': 'Pattern exploration and foundational work',
+            'session_3_need': 'To be determined based on response'
+        }
+
+    # ---- Success Rate Calculation (using config factors) ----
+    
     def _calculate_comprehensive_success_rate(self):
-        """Calculate success rate based on pattern complexity and readiness factors"""
-        # Base success rate
+        """Calculate success rate using factors from assessment and config"""
         base_rate = 85
         
-        # Get assessment data
-        results = st.session_state.get('assessment_results', {})
-        pattern_scores = results.get('pattern_scores', {})
-        
-        # Adjust based on pattern count (more patterns = slightly lower initial success)
-        pattern_count = len(pattern_scores)
+        # Pattern complexity factor
+        pattern_count = len(st.session_state.pattern_scores)
         if pattern_count >= 5:
             base_rate -= 5
         elif pattern_count >= 3:
             base_rate -= 2
         
-        # Adjust based on digital native status (they respond better to this approach)
+        # Digital native advantage (they respond well to this approach)
         if st.session_state.get('is_digital_native', False):
             base_rate += 5
         
-        # Adjust based on readiness indicators (if available in responses)
+        # Readiness factor from responses
+        readiness_boost = self._calculate_readiness_boost()
+        
+        # Digital severity adjustment
+        digital_analysis = st.session_state.get('assessment_results', {}).get('digital_despair_analysis')
+        if digital_analysis:
+            severity = digital_analysis.get('severity_level', 'MINIMAL')
+            if severity in ['SEVERE', 'MODERATE']:
+                base_rate += 3  # Specialized approach advantage
+        
+        final_rate = min(95, max(70, base_rate + readiness_boost))
+        return final_rate
+
+    def _calculate_readiness_boost(self):
+        """Calculate motivation boost from response analysis"""
         responses = st.session_state.get('assessment_responses', {})
         
-        # Check for high motivation indicators
-        high_motivation_keywords = ['desperate', 'ready', 'tired', 'enough', 'change']
+        # Check for high motivation keywords using config
+        motivation_keywords = PatternDefinitions.BELIEF_HINTS.keys()  # Use config keywords
         motivation_boost = 0
+        
         for response_data in responses.values():
             response = response_data.get('response', '')
             if isinstance(response, str):
-                for keyword in high_motivation_keywords:
-                    if keyword.lower() in response.lower():
-                        motivation_boost = 3
-                        break
+                response_lower = response.lower()
+                if any(keyword in response_lower for keyword in ['ready', 'desperate', 'tired', 'enough']):
+                    motivation_boost = 3
+                    break
+                elif any(keyword in response_lower for keyword in motivation_keywords):
+                    motivation_boost = 2
+                    break
         
-        final_rate = min(95, max(70, base_rate + motivation_boost))
-        return final_rate
+        # Check readiness scale responses
+        for response_data in responses.values():
+            if isinstance(response_data.get('response'), dict):
+                rating = response_data['response'].get('rating', 0)
+                if rating >= 8:
+                    motivation_boost = max(motivation_boost, 3)
+                elif rating >= 6:
+                    motivation_boost = max(motivation_boost, 2)
+        
+        return motivation_boost
 
-    # Clinical Insights Methods (simplified versions)
-    def _extract_clinical_insights(self):
-        """Extract basic clinical insights from assessment responses"""
-        # This is a simplified version - in practice would be more comprehensive
-        return {
-            'core_limiting_belief': "Core belief requires session exploration",
-            'hidden_benefits': "Pattern provides emotional protection and familiar identity",
-            'systemic_resistance': "Minimal systemic resistance expected",
-            'identity_threat': "Identity evolution requires careful navigation",
-            'intervention_keywords': "Collaborative, gentle, permissive",
-            'avoid_language': "Pressure, criticism, commands",
-            'resistance_points': ["Standard change resistance", "Possible skepticism about process"]
+    # ---- Comprehensive Clinical Template (enhanced with config) ----
+    
+    def _format_comprehensive_clinical_template(self):
+        """Format clinical template using config data and centralized analysis"""
+        # Get analyzed data
+        clinical_insights = self._extract_clinical_insights()
+        pattern_scores = st.session_state.pattern_scores
+        session_plan = self._generate_session_plan(pattern_scores, clinical_insights)
+        
+        # Build pattern analysis section using config
+        pattern_analysis = self._build_pattern_analysis_section(pattern_scores)
+        
+        # Build base template
+        template = f"""
+╔══════════════════════════════════════════════════════════════╗
+║                    CLINICAL ANALYSIS TEMPLATE                ║
+║          Enhanced Behavioral Pattern Assessment              ║
+╚══════════════════════════════════════════════════════════════╝
+
+{pattern_analysis}
+
+**PSYCHOLOGICAL PROFILE:**
+Core Limiting Belief: {clinical_insights.get('core_limiting_belief')}
+Hidden Benefits: {clinical_insights.get('hidden_benefits')}
+Systemic Resistance: {clinical_insights.get('systemic_resistance')}
+Identity Conflict: {clinical_insights.get('identity_conflict')}
+Intervention Strategy: {clinical_insights.get('intervention_strategy')}
+
+**CHANGE READINESS:**
+Readiness Score: {self._extract_readiness_score()}/10
+Motivation Level: {self._determine_motivation_level()}
+Success Probability: {self._calculate_comprehensive_success_rate()}%
+
+**SESSION PLANNING:**
+Session 1 Focus: {session_plan.get('session_1_focus')}
+Session 2 Target: {session_plan.get('session_2_target')}
+Session 3 Need: {session_plan.get('session_3_need')}
+
+**THERAPEUTIC APPROACH:**
+Intervention Keywords: {clinical_insights.get('intervention_keywords')}
+Avoid Language: {', '.join(clinical_insights.get('avoid_language', []))}
+Predicted Resistance: {clinical_insights.get('resistance_points', ['Standard patterns'])[0]}
+"""
+
+        # Add digital analysis if applicable
+        if st.session_state.is_digital_native:
+            digital_section = self._build_digital_analysis_section()
+            template += digital_section
+        
+        # Add clinical notes
+        template += self._build_clinical_notes_section()
+        
+        return template
+
+    def _build_pattern_analysis_section(self, pattern_scores):
+        """Build pattern analysis using config pattern descriptions"""
+        if not pattern_scores:
+            return "**PATTERN ANALYSIS:** Assessment incomplete - full evaluation needed"
+            
+        sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+        
+        section = "**TRADITIONAL PATTERN ANALYSIS:**\n"
+        
+        for i, (pattern_id, score) in enumerate(sorted_patterns[:3]):
+            pattern_name = self.patterns.get(pattern_id, f"Pattern {pattern_id}")
+            role = ["Dominant", "Primary", "Secondary"][i]
+            section += f"{role} Pattern: {pattern_name} (Score: {score:.1f}/10)\n"
+            
+            # Add pattern details from config if available
+            pattern_info = self.pattern_descriptions.get(pattern_id, {})
+            if pattern_info:
+                section += f"  • Mechanism: {pattern_info.get('pattern_mechanism', 'Analysis needed')}\n"
+                section += f"  • Core Impact: {pattern_info.get('impact', 'Assessment needed')}\n"
+        
+        return section
+
+    def _build_digital_analysis_section(self):
+        """Build digital analysis section using config thresholds"""
+        digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+        if not digital_analysis:
+            return ""
+            
+        severity = digital_analysis['severity_level']
+        score = digital_analysis['digital_despair_score']
+        adaptations = digital_analysis.get('therapeutic_adaptations_needed', [])
+        
+        section = f"""
+
+╔══════════════════════════════════════════════════════════════╗
+║               DIGITAL DESPAIR SYNDROME ANALYSIS             ║
+╚══════════════════════════════════════════════════════════════╝
+
+**SYNDROME ASSESSMENT:**
+Digital Conditioning Score: {score:.1f}% ({severity} severity)
+Clinical Recommendation: {digital_analysis['clinical_recommendation']}
+
+**SYNDROME COMPONENTS:**"""
+
+        # Add component breakdown
+        components = digital_analysis['component_scores']
+        component_names = {
+            'digital_native_status': 'Digital Native Conditioning',
+            'reality_dissociation': 'Online vs Offline Authenticity Gap',
+            'binary_success_pressure': 'Extraordinary Achievement Pressure',
+            'ironic_detachment': 'Emotional Protection Through Cynicism',
+            'algorithmic_dependency': 'Social Media Emotional Regulation',
+            'nihilistic_worldview': 'Hopelessness and Meaning Crisis',
+            'hope_avoidance': 'Resistance to Optimism',
+            'attention_fragmentation': 'Digital Attention Conditioning'
         }
+        
+        for comp, score in components.items():
+            name = component_names.get(comp, comp)
+            level = "HIGH" if score >= 4 else "MEDIUM" if score >= 2 else "LOW"
+            section += f"\n• {name}: {level} ({score:.1f}/5)"
+        
+        # Add adaptations from config
+        section += f"\n\n**REQUIRED THERAPEUTIC ADAPTATIONS:**\n"
+        severity_flag = "🚨 SPECIALIZED INTERVENTION REQUIRED" if severity in ['SEVERE', 'MODERATE'] else "✅ STANDARD APPROACH WITH MODIFICATIONS"
+        section += severity_flag
+        
+        for i, adaptation in enumerate(adaptations[:5], 1):
+            section += f"\n{i}. {adaptation}"
+        
+        return section
 
-    def _generate_session_plan(self, pattern_scores, clinical_insights):
-        """Generate session planning recommendations"""
-        return {
-            'session_1_focus': "Comprehensive pattern assessment and rapport building",
-            'session_2_target': "Core pattern transformation and positive programming",
-            'session_3_need': "Standard reinforcement if needed"
-        }
+    def _build_clinical_notes_section(self):
+        """Build clinical notes section"""
+        digital_note = ""
+        if st.session_state.is_digital_native:
+            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
+                digital_note = "This assessment reveals a digital-native psychology requiring specialized intervention approaches. Traditional methods may fail without proper adaptations."
+            else:
+                digital_note = "Digital-native adaptations recommended but standard framework applicable."
+        else:
+            digital_note = "Traditional hypnotherapy approach optimal for this client profile."
+        
+        return f"""
 
-    def _extract_future_vision(self):
-        """Extract user's future vision from their responses"""
+╔══════════════════════════════════════════════════════════════╗
+║                     CLINICAL NOTES                          ║
+╚══════════════════════════════════════════════════════════════╝
+
+{digital_note}
+
+Pattern constellation suggests {self._get_complexity_assessment()} intervention approach.
+Success probability enhanced by specialized assessment completion and clear motivation indicators.
+"""
+
+    def _get_complexity_assessment(self):
+        """Assess complexity based on pattern count and scores"""
+        pattern_count = len(st.session_state.pattern_scores)
+        if pattern_count >= 4:
+            return "complex multi-pattern"
+        elif pattern_count >= 2:
+            return "standard multi-pattern"
+        else:
+            return "focused single-pattern"
+
+    def _extract_readiness_score(self):
+        """Extract readiness score from responses"""
         for response_data in st.session_state.assessment_responses.values():
-            response = response_data.get('response', '')
-            if isinstance(response, str) and any(keyword in response_data.get('question_text', '').lower() 
-                                               for keyword in ['completely resolved', 'different about your daily life', 'first thing you\'d do']):
-                return response[:100] + "..." if len(response) > 100 else response
-        return None
-    
-    def _calculate_pattern_cost(self):
-        """Calculate estimated weekly cost of patterns"""
-        pattern_count = len(st.session_state.pattern_scores)
-        intensity_avg = sum(st.session_state.pattern_scores.values()) / len(st.session_state.pattern_scores) if st.session_state.pattern_scores else 0
-        
-        # Base calculation: more patterns and higher intensity = more weekly cost
-        base_hours = 8
-        pattern_multiplier = min(pattern_count * 1.5, 10)  # Cap at 10
-        intensity_multiplier = min(intensity_avg / 5, 2)   # Cap at 2x
-        
-        total_hours = int(base_hours + pattern_multiplier + intensity_multiplier)
-        
-        return {'hours': total_hours}
+            if isinstance(response_data.get('response'), dict) and 'rating' in response_data['response']:
+                return response_data['response']['rating']
+        return 7  # Default moderate readiness
 
-    def _render_pattern_cost_analysis(self):
-        """Render pattern cost analysis using Streamlit components"""
-        future_vision = self._extract_future_vision()
-        current_cost = self._calculate_pattern_cost()
-        
-        st.markdown("**The hidden cost of your current patterns**")
-        
-        st.warning(f"**Weekly impact:** This pattern sequence is likely costing you approximately **{current_cost['hours']} hours of peace and productivity per week**")
-        
-        st.markdown("**Compound cost over time:** Without intervention, these patterns typically solidify further, making change more difficult and the impact more severe.")
-        
-        if future_vision:
-            st.info(f"**Your vision:** You mentioned wanting to {future_vision}. These patterns are the primary barrier standing between you and that reality.")
+    def _determine_motivation_level(self):
+        """Determine motivation level based on readiness and responses"""
+        readiness_score = self._extract_readiness_score()
+        if readiness_score >= 8:
+            return "HIGH"
+        elif readiness_score >= 6:
+            return "MODERATE" 
+        else:
+            return "REQUIRES BUILDING"
+
+    # ---- Helper Methods for User Agent and Utilities ----
     
-    def _identify_hidden_mechanisms(self):
-        """Identify hidden protective mechanisms"""
-        mechanisms = []
+    def _get_user_agent(self):
+        """Get user agent information for assessment data"""
+        try:
+            return st.context.headers.get("User-Agent", "Unknown")
+        except:
+            return "Unknown"
+
+    # ---- Preview and Results Generation (using config) ----
+    
+    def _extract_preview_insights(self, assessment_data):
+        """Extract rich insights from assessment data for compelling preview using config"""
         
-        # Analyze top patterns for hidden mechanisms
-        if st.session_state.pattern_scores:
-            sorted_patterns = sorted(st.session_state.pattern_scores.items(), key=lambda x: x[1], reverse=True)
-            
-            mechanism_map = {
-                1: "Happiness deflection to avoid disappointment",
-                2: "Control seeking to prevent vulnerability", 
-                3: "Preemptive rejection to avoid abandonment",
-                4: "Binary thinking to simplify complex emotions",
-                5: "Achievement addiction to earn worth",
-                6: "Identity shifting to avoid rejection",
-                7: "Self-sacrifice to maintain connection",
-                8: "Mission inheritance to avoid family conflict",
-                9: "Boundary collapse to avoid confrontation"
+        pattern_scores = assessment_data.get('pattern_scores', {})
+        responses = assessment_data.get('assessment_responses', {})
+        digital_analysis = assessment_data.get('digital_despair_analysis')
+        is_digital_native = assessment_data.get('is_digital_native', False)
+        
+        # Provide defaults if no pattern data
+        if not pattern_scores:
+            return self._get_default_preview_insights()
+        
+        # Pattern analysis using config
+        sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+        dominant_pattern_id, dominant_score = sorted_patterns[0]
+        dominant_pattern_name = self.patterns.get(dominant_pattern_id, "Unknown")
+        pattern_count = len(pattern_scores)
+        
+        # Get pattern description from config
+        pattern_info = self.pattern_descriptions.get(dominant_pattern_id, {})
+        
+        # Build insights using config data
+        intensity_description = self._get_intensity_description(dominant_score)
+        complexity_description = self._get_complexity_description(pattern_count)
+        success_factors = self._calculate_success_factors(pattern_count, assessment_data)
+        success_rate = self._calculate_comprehensive_success_rate()
+        
+        # Digital summary from config
+        digital_summary = self._build_digital_summary(is_digital_native, digital_analysis)
+        
+        # Key insight from config pattern descriptions
+        key_insight = pattern_info.get('insights_map', 'Pattern analysis reveals protective mechanisms that need updating')
+        if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
+            key_insight += " - compounded by digital conditioning requiring specialized intervention"
+        
+        return {
+            'dominant_pattern_name': dominant_pattern_name,
+            'intensity_description': intensity_description,
+            'complexity_description': complexity_description,
+            'pattern_count': pattern_count,
+            'success_rate': success_rate,
+            'success_factors': success_factors,
+            'digital_summary': digital_summary,
+            'key_insight': key_insight,
+            'trigger_sequence': self._extract_trigger_sequence_from_config(responses, pattern_info),
+            'cost_preview': self._calculate_cost_preview_from_config(pattern_count, dominant_score),
+            'pattern_interactions': [self.patterns.get(pid, f"Pattern {pid}") for pid, _ in sorted_patterns[:3]],
+            'session_plan': self._generate_session_preview_from_config(dominant_pattern_id, pattern_count, digital_analysis),
+            'immediate_techniques': self._get_immediate_techniques_from_config(dominant_pattern_id),
+            'digital_insights': self._extract_digital_insights_from_config(digital_analysis, responses) if digital_analysis else None,
+            'clarity_score': min(10, max(1, int(assessment_data.get('completion_rate', 0) * 10))),
+            'readiness_score': self._extract_readiness_score(),
+            'match_score': 9 if is_digital_native else 8
+        }
+
+    def _get_default_preview_insights(self):
+        """Provide default preview insights when assessment incomplete"""
+        return {
+            'dominant_pattern_name': 'Assessment incomplete - complete full assessment for analysis',
+            'intensity_description': 'Assessment needed',
+            'complexity_description': 'Analysis pending',
+            'pattern_count': 0,
+            'success_rate': 85,
+            'success_factors': 'assessment completion needed',
+            'digital_summary': '',
+            'key_insight': 'Complete assessment needed for personalized insights',
+            'trigger_sequence': None,
+            'cost_preview': {
+                'weekly_hours': 8,
+                'annual_cost': '฿331,200',
+                'relationship_impact': 'Assessment needed for analysis'
+            },
+            'pattern_interactions': ['Assessment incomplete'],
+            'session_plan': {
+                'session_1_preview': 'Comprehensive assessment and rapport building',
+                'session_2_preview': 'Core transformation and programming',
+                'results_timeline': '2-4 weeks',
+                'optimization_factor': 'Assessment completion needed'
+            },
+            'immediate_techniques': {
+                'technique_1': {'name': 'Mindful Pause', 'description': 'Take 3 deep breaths before reacting'},
+                'technique_2': {'name': 'Choice Point', 'description': 'Ask: Is this serving me?'}
+            },
+            'digital_insights': None,
+            'clarity_score': 1,
+            'readiness_score': 5,
+            'match_score': 8
+        }
+
+    def _get_intensity_description(self, score):
+        """Get intensity description based on score"""
+        if score >= 6:
+            return "High intensity - requires immediate intervention"
+        elif score >= 4:
+            return "Moderate intensity - well-suited for rapid transformation"
+        elif score >= 2:
+            return "Emerging pattern - excellent prognosis for quick resolution"
+        else:
+            return "Mild pattern - high success probability"
+
+    def _get_complexity_description(self, pattern_count):
+        """Get complexity description based on pattern count"""
+        if pattern_count >= 5:
+            return "Complex multi-pattern system"
+        elif pattern_count >= 3:
+            return "Moderate complexity with clear intervention points"
+        elif pattern_count >= 2:
+            return "Standard complexity level"
+        else:
+            return "Single-pattern focus"
+
+    def _calculate_success_factors(self, pattern_count, assessment_data):
+        """Calculate success factors string"""
+        factors = []
+        
+        if pattern_count <= 3:
+            factors.append("focused pattern constellation")
+        
+        completion_rate = assessment_data.get('completion_rate', 0)
+        if completion_rate >= 0.9:
+            factors.append("high assessment engagement")
+        
+        if assessment_data.get('is_digital_native') and assessment_data.get('digital_despair_analysis'):
+            factors.append("specialized approach match")
+        
+        readiness_score = self._extract_readiness_score()
+        if readiness_score >= 8:
+            factors.append("high motivation level")
+        
+        return ", ".join(factors) if factors else "strong assessment completion"
+
+    def _build_digital_summary(self, is_digital_native, digital_analysis):
+        """Build digital summary using config thresholds"""
+        if not is_digital_native or not digital_analysis:
+            return ""
+        
+        severity = digital_analysis['severity_level']
+        score = digital_analysis['digital_despair_score']
+        return f"<strong>Digital conditioning:</strong> {score:.0f}% ({severity}) - specialized protocol activated"
+
+    def _extract_trigger_sequence_from_config(self, responses, pattern_info):
+        """Extract trigger sequence using pattern-specific insights from config"""
+        sequence = {}
+        
+        # Use standard extraction method but enhance with pattern-specific insights
+        basic_sequence = self._extract_trigger_sequence_basic(responses)
+        
+        # Add pattern-specific mechanism from config
+        if pattern_info:
+            sequence = {
+                **basic_sequence,
+                'pattern_mechanism': pattern_info.get('pattern_mechanism', 'Protective response pattern')
             }
-            
-            for pattern_id, score in sorted_patterns[:3]:
-                if score >= 3:
-                    mechanisms.append(mechanism_map.get(pattern_id, "Protective response pattern"))
+        else:
+            sequence = basic_sequence
         
-        return mechanisms
-    
-    def _generate_future_prediction(self):
-        """Generate pattern trajectory prediction"""
-        pattern_count = len(st.session_state.pattern_scores)
+        return sequence if any(sequence.values()) else None
+
+    def _extract_trigger_sequence_basic(self, responses):
+        """Basic trigger sequence extraction"""
+        sequence = {}
+        
+        for response_data in responses.values():
+            question_text = response_data.get('question_text', '').lower()
+            response = response_data.get('response', '')
+            
+            if 'happening in the 30 seconds' in question_text and isinstance(response, str):
+                sequence['trigger'] = response[:80] + "..." if len(response) > 80 else response
+            elif 'physical sensation' in question_text and isinstance(response, str):
+                sequence['physical'] = response
+            elif 'thought automatically appears' in question_text and isinstance(response, str):
+                sequence['thought'] = response[:60] + "..." if len(response) > 60 else response
+            elif 'typically feel' in question_text and isinstance(response, (str, dict)):
+                if isinstance(response, dict):
+                    sequence['emotion'] = "Multiple emotions detected"
+                else:
+                    sequence['emotion'] = response
+            elif 'you typically:' in question_text and isinstance(response, str):
+                sequence['behavior'] = response
+        
+        return sequence
+
+    def _calculate_cost_preview_from_config(self, pattern_count, dominant_score):
+        """Calculate cost preview with config-based factors"""
+        base_weekly_hours = 6 + (pattern_count * 2) + (dominant_score * 0.5)
+        weekly_hours = min(int(base_weekly_hours), 25)
+        
+        hourly_value = 800  # THB per hour
+        annual_cost = f"฿{weekly_hours * 52 * hourly_value:,}"
         
         if pattern_count >= 4:
-            return "Based on this pattern constellation, without intervention these protective mechanisms typically strengthen over time, creating increasing life restriction and relationship difficulties."
+            relationship_impact = "Significant strain on close relationships due to pattern complexity"
         elif pattern_count >= 2:
-            return "These patterns tend to become more automatic and entrenched without conscious intervention, gradually limiting life satisfaction and authentic relationships."
+            relationship_impact = "Moderate impact on relationship depth and authenticity"
         else:
-            return "This pattern will likely solidify further without intervention, making future change more challenging."
-    
-    def _extract_core_belief_hint(self):
-        """Extract hint about core limiting belief"""
-        # Analyze text responses for belief indicators
-        belief_indicators = {
-            "not good enough": "I'm not good enough as I am",
-            "can't trust": "I can't trust others to be there for me", 
-            "must do": "I must constantly prove my worth",
-            "don't deserve": "I don't deserve good things",
-            "can't handle": "I can't handle difficult emotions"
+            relationship_impact = "Manageable impact with clear improvement potential"
+        
+        return {
+            'weekly_hours': weekly_hours,
+            'annual_cost': annual_cost,
+            'relationship_impact': relationship_impact
+        }
+
+    def _generate_session_preview_from_config(self, dominant_pattern_id, pattern_count, digital_analysis):
+        """Generate session preview using config pattern data"""
+        pattern_info = self.pattern_descriptions.get(dominant_pattern_id, {})
+        
+        session_1_preview = pattern_info.get('session_1_focuses', 'Comprehensive pattern analysis and foundational work')
+        session_2_preview = pattern_info.get('session_2_focuses', 'Core transformation and positive programming')
+        
+        # Timeline based on complexity
+        if pattern_count >= 4 or (digital_analysis and digital_analysis['severity_level'] == 'SEVERE'):
+            results_timeline = "48-72 hours for initial shifts, 2-3 weeks for full integration"
+            optimization_factor = "Session 3 recommended for optimal reinforcement"
+        elif pattern_count >= 2:
+            results_timeline = "24-48 hours for noticeable changes, 1-2 weeks for stabilization"
+            optimization_factor = "Standard 2-session protocol optimal"
+        else:
+            results_timeline = "24-48 hours for significant shifts, 1 week for complete integration"
+            optimization_factor = "Accelerated results likely due to single-pattern focus"
+        
+        return {
+            'session_1_preview': session_1_preview,
+            'session_2_preview': session_2_preview,
+            'results_timeline': results_timeline,
+            'optimization_factor': optimization_factor
+        }
+
+    def _get_immediate_techniques_from_config(self, dominant_pattern_id):
+        """Get immediate techniques based on pattern using config insights"""
+        # Use pattern-specific what_you_notice from config for technique development
+        pattern_info = self.pattern_descriptions.get(dominant_pattern_id, {})
+        pattern_name = self.patterns.get(dominant_pattern_id, f"Pattern {dominant_pattern_id}")
+        
+        technique_map = {
+            1: {  # Unhappiness Culture
+                'technique_1': {
+                    'name': 'Happiness Permission Check',
+                    'description': 'Before dismissing good feelings, pause and ask: "What would I lose by enjoying this for 5 more minutes?" Usually, the answer reveals the pattern isn\'t protecting anything real.'
+                },
+                'technique_2': {
+                    'name': 'Joy Anchoring Breath',
+                    'description': 'When happiness deflection starts, take 3 deep breaths while saying "I deserve this good feeling" - interrupt the automatic deflection.'
+                }
+            },
+            2: {  # Power Struggles
+                'technique_1': {
+                    'name': 'Combat Mode Recognition',
+                    'description': 'Notice when your body activates during disagreements. Pause and ask: "Is this actually a battle or an opportunity to understand?"'
+                },
+                'technique_2': {
+                    'name': 'Collaboration Reset',
+                    'description': 'When you feel the urge to "win," try saying: "Help me understand your perspective" instead of defending your position.'
+                }
+            },
+            3: {  # Systematic Mistrust
+                'technique_1': {
+                    'name': 'Trust Calibration Check',
+                    'description': 'When suspicion arises, ask: "What evidence do I actually have?" vs "What story is my protective mind creating?"'
+                },
+                'technique_2': {
+                    'name': 'Authentic Risk Taking',
+                    'description': 'Practice sharing one small authentic thing daily - start building evidence that being real is safe.'
+                }
+            }
         }
         
-        for response_data in st.session_state.assessment_responses.values():
-            response = response_data.get('response', '')
-            if isinstance(response, str):
-                for indicator, belief in belief_indicators.items():
-                    if indicator in response.lower():
-                        return belief
-        
-        return "Deep exploration needed in clinical analysis"
-    
-    def _predict_specific_resistance(self):
-        """Predict specific resistance point"""
-        if st.session_state.pattern_scores:
-            top_pattern = max(st.session_state.pattern_scores.items(), key=lambda x: x[1])[0]
-            
-            resistance_map = {
-                1: "May resist feeling genuine joy",
-                2: "May challenge collaborative approach",
-                3: "May question therapeutic relationship",
-                4: "May resist nuanced solutions", 
-                5: "May fear identity change",
-                6: "May struggle with consistency",
-                7: "May feel guilty about self-focus",
-                8: "May feel disloyal to family",
-                9: "May fear setting boundaries"
+        default_techniques = {
+            'technique_1': {
+                'name': f'{pattern_name} Pattern Interrupt',
+                'description': 'When you notice your pattern activating, pause for 10 seconds and ask: "Is this response serving me right now?"'
+            },
+            'technique_2': {
+                'name': 'Conscious Choice Point',
+                'description': 'Before your automatic response, create a 3-second gap to choose a different response that aligns with who you want to be.'
             }
+        }
+        
+        return technique_map.get(dominant_pattern_id, default_techniques)
+
+    def _extract_digital_insights_from_config(self, digital_analysis, responses):
+        """Extract digital insights using config component analysis"""
+        if not digital_analysis:
+            return None
             
-            return resistance_map.get(top_pattern, "Standard change resistance")
+        severity = digital_analysis['severity_level']
+        components = digital_analysis['component_scores']
+        adaptations = digital_analysis.get('therapeutic_adaptations_needed', [])
         
-        return "To be determined in clinical analysis"
-    
-    def _calculate_pattern_rarity(self, total_patterns=None):
-        """Calculate pattern combination rarity percentage"""
-        if total_patterns is None:
-            total_patterns = len(st.session_state.pattern_scores)
-        
-        if total_patterns >= 5:
-            return 8
-        elif total_patterns >= 4:
-            return 12
-        elif total_patterns >= 3:
-            return 18
-        elif total_patterns >= 2:
-            return 25
+        # Attention pattern analysis
+        attention_score = components.get('attention_fragmentation', 0)
+        if attention_score >= 4:
+            attention_pattern = "Severely fragmented - requires 15-minute session segments"
+        elif attention_score >= 2:
+            attention_pattern = "Moderately fragmented - benefits from varied pacing"
         else:
-            return 35
+            attention_pattern = "Standard attention capacity with minor digital impact"
+        
+        # Validation source analysis
+        algorithmic_score = components.get('algorithmic_dependency', 0)
+        if algorithmic_score >= 3:
+            validation_source = "Primarily digital/online validation - real-world confidence needs rebuilding"
+        elif algorithmic_score >= 2:
+            validation_source = "Mixed digital/offline validation - balance needs optimization"
+        else:
+            validation_source = "Healthy validation sources with minor digital influence"
+        
+        # Adaptation needed from config
+        adaptation_map = {
+            'SEVERE': "Complete protocol redesign with anti-authority language and ironic armor dissolution",
+            'MODERATE': "Modified approach with digital-aware techniques and pacing adjustments",
+            'MILD': "Standard approach enhanced with digital competency integration"
+        }
+        
+        return {
+            'attention_pattern': attention_pattern,
+            'validation_source': validation_source,
+            'adaptation_needed': adaptation_map.get(severity, "Standard approach optimal"),
+            'severity_level': severity,
+            'component_breakdown': components,
+            'required_adaptations': adaptations[:3]  # Top 3 adaptations
+        }
+
+    # ---- Additional Rendering Support Methods ----
     
     def _render_aha_moment_bridge(self):
         """Render aha moment bridge using Streamlit components"""
@@ -1524,60 +2121,168 @@ class ComprehensiveBehavioralAssessment:
             st.warning(f"**Pattern trajectory:** {future_prediction}")
             
             st.caption("This free analysis covers your behavioral patterns. Your complete clinical profile reveals the deeper psychological architecture driving these patterns.")
-     
-    def _render_digital_insights(self):
-        """Render digital insights using Streamlit components"""
-        digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-        if not digital_analysis:
-            return
+
+    def _identify_hidden_mechanisms(self):
+        """Identify hidden protective mechanisms using config data"""
+        mechanisms = []
         
-        severity = digital_analysis['severity_level']
-        score = digital_analysis['digital_despair_score']
+        if st.session_state.pattern_scores:
+            sorted_patterns = sorted(st.session_state.pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            
+            for pattern_id, score in sorted_patterns[:3]:
+                if score >= 3:
+                    pattern_info = self.pattern_descriptions.get(pattern_id, {})
+                    mechanism = pattern_info.get('pattern_mechanism', 'Protective response pattern')
+                    mechanisms.append(mechanism)
         
-        # Digital-specific insights
-        digital_insights = {
-            'SEVERE': {
-                'title': 'Specialized digital-native approach required',
-                'description': 'Your assessment reveals significant digital conditioning patterns that require adapted therapeutic techniques.',
-                'benefits': 'With proper specialized approach, you can integrate your digital competencies with real-world confidence and authentic emotional expression.'
-            },
-            'MODERATE': {
-                'title': 'Enhanced digital-aware therapy recommended', 
-                'description': 'You show moderate digital conditioning that benefits from modified therapeutic approaches.',
-                'benefits': 'Standard techniques enhanced with digital awareness will optimize your transformation process.'
-            },
-            'MILD': {
-                'title': 'Digital considerations integrated',
-                'description': 'Some digital influence detected that will be incorporated into your standard approach.',
-                'benefits': 'Your digital skills can be leveraged as strengths in your transformation journey.'
-            },
-            'MINIMAL': {
-                'title': 'Traditional approach optimal',
-                'description': 'Minimal digital conditioning detected - standard hypnotherapy approach is ideal.',
-                'benefits': 'You can benefit from proven traditional techniques without modification.'
-            }
-        }
+        return mechanisms
+
+    def _generate_future_prediction(self):
+        """Generate pattern trajectory prediction using config insights"""
+        pattern_count = len(st.session_state.pattern_scores)
         
-        insight = digital_insights.get(severity, digital_insights['MINIMAL'])
+        if pattern_count >= 4:
+            return "Based on this pattern constellation, without intervention these protective mechanisms typically strengthen over time, creating increasing life restriction and relationship difficulties."
+        elif pattern_count >= 2:
+            return "These patterns tend to become more automatic and entrenched without conscious intervention, gradually limiting life satisfaction and authentic relationships."
+        else:
+            return "This pattern will likely solidify further without intervention, making future change more challenging."
+
+    def _render_pattern_cost_analysis(self):
+        """Render pattern cost analysis using Streamlit components"""
+        future_vision = self._extract_future_vision()
+        current_cost = self._calculate_pattern_cost()
         
-        st.markdown(f"#### Digital pattern analysis: {insight['title']}")
+        st.markdown("**The hidden cost of your current patterns**")
         
-        col1, col2 = st.columns([2, 1])
-        with col1:
-            st.markdown(f"**Digital conditioning score:** {score:.0f}% ({severity})")
+        st.warning(f"**Weekly impact:** This pattern sequence is likely costing you approximately **{current_cost['hours']} hours of peace and productivity per week**")
         
-        st.markdown(insight['description'])
-        st.info(f"**Specialized advantage:** {insight['benefits']}")
-    
+        st.markdown("**Compound cost over time:** Without intervention, these patterns typically solidify further, making change more difficult and the impact more severe.")
+        
+        if future_vision:
+            st.info(f"**Your vision:** You mentioned wanting to {future_vision}. These patterns are the primary barrier standing between you and that reality.")
+
+    def _extract_future_vision(self):
+        """Extract user's future vision from their responses"""
+        for response_data in st.session_state.assessment_responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, str) and any(keyword in response_data.get('question_text', '').lower() 
+                                               for keyword in ['completely resolved', 'different about your daily life', 'first thing you\'d do']):
+                return response[:100] + "..." if len(response) > 100 else response
+        return None
+
+    def _calculate_pattern_cost(self):
+        """Calculate estimated weekly cost of patterns"""
+        pattern_count = len(st.session_state.pattern_scores)
+        intensity_avg = sum(st.session_state.pattern_scores.values()) / len(st.session_state.pattern_scores) if st.session_state.pattern_scores else 0
+        
+        base_hours = 8
+        pattern_multiplier = min(pattern_count * 1.5, 10)
+        intensity_multiplier = min(intensity_avg / 5, 2)
+        
+        total_hours = int(base_hours + pattern_multiplier + intensity_multiplier)
+        
+        return {'hours': total_hours}
+
+    def _extract_core_belief_hint(self):
+        """Extract hint about core limiting belief using config"""
+        for response_data in st.session_state.assessment_responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, str):
+                for indicator, belief in PatternDefinitions.BELIEF_HINTS.items():
+                    if indicator in response.lower():
+                        return belief
+        
+        return "Deep exploration needed in clinical analysis"
+
+    def _predict_specific_resistance(self):
+        """Predict specific resistance point using config"""
+        if st.session_state.pattern_scores:
+            top_pattern = max(st.session_state.pattern_scores.items(), key=lambda x: x[1])[0]
+            pattern_info = self.pattern_descriptions.get(top_pattern, {})
+            return pattern_info.get('pattern_resistance', 'Standard change resistance')
+        
+        return "To be determined in clinical analysis"
+
+    def _calculate_pattern_rarity(self, total_patterns=None):
+        """Calculate pattern combination rarity percentage"""
+        if total_patterns is None:
+            total_patterns = len(st.session_state.pattern_scores)
+        
+        if total_patterns >= 5:
+            return 8
+        elif total_patterns >= 4:
+            return 12
+        elif total_patterns >= 3:
+            return 18
+        elif total_patterns >= 2:
+            return 25
+        else:
+            return 35
+
+    def _render_empowerment_section(self):
+        """Render empowerment section using Streamlit components"""
+        readiness_indicators = self._extract_readiness_indicators()
+        user_insights = self._extract_user_insights()
+        
+        st.markdown("**You have everything needed for rapid transformation**")
+        
+        st.markdown("**Your transformation readiness indicators:**")
+        st.markdown(readiness_indicators, unsafe_allow_html=True)
+        
+        st.success("**Key insight:** Your pattern recognition ability is already strong - that's 60% of the transformation work already complete.")
+        
+        if user_insights:
+            st.markdown(user_insights, unsafe_allow_html=True)
+
+    def _extract_readiness_indicators(self):
+        """Extract readiness indicators from responses for Streamlit display"""
+        indicators = []
+        
+        completion_rate = st.session_state.assessment_results.get('completion_rate', 0)
+        if completion_rate >= 0.9:
+            indicators.append(f"- High assessment engagement - completed {completion_rate * 100:.0f}% of questions")
+        
+        for response_data in st.session_state.assessment_responses.values():
+            response = response_data.get('response', '')
+            question_text = response_data.get('question_text', '')
+            
+            if 'ready' in question_text.lower() and isinstance(response, dict) and response.get('rating', 0) >= 7:
+                indicators.append(f"- High readiness score: {response['rating']}/10")
+            
+            if isinstance(response, str):
+                if any(phrase in response.lower() for phrase in ['want to change', 'ready for', 'tired of']):
+                    indicators.append("- Clear motivation expressed in responses")
+                
+                if len(response) > 50:
+                    indicators.append("- Thoughtful, detailed responses showing self-reflection")
+        
+        if st.session_state.is_digital_native:
+            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
+                indicators.append("- Pattern recognition despite digital conditioning shows strong awareness")
+        
+        return "\n".join(indicators) if indicators else "- Completion of comprehensive assessment shows readiness to explore change"
+
+    def _extract_user_insights(self):
+        """Extract user insights for display"""
+        for response_data in st.session_state.assessment_responses.values():
+            response = response_data.get('response', '')
+            question_text = response_data.get('question_text', '')
+            
+            if 'different about your daily life' in question_text and isinstance(response, str) and len(response) > 30:
+                return f'**Your transformation vision:** "{response[:150]}{"..." if len(response) > 150 else ""}"'
+        
+        return None
+
     def _render_transformation_roadmap(self):
         """Render transformation roadmap using Streamlit components"""
         st.markdown("**Your transformation roadmap**")
         
-        # Estimate timeline and sessions needed
         pattern_count = len(st.session_state.pattern_scores)
-        digital_severity = st.session_state.assessment_results.get('digital_despair_analysis', {}).get('severity_level', 'MINIMAL')
+        digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+        digital_severity = digital_analysis.get('severity_level', 'MINIMAL') if digital_analysis else 'MINIMAL'
         
-        # Determine session structure
         if pattern_count >= 5 or digital_severity in ['SEVERE', 'MODERATE']:
             sessions = "2-3 sessions"
             timeline = "3-4 weeks"
@@ -1599,7 +2304,6 @@ class ComprehensiveBehavioralAssessment:
         with col2:
             st.metric("Timeline", f"{timeline} for complete transformation")
         
-        # Phase breakdown
         phases = [
             {
                 "title": "Pattern analysis & rapport building",
@@ -1629,159 +2333,26 @@ class ComprehensiveBehavioralAssessment:
                 st.success(f"**Expected outcome:** {phase['outcome']}")
                 if i < len(phases) - 1:
                     st.markdown("---")
-    
-    def _render_next_steps_section(self):
-        """Render next steps using Streamlit components"""
-        contact_info = st.session_state.get('contact_info', {})
-        urgency = contact_info.get('urgency', '')
 
-        st.markdown("""
-        **What happens next:**
-    
-        1. **Clinical review** (24-48 hours): Licensed therapist analyzes your comprehensive assessment
-        2. **Personal contact** (48-72 hours): We reach out via your preferred method  
-        3. **Custom protocol** (within 72 hours): Personalized hypnotherapy approach designed for your specific patterns
+    def _render_simple_analysis_preview(self):
+        """Render simple analysis preview when paywall not available"""
+        results = st.session_state.assessment_results
+        pattern_scores = results.get('pattern_scores', {})
         
-        """)
-        
-        # Call to action section
-        st.markdown("**Ready to start your transformation?**")
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            st.link_button("Schedule direct consultation", "https://calendly.com/laetitiasheppard/discovery")
-        with col2:
-            st.link_button("Learn about our method", "https://hypnotherapy.streamlit.app")
+        if pattern_scores:
+            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
+            dominant_pattern = self.patterns.get(sorted_patterns[0][0], "Unknown")
             
-        self._render_value_comparison()
-        
-        
-        # # Additional support information
-        # st.markdown("**Questions or need immediate support?**")
-        # st.markdown("""
-        # **Email:** Reply to any assessment email you receive from us  
-        # **Direct contact:** Our clinical team will reach out to you personally  
-        # **Emergency support:** If you're experiencing crisis, please contact your local emergency services
-        # """)
-
-    
-    def _render_empowerment_section(self):
-        """Render empowerment section using Streamlit components"""
-        # COMMENTED OUT FOR NOW:
-        readiness_indicators = self._extract_readiness_indicators()
-        user_insights = self._extract_user_insights()
-        
-        st.markdown("**You have everything needed for rapid transformation**")
-        
-        # COMMENTED OUT:
-        st.markdown("**Your transformation readiness indicators:**")
-        st.markdown(readiness_indicators, unsafe_allow_html=True)
-        
-        st.success("**Key insight:** Your pattern recognition ability is already strong - that's 60% of the transformation work already complete.")
-        
-        # COMMENTED OUT:
-        if user_insights:
-            st.markdown(user_insights, unsafe_allow_html=True)
-        
-        # st.markdown("**Most people see initial shifts within 48 hours of Session 1**")
-    
-    def _render_value_comparison(self):
-        """Render value comparison using Streamlit components"""
-        # CHANGED FROM ### to **
-        st.markdown("**Price comparison**")
-        
-        col1, col2, col3 = st.columns([4, 1, 4])
-        
-        with col1:
-            st.markdown("**Traditional therapy** with gradual talk and uncertain outcomes for pattern-based issues")
-            st.markdown("**18+ months, ฿15,000+**")
-        
-        with col2:
-            st.markdown("🆚")
-        
-        with col3:
-            st.markdown("**Specialized hypnotherapy** for direct subconscious intervention with 85% success rate")
-            st.markdown("**2 to 3 sessions, ~฿3,000-4,000**")
-        
-        st.info("**Time to initial results: 48-72 hours vs 3-6 months**")
-
-      
-    def _extract_readiness_indicators(self):
-        """Extract readiness indicators from responses - simplified for Streamlit"""
-        indicators = []
-        
-        # Check completion rate
-        completion_rate = st.session_state.assessment_results.get('completion_rate', 0)
-        if completion_rate >= 0.9:
-            indicators.append(f"- High assessment engagement - completed {completion_rate * 100:.0f}% of questions")
-        
-        # Check for specific readiness responses
-        for response_data in st.session_state.assessment_responses.values():
-            response = response_data.get('response', '')
-            question_text = response_data.get('question_text', '')
-            
-            if 'ready' in question_text.lower() and isinstance(response, dict) and response.get('rating', 0) >= 7:
-                indicators.append(f"- High readiness score: {response['rating']}/10")
-            
-            if isinstance(response, str):
-                if any(phrase in response.lower() for phrase in ['want to change', 'ready for', 'tired of']):
-                    indicators.append("- Clear motivation expressed in responses")
-                
-                if len(response) > 50:
-                    indicators.append("- Thoughtful, detailed responses showing self-reflection")
-        
-        if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
-                indicators.append("- Pattern recognition despite digital conditioning shows strong awareness")
-        
-        return "\n".join(indicators) if indicators else "- Completion of comprehensive assessment shows readiness to explore change"
-    
-    def _extract_user_insights(self):
-        """Extract user insights - simplified for Streamlit"""
-        for response_data in st.session_state.assessment_responses.values():
-            response = response_data.get('response', '')
-            question_text = response_data.get('question_text', '')
-            
-            if 'different about your daily life' in question_text and isinstance(response, str) and len(response) > 30:
-                return f'**Your transformation vision:** "{response[:150]}{"..." if len(response) > 150 else ""}"'
-        
-        return None
-    
-    def _render_clinical_analysis_section(self):
-        """Render clinical analysis section using Streamlit components"""
-        st.markdown("---")
-        st.markdown("**Complete clinical analysis**")
-        
-        if PAYWALL_AVAILABLE:
-            try:
-                paywall = create_clinical_paywall()
-                assessment_data = {
-                    'assessment_results': st.session_state.assessment_results,
-                    'assessment_responses': st.session_state.assessment_responses,
-                    'intensity_responses': st.session_state.get('intensity_responses', {}),
-                    'is_digital_native': st.session_state.is_digital_native,
-                    'digital_despair_analysis': st.session_state.assessment_results.get('digital_despair_analysis')
-                }
-                
-                # Add contact info if available
-                if 'contact_info' in st.session_state:
-                    assessment_data.update(st.session_state.contact_info)
-                
-                if paywall.check_payment_status():
-                    paywall.render_premium_analysis(assessment_data)
-                else:
-                    self._render_enhanced_paywall_preview()
-                    
-                    with st.expander("Access complete clinical analysis", expanded=False):
-                        paywall.render_paywall_interface(assessment_data)
-                        
-            except Exception as e:
-                st.error(f"Error loading premium analysis: {str(e)}")
-                self._render_simple_analysis_preview()
-        else:
-            st.info("Complete clinical insights, personalized hypnotherapy recommendations, and detailed treatment planning are available with premium access.")
-            self._render_simple_analysis_preview()
+            st.markdown(f"""
+            <div class="insight-card">
+                <h4 style="color: #273548;">Clinical analysis preview</h4>
+                <p style="color: #556D7A;">
+                    <strong>Primary focus:</strong> {dominant_pattern} pattern transformation<br>
+                    <strong>Complexity level:</strong> {"High" if len(sorted_patterns) >= 4 else "Moderate" if len(sorted_patterns) >= 2 else "Standard"}<br>
+                    <strong>Approach:</strong> {"Specialized digital-native protocol" if st.session_state.is_digital_native else "Standard clinical hypnotherapy"}
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
 
     def _render_enhanced_paywall_preview(self):
         """Render enhanced paywall preview using Streamlit components"""
@@ -1791,7 +2362,6 @@ class ComprehensiveBehavioralAssessment:
         
         st.markdown("**Unlock your complete psychological blueprint**")
         
-        # Create tabs for different analysis sections
         tab1, tab2, tab3, tab4 = st.tabs(["Deep psychology", "Intervention design", "Sequence interruption", "Success optimization"])
         
         with tab1:
@@ -1815,162 +2385,14 @@ class ComprehensiveBehavioralAssessment:
         st.warning(f"**Pattern rarity:** Only {rarity_stat}% of people show this specific pattern combination")
         
         st.caption("This detailed analysis is based on 500+ successful transformations with similar patterns")
+
+    # ---- Contact Form and Email Integration ----
     
-
-
-    
-    # ---- EMAIL TO THERAPIST  ----
-    
-    def _format_comprehensive_clinical_template(self):
-        """Format comprehensive clinical template integrating traditional patterns + digital analysis"""
-        # Extract all clinical insights
-        clinical_insights = self._extract_clinical_insights()
-        
-        # Get pattern scores and session planning
-        pattern_scores = st.session_state.pattern_scores
-        session_plan = self._generate_session_plan(pattern_scores, clinical_insights)
-        
-        # Get top 3 patterns
-        if pattern_scores:
-            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
-            
-            dominant_pattern = self.patterns.get(sorted_patterns[0][0], "Unknown") if sorted_patterns else "Unknown"
-            dominant_score = sorted_patterns[0][1] if sorted_patterns else 0
-            
-            primary_pattern = self.patterns.get(sorted_patterns[1][0], "Unknown") if len(sorted_patterns) > 1 else "None detected"
-            primary_score = sorted_patterns[1][1] if len(sorted_patterns) > 1 else 0
-            
-            secondary_pattern = self.patterns.get(sorted_patterns[2][0], "Unknown") if len(sorted_patterns) > 2 else "None detected"
-            secondary_score = sorted_patterns[2][1] if len(sorted_patterns) > 2 else 0
-        else:
-            dominant_pattern = primary_pattern = secondary_pattern = "Assessment incomplete"
-            dominant_score = primary_score = secondary_score = 0
-        
-        # Get change readiness
-        readiness_score = 5  # Default
-        for response_data in st.session_state.assessment_responses.values():
-            if isinstance(response_data.get('response'), dict) and 'rating' in response_data['response']:
-                readiness_score = response_data['response']['rating']
-                break
-        
-        
-        # Build base template
-        template = f"""
-╔══════════════════════════════════════════════════════════════╗
-║                    CLINICAL ANALYSIS TEMPLATE                ║
-║          Enhanced Behavioral Pattern Assessment              ║
-╚══════════════════════════════════════════════════════════════╝
-
-**TRADITIONAL PATTERN ANALYSIS:**
-Dominant Pattern: {dominant_pattern} (Score: {dominant_score:.1f}/10)
-Primary Pattern: {primary_pattern} (Score: {primary_score:.1f}/10) 
-Secondary Pattern: {secondary_pattern} (Score: {secondary_score:.1f}/10)
-
-**PSYCHOLOGICAL PROFILE:**
-Core Limiting Belief: {clinical_insights.get('core_limiting_belief', 'Requires session exploration')}
-Hidden Benefits: {clinical_insights.get('hidden_benefits', 'Emotional protection and familiar identity')}
-Systemic Resistance: {clinical_insights.get('systemic_resistance', 'Minimal resistance expected')}
-Identity Threat: {clinical_insights.get('identity_threat', 'Identity evolution requires navigation')}
-
-**CHANGE READINESS:**
-Readiness Score: {readiness_score}/10
-Motivation Level: {"HIGH" if readiness_score >= 8 else "MODERATE" if readiness_score >= 6 else "REQUIRES BUILDING"}
-"""
-        
-        # Add digital despair analysis if applicable
-        if st.session_state.is_digital_native:
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis:
-                digital_score = digital_analysis['digital_despair_score']
-                severity = digital_analysis['severity_level']
-                
-                template += f"""
-
-╔══════════════════════════════════════════════════════════════╗
-║               DIGITAL DESPAIR SYNDROME ANALYSIS             ║
-╚══════════════════════════════════════════════════════════════╝
-
-**SYNDROME ASSESSMENT:**
-Algorithmical divide Score: {digital_score:.1f}% ({severity} severity)
-Clinical Recommendation: {digital_analysis['clinical_recommendation']}
-
-**SYNDROME COMPONENTS:**"""
-                
-                components = digital_analysis['component_scores']
-                component_names = {
-                    'digital_native_status': 'Digital Native Conditioning',
-                    'reality_dissociation': 'Online vs Offline Authenticity Gap',
-                    'binary_success_pressure': 'Extraordinary Achievement Pressure',
-                    'ironic_detachment': 'Emotional Protection Through Cynicism',
-                    'algorithmic_dependency': 'Social Media Emotional Regulation',
-                    'nihilistic_worldview': 'Hopelessness and Meaning Crisis',
-                    'hope_avoidance': 'Resistance to Optimism',
-                    'attention_fragmentation': 'Digital Attention Conditioning'
-                }
-                
-                for comp, score in components.items():
-                    name = component_names.get(comp, comp)
-                    level = "HIGH" if score >= 4 else "MEDIUM" if score >= 2 else "LOW"
-                    template += f"\n• {name}: {level} ({score:.1f}/5)"
-                
-                template += f"""
-
-**REQUIRED THERAPEUTIC ADAPTATIONS:**
-{"🚨 SPECIALIZED INTERVENTION REQUIRED" if severity in ['SEVERE', 'MODERATE'] else "✅ STANDARD APPROACH WITH MODIFICATIONS"}
-"""
-                
-                adaptations = digital_analysis.get('therapeutic_adaptations_needed', [])
-                for i, adaptation in enumerate(adaptations[:5], 1):
-                    template += f"\n{i}. {adaptation}"
-                
-                if severity in ['SEVERE', 'MODERATE']:
-                    template += f"""
-
-**DIGITAL-NATIVE SESSION MODIFICATIONS:**
-• Session Structure: {"20-minute focused segments" if severity == 'SEVERE' else "45-60 minutes with breaks"}
-• Language Style: Collaborative, non-directive, intelligence-validating
-• Authority Approach: Peer consultant vs traditional therapist-patient
-• Hope Introduction: Evidence-based gradual vs overwhelming positivity
-• Success Framework: Meaningful contribution vs extraordinary achievement
-• Resistance Management: Expect intellectual challenges and cynicism
-"""
-
-        template += f"""
-
-**SESSION PLANNING:**
-Session 1 Focus: {session_plan.get('session_1_focus', 'Pattern analysis and rapport building')}
-Session 2 Target: {session_plan.get('session_2_target', 'Core transformation and positive programming')}
-Potential Session 3 Need: {session_plan.get('session_3_need', 'Reinforcement if needed')}
-
-**THERAPEUTIC APPROACH:**
-Intervention Keywords: {clinical_insights.get('intervention_keywords', 'Collaborative, gentle, permissive')}
-Avoid Language: {clinical_insights.get('avoid_language', 'Pressure, criticism, commands')}
-Predicted Resistance: {clinical_insights.get('resistance_points', ['Standard change resistance'])[0] if clinical_insights.get('resistance_points') else 'Standard patterns'}
-
-
-**SUCCESS PROBABILITY:**
-Estimated Success Rate: {self._calculate_comprehensive_success_rate()}%
-Based on: Pattern complexity, digital factors, readiness, completion rate
-
-╔══════════════════════════════════════════════════════════════╗
-║                     CLINICAL NOTES                          ║
-╚══════════════════════════════════════════════════════════════╝
-
-{"This assessment reveals a digital-native psychology requiring specialized intervention approaches. Traditional methods may fail without proper adaptations." if st.session_state.is_digital_native and st.session_state.assessment_results.get('digital_despair_analysis', {}).get('severity_level') in ['SEVERE', 'MODERATE'] else "This comprehensive analysis provides framework for effective hypnotherapy intervention based on traditional behavioral pattern constellation."}
-"""
-        
-        return template
-
-
-
-    # ---- Result Rendering contact form ----
-
     def _render_contact_form(self):
         """
         Render the contact form after completion. Gathers email and optional data.
         Sends results via email if system available.
         """
-        #st.markdown("**Assessment complete!**")
         st.success("Your comprehensive behavioral pattern analysis is ready!")
         
         results = st.session_state.assessment_results
@@ -1985,19 +2407,7 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
             with col3:
                 digital_score = st.session_state.get('digital_despair_score', 0)
                 severity = st.session_state.get('digital_severity', 'MINIMAL')
-                
-                # Add severity descriptions
-                severity_descriptions = {
-                    'SEVERE': 'Specialized intervention required',
-                    'MODERATE': 'Enhanced approach needed',
-                    'MILD': 'Standard with modifications', 
-                    'MINIMAL': 'Traditional approach suitable'
-                }
-                description = severity_descriptions.get(severity, 'Assessment incomplete')
-                
                 st.metric("", "Digital patterns", f"{digital_score:.0f}%")
-                #st.metric("Digital patterns", f"{severity}", f"{digital_score:.0f}%")
-
             with col4:
                 completion_rate = results.get('completion_rate', 1.0)
                 st.metric("", "Completion rate", f"{completion_rate*100:.0f}%")
@@ -2045,38 +2455,7 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
                 "I consent to receiving follow-up communications about my assessment results and relevant therapeutic services."
             )
             
-            submit_button_html = """
-            <style>
-            .custom-submit-button {
-                background-color: #4CA1A3 !important;
-                color: #FFFFFF !important;
-                border: 2px solid #4CA1A3 !important;
-                border-radius: 8px !important;
-                padding: 12px 24px !important;
-                font-size: 1rem !important;
-                font-weight: 600 !important;
-                width: 100% !important;
-                margin: 8px 0 !important;
-                cursor: pointer !important;
-                transition: all 0.3s ease !important;
-                text-align: center !important;
-                min-height: 2.5rem !important;
-            }
-            
-            .custom-submit-button:hover {
-                background-color: #E1F0F0 !important;
-                color: #273548 !important;
-                border-color: #E1F0F0 !important;
-                transform: translateY(-1px) !important;
-                box-shadow: 0 4px 12px rgba(243,246,248,0.6) !important;
-            }
-            </style>
-            """
-            st.markdown(submit_button_html, unsafe_allow_html=True)
-            
-            # Use the regular streamlit submit button but with custom styling
             submitted = st.form_submit_button("Get my personalized analysis", type="primary", use_container_width=True)
-
 
             if submitted:
                 errors = []
@@ -2084,7 +2463,7 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
                 # ONLY EMAIL VALIDATION IS REQUIRED
                 if not email.strip(): 
                     errors.append("Email is required")
-                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+                elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
                     errors.append("Valid email address is required")
                 
                 # MARKETING CONSENT CHECK
@@ -2093,7 +2472,7 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
                 
                 if errors:
                     for error in errors:
-                        st.error(f"❌ {error}")
+                        st.error(f"⚠ {error}")
                 else:
                     # Save contact info with optional fields defaulting to empty/not specified
                     st.session_state.contact_info = {
@@ -2107,7 +2486,7 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
                         'timestamp': datetime.now().isoformat()
                     }
                     
-                    # GENERATE COMPREHENSIVE CLINICAL TEMPLATE
+                    # GENERATE COMPREHENSIVE CLINICAL TEMPLATE using refactored method
                     clinical_template = self._format_comprehensive_clinical_template()
                     
                     # Prepare assessment data for email with enhanced clinical template
@@ -2129,30 +2508,35 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
                         'completion_timestamp': datetime.now().isoformat()
                     }
                     
-                    # Send comprehensive clinical assessment email
-                    try:
-                        from utils.email_assess import send_clinical_assessment_results      
-                        email_success = send_clinical_assessment_results(email_data)
-                        # email_success = self._send_assessment_email(assessment_data)
-                        
-                        if email_success:
-                            st.success("✅ Assessment completed and clinical team notified!")
-                            st.info("📧 Your detailed analysis has been sent to our clinical team for review.")
-                        else:
-                            st.warning("⚠️ Assessment saved, but email notification failed. Our team will still receive your results.")
-                            
-                    except ImportError as e:
-                        st.error(f"Email system unavailable: {e}")
-                        st.info("Assessment completed! Our clinical team will review your results.")
-                    except Exception as e:
-                        st.error(f"Email error: {str(e)}")
+                    # Send comprehensive clinical assessment email using utils.email_assess
+                    self._send_assessment_email(email_data)
                     
                     st.session_state.contact_provided = True
                     st.rerun()
 
+    def _send_assessment_email(self, email_data):
+        """Send assessment email using utils.email_assess with error handling"""
+        try:
+            if SEND_CLINICAL_AVAILABLE:
+                from utils.email_assess import send_clinical_assessment_results      
+                email_success = send_clinical_assessment_results(email_data)
+                
+                if email_success:
+                    st.success("✅ Assessment completed and clinical team notified!")
+                    st.info("📧 Your detailed analysis has been sent to our clinical team for review.")
+                else:
+                    st.warning("⚠️ Assessment saved, but email notification failed. Our team will still receive your results.")
+            else:
+                st.warning("Email system temporarily unavailable. Assessment data has been saved.")
+                st.info("Our clinical team will receive your results through backup systems.")
+                
+        except ImportError as e:
+            st.error(f"Email system unavailable: {e}")
+            st.info("Assessment completed! Our clinical team will review your results.")
+        except Exception as e:
+            st.error(f"Email error: {str(e)}")
+            st.info("Assessment saved locally. Please contact support if this persists.")
 
-    # ---- Result Rendering contact form ----
-    
     def _render_results(self):
         """Render user-centric results page with comprehensive insights"""
         self._render_results_hero_at_top()
@@ -2166,174 +2550,17 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
         # self._render_empowerment_section()
         
         # Jump directly to empowerment and next steps
-
         self._render_next_steps_section()
        
-        # # Generate unique session ID for this assessment
+        # Generate unique session ID for this assessment
         # if 'assessment_session_id' not in st.session_state:
         #     st.session_state.assessment_session_id = str(uuid.uuid4())
         
-        # # Create comprehensive assessment data package
+        # Create comprehensive assessment data package
         # assessment_data = self._compile_complete_assessment_data()
         
-        # # Blueprint preview and full access
-        # #self._render_blueprint_access(assessment_data)
-
-    def _render_results_hero_at_top(self):
-            """Render hero section at top of results page"""
-            try:
-                # Check if we have minimum required data
-                # if not hasattr(st.session_state, 'assessment_results') or not st.session_state.assessment_results:
-                #     st.warning("⚠️ Assessment data incomplete. Please complete the full assessment for detailed analysis.")
-                #     return
-    
-                # Generate assessment data
-                assessment_data = self._compile_complete_assessment_data()
-                
-                # Check if assessment_data has required fields
-                # if not assessment_data or not assessment_data.get('pattern_scores'):
-                #     st.info("📊 Complete the assessment to unlock your personalized behavioral analysis.")
-                #     return
-                    
-                preview_data = self._extract_preview_insights(assessment_data)
-                
-                # STEP 2: Compelling personalized preview header at top
-                st.markdown(f"""
-                <div style="background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%); 
-                            padding: 24px; border-radius: 12px; border-left: 4px solid #4CA1A3; margin: 16px 0;">
-                    <div style="color: #273548; font-size: 1.1rem; line-height: 1.6; margin-bottom: 16px;">
-                        <strong style="color: #4CA1A3; font-size: 1.3rem;">🎯 Your unique pattern signature revealed</strong><br><br>
-                        <strong>Primary pattern:</strong> {preview_data['dominant_pattern_name']} - {preview_data['intensity_description']}<br>
-                        <strong>Complexity level:</strong> {preview_data['complexity_description']} ({preview_data['pattern_count']} interconnected patterns)<br>
-                        <strong>Success probability:</strong> {preview_data['success_rate']}% (above average due to {preview_data['success_factors']})<br>
-                        {preview_data['digital_summary']}
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                # STEP 3: Add transformation success likelihood and progress bar
-                st.markdown("**Transformation success likelihood:**")
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    progress_bar = st.progress(preview_data['success_rate'] / 100)
-                with col2:
-                    st.markdown(f"**{preview_data['success_rate']}%**")
-                
-                # STEP 4: Add digital pattern analysis if applicable
-                self._render_digital_insights_at_top(preview_data)
-
-                # STEP 5: Blueprint access - call without parameters, let method generate its own data, access behind paywall
-                self._render_blueprint_access()
-
-            except Exception as e:
-                st.error(f"Error loading results analysis: {str(e)}")
-                st.info("Please complete the full assessment for detailed insights.")
-                # Show fallback content
-                st.markdown("**Assessment in progress**")
-                st.info("Complete all assessment questions to unlock your personalized behavioral analysis and transformation roadmap.")
-
-    def _render_digital_insights_at_top(self, preview_data):
-        """Render digital insights at top of page if applicable"""
-        if preview_data.get('digital_insights'):
-            st.markdown("**Digital pattern analysis:**")
-            
-            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
-            if digital_analysis:
-                severity = digital_analysis['severity_level']
-                score = digital_analysis['digital_despair_score']
-                
-                # Enhanced digital insights display
-                insight_colors = {
-                    'SEVERE': '#ef4444',
-                    'MODERATE': '#eab308', 
-                    'MILD': '#4CA1A3',
-                    'MINIMAL': '#22c55e'
-                }
-                
-                color = insight_colors.get(severity, '#4CA1A3')
-                
-                st.markdown(f"""
-                <div style="background: linear-gradient(135deg, {color}20 0%, #FFFFFF 100%); 
-                            border-left: 4px solid {color}; 
-                            padding: 16px; border-radius: 8px; margin: 16px 0;">
-                    <strong style="color: {color};">📱 Digital conditioning: {score:.0f}% ({severity})</strong><br>
-                    <span style="color: #273548;">
-                        {preview_data['digital_insights']['attention_pattern']}<br>
-                        <strong>Specialized approach:</strong> {preview_data['digital_insights']['adaptation_needed']}
-                    </span>
-                </div>
-                """, unsafe_allow_html=True)
-                
-
-
-    def _render_simple_analysis_preview(self):
-        """Render simple analysis preview when paywall is not available"""
-        results = st.session_state.assessment_results
-        pattern_scores = results.get('pattern_scores', {})
-        
-        if pattern_scores:
-            sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
-            dominant_pattern = self.patterns.get(sorted_patterns[0][0], "Unknown")
-            
-            st.markdown(f"""
-            <div class="insight-card">
-                <h4 style="color: #273548;">Clinical analysis preview</h4>
-                <p style="color: #556D7A;">
-                    <strong>Primary focus:</strong> {dominant_pattern} pattern transformation<br>
-                    <strong>Complexity level:</strong> {"High" if len(sorted_patterns) >= 4 else "Moderate" if len(sorted_patterns) >= 2 else "Standard"}<br>
-                    <strong>Approach:</strong> {"Specialized digital-native protocol" if st.session_state.is_digital_native else "Standard clinical hypnotherapy"}
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-    
-   
-    def _compile_assessment_data_for_blueprint(self):
-        """Compile assessment data in the format expected by blueprint"""
-        # if 'assessment_session_id' not in st.session_state:
-        #     st.session_state.assessment_session_id = str(uuid.uuid4())
-        return {
-            'assessment_responses': st.session_state.get('assessment_responses', {}),
-            'pattern_scores': st.session_state.get('pattern_scores', {}),
-            'intensity_responses': st.session_state.get('intensity_responses', {}),
-            'trigger_chain': st.session_state.get('trigger_chain', {}),
-            'digital_responses': st.session_state.get('digital_responses', {}),
-            'is_digital_native': st.session_state.get('is_digital_native', False),
-            'digital_despair_analysis': st.session_state.get('assessment_results', {}).get('digital_despair_analysis'),
-            'contact_info': st.session_state.get('contact_info', {}),
-            'completion_rate': st.session_state.get('assessment_results', {}).get('completion_rate', 1.0),
-            'triggered_patterns': list(st.session_state.get('triggered_patterns', set())),
-            'adaptive_paths': st.session_state.get('adaptive_paths', []),
-            'risk_flags': st.session_state.get('risk_flags', []),
-            'start_time': st.session_state.get('start_time'),
-            'completion_timestamp': datetime.now().isoformat(),
-            'phase_completion': st.session_state.get('phase_progress', {}),
-            'assessment_version': '2.0'
-        }
-    
-    def _compile_complete_assessment_data(self):
-        """Compile complete assessment data for blueprint"""
-        # if 'assessment_session_id' not in st.session_state:
-        #     st.session_state.assessment_session_id = str(uuid.uuid4())
-        return {
-            'assessment_results': st.session_state.assessment_results,
-            'assessment_responses': st.session_state.assessment_responses,
-            'pattern_scores': st.session_state.pattern_scores,
-            'intensity_responses': st.session_state.get('intensity_responses', {}),
-            'trigger_chain': st.session_state.get('trigger_chain', {}),
-            'digital_responses': st.session_state.get('digital_responses', {}),
-            'is_digital_native': st.session_state.is_digital_native,
-            'digital_despair_analysis': st.session_state.assessment_results.get('digital_despair_analysis'),
-            'contact_info': st.session_state.get('contact_info', {}),
-            'completion_rate': st.session_state.assessment_results.get('completion_rate', 1.0),
-            'triggered_patterns': list(st.session_state.get('triggered_patterns', set())),
-            'adaptive_paths': st.session_state.get('adaptive_paths', []),
-            'risk_flags': st.session_state.get('risk_flags', []),
-            'start_time': st.session_state.get('start_time'),
-            'completion_timestamp': datetime.now().isoformat(),
-            'user_agent': self._get_user_agent(),
-            'assessment_version': '2.0'
-        }
-    
+        # Blueprint preview and full access
+        #self._render_blueprint_access(assessment_data)
 
     def _render_blueprint_access(self):
         """Render blueprint access with preview and full version"""
@@ -2509,380 +2736,7 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
             
         except Exception as e:
             st.error(f"Error with paywall integration: {str(e)}")
-    
-    def _extract_preview_insights(self, assessment_data):
-            """Extract rich insights from assessment data for compelling preview"""
-            
-            # Basic data extraction
-            pattern_scores = assessment_data.get('pattern_scores', {})
-            responses = assessment_data.get('assessment_responses', {})
-            digital_analysis = assessment_data.get('digital_despair_analysis')
-            is_digital_native = assessment_data.get('is_digital_native', False)
-            
-            # Pattern analysis
-            if pattern_scores:
-                sorted_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)
-                dominant_pattern_id, dominant_score = sorted_patterns[0]
-                dominant_pattern_name = self.patterns.get(dominant_pattern_id, "Unknown")
-                pattern_count = len(pattern_scores)
-            else:
-                dominant_pattern_name = "Assessment incomplete"
-                dominant_pattern_id = 1  # Default pattern ID for functions that need it
-                dominant_score = 0
-                pattern_count = 0
-                sorted_patterns = []
-            
-            # Ensure all required fields are set before using them
-            if not pattern_scores:
-                # Provide complete default data structure when no patterns are detected
-                return {
-                    'dominant_pattern_name': 'Assessment incomplete - please complete full assessment',
-                    'intensity_description': 'Assessment needed',
-                    'complexity_description': 'Analysis pending',
-                    'pattern_count': 0,
-                    'success_rate': 85,  # Base success rate
-                    'success_factors': 'assessment completion needed',
-                    'digital_summary': '',
-                    'key_insight': 'Complete assessment needed for personalized insights',
-                    'trigger_sequence': None,
-                    'cost_preview': {
-                        'weekly_hours': 8,
-                        'annual_cost': '฿331,200',
-                        'relationship_impact': 'Assessment needed for analysis'
-                    },
-                    'pattern_interactions': ['Assessment incomplete'],
-                    'session_plan': {
-                        'session_1_preview': 'Comprehensive assessment and rapport building',
-                        'session_2_preview': 'Core transformation and programming',
-                        'results_timeline': '2-4 weeks',
-                        'optimization_factor': 'Assessment completion needed'
-                    },
-                    'immediate_techniques': {
-                        'technique_1': {'name': 'Mindful Pause', 'description': 'Take 3 deep breaths before reacting'},
-                        'technique_2': {'name': 'Choice Point', 'description': 'Ask: Is this serving me?'}
-                    },
-                    'digital_insights': None,
-                    'clarity_score': 1,
-                    'readiness_score': 5,
-                    'match_score': 8
-                }
-            
-            # Intensity description
-            if dominant_score >= 6:
-                intensity_description = "High intensity - requires immediate intervention"
-            elif dominant_score >= 4:
-                intensity_description = "Moderate intensity - well-suited for rapid transformation"
-            elif dominant_score >= 2:
-                intensity_description = "Emerging pattern - excellent prognosis for quick resolution"
-            else:
-                intensity_description = "Mild pattern - high success probability"
-            
-            # Complexity description
-            if pattern_count >= 5:
-                complexity_description = "Complex multi-pattern system"
-            elif pattern_count >= 3:
-                complexity_description = "Moderate complexity with clear intervention points"
-            elif pattern_count >= 2:
-                complexity_description = "Standard complexity level"
-            else:
-                complexity_description = "Single-pattern focus"
-            
-            # Success factors
-            success_factors_list = []
-            if pattern_count <= 3:
-                success_factors_list.append("focused pattern constellation")
-            
-            completion_rate = assessment_data.get('completion_rate', 0)
-            if completion_rate >= 0.9:
-                success_factors_list.append("high assessment engagement")
-            
-            if is_digital_native and digital_analysis:
-                success_factors_list.append("specialized approach match")
-            
-            # Extract readiness indicators
-            readiness_score = 7  # Default
-            for response_data in responses.values():
-                if isinstance(response_data.get('response'), dict) and 'rating' in response_data['response']:
-                    readiness_score = response_data['response']['rating']
-                    break
-            
-            if readiness_score >= 8:
-                success_factors_list.append("high motivation level")
-            
-            success_factors = ", ".join(success_factors_list) if success_factors_list else "strong assessment completion"
-            
-            # Calculate success rate
-            success_rate = self._calculate_comprehensive_success_rate()
-            
-            # Digital summary
-            digital_summary = ""
-            if is_digital_native and digital_analysis:
-                severity = digital_analysis['severity_level']
-                score = digital_analysis['digital_despair_score']
-                digital_summary = f"<strong>Digital conditioning:</strong> {score:.0f}% ({severity}) - specialized protocol activated"
-            
-            # Key insight generation
-            key_insight = self._generate_key_insight(dominant_pattern_id, responses, digital_analysis)
-            
-            # Trigger sequence extraction
-            trigger_sequence = self._extract_trigger_sequence(responses)
-            
-            # Cost preview calculation
-            cost_preview = self._calculate_detailed_cost_preview(pattern_count, dominant_score)
-        
-            # Ensure cost_preview has required fields
-            if not cost_preview:
-                cost_preview = {
-                    'weekly_hours': 8,
-                    'annual_cost': '฿331,200',
-                    'relationship_impact': 'Moderate impact on relationship quality'
-                }
-                
-            # Pattern interactions
-            pattern_interactions = [self.patterns.get(pid, f"Pattern {pid}") for pid, _ in sorted_patterns[:3]]
-            if not pattern_interactions:
-                pattern_interactions = ['Assessment incomplete']
-            
-            # Session plan preview
-            session_plan = self._generate_session_plan_preview(dominant_pattern_id, pattern_count, digital_analysis)
-            
-            # Immediate techniques
-            immediate_techniques = self._generate_immediate_techniques_preview(dominant_pattern_id, trigger_sequence)
-            
-            # Digital insights
-            digital_insights = None
-            if is_digital_native and digital_analysis:
-                digital_insights = self._extract_digital_insights_preview(digital_analysis, responses)
-            
-            # Scoring for metrics
-            clarity_score = min(10, max(1, int(completion_rate * 10)))
-            match_score = 9 if is_digital_native else 8  # Our method is well-suited
-            
-            return {
-                'dominant_pattern_name': dominant_pattern_name,
-                'intensity_description': intensity_description,
-                'complexity_description': complexity_description,
-                'pattern_count': pattern_count,
-                'success_rate': success_rate,
-                'success_factors': success_factors,
-                'digital_summary': digital_summary,
-                'key_insight': key_insight,
-                'trigger_sequence': trigger_sequence,
-                'cost_preview': cost_preview,
-                'pattern_interactions': pattern_interactions,
-                'session_plan': session_plan,
-                'immediate_techniques': immediate_techniques,
-                'digital_insights': digital_insights,
-                'clarity_score': clarity_score,
-                'readiness_score': readiness_score,
-                'match_score': match_score
-            }
-        
-    
-    def _generate_key_insight(self, dominant_pattern_id, responses, digital_analysis):
-        """Generate a compelling key insight based on the dominant pattern"""
-    
-        # Access the insights_map string from PatternDefinitions, fallback to default
-        pattern_info = PatternDefinitions.PATTERN_DESCRIPTIONS.get(dominant_pattern_id, None)
-        
-        if pattern_info and "insights_map" in pattern_info:
-            base_insight = pattern_info["insights_map"]
-        else:
-            base_insight = (
-                "Your assessment reveals protective patterns that once served you "
-                "but now limit your potential"
-            )
-        # Add digital conditioning insight if applicable
-        if digital_analysis and digital_analysis['severity_level'] in ['SEVERE', 'MODERATE']:
-            base_insight += " - compounded by digital conditioning that requires specialized intervention"
-        
-        return base_insight
-    
-    def _extract_trigger_sequence(self, responses):
-        """Extract the behavioral trigger sequence from responses"""
-        
-        sequence = {}
-        
-        # Extract trigger information with safe key access
-        for response_data in responses.values():
-            question_text = response_data.get('question_text', '').lower()
-            response = response_data.get('response', '')
-            
-            if 'happening in the 30 seconds' in question_text and isinstance(response, str):
-                sequence['trigger'] = response[:80] + "..." if len(response) > 80 else response
-            elif 'physical sensation' in question_text and isinstance(response, str):
-                sequence['physical'] = response
-            elif 'thought automatically appears' in question_text and isinstance(response, str):
-                sequence['thought'] = response[:60] + "..." if len(response) > 60 else response
-            elif 'typically feel' in question_text and isinstance(response, (str, dict)):
-                if isinstance(response, dict):
-                    sequence['emotion'] = "Multiple emotions detected"
-                else:
-                    sequence['emotion'] = response
-            elif 'you typically:' in question_text and isinstance(response, str):
-                sequence['behavior'] = response
-        
-        # Provide defaults for missing sequence elements
-        if 'trigger' not in sequence:
-            sequence['trigger'] = "Situation analysis needed"
-        if 'physical' not in sequence:
-            sequence['physical'] = "Body awareness exploration needed"
-        if 'thought' not in sequence:
-            sequence['thought'] = "Automatic thought mapping needed"
-        if 'emotion' not in sequence:
-            sequence['emotion'] = "Emotional response identification needed"
-        if 'behavior' not in sequence:
-            sequence['behavior'] = "Behavioral pattern assessment needed"
-        
-        return sequence
-    
-    def _calculate_detailed_cost_preview(self, pattern_count, dominant_score):
-        """Calculate detailed cost preview with specific numbers"""
-        
-        # Base calculation
-        base_weekly_hours = 6 + (pattern_count * 2) + (dominant_score * 0.5)
-        weekly_hours = min(int(base_weekly_hours), 25)  # Cap at 25 hours
-        
-        # Annual opportunity cost (using conservative estimates)
-        hourly_value = 800  # THB per hour (conservative professional rate)
-        annual_cost = f"฿{weekly_hours * 52 * hourly_value:,}"
-        
-        # Relationship impact
-        if pattern_count >= 4:
-            relationship_impact = "Significant strain on close relationships due to pattern complexity"
-        elif pattern_count >= 2:
-            relationship_impact = "Moderate impact on relationship depth and authenticity"
-        else:
-            relationship_impact = "Manageable impact with clear improvement potential"
-        
-        return {
-            'weekly_hours': weekly_hours,
-            'annual_cost': annual_cost,
-            'relationship_impact': relationship_impact
-        }
-    
 
-    def _generate_session_plan_preview(self, dominant_pattern_id, pattern_count, digital_analysis):
-        """Generate session plan preview based on patterns"""
-    
-        # Fetch from config with fallback strings
-        pattern_info = PatternDefinitions.PATTERN_DESCRIPTIONS.get(dominant_pattern_id, {})
-    
-        session_1_preview = pattern_info.get(
-            "session_1_focuses",
-            "Comprehensive pattern analysis and foundational work"
-        )
-        session_2_preview = pattern_info.get(
-            "session_2_focuses",
-            "Core transformation and positive programming"
-        )
-        # Adjust timeline based on complexity
-        if pattern_count >= 4 or (digital_analysis and digital_analysis['severity_level'] == 'SEVERE'):
-            results_timeline = "48-72 hours for initial shifts, 2-3 weeks for full integration"
-            optimization_factor = "Session 3 recommended for optimal reinforcement"
-        elif pattern_count >= 2:
-            results_timeline = "24-48 hours for noticeable changes, 1-2 weeks for stabilization"
-            optimization_factor = "Standard 2-session protocol optimal"
-        else:
-            results_timeline = "24-48 hours for significant shifts, 1 week for complete integration"
-            optimization_factor = "Accelerated results likely due to single-pattern focus"
-        
-        return {
-            'session_1_preview': session_1_preview,
-            'session_2_preview': session_2_preview,
-            'results_timeline': results_timeline,
-            'optimization_factor': optimization_factor
-        }
-    
-    def _generate_immediate_techniques_preview(self, dominant_pattern_id, trigger_sequence):
-        """Generate immediate techniques preview based on patterns"""
-        
-        technique_map = {
-            1: {
-                'technique_1': {
-                    'name': 'Happiness Permission Check',
-                    'description': 'Before dismissing good feelings, pause and ask: "What would I lose by enjoying this for 5 more minutes?" Usually, the answer reveals the pattern isn\'t protecting anything real.'
-                },
-                'technique_2': {
-                    'name': 'Joy Anchoring Breath',
-                    'description': 'When you notice happiness deflection starting, take 3 deep breaths while internally saying "I deserve this good feeling" - interrupt the automatic deflection.'
-                }
-            },
-            2: {
-                'technique_1': {
-                    'name': 'Combat Mode Recognition',
-                    'description': 'Notice when your body activates (tension, faster heartbeat) during disagreements. Pause and ask: "Is this actually a battle or an opportunity to understand?"'
-                },
-                'technique_2': {
-                    'name': 'Collaboration Reset',
-                    'description': 'When you feel the urge to "win," try saying: "Help me understand your perspective" instead of defending your position.'
-                }
-            },
-            3: {
-                'technique_1': {
-                    'name': 'Trust Calibration Check',
-                    'description': 'When suspicion arises, ask: "What evidence do I actually have?" vs "What story is my protective mind creating?"'
-                },
-                'technique_2': {
-                    'name': 'Authentic Risk Taking',
-                    'description': 'Practice sharing one small authentic thing daily - start building evidence that being real is safe.'
-                }
-            }
-            # Add more patterns as needed
-        }
-        
-        default_techniques = {
-            'technique_1': {
-                'name': 'Pattern Interrupt Pause',
-                'description': 'When you notice your pattern activating, pause for 10 seconds and ask: "Is this response serving me right now?"'
-            },
-            'technique_2': {
-                'name': 'Conscious Choice Point',
-                'description': 'Before your automatic response, create a 3-second gap to choose a different response that aligns with who you want to be.'
-            }
-        }
-        
-        return technique_map.get(dominant_pattern_id, default_techniques)
-    
-    def _extract_digital_insights_preview(self, digital_analysis, responses):
-        """Extract digital conditioning insights for preview"""
-        
-        severity = digital_analysis['severity_level']
-        components = digital_analysis['component_scores']
-        
-        # Attention pattern analysis
-        attention_score = components.get('attention_fragmentation', 0)
-        if attention_score >= 4:
-            attention_pattern = "Severely fragmented - requires 15-minute session segments"
-        elif attention_score >= 2:
-            attention_pattern = "Moderately fragmented - benefits from varied pacing"
-        else:
-            attention_pattern = "Standard attention capacity with minor digital impact"
-        
-        # Validation source analysis
-        algorithmic_score = components.get('algorithmic_dependency', 0)
-        if algorithmic_score >= 3:
-            validation_source = "Primarily digital/online validation - real-world confidence needs rebuilding"
-        elif algorithmic_score >= 2:
-            validation_source = "Mixed digital/offline validation - balance needs optimization"
-        else:
-            validation_source = "Healthy validation sources with minor digital influence"
-        
-        # Adaptation needed
-        adaptation_map = {
-            'SEVERE': "Complete protocol redesign with anti-authority language and ironic armor dissolution",
-            'MODERATE': "Modified approach with digital-aware techniques and pacing adjustments",
-            'MILD': "Standard approach enhanced with digital competency integration"
-        }
-        
-        adaptation_needed = adaptation_map.get(severity, "Standard approach optimal")
-        
-        return {
-            'attention_pattern': attention_pattern,
-            'validation_source': validation_source,
-            'adaptation_needed': adaptation_needed
-        }
-    
     def _render_full_blueprint(self, assessment_data=None):
         """Render the full behavioral blueprint"""
         try:
@@ -2911,7 +2765,7 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
         except Exception as e:
             st.error(f"Error loading blueprint: {str(e)}")
             st.info("Please contact our technical support team.")
-    
+
     def _generate_and_offer_pdf(self, assessment_data):
         """Generate PDF and offer download"""
         try:
@@ -2930,7 +2784,7 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
                 
                 # Offer download
                 st.download_button(
-                    label="📥 Download PDF Report",
+                    label="🔥 Download PDF Report",
                     data=pdf_bytes,
                     file_name=f"behavioral_blueprint_{assessment_data['session_id'][:8]}.pdf",
                     mime="application/pdf",
@@ -2945,6 +2799,681 @@ Based on: Pattern complexity, digital factors, readiness, completion rate
             st.error(f"Error generating PDF: {str(e)}")
             st.info("Please try again or contact support if the issue persists.")
 
+    def _compile_assessment_data_for_blueprint(self):
+        """Compile assessment data in the format expected by blueprint"""
+        return {
+            'assessment_responses': st.session_state.get('assessment_responses', {}),
+            'pattern_scores': st.session_state.get('pattern_scores', {}),
+            'intensity_responses': st.session_state.get('intensity_responses', {}),
+            'trigger_chain': st.session_state.get('trigger_chain', {}),
+            'digital_responses': st.session_state.get('digital_responses', {}),
+            'is_digital_native': st.session_state.get('is_digital_native', False),
+            'digital_despair_analysis': st.session_state.get('assessment_results', {}).get('digital_despair_analysis'),
+            'contact_info': st.session_state.get('contact_info', {}),
+            'completion_rate': st.session_state.get('assessment_results', {}).get('completion_rate', 1.0),
+            'triggered_patterns': list(st.session_state.get('triggered_patterns', set())),
+            'adaptive_paths': st.session_state.get('adaptive_paths', []),
+            'risk_flags': st.session_state.get('risk_flags', []),
+            'start_time': st.session_state.get('start_time'),
+            'completion_timestamp': datetime.now().isoformat(),
+            'phase_completion': st.session_state.get('phase_progress', {}),
+            'assessment_version': '2.0'
+        }
+
+    def _render_digital_insights(self):
+        """Render digital insights using Streamlit components"""
+        digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+        if not digital_analysis:
+            return
+        
+        severity = digital_analysis['severity_level']
+        score = digital_analysis['digital_despair_score']
+        
+        # Digital-specific insights using config thresholds
+        insight_data = self.digital_thresholds.get(severity, self.digital_thresholds.get('MINIMAL', {}))
+        
+        st.markdown(f"#### Digital pattern analysis: {insight_data.get('title', 'Analysis needed')}")
+        
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.markdown(f"**Digital conditioning score:** {score:.0f}% ({severity})")
+        
+        st.markdown(insight_data.get('description', 'Digital pattern analysis in progress'))
+        st.info(f"**Specialized advantage:** {insight_data.get('benefits', 'Approach optimized for your profile')}")
+
+    # ---- Additional utility methods that may be called ----
+    
+    def _save_to_cloud(self, assessment_data):
+        """Save assessment to cloud storage"""
+        try:
+            storage = SimpleStorage()
+            session_id = str(uuid.uuid4())
+            storage_url = storage.save_assessment(session_id, assessment_data)
+            st.success(f"Assessment saved to cloud: {session_id[:8]}")
+        except Exception as e:
+            st.error(f"Cloud save error: {str(e)}")
+
+    def _email_blueprint(self, assessment_data):
+        """Email blueprint to user"""
+        try:
+            if 'contact_info' in st.session_state:
+                email = st.session_state.contact_info.get('email')
+                if email:
+                    # Use existing email system
+                    self._send_assessment_email(assessment_data)
+                    st.success(f"Blueprint emailed to {email}")
+                else:
+                    st.error("No email address available")
+            else:
+                st.error("Contact information not provided")
+        except Exception as e:
+            st.error(f"Email error: {str(e)}")
+
+    # ---- Advanced Analytics Methods for Blueprint Support ----
+    
+    def _extract_complete_trigger_analysis(self, assessment_data):
+        """Extract and analyze complete trigger sequence with intensity weighting"""
+        responses = assessment_data.get('assessment_responses', {})
+        intensity_data = assessment_data.get('intensity_responses', {})
+        
+        # Extract complete 8-step sequence with client's exact words
+        trigger_sequence = {
+            'environmental_trigger': self._extract_response_by_keywords(responses, ['30 seconds', 'happening']),
+            'first_awareness': self._extract_response_by_keywords(responses, ['notice first']),
+            'physical_sensation': self._extract_response_by_keywords(responses, ['physical sensation']),
+            'automatic_thought': self._extract_response_by_keywords(responses, ['thought automatically']),
+            'emotional_cascade': self._extract_response_by_keywords(responses, ['typically feel']),
+            'behavioral_response': self._extract_response_by_keywords(responses, ['you typically:']),
+            'immediate_consequence': self._extract_response_by_keywords(responses, ['right after']),
+            'long_term_impact': self._extract_response_by_keywords(responses, ['few hours later'])
+        }
+        
+        # Calculate intensity per step
+        intensity_mapping = {}
+        for step, content in trigger_sequence.items():
+            related_q_id = self._find_question_id_for_content(responses, content)
+            if related_q_id and related_q_id in intensity_data:
+                intensity_mapping[step] = intensity_data[related_q_id]
+            else:
+                intensity_mapping[step] = 5  # Default
+        
+        return {
+            'sequence': trigger_sequence,
+            'intensity_map': intensity_mapping,
+            'highest_intensity_step': max(intensity_mapping.items(), key=lambda x: x[1]),
+            'intervention_windows': self._calculate_intervention_windows(trigger_sequence, intensity_mapping)
+        }
+
+    def _calculate_intervention_windows(self, trigger_sequence, intensity_mapping):
+        """Calculate optimal intervention windows"""
+        windows = []
+        
+        # Physical sensation window
+        physical_intensity = intensity_mapping.get('physical_sensation', 5)
+        if physical_intensity >= 5:
+            windows.append({
+                'name': 'Somatic Awareness Intervention',
+                'timing': 'At first physical sensation',
+                'success_rate': min(95, 70 + physical_intensity * 5),
+                'technique': 'Body scan interruption with breathing reset'
+            })
+        
+        # Thought interruption window  
+        thought_intensity = intensity_mapping.get('automatic_thought', 5)
+        if thought_intensity >= 4:
+            windows.append({
+                'name': 'Cognitive Pattern Interrupt',
+                'timing': 'At automatic thought emergence',
+                'success_rate': min(90, 60 + thought_intensity * 6),
+                'technique': 'Thought stopping with positive reframe installation'
+            })
+        
+        # Behavioral choice window
+        behavior_intensity = intensity_mapping.get('behavioral_response', 5)
+        windows.append({
+            'name': 'Behavioral Choice Point',
+            'timing': 'Before automatic behavior',
+            'success_rate': min(85, 50 + behavior_intensity * 7),
+            'technique': 'Pause and alternative response selection'
+        })
+        
+        return sorted(windows, key=lambda x: x['success_rate'], reverse=True)
+
+    def _extract_digital_component_analysis(self, assessment_data):
+        """Detailed analysis of each digital conditioning component"""
+        digital_analysis = assessment_data.get('digital_despair_analysis', {})
+        if not digital_analysis:
+            return None
+        
+        components = digital_analysis.get('component_scores', {})
+        responses = assessment_data.get('digital_responses', {})
+        
+        component_details = {}
+        
+        # Map each component to specific responses and interventions
+        component_map = {
+            'reality_dissociation': {
+                'questions': [2],  # Authenticity question
+                'intervention': 'Offline confidence transfer protocols',
+                'timeline': '2-3 sessions for integration'
+            },
+            'ironic_detachment': {
+                'questions': [4],  # Emotional expression question
+                'intervention': 'Authentic emotion permission installation',
+                'timeline': '1-2 sessions for breakthrough'
+            },
+            'attention_fragmentation': {
+                'questions': [8],  # Attention span question
+                'intervention': 'Focused attention restoration therapy',
+                'timeline': '2-4 weeks for stabilization'
+            }
+        }
+        
+        for component, score in components.items():
+            if component in component_map and score >= 2:
+                details = component_map[component]
+                related_responses = [responses.get(q_id, '') for q_id in details['questions']]
+                
+                component_details[component] = {
+                    'score': score,
+                    'severity': 'High' if score >= 4 else 'Moderate',
+                    'client_responses': related_responses,
+                    'intervention': details['intervention'],
+                    'timeline': details['timeline'],
+                    'success_indicators': self._generate_digital_success_indicators(component, score)
+                }
+        
+        return component_details
+
+    def _generate_digital_success_indicators(self, component, score):
+        """Generate specific success indicators for digital components"""
+        indicators_map = {
+            'reality_dissociation': [
+                'Feeling equally authentic online and offline',
+                'Preferring face-to-face conversations over digital',
+                'Natural eye contact during conversations'
+            ],
+            'ironic_detachment': [
+                'Expressing genuine emotions without self-mockery',
+                'Sincere enthusiasm without embarrassment',
+                'Connecting emotionally with others naturally'
+            ],
+            'attention_fragmentation': [
+                'Reading for 30+ minutes without distraction',
+                'Having complete conversations without phone checking',
+                'Deep focus on single tasks for extended periods'
+            ]
+        }
+        
+        return indicators_map.get(component, ['Improved well-being in this area'])
+
+    def _extract_pattern_emergence_data(self, assessment_data):
+        """Analyze how patterns emerged during assessment"""
+        triggered_patterns = assessment_data.get('triggered_patterns', set())
+        adaptive_paths = assessment_data.get('adaptive_paths', [])
+        pattern_scores = assessment_data.get('pattern_scores', {})
+        phase_progress = assessment_data.get('phase_completion', {})
+        
+        emergence_analysis = {
+            'pattern_discovery_order': [],
+            'resistance_indicators': [],
+            'engagement_patterns': [],
+            'therapeutic_readiness': {}
+        }
+        
+        # Analyze pattern discovery order
+        for path in adaptive_paths:
+            if 'pattern_' in path:
+                pattern_id = int(path.split('_')[1])
+                if pattern_id in pattern_scores:
+                    emergence_analysis['pattern_discovery_order'].append({
+                        'pattern_id': pattern_id,
+                        'pattern_name': self.patterns[pattern_id],
+                        'final_score': pattern_scores[pattern_id],
+                        'discovery_phase': self._determine_discovery_phase_detailed(path, phase_progress)
+                    })
+        
+        # Analyze engagement patterns
+        total_questions = sum(phase_progress.values())
+        if total_questions >= 20:
+            engagement_level = 'High'
+        elif total_questions >= 15:
+            engagement_level = 'Moderate'
+        else:
+            engagement_level = 'Low'
+        
+        emergence_analysis['engagement_patterns'] = {
+            'level': engagement_level,
+            'total_questions': total_questions,
+            'completion_rate': assessment_data.get('completion_rate', 0),
+            'phase_distribution': phase_progress
+        }
+        
+        return emergence_analysis
+
+    def _determine_discovery_phase_detailed(self, adaptive_path, phase_progress):
+        """Determine which phase a pattern was discovered in"""
+        if 'pattern_1' in adaptive_path or 'pattern_2' in adaptive_path:
+            return 'Early engagement'
+        elif 'pattern_3' in adaptive_path or 'pattern_4' in adaptive_path:
+            return 'Trigger mapping'
+        else:
+            return 'Pattern-specific questioning'
+
+    def _extract_emotional_intensity_profile(self, assessment_data):
+        """Create detailed emotional intensity analysis"""
+        intensity_responses = assessment_data.get('intensity_responses', {})
+        pattern_scores = assessment_data.get('pattern_scores', {})
+        responses = assessment_data.get('assessment_responses', {})
+        
+        intensity_profile = {
+            'emotional_volatility': 0,
+            'pattern_intensity_map': {},
+            'intervention_priority': [],
+            'emotional_regulation_needs': []
+        }
+        
+        if not intensity_responses:
+            return intensity_profile
+        
+        # Calculate emotional volatility (variance in intensity responses)
+        intensities = list(intensity_responses.values())
+        avg_intensity = sum(intensities) / len(intensities)
+        variance = sum((x - avg_intensity) ** 2 for x in intensities) / len(intensities)
+        intensity_profile['emotional_volatility'] = variance
+        
+        # Map patterns to their intensity levels
+        for pattern_id, score in pattern_scores.items():
+            pattern_intensities = []
+            for q_id, intensity in intensity_responses.items():
+                # Find questions related to this pattern
+                if self._question_relates_to_pattern_detailed(q_id, pattern_id, responses):
+                    pattern_intensities.append(intensity)
+            
+            if pattern_intensities:
+                avg_pattern_intensity = sum(pattern_intensities) / len(pattern_intensities)
+                intensity_profile['pattern_intensity_map'][pattern_id] = {
+                    'average_intensity': avg_pattern_intensity,
+                    'pattern_name': self.patterns[pattern_id],
+                    'regulation_need': 'High' if avg_pattern_intensity >= 6 else 'Moderate' if avg_pattern_intensity >= 4 else 'Low'
+                }
+        
+        # Create intervention priority based on intensity + pattern score
+        priority_list = []
+        for pattern_id in pattern_scores:
+            if pattern_id in intensity_profile['pattern_intensity_map']:
+                combined_score = (pattern_scores[pattern_id] * 
+                                intensity_profile['pattern_intensity_map'][pattern_id]['average_intensity'])
+                priority_list.append((pattern_id, combined_score))
+        
+        intensity_profile['intervention_priority'] = sorted(priority_list, key=lambda x: x[1], reverse=True)
+        
+        return intensity_profile
+
+    def _question_relates_to_pattern_detailed(self, q_id, pattern_id, responses):
+        """Check if a question relates to a specific pattern using config keywords"""
+        question_text = responses.get(q_id, {}).get('question_text', '').lower()
+        
+        # Use pattern keywords from config if available
+        pattern_info = self.pattern_descriptions.get(pattern_id, {})
+        keywords = pattern_info.get('keywords_matching', [])
+        
+        # Fallback keyword mapping
+        if not keywords:
+            pattern_keywords = {
+                1: ['happy', 'joy', 'success', 'good things'],
+                2: ['conflict', 'argument', 'disagree', 'defensive'],
+                3: ['trust', 'suspicious', 'motives', 'skeptical'],
+                4: ['choice', 'decision', 'either', 'both'],
+                5: ['productive', 'busy', 'achievement', 'worth'],
+                6: ['different', 'personality', 'authentic', 'real'],
+                7: ['others', 'help', 'needs', 'care'],
+                8: ['family', 'expectations', 'should', 'duty'],
+                9: ['boundaries', 'limits', 'context', 'situation']
+            }
+            keywords = pattern_keywords.get(pattern_id, [])
+        
+        return any(keyword in question_text for keyword in keywords)
+
+    def _extract_personal_language(self, assessment_data):
+        """Extract client's actual words and metaphors from responses"""
+        responses = assessment_data.get('assessment_responses', {})
+        personal_phrases = []
+        emotional_language = []
+        
+        for response_data in responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, str) and len(response.strip()) > 20:
+                # Extract meaningful phrases (first-person language)
+                if any(word in response.lower() for word in ['i feel', 'i think', 'i notice', 'i want']):
+                    personal_phrases.append(response.strip())
+                
+                # Extract emotional language
+                emotion_words = ['anxious', 'frustrated', 'stuck', 'overwhelmed', 'tired', 'afraid']
+                for word in emotion_words:
+                    if word in response.lower():
+                        emotional_language.append(word)
+        
+        return {
+            'personal_phrases': personal_phrases[:3],
+            'emotional_language': list(set(emotional_language))
+        }
+
+    def _create_personalized_trigger_analysis(self, assessment_data):
+        """Create detailed trigger sequence using client's actual responses"""
+        trigger_chain = assessment_data.get('trigger_chain', {})
+        intensity_data = assessment_data.get('intensity_responses', {})
+        
+        # Build complete sequence with client's words
+        sequence = {
+            'trigger': trigger_chain.get('trigger', 'Situation needs exploration'),
+            'awareness_point': trigger_chain.get('awareness_point', 'Body or thought awareness'),
+            'physical': trigger_chain.get('physical_response', 'Physical sensation'),
+            'thought': trigger_chain.get('automatic_thought', 'Automatic thought pattern'),
+            'emotion': trigger_chain.get('emotional_response', 'Emotional response'),
+            'behavior': trigger_chain.get('behavioral_response', 'Behavioral pattern'),
+            'consequence': trigger_chain.get('immediate_consequence', 'Immediate outcome'),
+            'reinforcement': trigger_chain.get('longer_term_impact', 'Pattern reinforcement')
+        }
+        
+        # Add intensity weighting
+        avg_intensity = sum(intensity_data.values()) / len(intensity_data) if intensity_data else 5
+        
+        return {
+            'sequence': sequence,
+            'intensity_level': avg_intensity,
+            'intervention_points': self._identify_intervention_points_detailed(sequence)
+        }
+
+    def _identify_intervention_points_detailed(self, sequence):
+        """Identify key intervention points in the trigger sequence"""
+        intervention_points = []
+        
+        # Physical awareness point
+        if sequence.get('physical') and sequence['physical'] != 'Physical sensation':
+            intervention_points.append("Physical sensation awareness")
+        
+        # Thought interruption point  
+        if sequence.get('thought') and sequence['thought'] != 'Automatic thought pattern':
+            intervention_points.append("Automatic thought interruption")
+        
+        # Behavioral choice point
+        if sequence.get('behavior') and sequence['behavior'] != 'Behavioral pattern':
+            intervention_points.append("Behavioral response choice")
+        
+        # Always include these standard points
+        if len(intervention_points) < 3:
+            intervention_points.extend(["Pattern recognition point", "Response choice point", "Future outcome consideration"])
+        
+        return intervention_points[:4]  # Return max 4 points
+
+    def _generate_speaking_to_you_insights(self, assessment_data):
+        """Generate insights using client's actual language and responses"""
+        personal_lang = self._extract_personal_language(assessment_data)
+        pattern_scores = assessment_data.get('pattern_scores', {})
+        
+        if not pattern_scores:
+            return {}
+        
+        dominant_pattern_id = max(pattern_scores.items(), key=lambda x: x[1])[0]
+        
+        # Use client's emotional language in insights
+        emotional_context = personal_lang['emotional_language']
+        personal_phrases = personal_lang['personal_phrases']
+        
+        speaking_insights = {
+            'recognition': f"When you mentioned feeling {', '.join(emotional_context[:2]) if emotional_context else 'stuck'}, this perfectly describes the {self.patterns[dominant_pattern_id]} pattern in action.",
+            'validation': f"Your awareness that {personal_phrases[0][:100] if personal_phrases else 'these patterns affect your daily life'} shows remarkable self-insight.",
+            'breakthrough': f"The fact that you can articulate {personal_phrases[1][:100] if len(personal_phrases) > 1 else 'your experience so clearly'} means you're already 60% of the way to transformation."
+        }
+        
+        return speaking_insights
+
+    def _calculate_comprehensive_costs(self, pattern_scores, assessment_data):
+        """Calculate comprehensive weekly and annual costs"""
+        if not pattern_scores:
+            return {'time_hours': 0, 'opportunities': 0, 'relationship_strain': 0, 'energy_drain': 0}
+        
+        pattern_count = len(pattern_scores)
+        intensity_avg = sum(pattern_scores.values()) / len(pattern_scores)
+        
+        # Base calculations with realistic estimates
+        base_time = 8  # hours per week
+        pattern_multiplier = min(pattern_count * 1.5, 12)
+        intensity_multiplier = min(intensity_avg / 3, 3)
+        
+        time_hours = int(base_time + pattern_multiplier + intensity_multiplier)
+        opportunities = max(1, int(pattern_count / 2))
+        relationship_strain = min(pattern_count, 5)
+        energy_drain = min(int(30 + (intensity_avg * 10) + (pattern_count * 5)), 80)
+        
+        return {
+            'time_hours': time_hours,
+            'opportunities': opportunities, 
+            'relationship_strain': relationship_strain,
+            'energy_drain': energy_drain
+        }
+
+    def _calculate_lifetime_costs(self, pattern_scores, assessment_data):
+        """Calculate estimated lifetime costs of patterns"""
+        if not pattern_scores:
+            return {'total_5_year': 0, 'lost_opportunities': 0, 'stress_costs': 0, 
+                   'relationship_costs': 0, 'happiness_hours': 0, 'relationship_quality': 0,
+                   'career_impact': 0, 'health_impact': 0}
+        
+        pattern_count = len(pattern_scores)
+        intensity_avg = sum(pattern_scores.values()) / len(pattern_scores)
+        
+        # Financial calculations (conservative estimates)
+        lost_opportunities = pattern_count * intensity_avg * 2000  # Career/business opportunities
+        stress_costs = pattern_count * 1500  # Health, therapy, stress management
+        relationship_costs = min(pattern_count * 800, 5000)  # Relationship counseling, social costs
+        
+        total_5_year = int((lost_opportunities + stress_costs + relationship_costs) * 5)
+        
+        # Life satisfaction calculations
+        happiness_hours = int(pattern_count * intensity_avg * 50)  # Hours per year
+        relationship_quality = min(int(pattern_count * 8), 40)  # Percentage reduction
+        career_impact = min(int(pattern_count * 6), 30)  # Percentage limitation
+        health_impact = min(int(pattern_count * 0.5), 3)  # Years of stress impact
+        
+        return {
+            'total_5_year': total_5_year,
+            'lost_opportunities': int(lost_opportunities * 5),
+            'stress_costs': int(stress_costs * 5),
+            'relationship_costs': int(relationship_costs * 5),
+            'happiness_hours': happiness_hours,
+            'relationship_quality': relationship_quality,
+            'career_impact': career_impact,
+            'health_impact': health_impact
+        }
+
+    def _identify_transformation_assets(self, assessment_data):
+        """Identify visitor's existing assets for transformation"""
+        assets = []
+        
+        # Intelligence and insight
+        pattern_scores = assessment_data.get('pattern_scores', {})
+        if len(pattern_scores) >= 3:
+            assets.append("High emotional intelligence and pattern recognition ability")
+        
+        # Completion demonstrates persistence
+        completion_rate = assessment_data.get('completion_rate', 0)
+        if completion_rate >= 0.8:
+            assets.append("Demonstrated persistence and commitment to understanding yourself")
+        
+        # Self-awareness
+        responses = assessment_data.get('assessment_responses', {})
+        self_aware_responses = 0
+        for response_data in responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, str) and any(word in response.lower() for word in ['realize', 'notice', 'aware', 'recognize']):
+                self_aware_responses += 1
+        
+        if self_aware_responses >= 2:
+            assets.append("Strong self-awareness and ability to observe your own patterns")
+        
+        # Communication skills
+        detailed_responses = sum(1 for response_data in responses.values() 
+                               if isinstance(response_data.get('response'), str) and len(response_data.get('response', '').strip()) > 30)
+        
+        if detailed_responses >= 4:
+            assets.append("Excellent communication and self-expression abilities")
+        
+        # Analytical thinking
+        if pattern_scores:
+            assets.append("Strong analytical thinking that can be redirected from self-criticism to self-development")
+        
+        # Digital competencies
+        if assessment_data.get('is_digital_native'):
+            assets.append("Digital competencies that can transfer to real-world confidence")
+        
+        # Courage to seek help
+        assets.append("Courage to seek help and willingness to explore new approaches")
+        
+        # Default assets
+        if len(assets) < 3:
+            assets.extend([
+                "Natural problem-solving abilities",
+                "Capacity for insight and self-reflection",
+                "Existing coping strategies that show resilience"
+            ])
+        
+        return assets[:6]  # Return top 6 assets
+
+    def _compile_complete_assessment_data(self):
+        """Compile complete assessment data for blueprint"""
+        return {
+            'assessment_results': st.session_state.assessment_results,
+            'assessment_responses': st.session_state.assessment_responses,
+            'pattern_scores': st.session_state.pattern_scores,
+            'intensity_responses': st.session_state.get('intensity_responses', {}),
+            'trigger_chain': st.session_state.get('trigger_chain', {}),
+            'digital_responses': st.session_state.get('digital_responses', {}),
+            'is_digital_native': st.session_state.is_digital_native,
+            'digital_despair_analysis': st.session_state.assessment_results.get('digital_despair_analysis'),
+            'contact_info': st.session_state.get('contact_info', {}),
+            'completion_rate': st.session_state.assessment_results.get('completion_rate', 1.0),
+            'triggered_patterns': list(st.session_state.get('triggered_patterns', set())),
+            'adaptive_paths': st.session_state.get('adaptive_paths', []),
+            'risk_flags': st.session_state.get('risk_flags', []),
+            'start_time': st.session_state.get('start_time'),
+            'completion_timestamp': datetime.now().isoformat(),
+            'user_agent': self._get_user_agent(),
+            'assessment_version': '2.0'
+        }
+
+    def _render_results_hero_at_top(self):
+        """Render hero section at top of results page"""
+        try:
+            assessment_data = self._compile_complete_assessment_data()
+            preview_data = self._extract_preview_insights(assessment_data)
+            
+            # Compelling personalized preview header
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%); 
+                        padding: 24px; border-radius: 12px; border-left: 4px solid #4CA1A3; margin: 16px 0;">
+                <div style="color: #273548; font-size: 1.1rem; line-height: 1.6; margin-bottom: 16px;">
+                    <strong style="color: #4CA1A3; font-size: 1.3rem;">🎯 Your unique pattern signature revealed</strong><br><br>
+                    <strong>Primary pattern:</strong> {preview_data['dominant_pattern_name']} - {preview_data['intensity_description']}<br>
+                    <strong>Complexity level:</strong> {preview_data['complexity_description']} ({preview_data['pattern_count']} interconnected patterns)<br>
+                    <strong>Success probability:</strong> {preview_data['success_rate']}% (above average due to {preview_data['success_factors']})<br>
+                    {preview_data['digital_summary']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Transformation success likelihood
+            st.markdown("**Transformation success likelihood:**")
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.progress(preview_data['success_rate'] / 100)
+            with col2:
+                st.markdown(f"**{preview_data['success_rate']}%**")
+            
+            # Digital insights if applicable
+            self._render_digital_insights_at_top(preview_data)
+            
+            # Blueprint access
+            self._render_blueprint_access()
+
+        except Exception as e:
+            st.error(f"Error loading results analysis: {str(e)}")
+            st.info("Please complete the full assessment for detailed insights.")
+
+    def _render_digital_insights_at_top(self, preview_data):
+        """Render digital insights at top of page if applicable"""
+        if preview_data.get('digital_insights'):
+            st.markdown("**Digital pattern analysis:**")
+            
+            digital_analysis = st.session_state.assessment_results.get('digital_despair_analysis')
+            if digital_analysis:
+                severity = digital_analysis['severity_level']
+                score = digital_analysis['digital_despair_score']
+                
+                insight_colors = {
+                    'SEVERE': '#ef4444',
+                    'MODERATE': '#eab308', 
+                    'MILD': '#4CA1A3',
+                    'MINIMAL': '#22c55e'
+                }
+                
+                color = insight_colors.get(severity, '#4CA1A3')
+                
+                st.markdown(f"""
+                <div style="background: linear-gradient(135deg, {color}20 0%, #FFFFFF 100%); 
+                            border-left: 4px solid {color}; 
+                            padding: 16px; border-radius: 8px; margin: 16px 0;">
+                    <strong style="color: {color};">📱 Digital conditioning: {score:.0f}% ({severity})</strong><br>
+                    <span style="color: #273548;">
+                        {preview_data['digital_insights']['attention_pattern']}<br>
+                        <strong>Specialized approach:</strong> {preview_data['digital_insights']['adaptation_needed']}
+                    </span>
+                </div>
+                """, unsafe_allow_html=True)
+
+    def _render_next_steps_section(self):
+        """Render next steps using Streamlit components"""
+        contact_info = st.session_state.get('contact_info', {})
+
+        st.markdown("""
+        **What happens next:**
+    
+        1. **Clinical review** (24-48 hours): Licensed therapist analyzes your comprehensive assessment
+        2. **Personal contact** (48-72 hours): We reach out via your preferred method  
+        3. **Custom protocol** (within 72 hours): Personalized hypnotherapy approach designed for your specific patterns
+        
+        """)
+        
+        # Call to action section
+        st.markdown("**Ready to start your transformation?**")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.link_button("Schedule direct consultation", "https://calendly.com/laetitiasheppard/discovery")
+        with col2:
+            st.link_button("Learn about our method", "https://hypnotherapy.streamlit.app")
+            
+        self._render_value_comparison()
+
+    def _render_value_comparison(self):
+        """Render value comparison using Streamlit components"""
+        st.markdown("**Price comparison**")
+        
+        col1, col2, col3 = st.columns([4, 1, 4])
+        
+        with col1:
+            st.markdown("**Traditional therapy** with gradual talk and uncertain outcomes for pattern-based issues")
+            st.markdown("**18+ months, ฿15,000+**")
+        
+        with col2:
+            st.markdown("🆚")
+        
+        with col3:
+            st.markdown("**Specialized hypnotherapy** for direct subconscious intervention with 85% success rate")
+            st.markdown("**2 to 3 sessions, ~฿3,000-4,000**")
+        
+        st.info("**Time to initial results: 48-72 hours vs 3-6 months**")
 
 # ---- Main Application Classes ----
 class AssessPage:
