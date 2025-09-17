@@ -10,108 +10,21 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 import json
 import re
+from utils.config import PatternDefinitions, EmailConfig
 
 class EmailHandler:
     """Complete email handler with advanced clinical assessment capabilities"""
     
     def __init__(self):
-        # Gmail SMTP configuration
-        self.smtp_server = "smtp.gmail.com"
-        self.smtp_port = 587
-        self.sender_email = "laetitiasheppard@gmail.com"
-        self.recipient_email = "laetitiasheppard@gmail.com"
-        
-        # Try to get password from environment variables or Streamlit secrets
-        try:
-            import streamlit as st
-            self.password = st.secrets.get("GMAIL_APP_PASSWORD", "")
-        except:
-            self.password = os.environ.get("GMAIL_APP_PASSWORD", "")
+        # Use config values from EmailConfig
+        self.smtp_server = EmailConfig.SMTP_SERVER
+        self.smtp_port = EmailConfig.SMTP_PORT
+        self.sender_email = EmailConfig.SENDER_EMAIL
+        self.recipient_email = EmailConfig.RECIPIENT_EMAIL
+        self.password = EmailConfig.MAIL_APP_PASSWORD
         
         # Clinical pattern analysis tables
-        self.pattern_structures = {
-            1: {
-                "name": "Unhappiness Culture",
-                "root_structure": "Positive states = danger/loss/punishment",
-                "core_belief": "Happiness leads to disappointment or makes me a target",
-                "systemic_factors": ["Family depression patterns", "Cultural suffering valorization", "Positive suppression rewards"],
-                "identity_conflict": "Happy self vs. Familiar/safe suffering self",
-                "hidden_loyalties": ["Family unhappiness solidarity", "Suffering = virtue beliefs", "Protection from envy/attacks"],
-                "intervention_strategy": "Permission installation for positive states with safety anchoring"
-            },
-            2: {
-                "name": "Power Struggles", 
-                "root_structure": "Submission = death/annihilation of self",
-                "core_belief": "I must fight to exist/maintain my identity",
-                "systemic_factors": ["Authoritarian family dynamics", "Competition-based relationships", "Win-lose paradigms"],
-                "identity_conflict": "Collaborative self vs. Fighter/survivor self",
-                "hidden_loyalties": ["Family fight patterns", "Strength = resistance beliefs", "Protection from domination"],
-                "intervention_strategy": "Collaborative empowerment with maintained autonomy"
-            },
-            3: {
-                "name": "Systematic Mistrust",
-                "root_structure": "Others = eventual betrayal/harm",
-                "core_belief": "Trust leads to being hurt, used, or abandoned",
-                "systemic_factors": ["Early betrayal experiences", "Inconsistent caregiving", "Trust violation patterns"],
-                "identity_conflict": "Trusting self vs. Protected/vigilant self", 
-                "hidden_loyalties": ["Loyalty to hurt parts", "Vigilance = safety beliefs", "Protection from re-injury"],
-                "intervention_strategy": "Gradual trust building with transparent safety protocols"
-            },
-            4: {
-                "name": "Separation and Division",
-                "root_structure": "Gray areas = chaos/uncertainty/danger",
-                "core_belief": "Things must be clearly defined or everything falls apart",
-                "systemic_factors": ["Rigid family rules", "Religious absolutism", "Chaotic early environment"],
-                "identity_conflict": "Flexible self vs. Clear/defined self",
-                "hidden_loyalties": ["Family certainty patterns", "Order = safety beliefs", "Protection from confusion"],
-                "intervention_strategy": "Both/and integration with safety in uncertainty"
-            },
-            5: {
-                "name": "Doing versus Being",
-                "root_structure": "Worth = productivity/achievement only",
-                "core_belief": "I am only valuable when I'm producing/achieving",
-                "systemic_factors": ["Achievement-focused family", "Work/school performance pressure", "Productivity culture"],
-                "identity_conflict": "Being self vs. Achieving self",
-                "hidden_loyalties": ["Family achievement patterns", "Worth = doing beliefs", "Protection from worthlessness"],
-                "intervention_strategy": "Inherent worth installation with productivity reframing"
-            },
-            6: {
-                "name": "Compartmentalized Authenticity",
-                "root_structure": "Real self = rejection/abandonment",
-                "core_belief": "I must be different selves to be accepted",
-                "systemic_factors": ["Conditional family acceptance", "Social role expectations", "Authenticity punishment"],
-                "identity_conflict": "Authentic self vs. Acceptable/safe selves",
-                "hidden_loyalties": ["Family role patterns", "Adaptation = survival beliefs", "Protection from rejection"],
-                "intervention_strategy": "Authentic self integration with safety across contexts"
-            },
-            7: {
-                "name": "Self Sacrifice and Care Avoidance",
-                "root_structure": "My needs = selfish/wrong/dangerous",
-                "core_belief": "I am only good/loveable when serving others",
-                "systemic_factors": ["Caretaker family roles", "Self-sacrifice modeling", "Need-shaming patterns"],
-                "identity_conflict": "Self-caring self vs. Service/giving self",
-                "hidden_loyalties": ["Family service patterns", "Sacrifice = love beliefs", "Protection from selfishness"],
-                "intervention_strategy": "Self-care as service reframing with boundary installation"
-            },
-            8: {
-                "name": "Inherited Missions",
-                "root_structure": "My path = betrayal of family/ancestors",
-                "core_belief": "I must fulfill family dreams/expectations to be loyal",
-                "systemic_factors": ["Family sacrifice stories", "Generational expectations", "Dream inheritance patterns"],
-                "identity_conflict": "Personal desire self vs. Family loyal self",
-                "hidden_loyalties": ["Ancestral sacrifice honor", "Family dream continuation", "Protection from guilt/betrayal"],
-                "intervention_strategy": "Honor family while claiming personal path integration"
-            },
-            9: {
-                "name": "Context Dependent Weakness",
-                "root_structure": "Certain contexts = powerlessness/helplessness",
-                "core_belief": "I lose myself in specific situations/with certain people",
-                "systemic_factors": ["Trauma context associations", "Power dynamic patterns", "Learned helplessness"],
-                "identity_conflict": "Strong self vs. Overwhelmed/powerless self",
-                "hidden_loyalties": ["Trauma bond maintenance", "Powerlessness = safety beliefs", "Protection from responsibility"],
-                "intervention_strategy": "Universal strength anchoring with context-independent resources"
-            }
-        }
+        self.pattern_structures = PatternDefinitions.STRUCTURES
         
         # Intervention mapping tables
         self.hypnotic_language_map = {
