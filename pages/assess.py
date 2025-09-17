@@ -604,7 +604,8 @@ class MasterAnalytics:
         pattern_scores = {k: (v or 0) for k, v in pattern_scores.items()}
         responses = assessment_data.get('assessment_responses', {})
         intensity_data = assessment_data.get('intensity_responses', {})
-        
+
+        pattern_scores = {k: (v if isinstance(v, (int, float)) else 0) for k, v in pattern_scores.items()}
         if not pattern_scores:
             return self._default_pattern_analysis()
             
