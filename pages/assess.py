@@ -769,7 +769,7 @@ class DigitalDespairAnalyzer:
         return interventions
         
     def _generate_session_modifications(self, severity, component_scores):
-            """Generate session structure modifications for digital natives"""
+        """Generate session structure modifications for digital natives"""
         modifications = {
                 'session_length': '90 minutes',
                 'break_structure': 'Standard',
