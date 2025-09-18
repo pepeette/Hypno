@@ -18,6 +18,7 @@ import traceback
 # ================================
 # 1. CORE CONFIGURATION & PATTERNS
 # ================================
+print(">> assess.py imported")
 
 class PatternDefinitions:
     """Core behavioral pattern definitions and descriptions"""
