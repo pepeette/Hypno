@@ -331,11 +331,24 @@ try:
 except ImportError:
     BookingPage = None
 
+# try:
+#     from pages.assess import create_assess_page  # This matches your actual function
+#     AssessPage = create_assess_page
+# except ImportError:
+#     AssessPage = None
+
 try:
-    from pages.assess import create_assess_page  # This matches your actual function
+    from pages.assess import create_assess_page
     AssessPage = create_assess_page
-except ImportError:
+    print("✅ Successfully imported create_assess_page from pages.assess")
+    print(f"AssessPage type: {type(AssessPage)}")
+except ImportError as e:
     AssessPage = None
+    print(f"❌ Failed to import assess page: {e}")
+    print("Check if pages/assess.py exists and has create_assess_page function")
+except Exception as e:
+    AssessPage = None
+    print(f"❌ Other error importing assess page: {e}")
 
 # Import admin interface (to be created)
 try:
@@ -508,14 +521,19 @@ class HypnotherapyApp:
         """Render content based on selected navigation page"""
         try:
             # Handle hidden pages first
-            if selected_page == "assess" and AssessPage:
-                self._render_hidden_assessment_page()
+            if selected_page == "assess":
+                print(f"🔍 Trying to render assess page. AssessPage is: {AssessPage}")
+                if AssessPage:
+                    self._render_hidden_assessment_page()
+                else:
+                    st.error("❌ Assessment page import failed!")
+                    st.info("Debug: AssessPage is None - check import errors in console/logs")
                 return
                 
             elif selected_page == "admin":
                 self._render_admin_page()
                 return
-                
+            
             # Handle regular navigation pages
             if selected_page == "Home" and HomePage:
                 page_instance = HomePage()
@@ -546,10 +564,15 @@ class HypnotherapyApp:
             st.error(f"Error loading {selected_page} page. Please try refreshing.")
             if st.secrets.get("debug_mode", False):
                 st.exception(e)
-    
+            print(f"❌ Page render error: {e}")
+        
     def _render_hidden_assessment_page(self):
         """Render the hidden assessment page"""
+        print("🔍 _render_hidden_assessment_page called")
+        
         if AssessPage:
+            print("✅ AssessPage exists, rendering...")
+            
             # Add discrete header
             st.markdown("""
             <div style="background: #f0f8ff; padding: 0.5rem 1rem; border-radius: 4px; 
@@ -560,10 +583,17 @@ class HypnotherapyApp:
             </div>
             """, unsafe_allow_html=True)
             
-            # Call the assessment page function directly
-            AssessPage()  # This calls create_assess_page() which handles everything
+            try:
+                # Call the assessment page function directly
+                AssessPage()  # This should call create_assess_page()
+            except Exception as e:
+                st.error(f"❌ Error rendering assessment: {e}")
+                print(f"❌ Assessment render error: {e}")
+                if st.secrets.get("debug_mode", False):
+                    st.exception(e)
         else:
-            st.error("Assessment page not available. Please contact support.")
+            st.error("❌ Assessment page not available. Import failed.")
+            st.info("Check console/logs for import error details")
         
     def _render_admin_page(self):
         """Render the admin interface page"""
