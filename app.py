@@ -331,24 +331,11 @@ try:
 except ImportError:
     BookingPage = None
 
-# try:
-#     from pages.assess import create_assess_page  # This matches your actual function
-#     AssessPage = create_assess_page
-# except ImportError:
-#     AssessPage = None
-
 try:
-    from pages.assess import create_assess_page
+    from pages.assess_working.py import create_assess_page  # This matches your actual function
     AssessPage = create_assess_page
-    print("✅ Successfully imported create_assess_page from pages.assess")
-    print(f"AssessPage type: {type(AssessPage)}")
-except ImportError as e:
+except ImportError:
     AssessPage = None
-    print(f"❌ Failed to import assess page: {e}")
-    print("Check if pages/assess.py exists and has create_assess_page function")
-except Exception as e:
-    AssessPage = None
-    print(f"❌ Other error importing assess page: {e}")
 
 # Import admin interface (to be created)
 try:
