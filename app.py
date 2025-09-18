@@ -331,12 +331,17 @@ try:
 except ImportError:
     BookingPage = None
 
-# Import assessment page (hidden)
 try:
-    from pages.assess import create_assess_page
+    from pages.assess import create_assess_page  # This matches your actual function
     AssessPage = create_assess_page
 except ImportError:
     AssessPage = None
+
+# Import admin interface (to be created)
+try:
+    from pages.admin_interface import AdminInterface
+except ImportError:
+    AdminInterface = None
 
 # Import shared components with error handling
 try:
@@ -413,10 +418,21 @@ class HypnotherapyApp:
         """Initialize session state variables"""
         initialize_session_state()
         
-        # Initialize assessment-specific session state
-        if 'assessment_session_id' not in st.session_state:
-            import uuid
-            st.session_state.assessment_session_id = str(uuid.uuid4())
+        # Initialize assessment-specific session state (if using admin features)
+        assessment_defaults = {
+            'assessment_session_id': None,
+            'assessment_storage': {},  # Store multiple assessments for admin
+            'email_queue': [],         # Queue for email notifications
+            'admin_authenticated': False  # Admin access flag
+        }
+        
+        for key, value in assessment_defaults.items():
+            if key not in st.session_state:
+                if key == 'assessment_session_id' and value is None:
+                    import uuid
+                    st.session_state[key] = str(uuid.uuid4())
+                else:
+                    st.session_state[key] = value
 
     def _check_hidden_page_access(self):
         """Check URL parameters for hidden page access"""
@@ -539,16 +555,16 @@ class HypnotherapyApp:
             <div style="background: #f0f8ff; padding: 0.5rem 1rem; border-radius: 4px; 
                         margin-bottom: 1rem; border-left: 4px solid #4CA1A3;">
                 <small style="color: #4CA1A3;">
-                    🔒 Confidential assessment portal
+                    🔒 Confidential behavioral pattern assessment portal
                 </small>
             </div>
             """, unsafe_allow_html=True)
             
-            page_instance = AssessPage()
-            page_instance.render()
+            # Call the assessment page function directly
+            AssessPage()  # This calls create_assess_page() which handles everything
         else:
             st.error("Assessment page not available. Please contact support.")
-    
+        
     def _render_admin_page(self):
         """Render the admin interface page"""
         st.markdown("""
@@ -560,12 +576,13 @@ class HypnotherapyApp:
         </div>
         """, unsafe_allow_html=True)
         
-        # Import and render admin interface from the assessment page
-        if AssessPage:
-            from pages.assess import render_admin_interface
-            render_admin_interface()
+        # Use separate admin interface
+        if AdminInterface:
+            admin = AdminInterface()
+            admin.render()
         else:
             st.error("Admin interface not available.")
+            st.info("Admin interface will be implemented in pages/admin_interface.py")
     
     def render_booking_form(self, selected_page):
         """Render booking form on public pages only"""
