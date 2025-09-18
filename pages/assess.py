@@ -1272,12 +1272,6 @@ class BehavioralPatternAssessment:
     """Main assessment class orchestrating the entire process - FIXED VERSION"""
     
     def __init__(self):
-        # DON'T access st.session_state during __init__ - defer until render
-        # self.questions = QuestionSets.get_core_questions()
-        # self.analytics = AssessmentAnalytics()
-        # self.email_handler = EmailHandler()
-        # self._session_initialized = False
-        # Only set simple attributes, no Streamlit calls
         self.questions = None
         self.analytics = None  
         self.email_handler = None
@@ -1288,22 +1282,28 @@ class BehavioralPatternAssessment:
         if self._session_initialized:
             return
         
-        defaults = {
-            'assessment_responses': {},
-            'current_question': 1,
-            'assessment_completed': False,
-            'contact_submitted': False,
-            'contact_info': {},
-            'pattern_scores': {},
-            'analytics_results': {},
-            'show_results': False
-        }
-        
-        for key, value in defaults.items():
-            if key not in st.session_state:
-                st.session_state[key] = value
-        
-        self._session_initialized = True
+        try:
+            defaults = {
+                'assessment_responses': {},
+                'current_question': 1,
+                'assessment_completed': False,
+                'contact_submitted': False,
+                'contact_info': {},
+                'pattern_scores': {},
+                'analytics_results': {},
+                'show_results': False
+            }
+            
+            for key, value in defaults.items():
+                if key not in st.session_state:
+                    st.session_state[key] = value
+            
+            self._session_initialized = True
+            
+        except Exception as e:
+            # Streamlit not ready yet, will try again on next render
+            print(f"Session state not ready: {e}")
+            self._session_initialized = False
     
     def render(self):
         """Main render method"""
