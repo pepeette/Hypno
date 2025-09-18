@@ -1954,9 +1954,17 @@ class BehavioralPatternAssessment:
 # ================================
 
 def create_assess_page():
-    """Main function to create and render the assessment page"""
-    assessment = BehavioralPatternAssessment()
-    assessment.render()
+    """Factory function to create assessment page instance"""
+    return AssessmentPage()
+
+class AssessmentPage:
+    """Assessment page wrapper class"""
+    def __init__(self):
+        self.assessment = BehavioralPatternAssessment()
+    
+    def render(self):
+        """Render the assessment page"""
+        self.assessment.render()
 
 # Export the main function for use in other modules
 if __name__ == "__main__":
