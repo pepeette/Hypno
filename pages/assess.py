@@ -49,34 +49,34 @@ class ProductionAssessment:
             'digital_severity': 'MINIMAL',
             'digital_adaptations_needed': [],
             
-            # # Behavioral sequence mapping
-            # 'trigger_chain': {},
-            # 'behavioral_sequence_completeness': 0,
-            # 'intervention_windows': [],
+            # Behavioral sequence mapping
+            'trigger_chain': {},
+            'behavioral_sequence_completeness': 0,
+            'intervention_windows': [],
             
-            # # Clinical insights extraction
-            # 'core_limiting_beliefs': {},
-            # 'secondary_gains': {},
-            # 'systemic_resistance_factors': {},
-            # 'identity_conflicts': {},
-            # 'hidden_loyalties': {},
+            # Clinical insights extraction
+            'core_limiting_beliefs': {},
+            'secondary_gains': {},
+            'systemic_resistance_factors': {},
+            'identity_conflicts': {},
+            'hidden_loyalties': {},
             
-            # # Success prediction system
-            # 'readiness_score': 0,
-            # 'engagement_metrics': {},
-            # 'success_probability': 85,
-            # 'risk_mitigation_strategies': [],
+            # Success prediction system
+            'readiness_score': 0,
+            'engagement_metrics': {},
+            'success_probability': 85,
+            'risk_mitigation_strategies': [],
             
-            # # Session planning
-            # 'session_complexity_score': 0,
-            # 'recommended_approach': 'standard',
-            # 'session_structure': {},
-            # 'timeline_predictions': {},
+            # Session planning
+            'session_complexity_score': 0,
+            'recommended_approach': 'standard',
+            'session_structure': {},
+            'timeline_predictions': {},
             
             # Results and completion
             'assessment_completed': False,
             'contact_provided': False,
-            # 'comprehensive_analysis': {},
+            'comprehensive_analysis': {},
             
             # Analytics tracking
             'start_time': datetime.now().isoformat(),
