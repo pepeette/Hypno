@@ -1976,10 +1976,16 @@ class BehavioralPatternAssessment:
 # ================================
 # 7. MAIN PAGE FUNCTION
 # ================================
+class AssessPage:
+    def __init__(self):
+        self.assessment = BehavioralPatternAssessment()
+    
+    def render(self):
+        self.assessment.render()
 
 def create_assess_page():
-    assessment = BehavioralPatternAssessment()
-    return assessment
+    """Factory function to create the assessment page"""
+    return AssessPage()
 
 # Export the main function for use in other modules
 if __name__ == "__main__":
