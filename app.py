@@ -334,7 +334,10 @@ except ImportError:
 try:
     from pages.assess import create_assess_page  
     AssessPage = create_assess_page
-except ImportError:
+except Exception as e:
+    import traceback
+    print("❌ Failed to import Assessment page")
+    print(traceback.format_exc())
     AssessPage = None
 
 # Import admin interface (to be created)
