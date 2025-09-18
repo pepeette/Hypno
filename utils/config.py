@@ -1469,7 +1469,168 @@ class AnalyticsMethods:
         
         return strategies
 
-
+   
+    @staticmethod
+    def analyze_complete_trigger_sequence(assessment_data):
+        """Analyze trigger sequence from assessment data"""
+        trigger_chain = assessment_data.get('trigger_chain', {})
+        responses = assessment_data.get('assessment_responses', {})
+        
+        if not trigger_chain and not responses:
+            return {
+                'sequence_completeness': 0,
+                'trigger_points': [],
+                'intervention_windows': [],
+                'sequence_analysis': 'Trigger sequence data not captured - assessment incomplete'
+            }
+        
+        # Extract basic sequence
+        sequence = {
+            'environmental_trigger': trigger_chain.get('trigger', 'Not captured'),
+            'awareness_point': trigger_chain.get('awareness_point', 'Not captured'),
+            'physical_response': trigger_chain.get('physical_response', 'Not captured'),
+            'automatic_thought': trigger_chain.get('automatic_thought', 'Not captured'),
+            'emotional_response': trigger_chain.get('emotional_response', 'Not captured'),
+            'behavioral_response': trigger_chain.get('behavioral_response', 'Not captured'),
+            'immediate_consequence': trigger_chain.get('immediate_consequence', 'Not captured')
+        }
+        
+        # Calculate completeness
+        captured_elements = sum(1 for v in sequence.values() if v != 'Not captured')
+        completeness = int((captured_elements / len(sequence)) * 100)
+        
+        # Identify intervention points
+        intervention_points = []
+        if sequence['physical_response'] != 'Not captured':
+            intervention_points.append('Physical awareness intervention')
+        if sequence['automatic_thought'] != 'Not captured':
+            intervention_points.append('Thought pattern interruption')
+        if sequence['behavioral_response'] != 'Not captured':
+            intervention_points.append('Behavioral choice point')
+        
+        return {
+            'sequence_completeness': completeness,
+            'trigger_sequence': sequence,
+            'intervention_windows': intervention_points,
+            'sequence_analysis': f"Sequence {completeness}% complete - {'sufficient for intervention design' if completeness >= 60 else 'requires completion in session 1'}"
+        }
+    
+    @staticmethod
+    def identify_all_transformation_assets(assessment_data):
+        """Identify transformation assets from assessment"""
+        assets = []
+        
+        # Assessment completion as asset
+        completion_rate = assessment_data.get('completion_rate', 0)
+        if completion_rate >= 0.8:
+            assets.append("High assessment engagement demonstrates commitment to change")
+        
+        # Pattern recognition ability
+        pattern_scores = assessment_data.get('pattern_scores', {})
+        if len(pattern_scores) >= 2:
+            assets.append("Strong pattern recognition and self-awareness abilities")
+        
+        # Communication skills from text responses
+        responses = assessment_data.get('assessment_responses', {})
+        detailed_responses = sum(1 for r in responses.values() 
+                               if isinstance(r.get('response'), str) and len(r.get('response', '')) > 30)
+        if detailed_responses >= 3:
+            assets.append("Excellent self-expression and communication skills")
+        
+        # Digital competencies
+        if assessment_data.get('is_digital_native'):
+            assets.append("Digital competencies that can transfer to real-world confidence")
+        
+        # Motivation indicators
+        for response_data in responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, str) and any(word in response.lower() for word in ['ready', 'want to change', 'tired of']):
+                assets.append("Clear motivation and readiness for transformation")
+                break
+        
+        # Default assets if none identified
+        if len(assets) < 3:
+            assets.extend([
+                "Natural problem-solving abilities",
+                "Capacity for insight and self-reflection",
+                "Courage to seek help and explore new approaches"
+            ])
+        
+        return assets[:5]  # Return top 5 assets
+    
+    @staticmethod
+    def extract_complete_empowerment_profile(assessment_data):
+        """Extract empowerment profile from assessment"""
+        pattern_scores = assessment_data.get('pattern_scores', {})
+        responses = assessment_data.get('assessment_responses', {})
+        
+        # Strengths identification
+        strengths = []
+        if len(pattern_scores) >= 3:
+            strengths.append("Pattern recognition ability")
+        if assessment_data.get('completion_rate', 0) >= 0.8:
+            strengths.append("Commitment and follow-through")
+        
+        # Readiness indicators
+        readiness_indicators = []
+        for response_data in responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, dict) and 'rating' in response:
+                rating = response.get('rating', 0)
+                if rating >= 7:
+                    readiness_indicators.append(f"High readiness rating: {rating}/10")
+        
+        # Change motivation
+        motivation_level = "Moderate"
+        for response_data in responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, str):
+                if any(word in response.lower() for word in ['desperate', 'must change', 'can\'t continue']):
+                    motivation_level = "High"
+                    break
+                elif any(word in response.lower() for word in ['ready', 'want to', 'need to']):
+                    motivation_level = "High"
+                    break
+        
+        return {
+            'identified_strengths': strengths,
+            'readiness_indicators': readiness_indicators,
+            'motivation_level': motivation_level,
+            'empowerment_summary': f"{motivation_level} motivation with strong assessment engagement"
+        }
+    
+    @staticmethod
+    def extract_communication_preferences(assessment_data):
+        """Extract communication preferences from responses"""
+        responses = assessment_data.get('assessment_responses', {})
+        
+        # Analyze response style
+        response_style = "Concise"
+        avg_response_length = 0
+        text_responses = 0
+        
+        for response_data in responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, str):
+                text_responses += 1
+                avg_response_length += len(response)
+        
+        if text_responses > 0:
+            avg_response_length = avg_response_length / text_responses
+            if avg_response_length > 100:
+                response_style = "Detailed and expressive"
+            elif avg_response_length > 50:
+                response_style = "Moderate detail"
+        
+        # Digital communication preference
+        is_digital_native = assessment_data.get('is_digital_native', False)
+        
+        return {
+            'response_style': response_style,
+            'communication_preference': 'Digital-friendly approach' if is_digital_native else 'Traditional approach',
+            'detail_level': 'High' if avg_response_length > 80 else 'Moderate',
+            'engagement_style': 'Interactive and collaborative'
+        }
 
 # -------------------------
 # Emails 
