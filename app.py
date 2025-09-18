@@ -4,6 +4,7 @@ Enhanced with hidden assessment page accessible only via direct URL
 """
 import streamlit as st
 import os
+from datetime import datetime
 
 # Disable file watching in production
 if os.getenv('STREAMLIT_ENV') == 'production':
@@ -68,7 +69,7 @@ except ImportError:
 
 # Import utilities with error handling
 try:
-    from utils.config import PageConfig
+    from utils.config import PageConfig, PatternDefinitions, QuestionSets, AnalyticsMethods,EmailConfig, DIGITAL_SCORING_RULES, PATTERN_SCORING_RULES
 except ImportError:
     PageConfig = None
 
@@ -217,17 +218,17 @@ class HypnotherapyApp:
     
     def _render_hidden_assessment_page(self):
         """Render the hidden assessment page"""
-        if AssessPage:
-            # Add a discrete header indicating this is a hidden page
-            st.markdown("""
-            <div style="background: #f0f8ff; padding: 0.5rem 1rem; border-radius: 4px; 
+        # Add a discrete header indicating this is a hidden page
+        st.markdown("""
+        <div style="background: #f0f8ff; padding: 0.5rem 1rem; border-radius: 4px; 
                         margin-bottom: 1rem; border-left: 4px solid #4CA1A3;">
                 <small style="color: #4CA1A3;">
                     🔒 Confidential assessment portal
                 </small>
-            </div>
-            """, unsafe_allow_html=True)
-            
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if AssessPage:
             page_instance = AssessPage()
             page_instance.render()
         else:
@@ -244,8 +245,14 @@ class HypnotherapyApp:
     
     def render_footer(self):
         """Render the footer section on public pages only"""
-        # Don't show footer on hidden pages
+        # Minimal footer for hidden pages
         if self.hidden_page:
+            st.markdown("---")
+            st.markdown("""
+            <div style="text-align: center; color: #666; font-size: 0.8rem; padding: 1rem 0;">
+                © 2025 Laetitia Sheppard • Confidential Portal • All Rights Reserved
+            </div>
+            """, unsafe_allow_html=True)
             return
             
         if self.footer:
