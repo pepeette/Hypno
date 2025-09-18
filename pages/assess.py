@@ -831,6 +831,7 @@ class MasterAnalytics:
 
     
     # Helper methods for analytics generation
+    
     def _generate_cache_key(self, assessment_data):
         """Generate cache key for analytics memoization"""
         key_data = {
@@ -932,6 +933,277 @@ class MasterAnalytics:
             adjustment -= 1
         
         return adjustment
+    
+    # Add these methods to the MasterAnalytics class:
+    
+    def _default_session_plan(self):
+        """Default session plan when pattern analysis incomplete"""
+        return {
+            'session_structure': {
+                'total_sessions': '2-3 sessions',
+                'session_length': '90 minutes each',
+                'timeline': '2-4 weeks'
+            },
+            'detailed_planning': {
+                'session_1': 'Complete assessment and initial rapport building',
+                'session_2': 'Pattern exploration and foundational work',
+                'session_3': 'Integration and reinforcement if needed'
+            },
+            'timeline_predictions': {
+                'total_duration': '2-4 weeks',
+                'between_session_work': 'Minimal homework assignments',
+                'follow_up_schedule': 'Check-in after 2 weeks'
+            },
+            'success_optimization': {
+                'success_probability': 85,
+                'optimization_factors': ['Complete assessment needed'],
+                'potential_challenges': ['Assessment completion required']
+            }
+        }
+    
+    def _plan_session_1(self, pattern_analysis, digital_analysis):
+        """Plan session 1 based on analysis"""
+        if not pattern_analysis:
+            return "Complete assessment and initial rapport building"
+        
+        dominant_pattern = pattern_analysis.get('dominant_pattern', {})
+        pattern_name = dominant_pattern.get('name', 'Unknown')
+        
+        digital_adaptations = ""
+        if digital_analysis and digital_analysis.get('severity_level') in ['SEVERE', 'MODERATE']:
+            digital_adaptations = " with digital-native adaptations"
+        
+        return f"Deep pattern analysis focusing on {pattern_name} pattern{digital_adaptations}, rapport building, and initial positive programming"
+    
+    def _plan_session_2(self, pattern_analysis, digital_analysis):
+        """Plan session 2 based on analysis"""
+        if not pattern_analysis:
+            return "Pattern exploration and foundational transformation work"
+        
+        dominant_pattern = pattern_analysis.get('dominant_pattern', {})
+        pattern_name = dominant_pattern.get('name', 'Unknown')
+        
+        return f"Core {pattern_name} pattern transformation, neural pathway rewiring, and positive response installation"
+    
+    def _plan_session_3_if_needed(self, complexity_score, pattern_analysis):
+        """Plan session 3 if needed based on complexity"""
+        if complexity_score >= 7:
+            return "Integration reinforcement, pattern consolidation, and long-term stability anchoring"
+        elif complexity_score >= 5:
+            return "Optional reinforcement session for complex pattern integration"
+        else:
+            return "Unlikely to be needed - standard 2-session protocol sufficient"
+    
+    def _calculate_session_complexity_score(self, pattern_count, digital_severity):
+        """Calculate session complexity score"""
+        base_score = 3
+        
+        # Pattern complexity
+        if pattern_count >= 5:
+            base_score += 4
+        elif pattern_count >= 3:
+            base_score += 2
+        elif pattern_count >= 2:
+            base_score += 1
+        
+        # Digital complexity
+        if digital_severity == 'SEVERE':
+            base_score += 3
+        elif digital_severity == 'MODERATE':
+            base_score += 2
+        elif digital_severity == 'MILD':
+            base_score += 1
+        
+        return min(base_score, 10)
+    
+    def _determine_session_structure(self, complexity_score):
+        """Determine session structure based on complexity"""
+        if complexity_score >= 8:
+            return {
+                'total_sessions': '3 sessions',
+                'session_length': '90 minutes each',
+                'timeline': '3-4 weeks',
+                'structure_reason': 'High complexity requires comprehensive approach'
+            }
+        elif complexity_score >= 5:
+            return {
+                'total_sessions': '2-3 sessions', 
+                'session_length': '90 minutes each',
+                'timeline': '2-3 weeks',
+                'structure_reason': 'Moderate complexity with optional reinforcement'
+            }
+        else:
+            return {
+                'total_sessions': '2 sessions',
+                'session_length': '90 minutes each', 
+                'timeline': '2 weeks',
+                'structure_reason': 'Standard protocol optimal'
+            }
+    
+    def _predict_total_duration(self, complexity_score):
+        """Predict total duration based on complexity"""
+        if complexity_score >= 8:
+            return "3-4 weeks for complete transformation"
+        elif complexity_score >= 5:
+            return "2-3 weeks with possible reinforcement"
+        else:
+            return "2 weeks for standard transformation"
+    
+    def _determine_integration_work(self, pattern_analysis):
+        """Determine between-session integration work"""
+        if not pattern_analysis:
+            return "Standard integration exercises"
+        
+        pattern_count = pattern_analysis.get('pattern_count', 0)
+        
+        if pattern_count >= 4:
+            return "Daily pattern awareness exercises and response practice"
+        elif pattern_count >= 2:
+            return "Pattern recognition practice and mindful response exercises"
+        else:
+            return "Simple awareness exercises and positive anchoring"
+    
+    def _determine_follow_up_schedule(self, complexity_score):
+        """Determine follow-up schedule"""
+        if complexity_score >= 7:
+            return "1 week, 2 weeks, and 1 month check-ins"
+        elif complexity_score >= 5:
+            return "2 weeks and 1 month check-ins"
+        else:
+            return "1 month check-in"
+    
+    def _calculate_session_success_probability(self, pattern_analysis, digital_analysis):
+        """Calculate session success probability"""
+        base_rate = 85
+        
+        if not pattern_analysis:
+            return base_rate
+        
+        pattern_count = pattern_analysis.get('pattern_count', 0)
+        
+        # Pattern complexity adjustment
+        if pattern_count >= 5:
+            base_rate -= 5
+        elif pattern_count >= 3:
+            base_rate -= 2
+        
+        # Digital native advantage
+        if digital_analysis and digital_analysis.get('severity_level') in ['SEVERE', 'MODERATE']:
+            base_rate += 3  # Specialized approach advantage
+        
+        return max(70, min(95, base_rate))
+    
+    def _identify_optimization_factors(self, assessment_data):
+        """Identify factors that optimize success"""
+        factors = []
+        
+        completion_rate = assessment_data.get('completion_rate', 0)
+        if completion_rate >= 0.9:
+            factors.append("High assessment engagement")
+        
+        pattern_scores = assessment_data.get('pattern_scores', {})
+        if len(pattern_scores) <= 3:
+            factors.append("Focused pattern constellation")
+        
+        is_digital_native = assessment_data.get('is_digital_native', False)
+        if is_digital_native:
+            factors.append("Digital-native protocol match")
+        
+        if not factors:
+            factors.append("Standard optimization protocols")
+        
+        return factors
+    
+    def _predict_session_challenges(self, pattern_analysis, digital_analysis):
+        """Predict potential session challenges"""
+        challenges = []
+        
+        if not pattern_analysis:
+            return ["Assessment completion needed"]
+        
+        pattern_count = pattern_analysis.get('pattern_count', 0)
+        
+        if pattern_count >= 4:
+            challenges.append("Complex pattern interactions requiring careful sequencing")
+        
+        if digital_analysis and digital_analysis.get('severity_level') == 'SEVERE':
+            challenges.append("Authority resistance and ironic detachment requiring specialized approach")
+        
+        if not challenges:
+            challenges.append("Standard therapeutic resistance patterns")
+        
+        return challenges
+    
+    def _calculate_engagement_adjustment(self, assessment_data):
+        """Calculate engagement adjustment factor"""
+        completion_rate = assessment_data.get('completion_rate', 0)
+        
+        if completion_rate >= 0.9:
+            return 3  # High engagement bonus
+        elif completion_rate >= 0.7:
+            return 1  # Moderate engagement
+        elif completion_rate >= 0.5:
+            return -1  # Low engagement penalty
+        else:
+            return -3  # Very low engagement
+    
+    def _calculate_readiness_adjustment(self, responses):
+        """Calculate readiness adjustment from responses"""
+        if not responses:
+            return 0
+        
+        readiness_indicators = 0
+        
+        for response_data in responses.values():
+            response = response_data.get('response', '')
+            if isinstance(response, dict) and 'rating' in response:
+                rating = response.get('rating', 0)
+                if rating >= 8:
+                    readiness_indicators = 3
+                elif rating >= 6:
+                    readiness_indicators = max(readiness_indicators, 1)
+            elif isinstance(response, str):
+                if any(word in response.lower() for word in ['ready', 'desperate', 'tired of', 'need to change']):
+                    readiness_indicators = max(readiness_indicators, 2)
+        
+        return readiness_indicators
+    
+    def _generate_success_factors_list(self, assessment_data):
+        """Generate list of success factors"""
+        factors = []
+        
+        completion_rate = assessment_data.get('completion_rate', 0)
+        if completion_rate >= 0.9:
+            factors.append("High assessment completion rate shows commitment")
+        
+        pattern_scores = assessment_data.get('pattern_scores', {})
+        if len(pattern_scores) <= 3:
+            factors.append("Focused pattern constellation allows targeted intervention")
+        
+        if assessment_data.get('is_digital_native'):
+            factors.append("Digital-native adaptations provide specialized advantage")
+        
+        if not factors:
+            factors.append("Standard therapeutic factors support transformation")
+        
+        return factors
+    
+    def _generate_risk_mitigation_strategies(self, assessment_data):
+        """Generate risk mitigation strategies"""
+        strategies = []
+        
+        pattern_count = len(assessment_data.get('pattern_scores', {}))
+        if pattern_count >= 4:
+            strategies.append("Careful session pacing to prevent overwhelm")
+        
+        digital_analysis = assessment_data.get('digital_despair_analysis')
+        if digital_analysis and digital_analysis.get('severity_level') in ['SEVERE', 'MODERATE']:
+            strategies.append("Anti-authority language and collaborative approach")
+        
+        if not strategies:
+            strategies.append("Standard risk management protocols")
+        
+        return strategies
 
 # -------------------------
 # Core Assessment Class
