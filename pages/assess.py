@@ -4046,18 +4046,18 @@ def create_assess_page():
     
     return SimpleAssessment()
 
-# ---- Main Application Entry Point ----
-if __name__ == "__main__":
-    st.set_page_config(
-        page_title="Advanced Behavioral Pattern Assessment",
-        page_icon="🧠",
-        layout="centered",
-        initial_sidebar_state="collapsed"
-    )
+# # ---- Main Application Entry Point ----
+# if __name__ == "__main__":
+#     st.set_page_config(
+#         page_title="Advanced Behavioral Pattern Assessment",
+#         page_icon="🧠",
+#         layout="centered",
+#         initial_sidebar_state="collapsed"
+#     )
     
-    # Initialize and render production assessment
-    assessment = create_production_assessment()
-    assessment.render()
+#     # Initialize and render production assessment
+#     assessment = create_production_assessment()
+#     assessment.render()
 
 
         
