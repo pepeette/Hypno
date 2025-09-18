@@ -331,14 +331,29 @@ try:
 except ImportError:
     BookingPage = None
 
+# try:
+#     from pages.assess import create_assess_page  
+#     AssessPage = create_assess_page
+# except Exception as e:
+#     import traceback
+#     print("❌ Failed to import Assessment page")
+#     print(traceback.format_exc())
+#     AssessPage = None
+
+import importlib
+
+AssessPage = None
 try:
-    from pages.assess import create_assess_page  
-    AssessPage = create_assess_page
+    assess_module = importlib.import_module("pages.assess")
+    AssessPage = getattr(assess_module, "create_assess_page", None)
+    if AssessPage is None:
+        print("❌ create_assess_page not found in pages.assess")
 except Exception as e:
     import traceback
     print("❌ Failed to import Assessment page")
     print(traceback.format_exc())
     AssessPage = None
+
 
 # Import admin interface (to be created)
 try:
