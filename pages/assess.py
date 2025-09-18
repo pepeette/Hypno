@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime
 import re
 import json
-from config import (
+from utils.config import (
     PatternDefinitions, 
     QuestionSets, 
     PATTERN_SCORING_RULES, 
@@ -1993,6 +1993,18 @@ def reset_assessment_with_backup():
     for key in assessment_keys:
         if key != 'assessment_backup':
             del st.session_state[key]
+
+def create_assess_page():
+    """Factory function to create assessment page instance"""
+    return ProductionAssessment()
+
+# Alternative class wrapper if needed
+class AssessPage:
+    def __init__(self):
+        self.assessment = ProductionAssessment()
+    
+    def render(self):
+        self.assessment.render()
 
 # ---- Main Application Entry Point ----
 if __name__ == "__main__":
