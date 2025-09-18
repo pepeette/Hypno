@@ -1593,7 +1593,7 @@ class BehavioralPatternAssessment:
         
         if not email.strip():
             errors.append("Email is required")
-        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}, email):
+        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
             errors.append("Please enter a valid email address")
         
         if not concern.strip():
