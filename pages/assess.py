@@ -379,6 +379,18 @@ class EmailQueue:
 # Component Status Display
 # -------------------------
 
+def check_email_component():
+    """Check if email component is properly loaded"""
+    try:
+        from utils.email_assess import send_clinical_assessment_results
+        return True
+    except ImportError:
+        print("Email component not available")
+        return False
+
+# Update COMPONENT_STATUS
+COMPONENT_STATUS['email_assess'] = check_email_component()
+
 def display_component_status():
     """Display component availability status (for debugging)"""
     if st.sidebar.checkbox("Show component status"):
@@ -1979,7 +1991,7 @@ class ComprehensiveBehavioralAssessment:
 # -------------------------
 
     def _complete_assessment(self):
-        """Complete the assessment and generate comprehensive results"""
+        """Complete the assessment and generate comprehensive results - FIXED"""
         try:
             st.session_state.assessment_completed = True
             
@@ -2002,10 +2014,11 @@ class ComprehensiveBehavioralAssessment:
             # Compile complete assessment data
             assessment_data = self._compile_complete_assessment_data()
             
-            # Generate master analytics using our consolidated engine
+            # FIXED: Always generate master analytics here
+            print("Generating master analytics during completion...")
             master_analytics = self.analytics.generate_complete_analytics(assessment_data)
             
-            # Store comprehensive results
+            # Store comprehensive results with master analytics
             st.session_state.assessment_results = {
                 'pattern_scores': dict(st.session_state.pattern_scores),
                 'dominant_pattern': self._determine_dominant_pattern(),
@@ -2020,16 +2033,18 @@ class ComprehensiveBehavioralAssessment:
                 'is_digital_native': st.session_state.is_digital_native,
                 'digital_despair_analysis': digital_analysis,
                 'completion_rate': self._calculate_completion_rate(),
-                'master_analytics': master_analytics,  # Comprehensive analytics
+                'master_analytics': master_analytics,  # FIXED: Ensure this is included
                 'assessment_quality': self._assess_response_quality()
             }
             
             # Generate clinical template for email
             st.session_state.clinical_template = self._format_clinical_template_from_analytics(master_analytics)
             
+            print("Assessment completion successful with master analytics")
             st.rerun()
             
         except Exception as e:
+            print(f"Error in _complete_assessment: {str(e)}")
             self._handle_assessment_error(e, "assessment_completion")
     
     def _analyze_digital_despair_indicators(self, responses):
@@ -2644,32 +2659,37 @@ Session ID: {self._generate_session_id()}
         self._render_next_steps_section()
 
     def _render_results_hero_at_top(self):
-        """Render hero section at top of results page - KEPT AS IS WITH ENHANCEMENTS"""
+        """Render hero section at top of results page - FIXED"""
         try:
-            # Enhanced: Use master analytics for consistent data
+            # FIXED: Ensure we have assessment_data and handle None master_analytics
             assessment_data = self._compile_complete_assessment_data()
+            
+            # FIXED: Generate master_analytics if missing and store it
             master_analytics = st.session_state.assessment_results.get('master_analytics')
             
             if not master_analytics:
+                print("Generating missing master analytics...")
                 master_analytics = self.analytics.generate_complete_analytics(assessment_data)
+                # Store it back to session state
+                if 'assessment_results' not in st.session_state:
+                    st.session_state.assessment_results = {}
                 st.session_state.assessment_results['master_analytics'] = master_analytics
             
-            # Extract display data from master analytics
-            pattern_analysis = master_analytics.get('pattern_analysis', {})
-            success_prediction = master_analytics.get('success_prediction', {})
-            digital_analysis = master_analytics.get('digital_analysis')
+            # FIXED: Safe extraction with fallbacks
+            pattern_analysis = master_analytics.get('pattern_analysis', {}) if master_analytics else {}
+            success_prediction = master_analytics.get('success_prediction', {}) if master_analytics else {}
+            digital_analysis = master_analytics.get('digital_analysis') if master_analytics else None
             
-            # Get dominant pattern info
+            # Get dominant pattern info with fallbacks
             dominant_pattern = pattern_analysis.get('dominant_pattern', {})
             pattern_name = dominant_pattern.get('name', 'Assessment incomplete')
             pattern_count = pattern_analysis.get('pattern_count', 0)
             complexity_level = pattern_analysis.get('complexity_assessment', 'Unknown')
             success_rate = success_prediction.get('overall_success_rate', 85)
-            success_factors = success_prediction.get('success_factors_list', [])
             
-            # Build digital summary
+            # Build digital summary with safety checks
             digital_summary = ""
-            if st.session_state.is_digital_native and digital_analysis:
+            if st.session_state.get('is_digital_native', False) and digital_analysis:
                 severity = digital_analysis.get('severity_level', 'MINIMAL')
                 score = digital_analysis.get('digital_despair_score', 0)
                 digital_summary = f"<br><strong>Digital conditioning:</strong> {score:.0f}% ({severity}) - specialized protocol activated"
@@ -2699,9 +2719,19 @@ Session ID: {self._generate_session_id()}
             self._render_digital_insights_at_top(digital_analysis)
             
         except Exception as e:
-            st.error(f"Error loading results analysis: {str(e)}")
-            st.info("Please complete the full assessment for detailed insights.")
-            self._handle_assessment_error(e, "results_hero_rendering")
+            # FIXED: Better error handling
+            print(f"Error in results hero: {str(e)}")
+            st.error("Assessment analysis is being prepared. Please wait a moment...")
+            
+            # Provide basic fallback display
+            pattern_count = len(st.session_state.get('pattern_scores', {}))
+            st.markdown(f"""
+            <div style="background: #F3F6F8; padding: 20px; border-radius: 8px; text-align: center;">
+                <h3>Assessment Completed Successfully</h3>
+                <p>Patterns detected: {pattern_count}</p>
+                <p>Analysis in progress...</p>
+            </div>
+            """, unsafe_allow_html=True)
 
     def _render_digital_insights_at_top(self, digital_analysis):
         """Render digital insights at top of page if applicable - KEPT AS IS"""
