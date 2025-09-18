@@ -331,29 +331,17 @@ try:
 except ImportError:
     BookingPage = None
 
-# try:
-#     from pages.assess import create_assess_page  
-#     AssessPage = create_assess_page
-# except Exception as e:
-#     import traceback
-#     print("❌ Failed to import Assessment page")
-#     print(traceback.format_exc())
-#     AssessPage = None
-
-import importlib
-
-AssessPage = None
+# Clean import for assessment page
 try:
-    assess_module = importlib.import_module("pages.assess")
-    AssessPage = getattr(assess_module, "create_assess_page", None)
-    if AssessPage is None:
-        print("❌ create_assess_page not found in pages.assess")
-except Exception as e:
-    import traceback
-    print("❌ Failed to import Assessment page")
-    print(traceback.format_exc())
+    from pages.assess import create_assess_page
+    AssessPage = create_assess_page
+    print("✅ Assessment page imported successfully")
+except ImportError as e:
+    print(f"❌ Failed to import assessment page: {e}")
     AssessPage = None
-
+except Exception as e:
+    print(f"❌ Unexpected error importing assessment page: {e}")
+    AssessPage = None
 
 # Import admin interface (to be created)
 try:
@@ -436,7 +424,7 @@ class HypnotherapyApp:
         """Initialize session state variables"""
         initialize_session_state()
         
-        # Initialize assessment-specific session state (if using admin features)
+        # Initialize assessment-specific session state
         assessment_defaults = {
             'assessment_session_id': None,
             'assessment_storage': {},  # Store multiple assessments for admin
@@ -459,40 +447,25 @@ class HypnotherapyApp:
             query_params = st.query_params
             
             # Check for assessment page access
-            if 'page' in query_params and 'assess' in query_params['page']:
-                return 'assess'
-                
-            # Check for admin page access
-            if 'page' in query_params and 'admin' in query_params['page']:
-                return 'admin'
+            if 'page' in query_params:
+                page_param = str(query_params['page']).lower()
+                if 'assess' in page_param:
+                    print(f"🔍 Assessment page access detected: {page_param}")
+                    return 'assess'
+                elif 'admin' in page_param:
+                    print(f"🔍 Admin page access detected: {page_param}")
+                    return 'admin'
                 
             return None
-        except:
+        except Exception as e:
+            print(f"❌ Error checking hidden page access: {e}")
             return None
-    
-    def _render_admin_sidebar(self):
-        """Render admin controls in sidebar for assessment pages"""
-        if self.hidden_page in ['assess', 'admin']:
-            with st.sidebar:
-                st.markdown("---")
-                st.markdown("### 🔧 Admin Tools")
-                
-                # Storage info
-                storage_count = len(st.session_state.get('assessment_storage', {}))
-                email_count = len(st.session_state.get('email_queue', []))
-                
-                st.caption(f"Assessments: {storage_count}")
-                st.caption(f"Email queue: {email_count}")
-                
-                # Admin access link
-                if st.button("⚙️ Admin Dashboard"):
-                    st.query_params.page = "admin"
-                    st.rerun()
     
     def render_navigation(self):
         """Render the main navigation menu (only for public pages)"""
         if self.hidden_page:
             # Don't show navigation for hidden pages
+            print(f"🔍 Hidden page detected, skipping navigation: {self.hidden_page}")
             return self.hidden_page
             
         if self.navigation:
@@ -527,15 +500,12 @@ class HypnotherapyApp:
         try:
             # Handle hidden pages first
             if selected_page == "assess":
-                print(f"🔍 Trying to render assess page. AssessPage is: {AssessPage}")
-                if AssessPage:
-                    self._render_hidden_assessment_page()
-                else:
-                    st.error("❌ Assessment page import failed!")
-                    st.info("Debug: AssessPage is None - check import errors in console/logs")
+                print(f"🔍 Rendering assessment page. AssessPage available: {AssessPage is not None}")
+                self._render_hidden_assessment_page()
                 return
                 
             elif selected_page == "admin":
+                print(f"🔍 Rendering admin page")
                 self._render_admin_page()
                 return
             
@@ -567,38 +537,51 @@ class HypnotherapyApp:
                     
         except Exception as e:
             st.error(f"Error loading {selected_page} page. Please try refreshing.")
+            print(f"❌ Page render error for {selected_page}: {e}")
             if st.secrets.get("debug_mode", False):
                 st.exception(e)
-            print(f"❌ Page render error: {e}")
         
     def _render_hidden_assessment_page(self):
         """Render the hidden assessment page"""
-        print("🔍 _render_hidden_assessment_page called")
+        print("🔍 Starting assessment page render")
+        
+        # Add discrete header for assessment page
+        st.markdown("""
+        <div style="background: #f0f8ff; padding: 0.5rem 1rem; border-radius: 4px; 
+                    margin-bottom: 1rem; border-left: 4px solid #4CA1A3;">
+            <small style="color: #4CA1A3;">
+                🔒 Confidential Behavioral Pattern Assessment Portal
+            </small>
+        </div>
+        """, unsafe_allow_html=True)
         
         if AssessPage:
-            print("✅ AssessPage exists, rendering...")
-            
-            # Add discrete header
-            st.markdown("""
-            <div style="background: #f0f8ff; padding: 0.5rem 1rem; border-radius: 4px; 
-                        margin-bottom: 1rem; border-left: 4px solid #4CA1A3;">
-                <small style="color: #4CA1A3;">
-                    🔒 Confidential behavioral pattern assessment portal
-                </small>
-            </div>
-            """, unsafe_allow_html=True)
-            
             try:
-                # Call the assessment page function directly
-                AssessPage()  # This should call create_assess_page()
+                print("✅ Calling AssessPage function")
+                # Call the assessment page creation function
+                AssessPage()
+                print("✅ Assessment page rendered successfully")
             except Exception as e:
-                st.error(f"❌ Error rendering assessment: {e}")
+                st.error(f"❌ Error rendering assessment page: {str(e)}")
                 print(f"❌ Assessment render error: {e}")
                 if st.secrets.get("debug_mode", False):
                     st.exception(e)
         else:
-            st.error("❌ Assessment page not available. Import failed.")
-            st.info("Check console/logs for import error details")
+            st.error("❌ Assessment page not available")
+            st.info("The assessment module failed to import. Please check the console for import errors.")
+            
+            # Debug information
+            with st.expander("🔧 Debug Information"):
+                st.code(f"""
+Import Status:
+- AssessPage: {AssessPage is not None}
+- Module path: pages.assess
+                
+To fix this issue:
+1. Ensure pages/assess.py exists
+2. Ensure create_assess_page function is defined in assess.py
+3. Check console/logs for import errors
+                """)
         
     def _render_admin_page(self):
         """Render the admin interface page"""
@@ -606,18 +589,21 @@ class HypnotherapyApp:
         <div style="background: #fff3cd; padding: 0.5rem 1rem; border-radius: 4px; 
                     margin-bottom: 1rem; border-left: 4px solid #ffc107;">
             <small style="color: #856404;">
-                ⚠️ Administrative interface - authorized personnel only
+                ⚠️ Administrative Interface - Authorized Personnel Only
             </small>
         </div>
         """, unsafe_allow_html=True)
         
-        # Use separate admin interface
         if AdminInterface:
-            admin = AdminInterface()
-            admin.render()
+            try:
+                admin = AdminInterface()
+                admin.render()
+            except Exception as e:
+                st.error(f"Error loading admin interface: {str(e)}")
+                print(f"❌ Admin interface error: {e}")
         else:
-            st.error("Admin interface not available.")
-            st.info("Admin interface will be implemented in pages/admin_interface.py")
+            st.warning("Admin interface not available")
+            st.info("The admin interface will be implemented in pages/admin_interface.py")
     
     def render_booking_form(self, selected_page):
         """Render booking form on public pages only"""
@@ -630,15 +616,17 @@ class HypnotherapyApp:
     
     def render_footer(self):
         """Render the footer section"""
-        # Don't show footer on hidden pages
+        # Minimal footer for hidden pages
         if self.hidden_page:
-            # Minimal footer for hidden pages
             st.markdown("---")
-            # Copyright notice with clean styling
-            st.markdown(f"""© 2025 Laetitia Sheppard • Confidential Portal • All Rights Reserved""")
+            st.markdown("""
+            <div style="text-align: center; color: #666; font-size: 0.8rem; padding: 1rem 0;">
+                © 2025 Laetitia Sheppard • Confidential Portal • All Rights Reserved
+            </div>
+            """, unsafe_allow_html=True)
             return
 
-
+        # Regular footer for public pages
         if self.footer:
             self.footer.render()
 
@@ -647,9 +635,7 @@ class HypnotherapyApp:
         try:
             # Render navigation and get selected page
             selected_page = self.render_navigation()
-            
-            # Render admin sidebar for hidden pages
-            self._render_admin_sidebar()
+            print(f"🔍 Selected page: {selected_page}")
             
             # Render page content based on selection
             self.render_page_content(selected_page)
@@ -662,17 +648,20 @@ class HypnotherapyApp:
             
         except Exception as e:
             st.error("Application error occurred. Please refresh the page.")
+            print(f"❌ Critical application error: {e}")
             if st.secrets.get("debug_mode", False):
                 st.exception(e)
 
 def main():
     """Application entry point"""
     try:
+        print("🚀 Starting Hypnotherapy App")
         app = HypnotherapyApp()
         app.run()
         
     except Exception as e:
         st.error("Critical application error. Please contact support.")
+        print(f"❌ Critical main error: {e}")
         if st.secrets.get("debug_mode", False):
             st.exception(e)
 
