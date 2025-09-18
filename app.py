@@ -286,65 +286,75 @@
 
 
 
-
+"""
+Main application entry point for the Hypnotherapy website
+Enhanced with hidden assessment page accessible only via direct URL
+"""
 import streamlit as st
 import os
-from datetime import datetime
 
-# Import page creation functions with error handling
+# Disable file watching in production
+if os.getenv('STREAMLIT_ENV') == 'production':
+    st.set_option('server.fileWatcherType', 'none')
+    
+# Import page modules with error handling
 try:
-    from pages.home import create_home_page as HomePage
+    from pages.home import create_home_page
+    HomePage = create_home_page
 except ImportError:
     HomePage = None
 
 try:
-    from pages.method import create_method_page as MethodPage
+    from pages.method import create_method_page
+    MethodPage = create_method_page
 except ImportError:
     MethodPage = None
 
 try:
-    from pages.success import create_success_page as SuccessPage
+    from pages.success import create_success_page
+    SuccessPage = create_success_page
 except ImportError:
     SuccessPage = None
 
 try:
-    from pages.blog import create_blog_page as BlogPage
+    from pages.blog import create_blog_page
+    BlogPage = create_blog_page
 except ImportError:
     BlogPage = None
 
 try:
-    from pages.booking import create_booking_page as BookingPage
+    from pages.booking import create_booking_page
+    BookingPage = create_booking_page
 except ImportError:
     BookingPage = None
 
-# Import the assessment page creator
+# Import assessment page (hidden)
 try:
-    from pages.assess import create_assess_page as AssessPage
-    print("Assessment page imported successfully")
-except ImportError as e:
-    print(f"Failed to import assessment page: {e}")
-    AssessPage = None
-except Exception as e:
-    print(f"Unexpected error importing assessment page: {e}")
+    from pages.assess import create_assess_page
+    AssessPage = create_assess_page
+except ImportError:
     AssessPage = None
 
-# Import other components (navigation, footer, booking form)
+# Import shared components with error handling
 try:
-    from components.navigation import create_navigation as Navigation
+    from components.navigation import create_navigation
+    Navigation = create_navigation
 except ImportError:
     Navigation = None
 
 try:
-    from components.footer import create_footer as Footer
+    from components.footer import create_footer
+    Footer = create_footer
 except ImportError:
     Footer = None
 
 try:
-    from components.bookingform import create_booking_form as BookingForm
+    from components.booking_form import create_booking_form
+    BookingForm = create_booking_form
 except ImportError:
     BookingForm = None
 
-# Optional utils imports (styling, session state)
+# Import utilities with error handling
 try:
     from utils.config import PageConfig
 except ImportError:
@@ -357,195 +367,202 @@ except ImportError:
         pass
 
 try:
-    from utils.sessionstate import initialize_session_state
+    from utils.session_state import initialize_session_state
 except ImportError:
     def initialize_session_state():
         pass
 
-
 class HypnotherapyApp:
+    """Main application class for the Hypnotherapy website"""
+    
     def __init__(self):
-        self.hidden_page = self.check_hidden_page_access()
-        self.navigation = Navigation() if Navigation else None
-        self.footer = Footer() if Footer else None
-        self.booking_form = BookingForm() if BookingForm else None
+        """Initialize the application with configuration and styling"""
         self.setup_page_config()
         self.setup_styling()
         self.setup_session_state()
-
+        
+        # Initialize components
+        self.navigation = Navigation() if Navigation else None
+        self.footer = Footer() if Footer else None
+        self.booking_form = BookingForm() if BookingForm else None
+        
+        # Check for hidden page access
+        self.hidden_page = self._check_hidden_page_access()
+        
     def setup_page_config(self):
+        """Configure Streamlit page settings using config"""
         if PageConfig:
             PageConfig.setup()
         else:
+            # Minimal fallback config
             st.set_page_config(
                 page_title="Rapid Transformation Hypnotherapy in Bangkok",
-                page_icon="🌀",
+                page_icon="🧠",
                 layout="wide",
-                initial_sidebar_state="collapsed",
+                initial_sidebar_state="collapsed"
             )
-
+        
     def setup_styling(self):
+        """Apply global CSS styling"""
         apply_global_styles()
-
+        
     def setup_session_state(self):
+        """Initialize session state variables"""
         initialize_session_state()
 
-    def check_hidden_page_access(self):
+    def _check_hidden_page_access(self):
+        """Check URL parameters for hidden page access"""
         try:
+            # Get URL parameters - FIXED: Using new st.query_params
             query_params = st.query_params
-            if "page" in query_params:
-                page_param = str(query_params["page"]).lower()
-                if "assess" in page_param:
-                    print(f"Assessment page access detected: {page_param}")
-                    return "assess"
-                elif "admin" in page_param:
-                    print(f"Admin page access detected: {page_param}")
-                    return "admin"
+            
+            # Check for assessment page access
+            if 'page' in query_params and 'assess' in query_params['page']:
+                return 'assess'
+                
+            # Check for other hidden pages if needed
+            # if 'page' in query_params and 'admin' in query_params['page']:
+            #     return 'admin'
+                
             return None
-        except Exception as e:
-            print(f"Error checking hidden page access: {e}")
+        except:
             return None
-
+        
+    
     def render_navigation(self):
+        """Render the main navigation menu (only for public pages)"""
         if self.hidden_page:
-            # Hide navigation on hidden pages
-            return None
+            # Don't show navigation for hidden pages
+            return self.hidden_page
+            
         if self.navigation:
             return self.navigation.create_menu()
         else:
-            # Fallback simple navigation
-            options = ["Home", "Method", "Blog", "Testimonials", "Book Now"]
-            return st.selectbox("Navigate to", options)
-
+            # Import navigation options from config
+            try:
+                from utils.config import AppConstants
+                options = AppConstants.NAVIGATION_OPTIONS
+                icons = AppConstants.NAVIGATION_ICONS
+            except ImportError:
+                options = ["Home", "Method", "Blog", "Testimonials", "Book Now"]
+                icons = ["house", "gear", "book", "star", "calendar"]
+            
+            # Simple fallback navigation
+            from streamlit_option_menu import option_menu
+            
+            return option_menu(
+                menu_title=None,
+                options=options,
+                icons=icons,
+                default_index=0,
+                key="main_navigation",
+                orientation="horizontal",
+                styles={
+                    "container": {"padding": "0", "margin": "0 0 2rem 0"},
+                    "nav-link": {"font-size": "1rem", "color": "#556D7A"},
+                    "nav-link-selected": {"background": "#4CA1A3", "color": "white"}
+                }
+            )
+    
     def render_page_content(self, selected_page):
-        if self.hidden_page == "assess":
-            self.render_hidden_assessment_page()
-            return
-        elif self.hidden_page == "admin":
-            self.render_admin_page()
-            return
-
-        # Public pages rendering
+        """Render content based on selected navigation page"""
         try:
+            # Handle hidden pages first
+            if selected_page == "assess" and AssessPage:
+                self._render_hidden_assessment_page()
+                return
+                
+            # Handle regular navigation pages
             if selected_page == "Home" and HomePage:
-                HomePage()
+                page_instance = HomePage()
+                page_instance.render()
+                    
             elif selected_page == "Method" and MethodPage:
-                MethodPage()
+                page_instance = MethodPage()
+                page_instance.render()
+                    
             elif selected_page == "Testimonials" and SuccessPage:
-                SuccessPage()
+                page_instance = SuccessPage()
+                page_instance.render()
+                    
             elif selected_page == "Blog" and BlogPage:
-                BlogPage()
+                page_instance = BlogPage()
+                page_instance.render()
+
             elif selected_page == "Book Now" and BookingPage:
-                BookingPage()
+                page_instance = BookingPage()
+                page_instance.render()
+            
             else:
+                # Fallback for pages not yet implemented
                 st.title(f"{selected_page} - Coming Soon")
                 st.info(f"The {selected_page} page is being prepared. Please check back soon!")
+                    
         except Exception as e:
             st.error(f"Error loading {selected_page} page. Please try refreshing.")
-            print(f"Page render error for {selected_page}: {e}")
             if st.secrets.get("debug_mode", False):
                 st.exception(e)
-
-    def render_hidden_assessment_page(self):
-        st.markdown(
-            """
-            <div style="background: #f0f8ff; padding: 0.5rem 1rem; border-radius: 4px; margin-bottom: 1rem; border-left: 4px solid #4CA1A3;">
-            <small style="color: #4CA1A3;">🔒 Confidential Behavioral Pattern Assessment Portal</small>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    
+    def _render_hidden_assessment_page(self):
+        """Render the hidden assessment page"""
         if AssessPage:
-            try:
-                AssessPage()
-                print("Assessment page rendered successfully")
-            except Exception as e:
-                st.error(f"Error rendering assessment page: {e}")
-                print(f"Assessment render error: {e}")
-                if st.secrets.get("debug_mode", False):
-                    st.exception(e)
-        else:
-            st.error("❌ Assessment page not available")
-            st.info("The assessment module failed to import. Please check the console for import errors.")
-            with st.expander("🔧 Debug Information"):
-                st.code(
-                    f"Import Status - AssessPage: {AssessPage is not None}\n"
-                    "Module path: pages.assess\n"
-                    "To fix this issue:\n"
-                    "1. Ensure pages/assess.py exists\n"
-                    "2. Ensure create_assess_page() is defined in assess.py\n"
-                    "3. Check console/logs for import errors"
-                )
-
-    def render_admin_page(self):
-        st.markdown(
-            """
-            <div style="background: #fff3cd; padding: 0.5rem 1rem; border-radius: 4px; margin-bottom: 1rem; border-left: 4px solid #ffc107;">
-            <small style="color: #856404;">Administrative Interface - Authorized Personnel Only</small>
+            # Add a discrete header indicating this is a hidden page
+            st.markdown("""
+            <div style="background: #f0f8ff; padding: 0.5rem 1rem; border-radius: 4px; 
+                        margin-bottom: 1rem; border-left: 4px solid #4CA1A3;">
+                <small style="color: #4CA1A3;">
+                    🔒 Confidential assessment portal
+                </small>
             </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        try:
-            from pages.admininterface import AdminInterface
-            admin = AdminInterface()
-            admin.render()
-        except ImportError:
-            st.warning("Admin interface not available")
-            st.info("The admin interface will be implemented in pages/admininterface.py")
-        except Exception as e:
-            st.error(f"Error loading admin interface: {e}")
-            if st.secrets.get("debug_mode", False):
-                st.exception(e)
-
+            """, unsafe_allow_html=True)
+            
+            page_instance = AssessPage()
+            page_instance.render()
+        else:
+            st.error("Assessment page not available. Please contact support.")
+    
     def render_booking_form(self, selected_page):
+        """Render booking form on public pages only"""
+        # Don't show booking form on hidden pages
         if self.hidden_page:
             return
+            
         if selected_page != "Book Now" and self.booking_form:
             self.booking_form.render()
-
+    
     def render_footer(self):
+        """Render the footer section on public pages only"""
+        # Don't show footer on hidden pages
+        if self.hidden_page:
+            return
+            
         if self.footer:
             self.footer.render()
-        else:
-            # Minimal footer for hidden pages or fallback
-            st.markdown("---")
-            st.markdown(
-                """
-                <div style="text-align:center; color:#666; font-size:0.8rem; padding:1rem 0;">
-                © 2025 Laetitia Sheppard Confidential Portal - All Rights Reserved
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
+    
     def run(self):
+        """Main application entry point"""
         try:
-            selected_page = None
-            if not self.hidden_page:
-                selected_page = self.render_navigation()
+            # Render navigation and get selected page
+            selected_page = self.render_navigation()
+            
+            # Render page content based on selection
             self.render_page_content(selected_page)
+            
+            # Render booking form (except on hidden pages and Book Now page)
             self.render_booking_form(selected_page)
-            if not self.hidden_page:
-                self.render_footer()
+            
+            # Always render footer (except on hidden pages)
+            self.render_footer()
+            
         except Exception as e:
             st.error("Application error occurred. Please refresh the page.")
-            print(f"Critical application error: {e}")
             if st.secrets.get("debug_mode", False):
                 st.exception(e)
 
-
 def main():
-    try:
-        print("Starting Hypnotherapy App")
-        app = HypnotherapyApp()
-        app.run()
-    except Exception as e:
-        st.error("Critical application error. Please contact support.")
-        print(f"Critical main error: {e}")
-        if st.secrets.get("debug_mode", False):
-            st.exception(e)
-
+    """Application entry point"""
+    app = HypnotherapyApp()
+    app.run()
 
 if __name__ == "__main__":
     main()
