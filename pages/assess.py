@@ -997,90 +997,101 @@ class AssessmentAnalytics:
 # ================================
 
 class EmailHandler:
-    """Handle email notifications and report generation - FIXED VERSION"""
+    """Simplified email handler for testing"""
     
     def __init__(self):
-        # DON'T access st.secrets during __init__ - defer until needed
-        self._config_loaded = False
-        self.smtp_server = None
-        self.smtp_port = None
-        self.sender_email = None
-        self.sender_password = None
-        self.recipient_email = None
-    
-    def _load_config(self):
-        """Load email configuration from secrets when needed"""
-        if self._config_loaded:
-            return
-        
-        try:
-            email_config = st.secrets.get("email", {})
-            self.smtp_server = email_config.get("smtp_server", "smtp.gmail.com")
-            self.smtp_port = email_config.get("smtp_port", 587)
-            self.sender_email = email_config.get("sender_email", "")
-            self.sender_password = email_config.get("sender_password", "")
-            self.recipient_email = email_config.get("recipient_email", "")
-            self._config_loaded = True
-            
-            print(f"📧 Email config loaded: {self.sender_email} -> {self.recipient_email}")
-            
-        except Exception as e:
-            print(f"❌ Error loading email config: {e}")
-            # Set defaults
-            self.smtp_server = "smtp.gmail.com"
-            self.smtp_port = 587
-            self.sender_email = ""
-            self.sender_password = ""
-            self.recipient_email = ""
-            self._config_loaded = True
+        pass  # Don't load config during init
     
     def send_assessment_results(self, contact_info, assessment_data, analytics_results):
-        """Send comprehensive assessment results via email"""
-        # Load config when actually needed
-        self._load_config()
+        """Simplified version for testing"""
+        print("Email sending simulated (not configured)")
+        return True
+
+# class EmailHandler:
+#     """Handle email notifications and report generation - FIXED VERSION"""
+    
+#     def __init__(self):
+#         # DON'T access st.secrets during __init__ - defer until needed
+#         self._config_loaded = False
+#         self.smtp_server = None
+#         self.smtp_port = None
+#         self.sender_email = None
+#         self.sender_password = None
+#         self.recipient_email = None
+    
+#     def _load_config(self):
+#         """Load email configuration from secrets when needed"""
+#         if self._config_loaded:
+#             return
         
-        # Check if email is configured
-        if not all([self.sender_email, self.sender_password, self.recipient_email]):
-            print("❌ Email not configured - skipping email send")
-            return False
+#         try:
+#             email_config = st.secrets.get("email", {})
+#             self.smtp_server = email_config.get("smtp_server", "smtp.gmail.com")
+#             self.smtp_port = email_config.get("smtp_port", 587)
+#             self.sender_email = email_config.get("sender_email", "")
+#             self.sender_password = email_config.get("sender_password", "")
+#             self.recipient_email = email_config.get("recipient_email", "")
+#             self._config_loaded = True
+            
+#             print(f"📧 Email config loaded: {self.sender_email} -> {self.recipient_email}")
+            
+#         except Exception as e:
+#             print(f"❌ Error loading email config: {e}")
+#             # Set defaults
+#             self.smtp_server = "smtp.gmail.com"
+#             self.smtp_port = 587
+#             self.sender_email = ""
+#             self.sender_password = ""
+#             self.recipient_email = ""
+#             self._config_loaded = True
+    
+#     def send_assessment_results(self, contact_info, assessment_data, analytics_results):
+#         """Send comprehensive assessment results via email"""
+#         # Load config when actually needed
+#         self._load_config()
         
-        try:
-            # Create message
-            msg = MimeMultipart('alternative')
-            msg['Subject'] = f"Behavioral Pattern Assessment - {contact_info['name']}"
-            msg['From'] = self.sender_email
-            msg['To'] = self.recipient_email
+#         # Check if email is configured
+#         if not all([self.sender_email, self.sender_password, self.recipient_email]):
+#             print("❌ Email not configured - skipping email send")
+#             return False
+        
+#         try:
+#             # Create message
+#             msg = MimeMultipart('alternative')
+#             msg['Subject'] = f"Behavioral Pattern Assessment - {contact_info['name']}"
+#             msg['From'] = self.sender_email
+#             msg['To'] = self.recipient_email
             
-            # Generate email content
-            html_content = self._generate_email_content(contact_info, assessment_data, analytics_results)
+#             # Generate email content
+#             html_content = self._generate_email_content(contact_info, assessment_data, analytics_results)
             
-            # Attach HTML content
-            html_part = MimeText(html_content, 'html')
-            msg.attach(html_part)
+#             # Attach HTML content
+#             html_part = MimeText(html_content, 'html')
+#             msg.attach(html_part)
             
-            # Generate and attach JSON data
-            json_data = self._generate_json_report(contact_info, assessment_data, analytics_results)
-            json_attachment = MimeBase('application', 'json')
-            json_attachment.set_payload(json_data.encode())
-            encoders.encode_base64(json_attachment)
-            json_attachment.add_header(
-                'Content-Disposition',
-                f'attachment; filename=assessment_{contact_info["name"].replace(" ", "_")}.json'
-            )
-            msg.attach(json_attachment)
+#             # Generate and attach JSON data
+#             json_data = self._generate_json_report(contact_info, assessment_data, analytics_results)
+#             json_attachment = MimeBase('application', 'json')
+#             json_attachment.set_payload(json_data.encode())
+#             encoders.encode_base64(json_attachment)
+#             json_attachment.add_header(
+#                 'Content-Disposition',
+#                 f'attachment; filename=assessment_{contact_info["name"].replace(" ", "_")}.json'
+#             )
+#             msg.attach(json_attachment)
             
-            # Send email
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.starttls()
-                server.login(self.sender_email, self.sender_password)
-                server.send_message(msg)
+#             # Send email
+#             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
+#                 server.starttls()
+#                 server.login(self.sender_email, self.sender_password)
+#                 server.send_message(msg)
             
-            print(f"✅ Email sent successfully to {self.recipient_email}")
-            return True
+#             print(f"✅ Email sent successfully to {self.recipient_email}")
+#             return True
             
-        except Exception as e:
-            print(f"❌ Email sending failed: {str(e)}")
-            return False
+#         except Exception as e:
+#             print(f"❌ Email sending failed: {str(e)}")
+#             return False
     
     def _generate_email_content(self, contact_info, assessment_data, analytics_results):
         """Generate comprehensive HTML email content"""
