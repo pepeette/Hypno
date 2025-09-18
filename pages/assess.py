@@ -413,7 +413,59 @@ def check_critical_components():
         st.info("Some features may not work properly. Please check your installation.")
         return False
     return True
+
+def verify_config_loading(self):
+    """Verify config is loading properly"""
+    print("\nCONFIG VERIFICATION:")
+    print("="*30)
     
+    try:
+        # Check if config imports work
+        from utils.config import PatternDefinitions, QuestionSets
+        print("✅ Config imports successful")
+        
+        # Check pattern definitions
+        patterns = PatternDefinitions.PATTERNS
+        print(f"✅ Patterns loaded: {len(patterns)} patterns")
+        
+        # Check question sets  
+        questions = QuestionSets.ENGAGEMENT
+        print(f"✅ Sample questions loaded: {len(questions)} engagement questions")
+        
+        # Check if questions have scoring
+        sample_question = list(questions.values())[0] if questions else {}
+        scoring_keys = [k for k in sample_question.keys() if 'pattern' in k]
+        print(f"✅ Sample question scoring: {scoring_keys}")
+        
+        return True
+        
+    except ImportError as e:
+        print(f"❌ Config import failed: {e}")
+        return False
+    except Exception as e:
+        print(f"❌ Config verification failed: {e}")
+        return False
+
+print("""
+DIAGNOSTIC INSTRUCTIONS:
+
+1. Add the diagnose_pattern_detection method to your ComprehensiveBehavioralAssessment class
+
+2. Temporarily replace your render() method with render_with_diagnostic()
+
+3. Run the assessment and click "🔍 Diagnose Pattern Detection" in the sidebar
+
+4. Check the console output to see what's broken
+
+5. The diagnostic will tell you:
+   - If config is loading properly
+   - If questions have scoring rules
+   - If pattern scoring mechanism works
+   - Where the breakdown is occurring
+
+This will pinpoint exactly why patterns aren't being detected.
+""")
+
 # # ---- Email Queue System ----
 # class EmailQueue:
 #     def __init__(self):
@@ -1413,7 +1465,95 @@ class ComprehensiveBehavioralAssessment:
             'completion_rate': self._calculate_completion_rate()
         }
         
-
+    
+    def diagnose_pattern_detection(self):
+        """Diagnose why patterns aren't being detected"""
+        print("\n" + "="*60)
+        print("PATTERN DETECTION DIAGNOSTIC")
+        print("="*60)
+        
+        # 1. Check session state pattern data
+        print(f"1. PATTERN DATA:")
+        print(f"   Pattern scores: {dict(st.session_state.get('pattern_scores', {}))}")
+        print(f"   Triggered patterns: {list(st.session_state.get('triggered_patterns', set()))}")
+        print(f"   Total responses: {len(st.session_state.get('assessment_responses', {}))}")
+        
+        # 2. Check config availability
+        print(f"\n2. CONFIG STATUS:")
+        print(f"   Config component: {COMPONENT_STATUS.get('config', False)}")
+        print(f"   Config loaded: {bool(self.config)}")
+        print(f"   Questions available: {bool(self.config.get('questions'))}")
+        print(f"   Patterns available: {bool(self.config.get('patterns'))}")
+        
+        # 3. Check question structure
+        if self.config.get('questions'):
+            print(f"\n3. QUESTION POOLS:")
+            for phase, questions in self.config['questions'].items():
+                print(f"   {phase}: {len(questions)} questions")
+                # Check if questions have scoring rules
+                sample_q = list(questions.values())[0] if questions else {}
+                scoring_methods = [k for k in sample_q.keys() if 'pattern' in k or k == 'weights']
+                print(f"      Sample scoring methods: {scoring_methods}")
+        
+        # 4. Check specific responses that should trigger patterns
+        print(f"\n4. RESPONSE ANALYSIS:")
+        responses = st.session_state.get('assessment_responses', {})
+        for q_id, response_data in responses.items():
+            response = response_data.get('response', '')
+            question_type = response_data.get('question_type', 'unknown')
+            phase = response_data.get('phase', 'unknown')
+            print(f"   Q{q_id} [{phase}] {question_type}: {str(response)[:50]}...")
+        
+        # 5. Test pattern scoring on a sample response
+        print(f"\n5. PATTERN SCORING TEST:")
+        if responses:
+            test_q_id, test_response_data = list(responses.items())[0]
+            test_response = test_response_data.get('response', '')
+            print(f"   Testing Q{test_q_id} with response: {test_response}")
+            
+            # Try to find the original question
+            phase = test_response_data.get('phase', 'unknown')
+            if phase in self.config.get('questions', {}):
+                questions_in_phase = self.config['questions'][phase]
+                if test_q_id in questions_in_phase:
+                    test_question = questions_in_phase[test_q_id]
+                    print(f"   Question found with keys: {list(test_question.keys())}")
+                    
+                    # Check for scoring methods
+                    scoring_methods = [k for k in test_question.keys() 
+                                     if k in ['pattern_triggers', 'pattern_mapping', 'pattern_keywords', 'keywords', 'weights']]
+                    print(f"   Available scoring methods: {scoring_methods}")
+                    
+                    if scoring_methods:
+                        print(f"   Question HAS scoring methods - pattern detection should work")
+                    else:
+                        print(f"   Question MISSING scoring methods - this is the problem!")
+                else:
+                    print(f"   Question {test_q_id} not found in {phase} questions")
+            else:
+                print(f"   Phase {phase} not found in config questions")
+        
+        # 6. Check if _add_pattern_score is working
+        print(f"\n6. TESTING PATTERN SCORING:")
+        original_scores = dict(st.session_state.get('pattern_scores', {}))
+        print(f"   Original scores: {original_scores}")
+        
+        # Test adding a pattern score
+        try:
+            self._add_pattern_score(1, 5.0)  # Should add 5.0 to pattern 1
+            new_scores = dict(st.session_state.get('pattern_scores', {}))
+            print(f"   After test add: {new_scores}")
+            
+            if new_scores != original_scores:
+                print(f"   ✅ Pattern scoring mechanism WORKS")
+            else:
+                print(f"   ❌ Pattern scoring mechanism BROKEN")
+        except Exception as e:
+            print(f"   ❌ Pattern scoring error: {str(e)}")
+        
+        print("="*60)
+        return len(st.session_state.get('pattern_scores', {}))
+    
 # -------------------------
 # Question Navigation & Response Handling
 # -------------------------
@@ -2641,6 +2781,60 @@ Session ID: {self._generate_session_id()}
 # -------------------------
 # Results Rendering - PRESERVED WITH ENHANCEMENTS
 # -------------------------
+
+    # Add this to your render method to run the diagnostic
+    def render_with_diagnostic(self):
+        """Render with diagnostic info"""
+        # Run diagnostic in sidebar
+        with st.sidebar:
+            if st.button("🔍 Diagnose Pattern Detection"):
+                pattern_count = self.diagnose_pattern_detection()
+                st.write(f"Pattern count: {pattern_count}")
+        
+        # Continue with normal render
+        apply_clinical_styles()
+        self._render_header()
+        
+        if not st.session_state.contact_provided:
+            if not st.session_state.assessment_completed:
+                self._render_current_question()
+            else:
+                self._render_contact_form()
+        else:
+            self._render_results()
+    
+    def check_question_scoring_rules(self):
+        """Check if questions have proper scoring rules"""
+        print("\nQUESTION SCORING RULES CHECK:")
+        print("="*40)
+        
+        if not self.config.get('questions'):
+            print("❌ No questions in config!")
+            return False
+        
+        total_questions = 0
+        questions_with_scoring = 0
+        
+        for phase_name, questions in self.config['questions'].items():
+            print(f"\n{phase_name.upper()}:")
+            for q_id, question in questions.items():
+                total_questions += 1
+                scoring_methods = [k for k in question.keys() 
+                                 if k in ['pattern_triggers', 'pattern_mapping', 'pattern_keywords', 'keywords', 'weights']]
+                
+                if scoring_methods:
+                    questions_with_scoring += 1
+                    print(f"  Q{q_id}: ✅ {scoring_methods}")
+                else:
+                    print(f"  Q{q_id}: ❌ No scoring rules")
+        
+        print(f"\nSUMMARY:")
+        print(f"Total questions: {total_questions}")
+        print(f"Questions with scoring: {questions_with_scoring}")
+        print(f"Percentage with scoring: {(questions_with_scoring/total_questions)*100:.1f}%")
+        
+        return questions_with_scoring > 0
+
 
     def _render_results(self):
         """Render user-centric results page with comprehensive insights - KEPT AS IS"""
