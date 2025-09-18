@@ -3998,34 +3998,34 @@ class ProductionAssessment:
 
 
 # ---- Factory Functions ----
-def create_production_assessment():
-    """Factory function to create production assessment"""
-    return ProductionAssessment()
+# def create_production_assessment():
+#     """Factory function to create production assessment"""
+#     return ProductionAssessment()
 
-def get_assessment_analytics():
-    """Get comprehensive assessment analytics"""
-    if 'comprehensive_analysis' in st.session_state:
-        return st.session_state.comprehensive_analysis
-    return None
+# def get_assessment_analytics():
+#     """Get comprehensive assessment analytics"""
+#     if 'comprehensive_analysis' in st.session_state:
+#         return st.session_state.comprehensive_analysis
+#     return None
 
-def reset_assessment_with_backup():
-    """Reset assessment with data backup"""
-    # Create backup
-    backup_data = ProductionDataManager().export_complete_assessment_data()
+# def reset_assessment_with_backup():
+#     """Reset assessment with data backup"""
+#     # Create backup
+#     backup_data = ProductionDataManager().export_complete_assessment_data()
     
-    # Store backup
-    if backup_data:
-        st.session_state.assessment_backup = backup_data
+#     # Store backup
+#     if backup_data:
+#         st.session_state.assessment_backup = backup_data
     
-    # Reset assessment state
-    assessment_keys = [k for k in st.session_state.keys() if 'assessment' in k.lower() or 'pattern' in k.lower()]
-    for key in assessment_keys:
-        if key != 'assessment_backup':
-            del st.session_state[key]
+#     # Reset assessment state
+#     assessment_keys = [k for k in st.session_state.keys() if 'assessment' in k.lower() or 'pattern' in k.lower()]
+#     for key in assessment_keys:
+#         if key != 'assessment_backup':
+#             del st.session_state[key]
 
-def create_assess_page():
-    """Factory function to create assessment page instance"""
-    return ProductionAssessment()
+# def create_assess_page():
+#     """Factory function to create assessment page instance"""
+#     return ProductionAssessment()
 
 # Alternative class wrapper if needed
 def create_assess_page():
