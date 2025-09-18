@@ -130,7 +130,7 @@ class HypnotherapyApp:
             query_params = st.query_params
             
             # Check for assessment page access
-            if 'page' in query_params and 'assess' in query_params['page']:
+            if 'page' in query_params and 'assess' in query_params['page'] =='assess':
                 return 'assess'
                 
             # Check for other hidden pages if needed
