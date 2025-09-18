@@ -1029,6 +1029,50 @@ class MasterAnalytics:
             return self.methods.generate_risk_mitigation_strategies(assessment_data)
         return ["Standard risk management"]
 
+
+    def _analyze_complete_trigger_sequence(self, assessment_data):
+        """Use config method or fallback"""
+        if self.methods:
+            return self.methods.analyze_complete_trigger_sequence(assessment_data)
+        return {
+            'sequence_completeness': 0,
+            'trigger_points': [],
+            'intervention_windows': [],
+            'sequence_analysis': 'Trigger sequence analysis requires complete assessment'
+        }
+    
+    def _identify_all_transformation_assets(self, assessment_data):
+        """Use config method or fallback"""
+        if self.methods:
+            return self.methods.identify_all_transformation_assets(assessment_data)
+        return [
+            "Natural problem-solving abilities",
+            "Capacity for insight and self-reflection", 
+            "Completed comprehensive assessment"
+        ]
+    
+    def _extract_complete_empowerment_profile(self, assessment_data):
+        """Use config method or fallback"""
+        if self.methods:
+            return self.methods.extract_complete_empowerment_profile(assessment_data)
+        return {
+            'identified_strengths': ["Assessment completion"],
+            'readiness_indicators': ["Engaged in evaluation process"],
+            'motivation_level': "Moderate",
+            'empowerment_summary': "Standard motivation with assessment engagement"
+        }
+    
+    def _extract_communication_preferences(self, assessment_data):
+        """Use config method or fallback"""
+        if self.methods:
+            return self.methods.extract_communication_preferences(assessment_data)
+        return {
+            'response_style': 'Standard',
+            'communication_preference': 'Traditional approach',
+            'detail_level': 'Moderate',
+            'engagement_style': 'Collaborative'
+        }
+
 # -------------------------
 # Core Assessment Class
 # -------------------------
