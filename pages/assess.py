@@ -997,18 +997,53 @@ class AssessmentAnalytics:
 # ================================
 
 class EmailHandler:
-    """Handle email notifications and report generation"""
+    """Handle email notifications and report generation - FIXED VERSION"""
     
     def __init__(self):
-        # Get email credentials from Streamlit secrets
-        self.smtp_server = st.secrets.get("email", {}).get("smtp_server", "smtp.gmail.com")
-        self.smtp_port = st.secrets.get("email", {}).get("smtp_port", 587)
-        self.sender_email = st.secrets.get("email", {}).get("sender_email", "")
-        self.sender_password = st.secrets.get("email", {}).get("sender_password", "")
-        self.recipient_email = st.secrets.get("email", {}).get("recipient_email", "")
+        # DON'T access st.secrets during __init__ - defer until needed
+        self._config_loaded = False
+        self.smtp_server = None
+        self.smtp_port = None
+        self.sender_email = None
+        self.sender_password = None
+        self.recipient_email = None
+    
+    def _load_config(self):
+        """Load email configuration from secrets when needed"""
+        if self._config_loaded:
+            return
+        
+        try:
+            email_config = st.secrets.get("email", {})
+            self.smtp_server = email_config.get("smtp_server", "smtp.gmail.com")
+            self.smtp_port = email_config.get("smtp_port", 587)
+            self.sender_email = email_config.get("sender_email", "")
+            self.sender_password = email_config.get("sender_password", "")
+            self.recipient_email = email_config.get("recipient_email", "")
+            self._config_loaded = True
+            
+            print(f"📧 Email config loaded: {self.sender_email} -> {self.recipient_email}")
+            
+        except Exception as e:
+            print(f"❌ Error loading email config: {e}")
+            # Set defaults
+            self.smtp_server = "smtp.gmail.com"
+            self.smtp_port = 587
+            self.sender_email = ""
+            self.sender_password = ""
+            self.recipient_email = ""
+            self._config_loaded = True
     
     def send_assessment_results(self, contact_info, assessment_data, analytics_results):
         """Send comprehensive assessment results via email"""
+        # Load config when actually needed
+        self._load_config()
+        
+        # Check if email is configured
+        if not all([self.sender_email, self.sender_password, self.recipient_email]):
+            print("❌ Email not configured - skipping email send")
+            return False
+        
         try:
             # Create message
             msg = MimeMultipart('alternative')
@@ -1040,11 +1075,11 @@ class EmailHandler:
                 server.login(self.sender_email, self.sender_password)
                 server.send_message(msg)
             
+            print(f"✅ Email sent successfully to {self.recipient_email}")
             return True
             
         except Exception as e:
-            st.error(f"Email sending failed: {str(e)}")
-            print(f"Email error details: {traceback.format_exc()}")
+            print(f"❌ Email sending failed: {str(e)}")
             return False
     
     def _generate_email_content(self, contact_info, assessment_data, analytics_results):
@@ -1223,16 +1258,20 @@ class EmailHandler:
 # ================================
 
 class BehavioralPatternAssessment:
-    """Main assessment class orchestrating the entire process"""
+    """Main assessment class orchestrating the entire process - FIXED VERSION"""
     
     def __init__(self):
+        # DON'T access st.session_state during __init__ - defer until render
         self.questions = QuestionSets.get_core_questions()
         self.analytics = AssessmentAnalytics()
         self.email_handler = EmailHandler()
-        self._initialize_session_state()
+        self._session_initialized = False
     
     def _initialize_session_state(self):
-        """Initialize session state variables"""
+        """Initialize session state variables - called during render, not __init__"""
+        if self._session_initialized:
+            return
+        
         defaults = {
             'assessment_responses': {},
             'current_question': 1,
@@ -1247,9 +1286,14 @@ class BehavioralPatternAssessment:
         for key, value in defaults.items():
             if key not in st.session_state:
                 st.session_state[key] = value
+        
+        self._session_initialized = True
     
     def render(self):
         """Main render method"""
+        # Initialize session state here, when Streamlit is ready
+        self._initialize_session_state()
+        
         apply_assessment_styles()
         self._render_header()
         
