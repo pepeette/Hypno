@@ -18,7 +18,6 @@ import traceback
 # ================================
 # 1. CORE CONFIGURATION & PATTERNS
 # ================================
-print(">> assess.py imported")
 
 class PatternDefinitions:
     """Core behavioral pattern definitions and descriptions"""
@@ -1274,11 +1273,16 @@ class BehavioralPatternAssessment:
     
     def __init__(self):
         # DON'T access st.session_state during __init__ - defer until render
-        self.questions = QuestionSets.get_core_questions()
-        self.analytics = AssessmentAnalytics()
-        self.email_handler = EmailHandler()
+        # self.questions = QuestionSets.get_core_questions()
+        # self.analytics = AssessmentAnalytics()
+        # self.email_handler = EmailHandler()
+        # self._session_initialized = False
+        # Only set simple attributes, no Streamlit calls
+        self.questions = None
+        self.analytics = None  
+        self.email_handler = None
         self._session_initialized = False
-    
+        
     def _initialize_session_state(self):
         """Initialize session state variables - called during render, not __init__"""
         if self._session_initialized:
@@ -1305,6 +1309,14 @@ class BehavioralPatternAssessment:
         """Main render method"""
         # Initialize session state here, when Streamlit is ready
         self._initialize_session_state()
+
+        # Initialize components here instead of __init__
+        if self.questions is None:
+            self.questions = QuestionSets.get_core_questions()
+        if self.analytics is None:
+            self.analytics = AssessmentAnalytics()
+        if self.email_handler is None:
+            self.email_handler = EmailHandler()
         
         apply_assessment_styles()
         self._render_header()
@@ -1967,7 +1979,7 @@ class BehavioralPatternAssessment:
 
 def create_assess_page():
     assessment = BehavioralPatternAssessment()
-    assessment.render() 
+    return assessment
 
 # Export the main function for use in other modules
 if __name__ == "__main__":
