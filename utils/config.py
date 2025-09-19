@@ -1637,9 +1637,39 @@ class AnalyticsMethods:
 # -------------------------
 
 class EmailConfig:
-    """Email system configuration"""
-    SMTP_SERVER = st.secrets["email"]["SMTP_SERVER"]
-    SMTP_PORT = st.secrets["email"]["SMTP_PORT"]
-    SENDER_EMAIL = st.secrets["email"]["SENDER_EMAIL"]
-    RECIPIENT_EMAIL = st.secrets["email"]["RECIPIENT_EMAIL"]
-    MAIL_APP_PASSWORD = st.secrets["email"]["GMAIL_APP_PASSWORD"]
+    """Email system configuration with fallback for missing secrets"""
+
+    @classmethod
+    def get_smtp_server(cls):
+        try:
+            return st.secrets["email"]["SMTP_SERVER"]
+        except:
+            return "smtp.gmail.com"
+
+    @classmethod
+    def get_smtp_port(cls):
+        try:
+            return st.secrets["email"]["SMTP_PORT"]
+        except:
+            return 587
+
+    @classmethod
+    def get_sender_email(cls):
+        try:
+            return st.secrets["email"]["SENDER_EMAIL"]
+        except:
+            return "placeholder@gmail.com"
+
+    @classmethod
+    def get_recipient_email(cls):
+        try:
+            return st.secrets["email"]["RECIPIENT_EMAIL"]
+        except:
+            return "placeholder@gmail.com"
+
+    @classmethod
+    def get_mail_app_password(cls):
+        try:
+            return st.secrets["email"]["GMAIL_APP_PASSWORD"]
+        except:
+            return "placeholder_password"
