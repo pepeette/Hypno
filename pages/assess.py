@@ -11,8 +11,134 @@ from utils.config import (
 )
 import time
 
+def apply_production_mobile_styles():
+    """Production-grade mobile-first styling"""
+    st.markdown("""
+    <style>
+    /* Mobile-first base styles */
+    .main .block-container {
+        padding: 0.75rem !important;
+        max-width: 100% !important;
+        font-size: 16px; /* Prevent mobile zoom */
+    }
+
+    /* Progressive enhancement for tablets and desktop */
+    @media (min-width: 768px) {
+        .main .block-container {
+            max-width: 650px !important;
+            margin: 0 auto;
+            padding: 1.5rem !important;
+        }
+    }
+
+    /* Touch-optimized buttons */
+    .stButton > button {
+        min-height: 48px !important; /* WCAG touch target */
+        width: 100% !important;
+        margin-bottom: 0.75rem !important;
+        padding: 1rem !important;
+        text-align: left !important;
+        font-size: 0.95rem !important;
+        line-height: 1.4 !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease !important;
+
+        /* Visual hierarchy */
+        background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%) !important;
+        border: 1px solid #E2E8F0 !important;
+        color: #374151 !important;
+    }
+
+    /* Interactive states */
+    .stButton > button:hover, .stButton > button:focus {
+        background: linear-gradient(135deg, #E1F0F0 0%, #D1E7DD 100%) !important;
+        border-color: #4CA1A3 !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(76, 161, 163, 0.15) !important;
+    }
+
+    /* Progress system */
+    .progress-container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: #F8FAFC;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #4CA1A3;
+    }
+
+    .progress-bar {
+        flex: 1;
+        height: 8px;
+        background: #E2E8F0;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4CA1A3 0%, #22c55e 100%);
+        transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Enhanced form elements */
+    .stTextArea textarea, .stTextInput input {
+        min-height: 48px !important;
+        font-size: 16px !important; /* Prevent mobile zoom */
+        border-radius: 8px !important;
+        border: 2px solid #E2E8F0 !important;
+        padding: 0.75rem !important;
+        transition: border-color 0.2s ease !important;
+    }
+
+    .stTextArea textarea:focus, .stTextInput input:focus {
+        border-color: #4CA1A3 !important;
+        box-shadow: 0 0 0 3px rgba(76, 161, 163, 0.1) !important;
+        outline: none !important;
+    }
+
+    /* Accessibility improvements */
+    .stRadio label, .stCheckbox label {
+        font-size: 0.95rem !important;
+        line-height: 1.4 !important;
+        cursor: pointer !important;
+    }
+
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+        .stButton > button {
+            border: 2px solid #000 !important;
+            color: #000 !important;
+        }
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 class ProductionAssessment:
     def __init__(self):
+        # Initialize all systems
+        self.pattern_analyzer = AdvancedPatternAnalyzer()
+        self.digital_analyzer = DigitalDespairAnalyzer()
+        self.results_engine = ProductionResultsEngine()
+        self.clinical_system = ClinicalIntegrationSystem()
+        self.data_manager = ProductionDataManager()
+        self.communication_manager = CommunicationManager()
+        self.question_flow = SmartQuestionFlow()
+        self.error_handler = ProductionErrorHandling()
+        self.accessibility_manager = AccessibilityManager()
+        self.ui_renderer = QuestionRenderer()
+
         # Config integration
         self.patterns = PatternDefinitions.PATTERNS
         self.pattern_details = PatternDefinitions.PATTERN_DESCRIPTIONS
@@ -24,9 +150,14 @@ class ProductionAssessment:
             **QuestionSets.PATTERN_SPECIFIC,
             **QuestionSets.INTEGRATION
         }
-        
+
         # State initialization with all tracking variables
         self._init_production_state()
+
+        # Apply optimizations
+        self.accessibility_manager.apply_accessibility_enhancements()
+        self.accessibility_manager.optimize_performance()
+        self.accessibility_manager.check_mobile_optimization()
 
     def _init_production_state(self):
         """Enhanced State Management"""
@@ -89,6 +220,251 @@ class ProductionAssessment:
         for key, default_value in defaults.items():
             if key not in st.session_state:
                 st.session_state[key] = default_value
+
+    def render(self):
+        """Main render method with comprehensive error handling"""
+        try:
+            # Apply production styling
+            apply_production_mobile_styles()
+
+            # Validate assessment integrity
+            integrity_check = self.error_handler.validate_assessment_integrity()
+
+            if integrity_check['fixes_applied']:
+                st.info(f"Applied {len(integrity_check['fixes_applied'])} automatic fixes to ensure data integrity")
+
+            # Main assessment flow
+            if not st.session_state.get('contact_provided', False):
+                if not st.session_state.get('assessment_completed', False):
+                    self._render_assessment_flow()
+                else:
+                    self._render_contact_form()
+            else:
+                self._render_comprehensive_results()
+
+        except Exception as e:
+            self.error_handler.handle_assessment_error('generic_error', {'exception': e})
+
+    def _render_assessment_flow(self):
+        """Render main assessment flow with smart question selection"""
+        try:
+            # Get next optimized question
+            q_id, question = self.question_flow.get_next_optimized_question()
+
+            if q_id is None:
+                self._complete_comprehensive_assessment()
+                return
+
+            if not question:
+                # Handle missing question
+                question = self.error_handler.handle_assessment_error('question_load_error')
+
+            # Add accessibility support
+            self.accessibility_manager.add_screen_reader_support(question)
+
+            # Render question with full UI system
+            self.ui_renderer.render_question_with_progress(q_id, question)
+
+        except Exception as e:
+            self.error_handler.handle_assessment_error('assessment_flow_error', {'exception': e})
+
+    def _complete_comprehensive_assessment(self):
+        """Complete assessment with full analysis generation"""
+        try:
+            st.session_state.assessment_completed = True
+
+            # Generate complete analysis
+            assessment_data = self._compile_complete_assessment_data()
+            comprehensive_results = self.results_engine.generate_comprehensive_results(assessment_data)
+
+            # Store results
+            st.session_state.comprehensive_analysis = comprehensive_results
+
+            # Generate clinical insights
+            clinical_template = self.clinical_system.generate_comprehensive_clinical_template(assessment_data)
+            st.session_state.clinical_template = clinical_template
+
+            # Calculate final success predictions
+            success_prediction = comprehensive_results.get('success_prediction', {})
+            st.session_state.success_probability = success_prediction.get('overall_probability', 85)
+
+            st.rerun()
+
+        except Exception as e:
+            self.error_handler.handle_assessment_error('completion_error', {'exception': e})
+
+    def _render_contact_form(self):
+        """Render contact information form"""
+        st.markdown("# 📋 Assessment Complete")
+        st.success("Your assessment has been completed! Please provide your contact information to receive your personalized analysis.")
+
+        with st.form("contact_form"):
+            col1, col2 = st.columns(2)
+            with col1:
+                first_name = st.text_input("First Name*", key="contact_first_name")
+                email = st.text_input("Email Address*", key="contact_email")
+            with col2:
+                last_name = st.text_input("Last Name*", key="contact_last_name")
+                phone = st.text_input("Phone Number", key="contact_phone")
+
+            urgency = st.selectbox(
+                "How urgent is your need for support?*",
+                ["Standard - within a week", "High priority - within 2-3 days", "Very urgent - within 24 hours", "Extremely urgent - same day if possible"]
+            )
+
+            additional_info = st.text_area(
+                "Additional information or specific concerns:",
+                placeholder="Any additional details that might help us better understand your situation..."
+            )
+
+            submitted = st.form_submit_button("Get My Analysis", type="primary")
+
+            if submitted:
+                if first_name and last_name and email:
+                    # Save contact info
+                    st.session_state.contact_info = {
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'email': email,
+                        'phone': phone,
+                        'urgency': urgency,
+                        'additional_info': additional_info,
+                        'submission_time': datetime.now().isoformat()
+                    }
+                    st.session_state.contact_provided = True
+                    st.rerun()
+                else:
+                    st.error("Please fill in all required fields (marked with *)")
+
+    def _render_comprehensive_results(self):
+        """Render comprehensive results with all insights"""
+        try:
+            # Mobile-optimized hero section
+            self._render_results_hero_mobile_optimized()
+
+            # Full analysis sections
+            self._render_pattern_analysis_section()
+            self._render_transformation_roadmap_section()
+            self._render_personalized_techniques_section()
+            self._render_next_steps_section()
+
+        except Exception as e:
+            self.error_handler.handle_assessment_error('results_rendering_error', {'exception': e})
+
+    def _render_results_hero_mobile_optimized(self):
+        """Mobile-optimized results hero section"""
+        # Generate comprehensive results
+        assessment_data = self._compile_complete_assessment_data()
+        results = self.results_engine.generate_comprehensive_results(assessment_data)
+
+        # Hero banner with key insights
+        summary = results['assessment_summary']
+
+        st.markdown(f"""
+        <div style="
+            background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #4CA1A3;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        ">
+            <div style="color: #273548; font-size: 1rem; line-height: 1.6;">
+                <div style="color: #4CA1A3; font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem;">
+                    🎯 Your Transformation Blueprint Ready
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <strong>Key Insight:</strong><br>
+                    {summary.get('primary_finding', 'Analysis complete - detailed insights available')}
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                    <div>
+                        <strong>Complexity:</strong><br>
+                        <span style="color: #4CA1A3;">{summary.get('complexity_level', 'Moderate')}</span>
+                    </div>
+                    <div>
+                        <strong>Success Rate:</strong><br>
+                        <span style="color: #4CA1A3;">{summary.get('success_probability', 85)}%</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1rem; padding: 0.75rem; background: #E1F0F0; border-radius: 6px;">
+                    <strong>Timeline:</strong> {summary.get('timeline_estimate', '2-3 weeks for transformation')}
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    def _compile_complete_assessment_data(self):
+        """Compile complete assessment data from session state"""
+        return {
+            'metadata': {
+                'export_timestamp': datetime.now().isoformat(),
+                'assessment_version': '3.0',
+                'total_questions': len(st.session_state.get('assessment_responses', {})),
+                'completion_rate': len(st.session_state.get('assessment_responses', {})) / 35,
+                'session_duration': self._calculate_session_duration(),
+                'user_agent': 'Streamlit Production'
+            },
+            'raw_responses': {
+                'assessment_responses': dict(st.session_state.get('assessment_responses', {})),
+                'trigger_chain': dict(st.session_state.get('trigger_chain', {})),
+                'user_journey_tracking': st.session_state.get('user_journey_tracking', [])
+            },
+            'pattern_analysis': {
+                'pattern_scores': dict(st.session_state.get('pattern_scores', {})),
+                'triggered_patterns': list(st.session_state.get('triggered_patterns', set())),
+                'pattern_interactions': dict(st.session_state.get('pattern_interactions', {}))
+            },
+            'digital_analysis': {
+                'is_digital_native': st.session_state.get('is_digital_native', False),
+                'digital_component_scores': dict(st.session_state.get('digital_component_scores', {})),
+                'digital_severity': st.session_state.get('digital_severity', 'MINIMAL')
+            },
+            'success_prediction': {
+                'readiness_score': st.session_state.get('readiness_score', 0),
+                'success_probability': st.session_state.get('success_probability', 85),
+                'engagement_metrics': dict(st.session_state.get('engagement_metrics', {}))
+            },
+            'contact_information': st.session_state.get('contact_info', {})
+        }
+
+    def _calculate_session_duration(self):
+        """Calculate session duration"""
+        start_time = st.session_state.get('start_time')
+        if start_time:
+            try:
+                start = datetime.fromisoformat(start_time)
+                duration = datetime.now() - start
+                return duration.total_seconds() / 60  # Return minutes
+            except:
+                pass
+        return 0
+
+    def _render_pattern_analysis_section(self):
+        """Render pattern analysis section"""
+        st.markdown("## 🎯 Pattern Analysis")
+        st.info("Detailed pattern analysis will be shown here based on assessment responses.")
+
+    def _render_transformation_roadmap_section(self):
+        """Render transformation roadmap section"""
+        st.markdown("## 🗺️ Transformation Roadmap")
+        st.info("Personalized transformation roadmap will be displayed here.")
+
+    def _render_personalized_techniques_section(self):
+        """Render personalized techniques section"""
+        st.markdown("## ⚡ Personalized Techniques")
+        st.info("Custom techniques based on your patterns will be shown here.")
+
+    def _render_next_steps_section(self):
+        """Render next steps section"""
+        st.markdown("## 📞 Next Steps")
+        contact_info = st.session_state.get('contact_info', {})
+        if contact_info:
+            st.success(f"Thank you, {contact_info.get('first_name', '')}! We will contact you at {contact_info.get('email', '')} based on your {contact_info.get('urgency', 'standard')} priority level.")
+        st.info("Detailed next steps and booking information will be provided here.")
 
     #Question Flow Logic
     def _get_next_question_enhanced(self):
@@ -172,122 +548,7 @@ class ProductionAssessment:
         if question.get('weights') and question.get('pattern'):
             self._process_weighted_scoring(q_id, response, question)
 
-    #Responsive Styling System
-    def apply_production_mobile_styles():
-        """Production-grade mobile-first styling"""
-        st.markdown("""
-        <style>
-        /* Mobile-first base styles */
-        .main .block-container {
-            padding: 0.75rem !important;
-            max-width: 100% !important;
-            font-size: 16px; /* Prevent mobile zoom */
-        }
-        
-        /* Progressive enhancement for tablets and desktop */
-        @media (min-width: 768px) {
-            .main .block-container {
-                max-width: 650px !important;
-                margin: 0 auto;
-                padding: 1.5rem !important;
-            }
-        }
-        
-        /* Touch-optimized buttons */
-        .stButton > button {
-            min-height: 48px !important; /* WCAG touch target */
-            width: 100% !important;
-            margin-bottom: 0.75rem !important;
-            padding: 1rem !important;
-            text-align: left !important;
-            font-size: 0.95rem !important;
-            line-height: 1.4 !important;
-            border-radius: 8px !important;
-            transition: all 0.2s ease !important;
-            
-            /* Visual hierarchy */
-            background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%) !important;
-            border: 1px solid #E2E8F0 !important;
-            color: #374151 !important;
-        }
-        
-        /* Interactive states */
-        .stButton > button:hover, .stButton > button:focus {
-            background: linear-gradient(135deg, #E1F0F0 0%, #D1E7DD 100%) !important;
-            border-color: #4CA1A3 !important;
-            transform: translateY(-1px) !important;
-            box-shadow: 0 4px 12px rgba(76, 161, 163, 0.15) !important;
-        }
-        
-        /* Progress system */
-        .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: #F8FAFC;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #4CA1A3;
-        }
-        
-        .progress-bar {
-            flex: 1;
-            height: 8px;
-            background: #E2E8F0;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4CA1A3 0%, #22c55e 100%);
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Enhanced form elements */
-        .stTextArea textarea, .stTextInput input {
-            min-height: 48px !important;
-            font-size: 16px !important; /* Prevent mobile zoom */
-            border-radius: 8px !important;
-            border: 2px solid #E2E8F0 !important;
-            padding: 0.75rem !important;
-            transition: border-color 0.2s ease !important;
-        }
-        
-        .stTextArea textarea:focus, .stTextInput input:focus {
-            border-color: #4CA1A3 !important;
-            box-shadow: 0 0 0 3px rgba(76, 161, 163, 0.1) !important;
-            outline: none !important;
-        }
-        
-        /* Accessibility improvements */
-        .stRadio label, .stCheckbox label {
-            font-size: 0.95rem !important;
-            line-height: 1.4 !important;
-            cursor: pointer !important;
-        }
-        
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-            .stButton > button {
-                border: 2px solid #000 !important;
-                color: #000 !important;
-            }
-        }
-        
-        /* Reduced motion support */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-        </style>
-        """, unsafe_allow_html=True)
-
-#Question Rendering System
+    #Question Rendering System
 class QuestionRenderer:
     """Production question rendering with accessibility"""
     
@@ -1862,30 +2123,6 @@ class AccessibilityManager:
         
         st.markdown(mobile_css, unsafe_allow_html=True)
 
-#Final Integration & Main Application
-class ProductionAssessment:
-    """Main production assessment class integrating all components"""
-    
-    def __init__(self):
-        # Initialize all systems
-        self.pattern_analyzer = AdvancedPatternAnalyzer()
-        self.digital_analyzer = DigitalDespairAnalyzer()
-        self.results_engine = ProductionResultsEngine()
-        self.clinical_system = ClinicalIntegrationSystem()
-        self.data_manager = ProductionDataManager()
-        self.communication_manager = CommunicationManager()
-        self.question_flow = SmartQuestionFlow()
-        self.error_handler = ProductionErrorHandling()
-        self.accessibility_manager = AccessibilityManager()
-        self.ui_renderer = QuestionRenderer()
-        
-        # Initialize state
-        self._init_production_state()
-        
-        # Apply optimizations
-        self.accessibility_manager.apply_accessibility_enhancements()
-        self.accessibility_manager.optimize_performance()
-        self.accessibility_manager.check_mobile_optimization()
     
     def render(self):
         """Main render method with comprehensive error handling"""
@@ -2005,14 +2242,6 @@ def create_assess_page():
     """Factory function to create assessment page instance"""
     return ProductionAssessment()
 
-# Alternative class wrapper if needed
-class AssessPage:
-    def __init__(self):
-        self.assessment = ProductionAssessment()
-    
-    def render(self):
-        self.assessment.render()
-
 # ---- Main Application Entry Point ----
 if __name__ == "__main__":
     st.set_page_config(
@@ -2021,13 +2250,8 @@ if __name__ == "__main__":
         layout="centered",
         initial_sidebar_state="collapsed"
     )
-    
+
     # Initialize and render production assessment
     assessment = create_production_assessment()
     assessment.render()
-
-
-        
-
-
 
