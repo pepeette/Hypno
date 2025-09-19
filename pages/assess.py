@@ -9,6 +9,7 @@ from utils.config import (
     DIGITAL_SCORING_RULES,
     AnalyticsMethods
 )
+import time
 
 class ProductionAssessment:
     def __init__(self):
@@ -35,54 +36,59 @@ class ProductionAssessment:
             'current_question': 1,
             'current_phase': 'age_screening',
             'question_history': [],
-            
+
             # Pattern detection system
             'pattern_scores': {},
             'pattern_intensities': {},
             'pattern_interactions': {},
             'triggered_patterns': set(),
             'pattern_development_timeline': {},
-            
+
             # Digital native analysis
             'is_digital_native': False,
             'digital_component_scores': {},
             'digital_severity': 'MINIMAL',
             'digital_adaptations_needed': [],
-            
+
             # Behavioral sequence mapping
             'trigger_chain': {},
             'behavioral_sequence_completeness': 0,
             'intervention_windows': [],
-            
+
             # Clinical insights extraction
             'core_limiting_beliefs': {},
             'secondary_gains': {},
             'systemic_resistance_factors': {},
             'identity_conflicts': {},
             'hidden_loyalties': {},
-            
+
             # Success prediction system
             'readiness_score': 0,
             'engagement_metrics': {},
             'success_probability': 85,
             'risk_mitigation_strategies': [],
-            
+
             # Session planning
             'session_complexity_score': 0,
             'recommended_approach': 'standard',
             'session_structure': {},
             'timeline_predictions': {},
-            
+
             # Results and completion
             'assessment_completed': False,
             'contact_provided': False,
             'comprehensive_analysis': {},
-            
+
             # Analytics tracking
             'start_time': datetime.now().isoformat(),
             'completion_timestamps': {},
             'user_journey_tracking': []
         }
+
+        # Initialize session state variables if they don't exist
+        for key, default_value in defaults.items():
+            if key not in st.session_state:
+                st.session_state[key] = default_value
 
     #Question Flow Logic
     def _get_next_question_enhanced(self):
@@ -2025,37 +2031,3 @@ if __name__ == "__main__":
 
 
 
-# import streamlit as st
-
-# def create_assess_page():
-#     """Ultra minimal test version with debug"""
-    
-#     st.write("🔍 **Debug: create_assess_page() function called**")
-    
-#     try:
-#         st.write("✅ Inside create_assess_page function")
-        
-#         class UltraSimpleAssessment:
-#             def __init__(self):
-#                 st.write("✅ UltraSimpleAssessment.__init__ called")
-            
-#             def render(self):
-#                 st.write("✅ UltraSimpleAssessment.render() called")
-#                 st.markdown("# 🧠 Ultra Simple Assessment")
-#                 st.success("✅ Basic assessment page loading works!")
-                
-#                 st.markdown("## Test Form")
-#                 name = st.text_input("Name:")
-#                 if name:
-#                     st.success(f"Hello, {name}!")
-        
-#         st.write("✅ About to create UltraSimpleAssessment instance")
-#         assessment = UltraSimpleAssessment()
-#         st.write("✅ UltraSimpleAssessment instance created successfully")
-        
-#         return assessment
-        
-#     except Exception as e:
-#         st.error(f"❌ Error in create_assess_page: {str(e)}")
-#         st.exception(e)
-#         return None
