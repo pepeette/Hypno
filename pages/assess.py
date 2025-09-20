@@ -20,7 +20,7 @@ except ImportError:
 
 # Import enhanced configuration
 try:
-    from utils.config2 import (
+    from utils.config import (
         SmartQuestionMatrix,
         DigitalDespairAssessment,
         AdaptiveQuestionFlow,
