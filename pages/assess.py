@@ -61,6 +61,10 @@ class EnhancedAssessmentOrchestrator:
         if 'current_question_id' not in st.session_state:
             st.session_state.current_question_id = None
 
+        # Initialize question history tracking for previous button
+        if 'question_history' not in st.session_state:
+            st.session_state.question_history = []
+
         if 'assessment_v2_completed' not in st.session_state:
             st.session_state.assessment_v2_completed = False
 
@@ -324,8 +328,13 @@ class EnhancedAssessmentOrchestrator:
         progress_percentage = min(100, (current_progress / total_expected) * 100) if total_expected > 0 else 0
 
         # Smart time estimation based on question complexity and user patterns
-        questions_remaining = max(0, total_expected - current_progress)
-        time_remaining = self._calculate_smart_time_estimate(questions_remaining, current_progress)
+        # If current question is the last question (current_progress >= total_expected), show 0 time
+        if current_progress >= total_expected:
+            questions_remaining = 0
+            time_remaining = 0
+        else:
+            questions_remaining = max(0, total_expected - current_progress)
+            time_remaining = self._calculate_smart_time_estimate(questions_remaining, current_progress)
 
         # Format time display
         if time_remaining >= 60:
@@ -426,6 +435,10 @@ class EnhancedAssessmentOrchestrator:
             # Update current question
             st.session_state.current_question_id = question_id
 
+            # Track question history for previous button
+            if question_id not in st.session_state.question_history:
+                st.session_state.question_history.append(question_id)
+
             # Render question with sophisticated styling
             self._render_sophisticated_question(question_id, question_data)
 
@@ -524,8 +537,15 @@ class EnhancedAssessmentOrchestrator:
         if question_data.get('skip_allowed', False):
             st.markdown("<br>", unsafe_allow_html=True)  # Small spacing
             col1, col2 = st.columns(2)
-            with col2:
-                if st.button("Skip this question", key=f"{question_id}_single_skip", help="Skip to next question", use_container_width=True):
+            # Split col2 into two half-width buttons for Previous and Skip
+            col2a, col2b = st.columns(2)
+
+            with col2a:
+                if st.button("Previous", key=f"{question_id}_single_previous", help="Go to previous question", use_container_width=True):
+                    self._handle_previous_question()
+
+            with col2b:
+                if st.button("Skip", key=f"{question_id}_single_skip", help="Skip to next question", use_container_width=True):
                     st.session_state.assessment_v2_responses[question_id] = "SKIPPED"
                     st.rerun()
 
@@ -563,8 +583,15 @@ class EnhancedAssessmentOrchestrator:
                     else:
                         st.warning("Please select at least one option to continue.")
 
-            with col2:
-                if st.button("Skip this question", key=f"{question_id}_mc_skip", use_container_width=True):
+            # Split col2 into two half-width buttons for Previous and Skip
+            col2a, col2b = st.columns(2)
+
+            with col2a:
+                if st.button("Previous", key=f"{question_id}_mc_previous", help="Go to previous question", use_container_width=True):
+                    self._handle_previous_question()
+
+            with col2b:
+                if st.button("Skip", key=f"{question_id}_mc_skip", help="Skip to next question", use_container_width=True):
                     st.session_state.assessment_v2_responses[question_id] = "SKIPPED"
                     st.rerun()
 
@@ -630,8 +657,15 @@ class EnhancedAssessmentOrchestrator:
                         st.session_state.assessment_v2_responses[question_id] = selected_value
                         st.rerun()
 
-                with col2:
-                    if st.button("Skip this question", key=f"{question_id}_scale_skip", use_container_width=True):
+                # Split col2 into two half-width buttons for Previous and Skip
+                col2a, col2b = st.columns(2)
+
+                with col2a:
+                    if st.button("Previous", key=f"{question_id}_scale_previous", help="Go to previous question", use_container_width=True):
+                        self._handle_previous_question()
+
+                with col2b:
+                    if st.button("Skip", key=f"{question_id}_scale_skip", help="Skip to next question", use_container_width=True):
                         st.session_state.assessment_v2_responses[question_id] = "SKIPPED"
                         st.rerun()
             else:
@@ -667,8 +701,15 @@ class EnhancedAssessmentOrchestrator:
                 st.markdown(f"*{message}*")
 
             col1, col2 = st.columns(2)
-            with col2:
-                if st.button("Skip this question", key=f"{question_id}_skip", use_container_width=True):
+            # Split col2 into two half-width buttons for Previous and Skip
+            col2a, col2b = st.columns(2)
+
+            with col2a:
+                if st.button("Previous", key=f"{question_id}_text_previous", help="Go to previous question", use_container_width=True):
+                    self._handle_previous_question()
+
+            with col2b:
+                if st.button("Skip", key=f"{question_id}_skip", help="Skip to next question", use_container_width=True):
                     # Update skip count
                     if current_phase not in st.session_state.skip_counts:
                         st.session_state.skip_counts[current_phase] = 0
@@ -1091,6 +1132,25 @@ class EnhancedAssessmentOrchestrator:
             estimated_time *= 1.2
 
         return estimated_time
+
+    def _handle_previous_question(self):
+        """Navigate to the previous question"""
+        if len(st.session_state.question_history) > 1:
+            # Remove current question from history
+            st.session_state.question_history.pop()
+            # Get previous question
+            previous_question_id = st.session_state.question_history[-1]
+
+            # Remove the response for current question if it exists
+            current_question_id = st.session_state.get('current_question_id')
+            if current_question_id and current_question_id in st.session_state.assessment_v2_responses:
+                del st.session_state.assessment_v2_responses[current_question_id]
+
+            # Set current question to previous
+            st.session_state.current_question_id = previous_question_id
+            st.rerun()
+        else:
+            st.warning("This is the first question. Cannot go back further.")
 
 # ================================
 # ASSESSMENT PAGE FACTORY
