@@ -778,10 +778,12 @@ class EnhancedAssessmentOrchestrator:
 
         profile = st.session_state.comprehensive_profile
 
+        # Main header
+        st.markdown("**YOUR PERSONAL ASSESSMENT**")
+
         st.markdown("""
         <div class="assessment-container">
             <div style="text-align: center; margin-bottom: 3rem;">
-                <h1 style="color: #273548; margin-bottom: 1rem;">Your Personal Assessment</h1>
                 <div style="color: #556D7A; font-size: 1.1rem;">
                     A comprehensive analysis of your unique patterns and transformation pathway
                 </div>
@@ -818,13 +820,15 @@ class EnhancedAssessmentOrchestrator:
         pattern_description = pattern_descriptions.get(primary_pattern,
             "This represents your mind's primary protective strategy, developed to keep you safe but now limiting your growth potential.")
 
+        # Pattern Constellation header
+        st.markdown("**YOUR PATTERN CONSTELLATION**")
+
         st.markdown(f"""
         <div class="assessment-container">
             <div class="question-card">
-                <h2 style="color: #273548; margin-bottom: 1.5rem;">Your Pattern Constellation</h2>
                 <div class="pattern-detection">
                     <div style="font-weight: 500; color: #4CA1A3; margin-bottom: 0.5rem;">
-                        Primary Pattern: {pattern_display}
+                        **Primary: {pattern_display}**
                     </div>
                     <div style="color: #556D7A;">
                         {pattern_description}
@@ -841,12 +845,14 @@ class EnhancedAssessmentOrchestrator:
         severity = digital_analysis.get('severity_level', 'Minimal')
 
         if severity != 'Minimal':
+            # Digital analysis header
+            st.markdown("**DIGITAL CONDITIONING ANALYSIS**")
+
             st.markdown(f"""
             <div class="assessment-container">
                 <div class="question-card">
-                    <h2 style="color: #273548; margin-bottom: 1.5rem;">Digital Conditioning Analysis</h2>
                     <div style="color: #556D7A; line-height: 1.6;">
-                        Your assessment reveals specific patterns related to digital environment conditioning.
+                        **Assessment: reveals specific patterns related to digital environment conditioning.**
                         Understanding these patterns is crucial for creating an effective transformation approach
                         that works with your unique neural wiring.
                     </div>
@@ -860,17 +866,19 @@ class EnhancedAssessmentOrchestrator:
         clinical_profile = profile.get('clinical_profile', {})
         estimated_sessions = clinical_profile.get('estimated_sessions', 'Unknown')
 
+        # Transformation roadmap header
+        st.markdown("**YOUR TRANSFORMATION ROADMAP**")
+
         st.markdown(f"""
         <div class="assessment-container">
             <div class="question-card">
-                <h2 style="color: #273548; margin-bottom: 1.5rem;">Your Transformation Roadmap</h2>
                 <div style="color: #556D7A; line-height: 1.6; margin-bottom: 1.5rem;">
-                    Based on your unique pattern constellation, we've identified the most effective
-                    approach for your transformation journey.
+                    **Based: on your unique pattern constellation, we've identified the most effective
+                    approach for your transformation journey.**
                 </div>
                 <div class="insights-preview">
                     <div style="font-weight: 500; color: #4CA1A3; margin-bottom: 0.5rem;">
-                        Recommended Approach: {estimated_sessions} Session Intensive
+                        **Recommended: {estimated_sessions} session intensive**
                     </div>
                     <div style="color: #556D7A; font-size: 0.9rem;">
                         Your pattern combination responds optimally to rapid transformation techniques
@@ -884,17 +892,9 @@ class EnhancedAssessmentOrchestrator:
     def _render_contact_form(self):
         """Render sophisticated contact form"""
 
-        st.markdown("""
-        <div class="assessment-container">
-            <div class="question-card">
-                <h2 style="color: #273548; margin-bottom: 1.5rem;">Next Steps</h2>
-                <div style="color: #556D7A; line-height: 1.6; margin-bottom: 2rem;">
-                    To receive your complete analysis and discuss your personalized transformation approach,
-                    please provide your contact information below.
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.success("🎉 Your comprehensive behavioral pattern analysis is ready!")
+
+        st.markdown("**To: receive your complete analysis and discuss your personalized transformation approach, please provide your contact information below.**")
 
         with st.form("contact_form_v2"):
             col1, col2 = st.columns(2)
