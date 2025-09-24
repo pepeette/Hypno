@@ -360,7 +360,7 @@ except ImportError:
 
 # Import utilities with error handling
 try:
-    from utils.config import PageConfig, PatternDefinitions, QuestionSets, AnalyticsMethods,EmailConfig, DIGITAL_SCORING_RULES, PATTERN_SCORING_RULES, AppConstants
+    from utils.config import PageConfig, PatternDefinitions, QuestionSets, AnalyticsMethods,EmailConfig, DIGITAL_SCORING_RULES, PATTERN_SCORING_RULES
 except ImportError:
     PageConfig = None
 
@@ -424,10 +424,6 @@ class HypnotherapyApp:
             if 'page' in query_params and query_params['page'] == 'assess':
                 return 'assess'
 
-            # Check for enhanced assessment page access
-            if 'page' in query_params and query_params['page'] == 'assess2':
-                return 'assess2'
-
             # Check for other hidden pages if needed
             # if 'page' in query_params and 'admin' in query_params['page']:
             #     return 'admin'
@@ -479,7 +475,7 @@ class HypnotherapyApp:
             if selected_page == "assess" and AssessPage:
                 self._render_hidden_assessment_page()
                 return
-
+                
             # Handle regular navigation pages
             if selected_page == "Home" and HomePage:
                 page_instance = HomePage()
@@ -528,6 +524,7 @@ class HypnotherapyApp:
             page_instance.render()
         else:
             st.error("Assessment page not available. Please contact support.")
+
 
     def render_booking_form(self, selected_page):
         """Render booking form on public pages only"""
