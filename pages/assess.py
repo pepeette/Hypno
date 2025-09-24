@@ -1,5 +1,5 @@
 """
-Enhanced Behavioral Pattern Assessment v2 Last
+Enhanced Behavioral Pattern Assessment v2
 Sophisticated content-driven assessment with adaptive questioning
 Digital despair integration and comprehensive profiling
 """
