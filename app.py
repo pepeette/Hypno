@@ -339,13 +339,6 @@ try:
 except ImportError:
     AssessPage = None
 
-# Import enhanced assessment page v2 (hidden)
-try:
-    from pages.assess2 import create_assess2_page
-    Assess2Page = create_assess2_page
-except ImportError:
-    Assess2Page = None
-
 # Import shared components with error handling
 try:
     from components.navigation import create_navigation
@@ -367,7 +360,7 @@ except ImportError:
 
 # Import utilities with error handling
 try:
-    from config import PageConfig, PatternDefinitions, QuestionSets, AnalyticsMethods,EmailConfig, DIGITAL_SCORING_RULES, PATTERN_SCORING_RULES
+    from utils.config import PageConfig, PatternDefinitions, QuestionSets, AnalyticsMethods,EmailConfig, DIGITAL_SCORING_RULES, PATTERN_SCORING_RULES, AppConstants
 except ImportError:
     PageConfig = None
 
