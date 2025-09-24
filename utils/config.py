@@ -8,23 +8,24 @@ Author: Assessment Enhancement Team
 Version: 3.0.0 - Production Ready
 Date: 2025-01-25
 """
-import streamlit as st
+
 from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass
 from enum import Enum
 import json
 import numpy as np
 from datetime import datetime
+import streamlit as st
 import re
 
-#for HOME.py
+# App-wide constants for the hypnotherapy website
 class AppConstants:
     """Application-wide constants"""
-    
+
     # Navigation
     NAVIGATION_OPTIONS = ["Home", "Method", "Blog", "Testimonials", "Book Now"]
     NAVIGATION_ICONS = ["house", "gear", "book", "star", "calendar"]
-    
+
     # Contact information
     CONTACT_INFO = {
         "clinic_name": "NEW Bangkok ADDRESS",
@@ -35,31 +36,31 @@ class AppConstants:
         "discovery_call_url": "https://calendly.com/laetitiasheppard/discovery",
         "package_booking_url": "https://calendly.com/laetitiasheppard/package"
     }
-    
+
     # Images
     IMAGES = {
         "founder_photo": "https://github.com/pepeette/Hypno/blob/main/img/ID.jpg?raw=true",
         "behavior_map": "https://github.com/pepeette/Hypno/blob/main/img%2FBehaviourMap.png?raw=true",
         "transformation": "https://github.com/pepeette/Hypno/blob/main/img%2Femo.jpg?raw=true"
     }
-    
+
     # Pricing
     PRICING = {
         "complete_package": 3000,
         "premium_package": 4000,
         "currency": "THB"
     }
-    
+
     # Form options
     CONCERN_OPTIONS = [
-        "Select one...", 
-        "Quit Smoking", 
-        "Reduce Anxiety", 
-        "Improve Sleep", 
+        "Select one...",
+        "Quit Smoking",
+        "Reduce Anxiety",
+        "Improve Sleep",
         "Break Bad Habits",
         "Other"
     ]
-    
+
     # Success statistics
     SUCCESS_RATES = {
         "two_sessions": 85,
@@ -67,8 +68,13 @@ class AppConstants:
         "years_experience": 10
     }
 
+# All classes are now defined locally in this file - no external imports needed
 
-#for ASSESS.py
+# ================================
+# USER-FRIENDLY ASSESSMENT QUESTIONNAIRE
+# ================================
+# Revamped questionnaire with logical funnel progression and public-friendly language
+# Maintains clinical integrity while being accessible to general public
 
 class QuestionnaireStage(Enum):
     """Logical progression stages for the assessment funnel"""
@@ -10816,10 +10822,6 @@ class EmailConfig:
     """Email configuration for notifications"""
     pass
 
-class AppConstants:
-    """Application constants"""
-    NAVIGATION_OPTIONS = ["Home", "Method", "Blog", "Testimonials", "Book Now"]
-    NAVIGATION_ICONS = ["house", "gear", "book", "star", "calendar"]
 
 # Scoring rules for compatibility
 DIGITAL_SCORING_RULES = {}
