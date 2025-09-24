@@ -448,7 +448,7 @@ class HypnotherapyApp:
         else:
             # Import navigation options from config
             try:
-                from config import AppConstants
+                from utils.config import AppConstants
                 options = AppConstants.NAVIGATION_OPTIONS
                 icons = AppConstants.NAVIGATION_ICONS
             except ImportError:
@@ -480,11 +480,6 @@ class HypnotherapyApp:
                 self._render_hidden_assessment_page()
                 return
 
-            # Handle enhanced assessment page
-            if selected_page == "assess2" and Assess2Page:
-                self._render_hidden_assessment2_page()
-                return
-                
             # Handle regular navigation pages
             if selected_page == "Home" and HomePage:
                 page_instance = HomePage()
@@ -533,35 +528,6 @@ class HypnotherapyApp:
             page_instance.render()
         else:
             st.error("Assessment page not available. Please contact support.")
-
-    def _render_hidden_assessment2_page(self):
-        """Render the enhanced hidden assessment page v2"""
-        # Add a discrete header indicating this is a confidential assessment
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%);
-                    padding: 0.5rem 1rem; border-radius: 4px;
-                    margin-bottom: 1rem; border-left: 4px solid #4CA1A3;">
-                <small style="color: #4CA1A3;">
-                    🔒 Confidential assessment portal
-                </small>
-        </div>
-        """, unsafe_allow_html=True)
-
-        if Assess2Page:
-            try:
-                page_instance = Assess2Page()
-                page_instance.render()
-            except Exception as e:
-                st.error(f"Assessment error: {str(e)}")
-                st.error("Please refresh the page or contact support if the issue persists.")
-
-                # Debug information for development
-                if st.checkbox("Show technical details"):
-                    st.code(f"Error details: {str(e)}")
-                    import traceback
-                    st.code(traceback.format_exc())
-        else:
-            st.error("Enhanced assessment page not available. Please contact support.")
 
     def render_booking_form(self, selected_page):
         """Render booking form on public pages only"""
