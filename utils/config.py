@@ -174,8 +174,6 @@ class TestimonialConfig:
 # ================================
 # for assess.py
 # ================================
-# Revamped questionnaire with logical funnel progression and public-friendly language
-# Maintains clinical integrity while being accessible to general public
 
 class QuestionnaireStage(Enum):
     """Logical progression stages for the assessment funnel"""
