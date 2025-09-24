@@ -1,5 +1,5 @@
 """
-Enhanced Behavioral Pattern Assessment v2
+Enhanced Behavioral Pattern Assessment v2 last
 Sophisticated content-driven assessment with adaptive questioning
 Digital despair integration and comprehensive profiling
 """
@@ -20,7 +20,7 @@ except ImportError:
 
 # Import enhanced configuration
 try:
-    from utils.config import (
+    from utils.config2 import (
         SmartQuestionMatrix,
         DigitalDespairAssessment,
         AdaptiveQuestionFlow,
