@@ -15,14 +15,60 @@ from enum import Enum
 import json
 import numpy as np
 from datetime import datetime
+import re
 
-# All classes are now defined locally in this file - no external imports needed
+#for HOME.py
+class AppConstants:
+    """Application-wide constants"""
+    
+    # Navigation
+    NAVIGATION_OPTIONS = ["Home", "Method", "Blog", "Testimonials", "Book Now"]
+    NAVIGATION_ICONS = ["house", "gear", "book", "star", "calendar"]
+    
+    # Contact information
+    CONTACT_INFO = {
+        "clinic_name": "NEW Bangkok ADDRESS",
+        "address": "27 Soi Sukhumvit 10 (Asoke)",
+        "city": "Bangkok, Thailand",
+        "maps_url": "https://maps.app.goo.gl/RmobTn5B6JLZ2Lmk8?g_st=aw",
+        "calendly_url": "https://calendly.com/laetitiasheppard/session",
+        "discovery_call_url": "https://calendly.com/laetitiasheppard/discovery",
+        "package_booking_url": "https://calendly.com/laetitiasheppard/package"
+    }
+    
+    # Images
+    IMAGES = {
+        "founder_photo": "https://github.com/pepeette/Hypno/blob/main/img/ID.jpg?raw=true",
+        "behavior_map": "https://github.com/pepeette/Hypno/blob/main/img%2FBehaviourMap.png?raw=true",
+        "transformation": "https://github.com/pepeette/Hypno/blob/main/img%2Femo.jpg?raw=true"
+    }
+    
+    # Pricing
+    PRICING = {
+        "complete_package": 3000,
+        "premium_package": 4000,
+        "currency": "THB"
+    }
+    
+    # Form options
+    CONCERN_OPTIONS = [
+        "Select one...", 
+        "Quit Smoking", 
+        "Reduce Anxiety", 
+        "Improve Sleep", 
+        "Break Bad Habits",
+        "Other"
+    ]
+    
+    # Success statistics
+    SUCCESS_RATES = {
+        "two_sessions": 85,
+        "third_session_needed": 15,
+        "years_experience": 10
+    }
 
-# ================================
-# USER-FRIENDLY ASSESSMENT QUESTIONNAIRE
-# ================================
-# Revamped questionnaire with logical funnel progression and public-friendly language
-# Maintains clinical integrity while being accessible to general public
+
+#for ASSESS.py
 
 class QuestionnaireStage(Enum):
     """Logical progression stages for the assessment funnel"""
