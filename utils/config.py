@@ -2578,6 +2578,389 @@ class UserFriendlyAssessment:
                     }
                 },
                 skip_logic=None
+            ),
+
+            # ================================
+            # SCENARIO-BASED QUESTIONS (Enhanced Pattern Detection)
+            # ================================
+            UserFriendlyQuestion(
+                id="promotion_scenario",
+                stage=QuestionnaireStage.STAGE_3_PATTERNS,
+                question_number=75,
+                title="Scenario: unexpected success",
+                subtitle="Sarah receives an unexpected promotion at work. That evening at dinner with her partner, she most likely:",
+                question_text="Sarah receives an unexpected promotion at work. That evening at dinner with her partner, she most likely:",
+                question_type="scenario_based",
+                options=[
+                    "Celebrates enthusiastically and shares her excitement",
+                    "Mentions it casually but focuses on potential problems ahead",
+                    "Downplays it and talks about how she doesn't deserve it",
+                    "Changes the subject to avoid seeming boastful",
+                    "Feels anxious about increased expectations"
+                ],
+                help_text="This scenario helps us understand your relationship with unexpected positive events.",
+                clinical_mapping={
+                    "target_patterns": ["unhappiness_culture", "imposter_syndrome", "achievement_anxiety"],
+                    "weights": {
+                        "Celebrates enthusiastically and shares her excitement": {"healthy_response": 3},
+                        "Mentions it casually but focuses on potential problems ahead": {"unhappiness_culture": 2, "anxiety_focus": 1},
+                        "Downplays it and talks about how she doesn't deserve it": {"unhappiness_culture": 3, "imposter_syndrome": 2},
+                        "Changes the subject to avoid seeming boastful": {"discomfort_with_success": 2, "social_anxiety": 1},
+                        "Feels anxious about increased expectations": {"achievement_anxiety": 3, "pressure_sensitivity": 2}
+                    }
+                },
+                skip_logic=None
+            ),
+
+            UserFriendlyQuestion(
+                id="conflict_scenario",
+                stage=QuestionnaireStage.STAGE_4_RELATIONSHIPS,
+                question_number=76,
+                title="Scenario: workplace disagreement",
+                subtitle="Alex disagrees with you during a team meeting. Your immediate internal response is:",
+                question_text="Alex disagrees with you during a team meeting. Your immediate internal response is:",
+                question_type="scenario_based",
+                options=[
+                    "Curious about their perspective and wanting to understand",
+                    "Slightly defensive but willing to discuss it",
+                    "Immediately thinking of counterarguments to prove you're right",
+                    "Feeling like they're attacking you personally",
+                    "Wondering if you should just give in to avoid conflict"
+                ],
+                help_text="This reveals your automatic response patterns in challenging social situations.",
+                clinical_mapping={
+                    "target_patterns": ["power_struggles", "systematic_mistrust", "self_sacrifice"],
+                    "weights": {
+                        "Curious about their perspective and wanting to understand": {"healthy_boundaries": 3, "openness": 2},
+                        "Slightly defensive but willing to discuss it": {"moderate_defensiveness": 1},
+                        "Immediately thinking of counterarguments to prove you're right": {"power_struggles": 3, "need_to_be_right": 2},
+                        "Feeling like they're attacking you personally": {"systematic_mistrust": 3, "persecution_sensitivity": 2},
+                        "Wondering if you should just give in to avoid conflict": {"self_sacrifice": 3, "conflict_avoidance": 2}
+                    }
+                },
+                skip_logic=None
+            ),
+
+            UserFriendlyQuestion(
+                id="compliment_scenario",
+                stage=QuestionnaireStage.STAGE_3_PATTERNS,
+                question_number=77,
+                title="Scenario: genuine praise",
+                subtitle="A respected colleague publicly praises your work. Your honest inner reaction is:",
+                question_text="A respected colleague publicly praises your work. Your honest inner reaction is:",
+                question_type="scenario_based",
+                options=[
+                    "Genuine pleasure and gratitude for their recognition",
+                    "Brief happiness followed by thoughts about maintaining this standard",
+                    "Discomfort and thinking they must want something from you",
+                    "Immediately focusing on what you could have done better",
+                    "Worry about whether you can live up to their expectations"
+                ],
+                help_text="This reveals how you process positive feedback and recognition.",
+                clinical_mapping={
+                    "target_patterns": ["unhappiness_culture", "systematic_mistrust", "perfectionism"],
+                    "weights": {
+                        "Genuine pleasure and gratitude for their recognition": {"healthy_self_esteem": 3},
+                        "Brief happiness followed by thoughts about maintaining this standard": {"achievement_pressure": 2, "perfectionism": 1},
+                        "Discomfort and thinking they must want something from you": {"systematic_mistrust": 3, "cynicism": 2},
+                        "Immediately focusing on what you could have done better": {"perfectionism": 3, "self_criticism": 2},
+                        "Worry about whether you can live up to their expectations": {"achievement_anxiety": 3, "imposter_syndrome": 2}
+                    }
+                },
+                skip_logic=None
+            ),
+
+            UserFriendlyQuestion(
+                id="betrayal_scenario",
+                stage=QuestionnaireStage.STAGE_4_RELATIONSHIPS,
+                question_number=78,
+                title="Scenario: friend's disappointment",
+                subtitle="Your close friend cancels important plans last minute for a work opportunity. You:",
+                question_text="Your close friend cancels important plans last minute for a work opportunity. You:",
+                question_type="scenario_based",
+                options=[
+                    "Feel disappointed but understand their career comes first sometimes",
+                    "Feel hurt but tell them it's fine when it's really not",
+                    "Get angry and tell them exactly how inconsiderate they're being",
+                    "Feel hurt and start questioning if they really care about you",
+                    "Accept it calmly - this is just how people are"
+                ],
+                help_text="This shows how you handle disappointment and perceived betrayal.",
+                clinical_mapping={
+                    "target_patterns": ["systematic_mistrust", "self_sacrifice", "power_struggles"],
+                    "weights": {
+                        "Feel disappointed but understand their career comes first sometimes": {"healthy_boundaries": 2, "empathy": 2},
+                        "Feel hurt but tell them it's fine when it's really not": {"self_sacrifice": 3, "passive_aggression": 2},
+                        "Get angry and tell them exactly how inconsiderate they're being": {"power_struggles": 2, "emotional_reactivity": 2},
+                        "Feel hurt and start questioning if they really care about you": {"systematic_mistrust": 3, "abandonment_fear": 2},
+                        "Accept it calmly - this is just how people are": {"resignation": 2, "emotional_numbing": 1}
+                    }
+                },
+                skip_logic=None
+            ),
+
+            UserFriendlyQuestion(
+                id="failure_scenario",
+                stage=QuestionnaireStage.STAGE_5_WELLBEING,
+                question_number=79,
+                title="Scenario: public mistake",
+                subtitle="You make a mistake in front of people you respect. Your immediate internal response:",
+                question_text="You make a mistake in front of people you respect. Your immediate internal response:",
+                question_type="scenario_based",
+                options=[
+                    "Embarrassed but knowing everyone makes mistakes sometimes",
+                    "Mortified and replaying it over and over in your mind",
+                    "Angry at yourself for being so careless and stupid",
+                    "Worried about what they must think of you now",
+                    "Immediately planning how to prove you're not incompetent"
+                ],
+                help_text="This reveals your relationship with imperfection and shame.",
+                clinical_mapping={
+                    "target_patterns": ["perfectionism", "shame_spirals", "social_anxiety"],
+                    "weights": {
+                        "Embarrassed but knowing everyone makes mistakes sometimes": {"self_compassion": 3, "resilience": 2},
+                        "Mortified and replaying it over and over in your mind": {"rumination": 3, "shame_spirals": 2},
+                        "Angry at yourself for being so careless and stupid": {"self_criticism": 3, "perfectionism": 2},
+                        "Worried about what they must think of you now": {"social_anxiety": 3, "external_validation": 2},
+                        "Immediately planning how to prove you're not incompetent": {"compensatory_behavior": 2, "achievement_drive": 2}
+                    }
+                },
+                skip_logic=None
+            ),
+
+            # ================================
+            # ENHANCED SECONDARY GAIN ASSESSMENT
+            # ================================
+            UserFriendlyQuestion(
+                id="problem_benefits",
+                stage=QuestionnaireStage.STAGE_6_GOALS,
+                question_number=80,
+                title="Hidden benefits exploration",
+                subtitle="If this problem completely disappeared tomorrow, what would you lose that might actually be valuable?",
+                question_text="If this problem completely disappeared tomorrow, what would you lose that might actually be valuable? (Consider: protection from expectations, excuse for avoiding challenges, attention from others, sense of identity)",
+                question_type="text_completion",
+                options=[
+                    "Write your honest thoughts here...",
+                    "Nothing - I want this problem completely gone",
+                    "I need time to think about this question",
+                    "This question doesn't make sense to me"
+                ],
+                help_text="This question explores the hidden ways your current patterns might be serving you.",
+                clinical_mapping={
+                    "target_patterns": ["secondary_gains", "identity_attachment", "avoidance_benefits"],
+                    "weights": {
+                        "text_analysis": True,
+                        "secondary_gain_indicators": [
+                            "attention", "care", "excuse", "avoid", "protect", "identity",
+                            "responsibility", "expectations", "control", "familiar"
+                        ]
+                    }
+                },
+                skip_logic=None
+            ),
+
+            UserFriendlyQuestion(
+                id="identity_without_problem",
+                stage=QuestionnaireStage.STAGE_6_GOALS,
+                question_number=81,
+                title="Identity exploration",
+                subtitle="Who would you be without this problem? What feels scary about that version of yourself?",
+                question_text="Who would you be without this problem? What feels scary about that version of yourself?",
+                question_type="text_completion",
+                options=[
+                    "Write your thoughts here...",
+                    "I would be exactly the same person",
+                    "I've never thought about it this way",
+                    "This question makes me uncomfortable"
+                ],
+                help_text="This explores identity attachments to your current patterns.",
+                clinical_mapping={
+                    "target_patterns": ["identity_fusion", "change_resistance", "self_concept"],
+                    "weights": {
+                        "text_analysis": True,
+                        "identity_resistance_indicators": [
+                            "scared", "unknown", "unfamiliar", "pressure", "expectations",
+                            "responsible", "confident", "successful", "happy"
+                        ]
+                    }
+                },
+                skip_logic=None
+            ),
+
+            UserFriendlyQuestion(
+                id="others_benefit",
+                stage=QuestionnaireStage.STAGE_6_GOALS,
+                question_number=82,
+                title="Relationship function exploration",
+                subtitle="How does your current problem help you in your relationships with others?",
+                question_text="How does your current problem help you in your relationships with others? (Consider: keeps people close, gives them a way to help you, avoids certain expectations)",
+                question_type="text_completion",
+                options=[
+                    "Write your honest assessment...",
+                    "It doesn't help - it only hurts my relationships",
+                    "I'm not sure I understand this question",
+                    "This feels like you're blaming me for having problems"
+                ],
+                help_text="This explores how problems can serve relationship functions.",
+                clinical_mapping={
+                    "target_patterns": ["relationship_maintenance", "attention_seeking", "caretaking_dynamics"],
+                    "weights": {
+                        "text_analysis": True,
+                        "relationship_benefit_indicators": [
+                            "help", "care", "attention", "close", "support", "excuse",
+                            "avoid", "responsibility", "expectations", "control"
+                        ]
+                    }
+                },
+                skip_logic=None
+            ),
+
+            # ================================
+            # ENHANCED EXPERIENTIAL HYPNOTIC TESTING
+            # ================================
+            UserFriendlyQuestion(
+                id="progressive_muscle_test",
+                stage=QuestionnaireStage.STAGE_5_WELLBEING,
+                question_number=83,
+                title="Progressive relaxation test",
+                subtitle="Close your eyes and tense your right fist tightly for 10 seconds, then release. How did your arm feel immediately after releasing?",
+                question_text="EXPERIENTIAL TEST: Close your eyes and tense your right fist tightly for 10 seconds, then release and let your arm hang naturally. How did your arm feel immediately after releasing?",
+                question_type="experiential_advanced",
+                options=[
+                    "Just normal - no particular sensation",
+                    "Slightly heavy or relaxed feeling",
+                    "Noticeably heavy and deeply relaxed",
+                    "Extremely heavy - felt like it was sinking",
+                    "So relaxed it felt difficult to move"
+                ],
+                help_text="This tests your natural response to physical relaxation suggestions and somatic awareness.",
+                clinical_mapping={
+                    "target_patterns": ["hypnotic_responsiveness", "somatic_awareness", "body_mind_connection"],
+                    "weights": {
+                        "Just normal - no particular sensation": {"low_responsiveness": 1, "analytical_mind": 2},
+                        "Slightly heavy or relaxed feeling": {"mild_responsiveness": 2},
+                        "Noticeably heavy and deeply relaxed": {"good_responsiveness": 3},
+                        "Extremely heavy - felt like it was sinking": {"high_responsiveness": 4, "natural_trance": 2},
+                        "So relaxed it felt difficult to move": {"very_high_responsiveness": 5, "dissociation_capacity": 1}
+                    }
+                },
+                skip_logic=None
+            ),
+
+            UserFriendlyQuestion(
+                id="time_distortion_test",
+                stage=QuestionnaireStage.STAGE_5_WELLBEING,
+                question_number=84,
+                title="Time perception test",
+                subtitle="Count slowly from 1 to 30 in your mind while focusing on your breathing. Don't look at any clock. How long did it feel like?",
+                question_text="EXPERIENTIAL TEST: Count slowly from 1 to 30 in your mind while focusing on your breathing. Don't look at any clock or timer. When you're done counting, how long did it feel like that took?",
+                question_type="experiential_advanced",
+                options=[
+                    "About 30 seconds - felt accurate",
+                    "Longer than expected - maybe 45-60 seconds",
+                    "Much shorter than expected - maybe 15-20 seconds",
+                    "Hard to tell - I lost track of time",
+                    "Felt timeless - could have been any duration"
+                ],
+                help_text="This tests your natural capacity for time distortion and absorption, key indicators for hypnotic work.",
+                clinical_mapping={
+                    "target_patterns": ["time_distortion", "absorption_capacity", "present_moment_awareness"],
+                    "weights": {
+                        "About 30 seconds - felt accurate": {"time_awareness": 2, "analytical_tracking": 1},
+                        "Longer than expected - maybe 45-60 seconds": {"anxiety_time_dilation": 1, "hypervigilance": 1},
+                        "Much shorter than expected - maybe 15-20 seconds": {"mild_time_compression": 2, "focus_ability": 1},
+                        "Hard to tell - I lost track of time": {"good_absorption": 3, "present_moment": 2},
+                        "Felt timeless - could have been any duration": {"excellent_absorption": 4, "natural_trance": 3}
+                    }
+                },
+                skip_logic=None
+            ),
+
+            UserFriendlyQuestion(
+                id="automatic_response_test",
+                stage=QuestionnaireStage.STAGE_5_WELLBEING,
+                question_number=85,
+                title="Automatic response test",
+                subtitle="Interlace your fingers and press your palms together firmly. Imagine your hands are glued together and try to pull them apart. What happened?",
+                question_text="EXPERIENTIAL TEST: Interlace your fingers and press your palms together firmly in front of you. Now imagine your hands are glued together with super-strong glue. Try to pull them apart while keeping that image in mind. What happened?",
+                question_type="experiential_advanced",
+                options=[
+                    "Pulled apart easily - no resistance at all",
+                    "Slight resistance but still easy to separate",
+                    "Noticeable resistance - took some effort",
+                    "Strong resistance - had to work to pull apart",
+                    "Couldn't pull apart or extreme difficulty"
+                ],
+                help_text="This tests your response to hypnotic suggestion and mind-body connection.",
+                clinical_mapping={
+                    "target_patterns": ["suggestibility", "ideomotor_response", "hypnotic_compliance"],
+                    "weights": {
+                        "Pulled apart easily - no resistance at all": {"low_suggestibility": 1, "skeptical_mind": 2},
+                        "Slight resistance but still easy to separate": {"mild_suggestibility": 2},
+                        "Noticeable resistance - took some effort": {"good_suggestibility": 3},
+                        "Strong resistance - had to work to pull apart": {"high_suggestibility": 4, "ideomotor_response": 2},
+                        "Couldn't pull apart or extreme difficulty": {"very_high_suggestibility": 5, "dissociation_ready": 1}
+                    }
+                },
+                skip_logic=None
+            ),
+
+            UserFriendlyQuestion(
+                id="memory_enhancement_test",
+                stage=QuestionnaireStage.STAGE_5_WELLBEING,
+                question_number=86,
+                title="Memory vividness test",
+                subtitle="Think of your happiest childhood memory. Focus on it for 30 seconds, trying to see, hear, and feel it. How vivid did it become?",
+                question_text="EXPERIENTIAL TEST: Think of your happiest childhood memory. Close your eyes and focus on it for 30 seconds, trying to see the scene, hear the sounds, and feel the emotions. How vivid did it become?",
+                question_type="experiential_advanced",
+                options=[
+                    "Mostly just thinking about it - not very vivid",
+                    "Some visual images but not very clear",
+                    "Clear images and some sounds or feelings",
+                    "Very vivid - almost like being there again",
+                    "So real I briefly forgot I was remembering"
+                ],
+                help_text="This tests your capacity for vivid mental imagery and emotional recall, important for therapeutic visualization.",
+                clinical_mapping={
+                    "target_patterns": ["imagery_capacity", "emotional_access", "memory_vividness"],
+                    "weights": {
+                        "Mostly just thinking about it - not very vivid": {"low_imagery": 1, "analytical_processing": 2},
+                        "Some visual images but not very clear": {"mild_imagery": 2},
+                        "Clear images and some sounds or feelings": {"good_imagery": 3, "multi_sensory": 1},
+                        "Very vivid - almost like being there again": {"excellent_imagery": 4, "emotional_access": 2},
+                        "So real I briefly forgot I was remembering": {"exceptional_imagery": 5, "dissociation_capacity": 2}
+                    }
+                },
+                skip_logic=None
+            ),
+
+            UserFriendlyQuestion(
+                id="attention_narrowing_test",
+                stage=QuestionnaireStage.STAGE_5_WELLBEING,
+                question_number=87,
+                title="Attention focus test",
+                subtitle="Stare at a single point on the wall for 60 seconds without looking away. What was your experience?",
+                question_text="EXPERIENTIAL TEST: Find a small spot or point on the wall. Stare at it for 60 seconds without looking away or blinking more than necessary. What was your experience?",
+                question_type="experiential_advanced",
+                options=[
+                    "Easy to focus - stayed alert throughout",
+                    "Occasionally drifted but could refocus",
+                    "Eyes felt heavy or wanted to close",
+                    "Surroundings became dim or blurry",
+                    "Felt like I was 'going somewhere' mentally"
+                ],
+                help_text="This tests your natural capacity for trance induction through focused attention.",
+                clinical_mapping={
+                    "target_patterns": ["attention_control", "trance_susceptibility", "focus_depth"],
+                    "weights": {
+                        "Easy to focus - stayed alert throughout": {"alert_focus": 2, "attention_control": 3},
+                        "Occasionally drifted but could refocus": {"moderate_focus": 2, "distractible": 1},
+                        "Eyes felt heavy or wanted to close": {"physical_trance_signs": 3, "natural_induction": 2},
+                        "Surroundings became dim or blurry": {"peripheral_vision_loss": 4, "tunnel_vision": 2},
+                        "Felt like I was 'going somewhere' mentally": {"dissociative_capacity": 4, "natural_trance": 3}
+                    }
+                },
+                skip_logic=None
             )
         ]
 
@@ -10819,8 +11202,631 @@ class AnalyticsMethods:
     pass
 
 class EmailConfig:
-    """Email configuration for notifications"""
-    pass
+    """Enhanced email configuration and templates for client and therapist communications"""
+
+    # Email server configuration (would be set via environment variables in production)
+    SMTP_CONFIG = {
+        'host': 'smtp.gmail.com',  # or your preferred SMTP service
+        'port': 587,
+        'use_tls': True,
+        'username': 'your-email@domain.com',  # Set via environment
+        'password': 'your-app-password'       # Set via environment
+    }
+
+    @staticmethod
+    def generate_client_email(assessment_metadata):
+        """Generate personalized client confirmation email"""
+
+        complexity_level = assessment_metadata.get('complexity_level', 'Standard')
+        pattern_count = assessment_metadata.get('pattern_count', '3')
+        success_probability = assessment_metadata.get('success_probability', '85.0%')
+
+        subject = f"Your {complexity_level} Complexity Behavioral Analysis is Ready"
+
+        body = f"""
+        <html>
+        <head>
+            <style>
+                .email-container {{ max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; }}
+                .header {{ background: #4CA1A3; color: white; padding: 20px; text-align: center; }}
+                .content {{ padding: 20px; background: #F3F6F8; }}
+                .card {{ background: white; padding: 15px; margin: 10px 0; border-radius: 8px; }}
+                .success-rate {{ color: #22c55e; font-weight: bold; font-size: 1.2em; }}
+                .cta-button {{ background: #4CA1A3; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 15px 0; }}
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                <div class="header">
+                    <h1>🎯 Your Transformation Blueprint is Ready</h1>
+                    <p>Personalized Analysis Complete</p>
+                </div>
+
+                <div class="content">
+                    <div class="card">
+                        <h2>Hi there,</h2>
+                        <p>Your comprehensive behavioral pattern analysis has been completed. Here's what we discovered:</p>
+
+                        <h3>📊 Your Assessment Results:</h3>
+                        <ul>
+                            <li><strong>Pattern Complexity:</strong> {complexity_level}</li>
+                            <li><strong>Patterns Identified:</strong> {pattern_count} dominant patterns</li>
+                            <li><strong>Success Probability:</strong> <span class="success-rate">{success_probability}</span></li>
+                            <li><strong>Recommended Timeline:</strong> {assessment_metadata.get('timeline_estimate', '3-4 weeks')}</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3>🎯 What's Next?</h3>
+                        <p>Our clinical team has been notified of your assessment results. You can expect:</p>
+                        <ol>
+                            <li><strong>Initial consultation call</strong> within 24-48 hours</li>
+                            <li><strong>Personalized session protocol</strong> designed for your specific patterns</li>
+                            <li><strong>PDF report download</strong> available immediately in your account</li>
+                        </ol>
+
+                        <a href="https://your-domain.com/download-report?id={assessment_metadata.get('assessment_id')}" class="cta-button">
+                            📥 Download Full Report (PDF)
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <h3>⏰ Time-Sensitive Insight</h3>
+                        <p>Based on your {complexity_level.lower()}-complexity patterns, early intervention significantly improves outcomes. Our team will prioritize your case accordingly.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><strong>Questions?</strong> Reply to this email or call us at +66-XX-XXX-XXXX</p>
+                        <p><em>Your transformation journey starts now.</em></p>
+                        <p>Best regards,<br>The Clinical Team<br>Rapid Transformation Hypnotherapy Bangkok</p>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+
+        return {
+            'subject': subject,
+            'body': body,
+            'recipient': assessment_metadata.get('contact_email', ''),
+            'type': 'client_confirmation'
+        }
+
+    @staticmethod
+    def generate_therapist_report(assessment_metadata, full_profile):
+        """Generate comprehensive therapist report email"""
+
+        complexity_level = assessment_metadata.get('complexity_level', 'Standard')
+        urgency = assessment_metadata.get('intervention_urgency', 'moderate')
+
+        subject = f"🔥 New {complexity_level} Complexity Case - {urgency.upper()} Priority"
+
+        # Extract key clinical data
+        dominant_patterns = assessment_metadata.get('dominant_patterns', [])
+        pattern_scores = assessment_metadata.get('pattern_scores', {})
+        therapeutic_focus = assessment_metadata.get('therapeutic_focus', 'integrated_approach')
+
+        body = f"""
+        <html>
+        <head>
+            <style>
+                .report-container {{ max-width: 800px; margin: 0 auto; font-family: Arial, sans-serif; }}
+                .header {{ background: #273548; color: white; padding: 20px; }}
+                .urgent {{ background: #ef4444; color: white; padding: 10px; text-align: center; font-weight: bold; }}
+                .high {{ background: #eab308; color: white; padding: 10px; text-align: center; font-weight: bold; }}
+                .section {{ background: white; margin: 10px 0; padding: 15px; border-left: 4px solid #4CA1A3; }}
+                .pattern-score {{ background: #F0FDF4; padding: 8px; margin: 5px 0; border-radius: 4px; }}
+                .high-score {{ background: #FEF3C7; }}
+                .severe-score {{ background: #FEE2E2; }}
+                .clinical-notes {{ background: #EFF6FF; padding: 15px; border-radius: 6px; }}
+            </style>
+        </head>
+        <body>
+            <div class="report-container">
+                <div class="header">
+                    <h1>Clinical Assessment Report</h1>
+                    <p>Assessment ID: {assessment_metadata.get('assessment_id', 'N/A')}</p>
+                    <p>Completed: {assessment_metadata.get('completion_time', 'N/A')}</p>
+                </div>
+
+                {'<div class="urgent">⚡ URGENT INTERVENTION REQUIRED</div>' if urgency == 'urgent' else ''}
+                {'<div class="high">🔥 HIGH PRIORITY CASE</div>' if urgency == 'high' else ''}
+
+                <div class="section">
+                    <h2>📋 Client Overview</h2>
+                    <ul>
+                        <li><strong>Contact:</strong> {assessment_metadata.get('contact_email', 'N/A')}</li>
+                        <li><strong>Phone:</strong> {assessment_metadata.get('contact_phone', 'N/A')}</li>
+                        <li><strong>Preferred Time:</strong> {assessment_metadata.get('preferred_contact_time', 'N/A')}</li>
+                        <li><strong>Location:</strong> {assessment_metadata.get('location', 'Bangkok')}</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2>🎯 Pattern Analysis</h2>
+                    <p><strong>Complexity Level:</strong> {complexity_level}</p>
+                    <p><strong>Pattern Count:</strong> {assessment_metadata.get('pattern_count', 'N/A')} dominant patterns</p>
+
+                    <h3>Dominant Patterns:</h3>
+        """
+
+        # Add pattern scores with color coding
+        for pattern in dominant_patterns[:3]:
+            score = pattern_scores.get(pattern, 0)
+            if isinstance(score, str):
+                try:
+                    score_val = float(score)
+                except:
+                    score_val = 0
+            else:
+                score_val = float(score) if score else 0
+
+            css_class = "severe-score" if score_val >= 6.5 else "high-score" if score_val >= 4.5 else "pattern-score"
+            pattern_name = pattern.replace('_', ' ').title()
+
+            body += f"""
+                    <div class="{css_class}">
+                        <strong>{pattern_name}:</strong> {score}/8
+                        {'⚠️ SEVERE' if score_val >= 6.5 else '🔶 HIGH' if score_val >= 4.5 else '🔵 MODERATE'}
+                    </div>
+            """
+
+        body += f"""
+                </div>
+
+                <div class="section">
+                    <h2>🎭 Clinical Recommendations</h2>
+                    <div class="clinical-notes">
+                        <p><strong>Therapeutic Focus:</strong> {therapeutic_focus.replace('_', ' ').title()}</p>
+                        <p><strong>Recommended Approach:</strong> {assessment_metadata.get('recommended_approach', 'integrated_hypnotherapy').replace('_', ' ').title()}</p>
+                        <p><strong>Estimated Sessions:</strong> {assessment_metadata.get('estimated_sessions', 'N/A')}</p>
+                        <p><strong>Timeline:</strong> {assessment_metadata.get('timeline_estimate', 'N/A')}</p>
+                        <p><strong>Success Probability:</strong> {assessment_metadata.get('success_probability', 'N/A')}</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>💰 Financial Analysis</h2>
+                    <ul>
+                        <li><strong>Weekly Impact:</strong> {assessment_metadata.get('weekly_impact_hours', 'N/A')} hours</li>
+                        <li><strong>5-Year Cost:</strong> ฿{assessment_metadata.get('five_year_projection', 'N/A')}</li>
+                        <li><strong>ROI Multiple:</strong> {assessment_metadata.get('roi_multiple', 'N/A')}x</li>
+                        <li><strong>Client Investment:</strong> {assessment_metadata.get('price_text', 'N/A')}</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2>⚡ Next Actions</h2>
+                    <ol>
+                        <li><strong>Contact within 24 hours</strong> - {urgency} priority case</li>
+                        <li><strong>Schedule initial consultation</strong> focusing on {therapeutic_focus.replace('_', ' ')}</li>
+                        <li><strong>Prepare session protocol</strong> for {complexity_level.lower()}-complexity patterns</li>
+                        <li><strong>Download full assessment data</strong> from therapist dashboard</li>
+                    </ol>
+                </div>
+
+                <div class="section">
+                    <p><strong>Assessment Version:</strong> {assessment_metadata.get('assessment_version', '2.0')}</p>
+                    <p><strong>Analysis Engine:</strong> {assessment_metadata.get('analysis_engine', 'enhanced_clinical_v2')}</p>
+                    <p><em>This report contains clinical-grade analysis for therapeutic planning.</em></p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+
+        return {
+            'subject': subject,
+            'body': body,
+            'recipient': 'therapist@your-domain.com',  # Set via configuration
+            'type': 'therapist_report',
+            'priority': urgency
+        }
+
+    @staticmethod
+    def send_assessment_emails(assessment_metadata, full_profile=None):
+        """Send both client and therapist emails"""
+
+        emails_sent = {
+            'client': False,
+            'therapist': False,
+            'errors': []
+        }
+
+        try:
+            # Generate client email
+            client_email = EmailConfig.generate_client_email(assessment_metadata)
+
+            # Generate therapist email
+            therapist_email = EmailConfig.generate_therapist_report(assessment_metadata, full_profile)
+
+            # Here you would integrate with actual email service
+            # For demo purposes, we'll store the emails in session state
+            import streamlit as st
+
+            if not hasattr(st.session_state, 'generated_emails'):
+                st.session_state.generated_emails = []
+
+            st.session_state.generated_emails.extend([client_email, therapist_email])
+
+            emails_sent['client'] = True
+            emails_sent['therapist'] = True
+
+            # In production, you would use SMTP:
+            # import smtplib
+            # from email.mime.text import MIMEText
+            # from email.mime.multipart import MIMEMultipart
+            #
+            # server = smtplib.SMTP(EmailConfig.SMTP_CONFIG['host'], EmailConfig.SMTP_CONFIG['port'])
+            # server.starttls()
+            # server.login(EmailConfig.SMTP_CONFIG['username'], EmailConfig.SMTP_CONFIG['password'])
+            #
+            # for email_data in [client_email, therapist_email]:
+            #     msg = MIMEMultipart('alternative')
+            #     msg['Subject'] = email_data['subject']
+            #     msg['From'] = EmailConfig.SMTP_CONFIG['username']
+            #     msg['To'] = email_data['recipient']
+            #
+            #     html_part = MIMEText(email_data['body'], 'html')
+            #     msg.attach(html_part)
+            #
+            #     server.send_message(msg)
+            #
+            # server.quit()
+
+        except Exception as e:
+            emails_sent['errors'].append(str(e))
+
+        return emails_sent
+
+class PDFReportGenerator:
+    """Generate comprehensive PDF reports for client download"""
+
+    @staticmethod
+    def generate_comprehensive_report(assessment_metadata, profile, user_responses):
+        """Generate a comprehensive PDF report"""
+
+        # For production, you would use a library like reportlab or weasyprint
+        # This demo generates an HTML version that could be converted to PDF
+
+        complexity_level = assessment_metadata.get('complexity_level', 'Standard')
+        dominant_patterns = assessment_metadata.get('dominant_patterns', [])
+        assessment_id = assessment_metadata.get('assessment_id', 'N/A')
+
+        html_content = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Behavioral Pattern Analysis Report</title>
+            <style>
+                @page {{
+                    margin: 2cm;
+                    @bottom-right {{
+                        content: "Page " counter(page) " of " counter(pages);
+                        font-size: 9pt;
+                        color: #666;
+                    }}
+                }}
+
+                body {{
+                    font-family: 'Arial', sans-serif;
+                    line-height: 1.6;
+                    color: #273548;
+                    max-width: 800px;
+                    margin: 0 auto;
+                }}
+
+                .header {{
+                    text-align: center;
+                    padding: 30px 0;
+                    background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
+                    color: white;
+                    margin-bottom: 30px;
+                }}
+
+                .report-title {{
+                    font-size: 28px;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }}
+
+                .report-subtitle {{
+                    font-size: 18px;
+                    opacity: 0.9;
+                }}
+
+                .section {{
+                    margin-bottom: 25px;
+                    padding: 20px;
+                    background: #F3F6F8;
+                    border-left: 4px solid #4CA1A3;
+                    page-break-inside: avoid;
+                }}
+
+                .section-title {{
+                    font-size: 20px;
+                    color: #273548;
+                    margin-bottom: 15px;
+                    font-weight: bold;
+                }}
+
+                .subsection-title {{
+                    font-size: 16px;
+                    color: #556D7A;
+                    margin: 15px 0 10px 0;
+                    font-weight: bold;
+                }}
+
+                .pattern-score {{
+                    background: white;
+                    padding: 12px;
+                    margin: 8px 0;
+                    border-radius: 6px;
+                    border: 1px solid #CBD5E1;
+                }}
+
+                .high-score {{ border-left: 4px solid #eab308; }}
+                .severe-score {{ border-left: 4px solid #ef4444; }}
+
+                .key-insights {{
+                    background: white;
+                    padding: 15px;
+                    border-radius: 6px;
+                    margin: 10px 0;
+                }}
+
+                .recommendation {{
+                    background: #EFF6FF;
+                    padding: 12px;
+                    margin: 8px 0;
+                    border-radius: 6px;
+                    border-left: 3px solid #4CA1A3;
+                }}
+
+                .footer {{
+                    text-align: center;
+                    padding: 20px;
+                    color: #556D7A;
+                    font-size: 14px;
+                    border-top: 1px solid #CBD5E1;
+                    margin-top: 40px;
+                }}
+
+                .metadata {{
+                    font-size: 12px;
+                    color: #666;
+                    text-align: right;
+                    margin-bottom: 20px;
+                }}
+
+                ul, ol {{ padding-left: 20px; }}
+                li {{ margin-bottom: 5px; }}
+
+                .page-break {{ page-break-before: always; }}
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="report-title">Behavioral Pattern Analysis Report</div>
+                <div class="report-subtitle">{complexity_level} Complexity Assessment</div>
+            </div>
+
+            <div class="metadata">
+                Report ID: {assessment_id}<br>
+                Generated: {assessment_metadata.get('completion_time', 'N/A')[:10]}<br>
+                Analysis Engine: {assessment_metadata.get('analysis_engine', 'Enhanced Clinical v2.0')}
+            </div>
+
+            <!-- Executive Summary -->
+            <div class="section">
+                <div class="section-title">🎯 Executive Summary</div>
+                <div class="key-insights">
+                    <p><strong>Assessment Overview:</strong> This comprehensive analysis identified {len(dominant_patterns)} dominant behavioral patterns with {complexity_level.lower()}-level complexity requiring specialized intervention protocols.</p>
+
+                    <p><strong>Success Probability:</strong> {assessment_metadata.get('success_probability', '85%')} based on pattern constellation and neuroplasticity indicators.</p>
+
+                    <p><strong>Recommended Timeline:</strong> {assessment_metadata.get('timeline_estimate', '3-4 weeks')} with {assessment_metadata.get('estimated_sessions', '2-3')} targeted sessions.</p>
+
+                    <p><strong>Intervention Urgency:</strong> {assessment_metadata.get('intervention_urgency', 'moderate').replace('_', ' ').title()} priority based on pattern intensity analysis.</p>
+                </div>
+            </div>
+
+            <!-- Pattern Analysis -->
+            <div class="section">
+                <div class="section-title">🧠 Dominant Pattern Analysis</div>
+        """
+
+        # Add pattern analysis
+        pattern_hierarchy = profile.get('pattern_hierarchy', {})
+        if pattern_hierarchy:
+            for level, pattern_info in [
+                ('Dominant', pattern_hierarchy.get('dominant_pattern', {})),
+                ('Primary', pattern_hierarchy.get('primary_pattern', {})),
+                ('Secondary', pattern_hierarchy.get('secondary_pattern', {}))
+            ]:
+                if pattern_info:
+                    pattern_name = pattern_info.get('name', '').replace('_', ' ').title()
+                    pattern_score = pattern_info.get('score', 0)
+                    css_class = "severe-score" if pattern_score >= 6.5 else "high-score" if pattern_score >= 4.5 else "pattern-score"
+
+                    html_content += f"""
+                <div class="pattern-score {css_class}">
+                    <strong>{level} Pattern: {pattern_name}</strong><br>
+                    Intensity Score: {pattern_score}/8<br>
+                    Impact Level: {'🔴 Severe' if pattern_score >= 6.5 else '🟡 High' if pattern_score >= 4.5 else '🟢 Moderate'}
+                </div>
+                    """
+
+        html_content += """
+            </div>
+
+            <!-- Clinical Insights -->
+            <div class="section">
+                <div class="section-title">🎭 Clinical Insights & Analysis</div>
+        """
+
+        # Add behavioral analysis
+        behavioral = profile.get('behavioral_analysis', {})
+        if behavioral:
+            if behavioral.get('core_limiting_beliefs'):
+                html_content += """
+                <div class="subsection-title">Core Limiting Beliefs</div>
+                <ul>
+                """
+                for belief in behavioral['core_limiting_beliefs']:
+                    html_content += f"<li>{belief}</li>"
+                html_content += "</ul>"
+
+            if behavioral.get('hidden_benefits'):
+                html_content += """
+                <div class="subsection-title">Hidden Benefits (Secondary Gains)</div>
+                <ul>
+                """
+                for benefit in behavioral['hidden_benefits']:
+                    html_content += f"<li>{benefit}</li>"
+                html_content += "</ul>"
+
+        # Add success probability analysis
+        success_prob = profile.get('success_probability', {})
+        if success_prob:
+            html_content += f"""
+            <div class="key-insights">
+                <div class="subsection-title">Success Probability Analysis</div>
+                <p><strong>Probability:</strong> {success_prob.get('probability', 85)}%</p>
+                <p><strong>Confidence Interval:</strong> {success_prob.get('confidence_interval', '±12%')}</p>
+                <p><strong>Category:</strong> {success_prob.get('success_category', 'moderate_likelihood').replace('_', ' ').title()}</p>
+            </div>
+            """
+
+        html_content += """
+            </div>
+
+            <div class="page-break"></div>
+
+            <!-- Transformation Plan -->
+            <div class="section">
+                <div class="section-title">🚀 Personalized Transformation Plan</div>
+        """
+
+        # Session planning details
+        session_planning = profile.get('session_planning', {})
+        if session_planning:
+            html_content += f"""
+            <div class="recommendation">
+                <div class="subsection-title">Session Structure</div>
+                <p><strong>Session 1 Focus:</strong> {session_planning.get('session_1_focus', 'Pattern identification and initial intervention')}</p>
+                <p><strong>Session 2 Target:</strong> {session_planning.get('session_2_target', 'Deepening transformation and integration')}</p>
+                <p><strong>Potential Session 3:</strong> {session_planning.get('potential_session_3_need', 'Reinforcement if needed')}</p>
+            </div>
+            """
+
+        # Therapeutic approach
+        html_content += f"""
+            <div class="recommendation">
+                <div class="subsection-title">Recommended Approach</div>
+                <p><strong>Therapeutic Focus:</strong> {assessment_metadata.get('therapeutic_focus', 'integrated_approach').replace('_', ' ').title()}</p>
+                <p><strong>Intervention Method:</strong> {assessment_metadata.get('recommended_approach', 'integrated_hypnotherapy').replace('_', ' ').title()}</p>
+                <p><strong>Complexity Considerations:</strong> {complexity_level}-complexity patterns require specialized protocols with enhanced clinical precision.</p>
+            </div>
+        """
+
+        html_content += """
+            </div>
+
+            <!-- Cost-Benefit Analysis -->
+            <div class="section">
+                <div class="section-title">💰 Investment & Value Analysis</div>
+                <div class="key-insights">
+        """
+
+        html_content += f"""
+                    <div class="subsection-title">Current Pattern Impact</div>
+                    <p><strong>Weekly Time Cost:</strong> {assessment_metadata.get('weekly_impact_hours', 'N/A')} hours of reduced effectiveness</p>
+                    <p><strong>5-Year Projection:</strong> ฿{assessment_metadata.get('five_year_projection', 'N/A')} in opportunity costs</p>
+                    <p><strong>ROI Multiple:</strong> {assessment_metadata.get('roi_multiple', 'N/A')}x return on transformation investment</p>
+
+                    <div class="subsection-title">Intervention Value</div>
+                    <p><strong>Investment:</strong> {assessment_metadata.get('price_text', 'N/A')}</p>
+                    <p><strong>Timeline:</strong> {assessment_metadata.get('timeline_estimate', '3-4 weeks')}</p>
+                    <p><strong>Success Rate:</strong> {assessment_metadata.get('success_probability', '85%')} for similar pattern constellations</p>
+        """
+
+        html_content += """
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="section">
+                <div class="section-title">⚡ Immediate Next Steps</div>
+                <div class="recommendation">
+                    <ol>
+                        <li><strong>Clinical Consultation:</strong> Schedule initial session within 24-48 hours for optimal intervention timing</li>
+                        <li><strong>Preparation:</strong> Review this report and prepare specific examples of your patterns in action</li>
+                        <li><strong>Environment Setup:</strong> Ensure comfortable, private space for hypnotherapy sessions</li>
+                        <li><strong>Mindset Preparation:</strong> Commit to the transformation process with realistic expectations</li>
+                        <li><strong>Support System:</strong> Inform trusted individuals about your transformation journey</li>
+                    </ol>
+                </div>
+
+                <div class="key-insights">
+                    <p><strong>⏰ Time-Sensitive Note:</strong> {complexity_level} complexity patterns show optimal responsiveness when addressed promptly. Early intervention significantly improves outcomes and reduces required session count.</p>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="section">
+                <div class="section-title">📞 Contact Information</div>
+                <div class="key-insights">
+                    <p><strong>Clinical Team:</strong> info@rapidtransformation-bangkok.com</p>
+                    <p><strong>Phone:</strong> +66-XX-XXX-XXXX (9 AM - 8 PM)</p>
+                    <p><strong>WhatsApp:</strong> Available for urgent inquiries</p>
+                    <p><strong>Location:</strong> Central Bangkok - Specific address provided upon booking</p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p><strong>Rapid Transformation Hypnotherapy Bangkok</strong></p>
+                <p>Clinical-Grade Behavioral Pattern Analysis & Intervention</p>
+                <p>Report generated by Enhanced Clinical Analysis Engine v2.0</p>
+                <p style="font-size: 11px; margin-top: 15px;">
+                    This report contains confidential psychological assessment information.
+                    Distribution should be limited to client and authorized clinical professionals only.
+                </p>
+            </div>
+        </body>
+        </html>
+        """
+
+        return {
+            'html_content': html_content,
+            'report_id': assessment_id,
+            'filename': f'behavioral_analysis_report_{assessment_id}.html',
+            'generated_at': assessment_metadata.get('completion_time', ''),
+            'report_type': 'comprehensive_behavioral_analysis'
+        }
+
+    @staticmethod
+    def save_report_to_session(html_content, assessment_metadata):
+        """Save the generated report to session state for download"""
+        import streamlit as st
+
+        if not hasattr(st.session_state, 'generated_reports'):
+            st.session_state.generated_reports = []
+
+        report_data = {
+            'html_content': html_content,
+            'assessment_id': assessment_metadata.get('assessment_id'),
+            'generated_at': assessment_metadata.get('completion_time'),
+            'filename': f"assessment_report_{assessment_metadata.get('assessment_id', 'unknown')}.html"
+        }
+
+        st.session_state.generated_reports.append(report_data)
+        st.session_state.latest_report = report_data
+
+        return report_data
 
 
 # Scoring rules for compatibility
