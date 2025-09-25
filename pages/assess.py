@@ -878,7 +878,7 @@ def show_preliminary_results(enhanced_assessment, responses):
         st.warning(f"Error calculating urgency: {str(e)}")
         urgency_level = 2  # Default to moderate urgency
 
-    st.markdown("### ASSESSMENT COMPLETE")
+    st.markdown("#### ASSESSMENT COMPLETE")
     st.success("Congratulations! You've completed the comprehensive assessment. Here are some key insights from your responses:")
 
     # Show 4 key statistics in 2x2 grid
@@ -1018,7 +1018,7 @@ def render_enhanced_contact_form(dominant_pattern, recommendations, urgency_leve
     st.info(intro_text)
 
     with st.form("enhanced_contact_form"):
-        st.markdown("### Contact Information")
+        st.markdown("#### Contact Information")
 
         col1, col2 = st.columns(2)
         with col1:
@@ -1033,7 +1033,7 @@ def render_enhanced_contact_form(dominant_pattern, recommendations, urgency_leve
                 "I'm still exploring my options"
             ])
 
-        st.markdown("### Your Personalized Plan")
+        st.markdown("#### Your Personalized Plan")
 
         # Show the recommended session plan based on pattern
         session_plan = st.selectbox("Preferred approach*", [
@@ -1042,7 +1042,7 @@ def render_enhanced_contact_form(dominant_pattern, recommendations, urgency_leve
             "I'd like to understand more about how this works"
         ])
 
-        st.markdown("### What Success Looks Like for You")
+        st.markdown("#### What Success Looks Like for You")
         main_concern = st.text_area(
             "Describe how your daily life would be different after successful transformation*",
             placeholder="Think about specific situations, relationships, or feelings that would be different...",
@@ -1052,11 +1052,11 @@ def render_enhanced_contact_form(dominant_pattern, recommendations, urgency_leve
 
         # Additional fields based on urgency
         if urgency_level >= 3:
-            st.markdown("### Additional Support")
+            st.markdown("#### Additional Support")
             immediate_support = st.checkbox("I would appreciate a quick check-in call before our first session")
             resource_interest = st.checkbox("I'm interested in immediate coping strategies while waiting for our session")
 
-        st.markdown("### Communication Preferences")
+        st.markdown("#### Communication Preferences")
         col1, col2 = st.columns(2)
         with col1:
             preferred_contact = st.selectbox("Best way to reach you", [
@@ -1068,7 +1068,7 @@ def render_enhanced_contact_form(dominant_pattern, recommendations, urgency_leve
             ])
 
         # Terms and privacy
-        st.markdown("### Privacy & Terms")
+        st.markdown("#### Privacy & Terms")
         privacy_consent = st.checkbox("I consent to my assessment data being used to prepare my personalized session plan*")
         marketing_consent = st.checkbox("I'm interested in receiving helpful insights about behavioral patterns and transformation techniques")
 
@@ -1110,7 +1110,7 @@ def render_enhanced_contact_form(dominant_pattern, recommendations, urgency_leve
                 st.success(f"✅ Thank you {name}! We'll contact you within {timeline} to schedule your {recommendations['sessions']}.")
 
                 # Show next steps
-                st.markdown("### What Happens Next")
+                st.markdown("#### What Happens Next")
                 next_steps = f"""
                 1. **Within {timeline}**: Our clinical team will contact you via {preferred_contact.lower()}
                 2. **Session Planning**: We'll discuss your personalized {recommendations['sessions']} approach
@@ -2115,7 +2115,7 @@ def show_comprehensive_results(enhanced_assessment, responses):
     dominant_pattern_id = dominant_pattern_data.get("id", 1)
 
     # Enhanced header
-    st.markdown("### 🎯 COMPREHENSIVE TRANSFORMATION ASSESSMENT")
+    st.markdown("#### 🎯 COMPREHENSIVE TRANSFORMATION ASSESSMENT")
     st.markdown("Discover the hidden patterns shaping your daily experience")
 
     # Progress bar without separator
@@ -2589,7 +2589,7 @@ def main():
             return
 
         # Show full results after contact is provided
-        st.markdown("### COMPREHENSIVE TRANSFORMATION ASSESSMENT")
+        st.markdown("#### BEHAVIORAL TRANSFORMATION ASSESSMENT")
         st.markdown("Your detailed behavioral analysis and therapeutic roadmap")
         st.divider()
         try:
