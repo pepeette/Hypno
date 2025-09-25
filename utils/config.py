@@ -11214,6 +11214,198 @@ class EmailConfig:
     }
 
     @staticmethod
+    def generate_client_email_personalized(assessment_metadata, dominant_pattern=None, pattern_scores=None, responses=None):
+        """Generate advanced pattern-specific personalized client email"""
+
+        # Pattern-specific email content database
+        pattern_email_content = {
+            1: {  # Unhappiness Culture
+                'pattern_name': 'Unhappiness Culture',
+                'recognition': "You've been protecting yourself from disappointment by keeping happiness at arm's length",
+                'manifestation': "When good things happen, your mind automatically scans for potential problems or reasons why it won't last",
+                'cycle_explanation': "This creates a cycle where success triggers anxiety, leading to self-sabotage, which confirms the original belief that happiness is dangerous",
+                'intervention_preview': "We'll install permission protocols that allow you to experience joy without triggering your protection mechanisms",
+                'urgency_message': "This pattern typically intensifies over time, making positive experiences feel increasingly dangerous"
+            },
+            2: {  # Power Struggles
+                'pattern_name': 'Power Struggles',
+                'recognition': "You experience submission as a threat to your very sense of self",
+                'manifestation': "Your mind interprets compromise or following others' ideas as personal annihilation rather than collaboration",
+                'cycle_explanation': "This creates conflicts where being right becomes more important than being effective, isolating you from support",
+                'intervention_preview': "We'll rebuild your sense of self as collaborative strength rather than defensive resistance",
+                'urgency_message': "Power struggles tend to escalate in frequency and intensity without intervention"
+            },
+            3: {  # Systematic Mistrust
+                'pattern_name': 'Systematic Mistrust',
+                'recognition': "Your default assumption is that others will eventually disappoint, betray, or harm you",
+                'manifestation': "You find reasons to doubt people's motives even when they show consistent reliability",
+                'cycle_explanation': "This creates a self-fulfilling prophecy where your defensiveness pushes people away, confirming your original suspicion",
+                'intervention_preview': "We'll calibrate your trust system to distinguish genuine threats from projected fears",
+                'urgency_message': "Systematic mistrust compounds over time, making healthy relationships increasingly difficult"
+            },
+            4: {  # Separation and Division
+                'pattern_name': 'Binary Thinking',
+                'recognition': "Your mind automatically divides complex situations into either/or categories",
+                'manifestation': "When facing decisions, you feel forced to choose between extremes rather than finding integrated solutions",
+                'cycle_explanation': "This creates decision paralysis and missed opportunities, as most life situations require both/and thinking",
+                'intervention_preview': "We'll expand your cognitive flexibility to see the spectrum of possibilities in every situation",
+                'urgency_message': "Binary thinking becomes more rigid over time, limiting your ability to adapt to life's complexity"
+            },
+            5: {  # Doing versus Being
+                'pattern_name': 'Achievement Addiction',
+                'recognition': "You feel valuable only when producing, achieving, or solving problems",
+                'manifestation': "Rest feels like laziness, and your worth depends entirely on what you accomplish",
+                'cycle_explanation': "This creates burnout cycles where exhaustion forces rest, triggering guilt, driving you back to overwork",
+                'intervention_preview': "We'll install inherent worth programming that exists independent of your achievements",
+                'urgency_message': "Achievement addiction typically leads to burnout cycles that become more severe over time"
+            },
+            6: {  # Compartmentalized Authenticity
+                'pattern_name': 'Contextual Identity Shifting',
+                'recognition': "You become different versions of yourself depending on who you're with",
+                'manifestation': "Your personality, values, and even opinions shift based on your environment or audience",
+                'cycle_explanation': "This creates internal confusion about who you really are and prevents genuine connection",
+                'intervention_preview': "We'll integrate your authentic self across all contexts while maintaining social intelligence",
+                'urgency_message': "Identity fragmentation tends to worsen over time, making authentic self-expression increasingly difficult"
+            },
+            7: {  # Self Sacrifice and Care Avoidance
+                'pattern_name': 'Self-Sacrifice Programming',
+                'recognition': "Taking care of your own needs feels selfish or wrong",
+                'manifestation': "You consistently prioritize others' needs over your own, even when it's harmful to you",
+                'cycle_explanation': "This creates resentment and depletion, which drives more people-pleasing to avoid guilt",
+                'intervention_preview': "We'll reframe self-care as strength that enables you to serve others more effectively",
+                'urgency_message': "Self-sacrifice patterns typically intensify until physical or emotional breakdown forces change"
+            },
+            8: {  # Inherited Missions
+                'pattern_name': 'Generational Programming',
+                'recognition': "You feel obligated to fulfill family expectations even when they conflict with your authentic path",
+                'manifestation': "Your major life decisions are influenced more by family loyalty than personal fulfillment",
+                'cycle_explanation': "This creates internal conflict between duty and authenticity, leading to unfulfilling life choices",
+                'intervention_preview': "We'll help you honor your family while claiming your own authentic path",
+                'urgency_message': "Generational programming becomes more entrenched with age, making course correction increasingly difficult"
+            },
+            9: {  # Context Dependent Weakness
+                'pattern_name': 'Situational Power Loss',
+                'recognition': "Certain contexts or people trigger a complete loss of your personal power",
+                'manifestation': "You feel confident in some situations but completely powerless in others",
+                'cycle_explanation': "This creates unpredictable self-trust and limits your ability to maintain consistent boundaries",
+                'intervention_preview': "We'll install universal strength anchoring that works across all contexts",
+                'urgency_message': "Context-dependent weakness often expands to more situations over time without intervention"
+            }
+        }
+
+        # Get pattern-specific content
+        dominant_pattern_id = dominant_pattern if isinstance(dominant_pattern, int) else 1
+        pattern_content = pattern_email_content.get(dominant_pattern_id, pattern_email_content[1])
+
+        # Calculate advanced metrics
+        pattern_intensity = pattern_scores.get(dominant_pattern_id, 5) if pattern_scores else 5
+        complexity_level = 'Standard' if len(pattern_scores or {}) <= 2 else 'Complex' if len(pattern_scores) <= 4 else 'Comprehensive'
+        success_probability = assessment_metadata.get('success_probability', '85%')
+
+        # Generate personalized subject
+        subject = f"Your {pattern_content['pattern_name']} Pattern - Transformation Blueprint Ready"
+
+        # Generate personalized email body
+        body = f"""
+        <html>
+        <head>
+            <style>
+                .email-container {{ max-width: 650px; margin: 0 auto; font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; }}
+                .header {{ background: linear-gradient(135deg, #4CA1A3 0%, #3D8B8D 100%); color: white; padding: 25px; text-align: center; border-radius: 8px 8px 0 0; }}
+                .content {{ padding: 25px; background: #FAFBFC; }}
+                .pattern-card {{ background: white; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #4CA1A3; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
+                .recognition-section {{ background: #F3F6F8; padding: 15px; border-radius: 6px; margin: 10px 0; }}
+                .cycle-explanation {{ background: #FFF8E1; padding: 15px; border-radius: 6px; border-left: 3px solid #FFA726; margin: 15px 0; }}
+                .intervention-preview {{ background: #E8F5E8; padding: 15px; border-radius: 6px; border-left: 3px solid #4CAF50; margin: 15px 0; }}
+                .urgency-note {{ background: #FFE5E5; padding: 15px; border-radius: 6px; border-left: 3px solid #F44336; margin: 15px 0; }}
+                .success-rate {{ color: #4CAF50; font-weight: bold; font-size: 1.2em; }}
+                .intensity-bar {{ background: #E0E0E0; height: 8px; border-radius: 4px; margin: 5px 0; }}
+                .intensity-fill {{ background: linear-gradient(90deg, #4CAF50, #FFA726, #F44336); height: 100%; border-radius: 4px; width: {pattern_intensity * 10}%; }}
+                .cta-button {{ background: linear-gradient(135deg, #4CA1A3, #3D8B8D); color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 20px 0; font-weight: bold; }}
+                .footer {{ background: #273548; color: #FFFFFF; padding: 20px; text-align: center; border-radius: 0 0 8px 8px; }}
+                .pattern-intensity {{ color: {'#F44336' if pattern_intensity > 7 else '#FFA726' if pattern_intensity > 5 else '#4CAF50'}; font-weight: bold; }}
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                <div class="header">
+                    <h1>🎯 Your Personal Pattern Analysis</h1>
+                    <p>Surgical precision transformation blueprint</p>
+                </div>
+
+                <div class="content">
+                    <div class="pattern-card">
+                        <h2>What We Discovered About You</h2>
+
+                        <div class="recognition-section">
+                            <h3>🔍 Pattern Recognition</h3>
+                            <p><strong>{pattern_content['pattern_name']}</strong> - Intensity: <span class="pattern-intensity">{pattern_intensity}/10</span></p>
+                            <div class="intensity-bar">
+                                <div class="intensity-fill"></div>
+                            </div>
+                            <p><em>{pattern_content['recognition']}</em></p>
+                        </div>
+
+                        <div>
+                            <h3>📊 How This Shows Up in Your Life</h3>
+                            <p>{pattern_content['manifestation']}</p>
+                        </div>
+                    </div>
+
+                    <div class="cycle-explanation">
+                        <h3>🔄 The Hidden Cycle Keeping You Stuck</h3>
+                        <p>{pattern_content['cycle_explanation']}</p>
+                        <p><strong>Cost analysis:</strong> Based on your responses, this pattern is likely costing you {assessment_metadata.get('weekly_time_cost', '8-12')} hours of peace and productivity each week.</p>
+                    </div>
+
+                    <div class="intervention-preview">
+                        <h3>🎯 Your Transformation Path</h3>
+                        <p>{pattern_content['intervention_preview']}</p>
+                        <p><strong>Success probability:</strong> <span class="success-rate">{success_probability}</span> based on your pattern constellation and readiness factors.</p>
+                        <p><strong>Timeline:</strong> {assessment_metadata.get('timeline_estimate', '2-3 sessions over 3-4 weeks')} with your specific pattern complexity.</p>
+                    </div>
+
+                    <div class="urgency-note">
+                        <h3>⏰ Why Timing Matters</h3>
+                        <p>{pattern_content['urgency_message']}</p>
+                        <p>The 5-year cost of maintaining this pattern: <strong>฿{assessment_metadata.get('five_year_cost', '45,000-85,000'):,}</strong> in missed opportunities, stress-related costs, and relationship impacts.</p>
+                    </div>
+
+                    <div class="pattern-card">
+                        <h3>🎊 What's Next?</h3>
+                        <ol>
+                            <li><strong>Clinical team contact</strong> - Within {assessment_metadata.get('contact_timeline', '24-48 hours')}</li>
+                            <li><strong>Strategy session</strong> - Personalized approach discussion</li>
+                            <li><strong>Transformation begins</strong> - Your first session when ready</li>
+                        </ol>
+
+                        <a href="#" class="cta-button">Download Your Complete Analysis</a>
+
+                        <p><small>Your comprehensive report includes pattern interaction analysis, session-by-session roadmap, and success optimization strategies.</small></p>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <p><strong>Rapid Transformation Hypnotherapy Bangkok</strong></p>
+                    <p>Premium behavioral pattern specialists</p>
+                    <p>Questions? Reply to this email or call +66 2 XXX XXXX</p>
+                    <p><small>This analysis represents clinical observation patterns from 500+ successful transformations.</small></p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+
+        return {
+            'recipient': assessment_metadata.get('email', 'client@example.com'),
+            'subject': subject,
+            'body': body,
+            'type': 'client_personalized',
+            'pattern_focus': pattern_content['pattern_name'],
+            'personalization_level': 'advanced'
+        }
+
+    @staticmethod
     def generate_client_email(assessment_metadata):
         """Generate personalized client confirmation email"""
 
