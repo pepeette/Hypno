@@ -580,6 +580,26 @@ def render_enhanced_options(options, question_id, question_type="single_choice",
     # Create a unique key that includes session state to avoid duplicates
     unique_key = f"{question_type}_{question_id}_{key_suffix}_{st.session_state.current_question}"
 
+    # Check if we have a previous response for this question
+    previous_response = st.session_state.responses.get(question_id)
+    default_index = 0  # Default to first option
+
+    if previous_response:
+        # Find the index of the previous response in the options list
+        try:
+            if isinstance(previous_response, str) and previous_response.startswith("CUSTOM:"):
+                # For custom text responses, find the "Write your..." option
+                for i, option in enumerate(options):
+                    if str(option).lower().startswith("write your") and str(option).lower().endswith("..."):
+                        default_index = i
+                        break
+            else:
+                # For regular responses, find exact match
+                default_index = options.index(previous_response)
+        except (ValueError, TypeError):
+            # If previous response not found in options, default to first option
+            default_index = 0
+
     # Handle different question types
     if question_type == "scenario_based":
         st.info("📖 **Scenario Question:** Imagine yourself in this situation and choose your most honest response.")
@@ -587,6 +607,7 @@ def render_enhanced_options(options, question_id, question_type="single_choice",
         return st.radio(
             "How would you most likely respond?",
             options=options,
+            index=default_index,
             key=unique_key,
             help=help_text,
             label_visibility="collapsed"
@@ -603,6 +624,7 @@ def render_enhanced_options(options, question_id, question_type="single_choice",
             return st.radio(
                 "What was your experience?",
                 options=options,
+                index=default_index,
                 key=unique_key,
                 help=help_text,
                 label_visibility="collapsed"
@@ -617,6 +639,7 @@ def render_enhanced_options(options, question_id, question_type="single_choice",
         # Text area for open-ended response
         text_response = st.text_area(
             "Your thoughts:",
+            value=previous_response if previous_response and not previous_response.startswith("CUSTOM:") else "",
             placeholder="Write your honest thoughts here...",
             height=100,
             key=f"text_{unique_key}",
@@ -628,6 +651,7 @@ def render_enhanced_options(options, question_id, question_type="single_choice",
         radio_response = st.radio(
             "Quick response options:",
             options=options,
+            index=default_index,
             key=f"radio_{unique_key}",
             label_visibility="collapsed"
         )
@@ -644,6 +668,7 @@ def render_enhanced_options(options, question_id, question_type="single_choice",
         return st.radio(
             "Rate your experience level:",
             options=options,
+            index=default_index,
             key=unique_key,
             help=help_text,
             label_visibility="collapsed"
@@ -660,6 +685,7 @@ def render_enhanced_options(options, question_id, question_type="single_choice",
         radio_response = st.radio(
             "Choose the option that best describes you:",
             options=options,
+            index=default_index,
             key=unique_key,
             help=help_text,
             label_visibility="collapsed"
@@ -668,8 +694,18 @@ def render_enhanced_options(options, question_id, question_type="single_choice",
         # If user selected any "Write your..." option, show text input
         if has_custom_option and radio_response and str(radio_response).lower().startswith("write your") and str(radio_response).lower().endswith("..."):
             st.markdown("**Please share your thoughts:**")
+
+            # Get previous custom text if exists
+            previous_custom_text = ""
+            if previous_response and previous_response.startswith("CUSTOM:"):
+                # Extract the custom text part after the "|" separator
+                parts = previous_response.split(" | ", 1)
+                if len(parts) > 1:
+                    previous_custom_text = parts[1]
+
             custom_text = st.text_area(
                 "Your thoughts:",
+                value=previous_custom_text,
                 placeholder="Please describe your specific situation or thoughts...",
                 key=f"custom_text_{unique_key}",
                 height=80
@@ -1469,10 +1505,27 @@ def handle_enhanced_payment(complexity_level, pattern_count, price_text):
         st.session_state.pdf_generated = False
         st.session_state.pdf_error = str(e)
 
-    # Trigger email notifications
+    # Trigger advanced personalized email notifications
     try:
         from utils.config import EmailConfig
+
+        # Get advanced analytics for personalized emails
+        pattern_scores = enhanced_assessment.pattern_scores
+        dominant_pattern_id = hierarchy.get("dominant_pattern", {}).get("id", 1)
+
+        # Send personalized client email
+        personalized_client_email = EmailConfig.generate_client_email_personalized(
+            assessment_metadata,
+            dominant_pattern_id,
+            pattern_scores,
+            responses
+        )
+
+        # Send standard emails (therapist report remains the same for now)
         email_results = EmailConfig.send_assessment_emails(assessment_metadata, profile)
+
+        # Store personalized email for demo purposes
+        st.session_state.personalized_client_email = personalized_client_email
 
         if email_results['client'] and email_results['therapist']:
             st.session_state.emails_sent = True
@@ -1487,6 +1540,77 @@ def handle_enhanced_payment(complexity_level, pattern_count, price_text):
     # For demo: Set payment complete and show results
     st.session_state.payment_complete = True
     st.rerun()
+
+def analyze_pattern_reinforcement_cycles(pattern_scores):
+    """Advanced pattern interaction analysis - identifies how patterns reinforce each other"""
+    interactions = []
+
+    # Define interaction rules based on clinical observation
+    reinforcement_patterns = {
+        (1, 5): {
+            'description': "Unhappiness culture makes achievement feel dangerous - success triggers guilt",
+            'intervention': "Permission installation before achievement work",
+            'cycle': "Success → Guilt → Self-sabotage → Confirms unworthiness"
+        },
+        (2, 4): {
+            'description': "Power struggles create either/or thinking - compromise feels like defeat",
+            'intervention': "Collaboration training before binary thinking work",
+            'cycle': "Authority challenge → Binary response → Conflict → Reinforces resistance"
+        },
+        (3, 6): {
+            'description': "Systematic mistrust drives mask-wearing - authenticity feels unsafe",
+            'intervention': "Safety building before authenticity integration",
+            'cycle': "Vulnerability → Anticipated rejection → Mask up → Confirms mistrust"
+        },
+        (7, 8): {
+            'description': "Self-sacrifice serves family missions - own needs feel selfish",
+            'intervention': "Family loyalty work before self-care installation",
+            'cycle': "Personal need → Family guilt → Self-denial → Resentment builds"
+        },
+        (1, 6): {
+            'description': "Unhappiness culture drives authenticity hiding - real self feels dangerous",
+            'intervention': "Gradual authenticity permission in safe contexts",
+            'cycle': "Authentic moment → Fear of disappointment → Hide real self → Isolation"
+        },
+        (3, 7): {
+            'description': "Mistrust creates over-giving to prove worthiness",
+            'intervention': "Trust building before boundary work",
+            'cycle': "Mistrust → Over-give to prove value → Burnout → More mistrust"
+        }
+    }
+
+    # Convert pattern names to IDs for comparison
+    pattern_name_to_id = {
+        'unhappiness_culture': 1, 'power_struggles': 2, 'systematic_mistrust': 3,
+        'separation_division': 4, 'doing_vs_being': 5, 'compartmentalized_authenticity': 6,
+        'self_sacrifice': 7, 'inherited_missions': 8, 'digital_despair': 9,
+        'perfectionism': 10, 'social_anxiety': 11
+    }
+
+    # Get active patterns (score > 5)
+    active_patterns = {}
+    for pattern_name, score in pattern_scores.items():
+        if isinstance(score, (int, float)) and score > 5:
+            pattern_id = pattern_name_to_id.get(pattern_name)
+            if pattern_id:
+                active_patterns[pattern_id] = score
+
+    # Find reinforcement interactions
+    for (pattern1, pattern2), interaction_data in reinforcement_patterns.items():
+        if pattern1 in active_patterns and pattern2 in active_patterns:
+            strength = min(active_patterns[pattern1], active_patterns[pattern2])
+            interactions.append({
+                'patterns': [pattern1, pattern2],
+                'strength': round(strength, 1),
+                'description': interaction_data['description'],
+                'cycle': interaction_data['cycle'],
+                'intervention_note': interaction_data['intervention'],
+                'priority': 'HIGH' if strength > 7 else 'MEDIUM' if strength > 5.5 else 'LOW'
+            })
+
+    # Sort by strength (highest impact first)
+    interactions.sort(key=lambda x: x['strength'], reverse=True)
+    return interactions
 
 def calculate_comprehensive_costs(pattern_scores, responses, trigger_chain=None, lifestyle_factors=None):
     """Advanced cost analysis engine with 5-year projections as per Phase 7 specifications"""
@@ -1982,15 +2106,100 @@ def show_comprehensive_results(enhanced_assessment, responses):
     # Generate comprehensive profile
     profile = enhanced_assessment.generate_enhanced_profile(responses)
 
+    # Get pattern scores for advanced analytics
+    pattern_scores = enhanced_assessment.pattern_scores
+
+    # Get dominant pattern ID for personalized content
+    hierarchy = profile.get("pattern_hierarchy", {})
+    dominant_pattern_data = hierarchy.get("dominant_pattern", {})
+    dominant_pattern_id = dominant_pattern_data.get("id", 1)
+
     # Enhanced header
-    st.markdown("# 🎯 YOUR COMPREHENSIVE BEHAVIORAL ANALYSIS")
+    st.markdown("### 🎯 COMPREHENSIVE TRANSFORMATION ASSESSMENT")
     st.markdown("Discover the hidden patterns shaping your daily experience")
-    st.divider()
+
+    # Progress bar without separator
+    st.progress(100/100, text="Analysis Complete: 100%")
+
+    # Add padding between progress and content
+    st.markdown("<div style='margin: 20px 0;'></div>", unsafe_allow_html=True)
+
+    # Advanced Pattern Recognition Hero Section with cycle analysis
+    reinforcement_cycles = analyze_pattern_reinforcement_cycles(pattern_scores)
+    enhanced_success_prediction = calculate_enhanced_success_probability(profile, responses)
+    pattern_deep_dive = generate_pattern_deep_dive(dominant_pattern_id, pattern_scores, responses)
 
     # Pattern Recognition Hero Section
     render_pattern_recognition_hero(None, None, None, profile)
 
-    st.markdown("---")
+    # Pattern Interaction Analysis
+    if reinforcement_cycles:
+        st.markdown("## 🔄 Pattern Reinforcement Cycles")
+        for i, cycle in enumerate(reinforcement_cycles[:3]):  # Show top 3 cycles
+            with st.container():
+                st.markdown(f"""
+                <div style='background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%);
+                           padding: 16px; border-radius: 8px; margin: 8px 0;
+                           border-left: 4px solid #4CA1A3;'>
+                    <h4 style='color: #273548; margin-bottom: 8px;'>Cycle {i+1}: {cycle['cycle_name']}</h4>
+                    <p style='color: #556D7A; margin-bottom: 8px;'><strong>How it works:</strong> {cycle['explanation']}</p>
+                    <p style='color: #556D7A; margin-bottom: 8px;'><strong>Intervention point:</strong> {cycle['intervention_window']}</p>
+                    <p style='color: #4CA1A3; margin: 0;'><strong>Therapeutic priority:</strong> Session {cycle['therapeutic_session']}</p>
+                </div>
+                """, unsafe_allow_html=True)
+
+    # Enhanced Success Prediction with Multi-factors
+    st.markdown("## 📊 Enhanced Success Probability Analysis")
+    col1, col2 = st.columns(2)
+
+    with col1:
+        success_rate = enhanced_success_prediction.get('final_probability', 85)
+        st.metric(
+            "Transformation Success Rate",
+            f"{success_rate}%",
+            delta=f"+{success_rate-75}% vs baseline",
+            delta_color="normal"
+        )
+
+        confidence = enhanced_success_prediction.get('confidence_level', 'High')
+        st.metric(
+            "Confidence Level",
+            confidence,
+            delta=enhanced_success_prediction.get('confidence_factors', 'Multiple positive indicators')[:30] + "..."
+        )
+
+    with col2:
+        timeline = enhanced_success_prediction.get('timeline_estimate', '3-4 weeks')
+        st.metric(
+            "Expected Timeline",
+            timeline,
+            delta=enhanced_success_prediction.get('timeline_confidence', 'Based on pattern complexity')[:30] + "..."
+        )
+
+        session_count = enhanced_success_prediction.get('recommended_sessions', 2)
+        st.metric(
+            "Recommended Sessions",
+            f"{session_count} sessions",
+            delta=enhanced_success_prediction.get('session_rationale', 'Optimal for your patterns')[:30] + "..."
+        )
+
+    # Pattern Deep Dive Manifestations
+    if pattern_deep_dive:
+        st.markdown("## 🎯 Your Pattern Deep Dive")
+
+        main_pattern = pattern_deep_dive.get('main_pattern', {})
+        if main_pattern:
+            with st.container():
+                st.markdown(f"""
+                <div style='background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%);
+                           padding: 20px; border-radius: 12px; margin: 12px 0;'>
+                    <h4 style='color: #273548;'>{main_pattern.get('name', 'Primary Pattern')}</h4>
+                    <p style='color: #556D7A;'><strong>Daily manifestation:</strong> {main_pattern.get('daily_manifestation', 'Not specified')}</p>
+                    <p style='color: #556D7A;'><strong>Origin context:</strong> {main_pattern.get('origin_context', 'Not specified')}</p>
+                    <p style='color: #556D7A;'><strong>Hidden benefit:</strong> {main_pattern.get('hidden_benefit', 'Not specified')}</p>
+                    <p style='color: #4CA1A3;'><strong>Transformation potential:</strong> {main_pattern.get('transformation_potential', 'High with targeted approach')}</p>
+                </div>
+                """, unsafe_allow_html=True)
 
     # Pattern Hierarchy - Most Important Section
     st.markdown("## YOUR BEHAVIORAL PATTERN PROFILE")
@@ -2490,6 +2699,298 @@ def determine_urgency_level(pattern_scores):
         return "moderate"
     else:
         return "low"
+
+def calculate_enhanced_success_probability(assessment_data, responses=None):
+    """Advanced success prediction with multi-factor analysis"""
+    base_rate = 85  # Hypnotherapy baseline
+
+    # Extract pattern scores
+    pattern_scores = assessment_data.get('pattern_scores', {}) if isinstance(assessment_data, dict) else assessment_data
+
+    # Pattern complexity adjustment
+    active_patterns = len([p for p in pattern_scores.values() if isinstance(p, (int, float)) and p > 5])
+    complexity_adjustment = max(-15, -3 * (active_patterns - 2))
+
+    # Digital conditioning assessment
+    digital_adjustment = 0
+    if responses:
+        # Check for digital native indicators
+        digital_keywords = ['social media', 'online', 'digital', 'app', 'instagram', 'tiktok', 'facebook']
+        digital_responses = 0
+        total_text_responses = 0
+
+        for response in responses.values():
+            if isinstance(response, str):
+                total_text_responses += 1
+                response_lower = extract_response_text(response).lower()
+                if any(keyword in response_lower for keyword in digital_keywords):
+                    digital_responses += 1
+
+        if total_text_responses > 0:
+            digital_ratio = digital_responses / total_text_responses
+            if digital_ratio > 0.3:
+                digital_adjustment = -5  # High digital conditioning
+            elif digital_ratio > 0.15:
+                digital_adjustment = 0   # Moderate
+            else:
+                digital_adjustment = 3   # Low digital conditioning
+
+    # Readiness factors assessment
+    readiness_indicators = 0
+    if responses:
+        readiness_keywords = ['ready', 'motivated', 'committed', 'determined', 'willing']
+        resistance_keywords = ['skeptical', 'doubt', 'unsure', 'maybe', 'might try']
+
+        for response in responses.values():
+            if isinstance(response, str):
+                response_lower = extract_response_text(response).lower()
+                if any(keyword in response_lower for keyword in readiness_keywords):
+                    readiness_indicators += 1
+                elif any(keyword in response_lower for keyword in resistance_keywords):
+                    readiness_indicators -= 1
+
+    readiness_adjustment = min(10, max(-10, readiness_indicators * 2))
+
+    # Support system assessment
+    support_adjustment = 0
+    if responses:
+        support_keywords = ['family', 'friends', 'partner', 'support', 'help', 'encourage']
+        isolation_keywords = ['alone', 'nobody', 'no one', 'isolated', 'by myself']
+
+        support_mentions = 0
+        isolation_mentions = 0
+
+        for response in responses.values():
+            if isinstance(response, str):
+                response_lower = extract_response_text(response).lower()
+                if any(keyword in response_lower for keyword in support_keywords):
+                    support_mentions += 1
+                elif any(keyword in response_lower for keyword in isolation_keywords):
+                    isolation_mentions += 1
+
+        if support_mentions > isolation_mentions:
+            support_adjustment = 5  # Strong support
+        elif isolation_mentions > support_mentions:
+            support_adjustment = -8  # Weak support
+        # else: neutral (0 adjustment)
+
+    # Calculate final probability
+    final_probability = max(65, min(98, base_rate + complexity_adjustment + digital_adjustment + readiness_adjustment + support_adjustment))
+
+    # Determine confidence level
+    total_adjustment = abs(complexity_adjustment) + abs(digital_adjustment) + abs(readiness_adjustment) + abs(support_adjustment)
+    if total_adjustment < 10:
+        confidence_level = "HIGH"
+    elif total_adjustment < 20:
+        confidence_level = "MODERATE"
+    else:
+        confidence_level = "VARIABLE"
+
+    return {
+        'base_rate': base_rate,
+        'adjustments': {
+            'complexity': complexity_adjustment,
+            'digital_native': digital_adjustment,
+            'readiness': readiness_adjustment,
+            'support': support_adjustment
+        },
+        'final_rate': round(final_probability, 1),
+        'confidence_level': confidence_level,
+        'optimization_factors': identify_success_optimization_factors(pattern_scores, responses)
+    }
+
+def generate_pattern_deep_dive(dominant_pattern, pattern_scores, responses=None):
+    """Generate comprehensive pattern analysis with manifestations and origins"""
+
+    # Pattern manifestation database
+    pattern_manifestations = {
+        'unhappiness_culture': {
+            'name': 'Success Discomfort Pattern',
+            'core_belief': 'Happiness leads to disappointment',
+            'manifestations': [
+                'Automatic worry when things go well',
+                'Guilt or discomfort with compliments or praise',
+                'Self-sabotage just before major achievements',
+                'Expecting the other shoe to drop in good times'
+            ],
+            'origin_context': 'Early experiences where good things led to increased expectations, disappointment, or punishment',
+            'protective_function': 'Protects against disappointment by maintaining low expectations',
+            'hidden_costs': 'Blocks access to joy, motivation, and sustained success',
+            'transformation_potential': 'High - once permission for positivity is installed, dramatic shifts occur'
+        },
+        'power_struggles': {
+            'name': 'Authority Resistance Pattern',
+            'core_belief': 'Submission equals annihilation of self',
+            'manifestations': [
+                'Automatic defensiveness with authority figures',
+                'Need to be right even when it hurts relationships',
+                'Difficulty accepting help or guidance',
+                'Rebellious reactions to suggestions'
+            ],
+            'origin_context': 'Environments where authority felt oppressive or where submission meant loss of identity',
+            'protective_function': 'Preserves sense of autonomy and prevents perceived domination',
+            'hidden_costs': 'Isolation, missed opportunities, relationship conflict',
+            'transformation_potential': 'High - responds well to collaborative approaches'
+        },
+        'systematic_mistrust': {
+            'name': 'Trust Hesitation Pattern',
+            'core_belief': 'Others will eventually betray or harm me',
+            'manifestations': [
+                'Default skepticism toward others\' motives',
+                'Difficulty accepting support or kindness',
+                'Extensive testing of relationships before trust',
+                'Assumption of negative intent in ambiguous situations'
+            ],
+            'origin_context': 'Past betrayals or disappointments that created protective skepticism',
+            'protective_function': 'Guards against future betrayal and emotional harm',
+            'hidden_costs': 'Limits intimacy, support systems, and collaborative opportunities',
+            'transformation_potential': 'Moderate - requires careful trust-building process'
+        },
+        'doing_vs_being': {
+            'name': 'Achievement Focus Pattern',
+            'core_belief': 'Worth equals productivity and achievement only',
+            'manifestations': [
+                'Guilt when not being productive',
+                'Identity crisis during downtime or rest',
+                'Value self only through external accomplishments',
+                'Difficulty enjoying leisure without purpose'
+            ],
+            'origin_context': 'Environments where love/approval was conditional on performance',
+            'protective_function': 'Maintains sense of worth through consistent achievement',
+            'hidden_costs': 'Burnout, inability to rest, conditional self-worth',
+            'transformation_potential': 'High - inherent worth work creates profound relief'
+        },
+        'compartmentalized_authenticity': {
+            'name': 'Authenticity Masking Pattern',
+            'core_belief': 'Real self leads to rejection',
+            'manifestations': [
+                'Different personality in different contexts',
+                'Exhaustion from maintaining various personas',
+                'Fear of being truly seen or known',
+                'Confusion about true preferences and desires'
+            ],
+            'origin_context': 'Early rejection or criticism of authentic self-expression',
+            'protective_function': 'Prevents rejection by showing only acceptable aspects',
+            'hidden_costs': 'Identity confusion, relationship superficiality, inner isolation',
+            'transformation_potential': 'High - authentic self integration brings tremendous relief'
+        }
+    }
+
+    # Get pattern details or create generic one
+    pattern_data = pattern_manifestations.get(dominant_pattern, {
+        'name': dominant_pattern.replace('_', ' ').title(),
+        'core_belief': 'Specific limiting belief pattern detected',
+        'manifestations': ['Pattern-specific behaviors identified through assessment'],
+        'origin_context': 'Life experiences that shaped current responses',
+        'protective_function': 'Serves a protective role in your psychology',
+        'hidden_costs': 'Limits potential and wellbeing in specific ways',
+        'transformation_potential': 'Can be transformed with appropriate intervention'
+    })
+
+    # Get pattern score
+    pattern_score = pattern_scores.get(dominant_pattern, 0)
+
+    # Calculate intervention sequence
+    intervention_sequence = determine_therapeutic_order(dominant_pattern, pattern_scores)
+
+    return {
+        'dominant_analysis': {
+            'name': pattern_data['name'],
+            'core_belief': pattern_data['core_belief'],
+            'score': round(pattern_score, 1),
+            'manifestations': pattern_data['manifestations'],
+            'origin_context': pattern_data['origin_context'],
+            'protective_function': pattern_data['protective_function'],
+            'hidden_costs': pattern_data['hidden_costs'],
+            'transformation_potential': pattern_data['transformation_potential']
+        },
+        'pattern_interactions': analyze_pattern_reinforcement_cycles(pattern_scores),
+        'intervention_sequence': intervention_sequence
+    }
+
+def determine_therapeutic_order(dominant_pattern, pattern_scores):
+    """Determine optimal order for addressing multiple patterns"""
+
+    # Therapeutic sequencing rules
+    sequencing_rules = {
+        'systematic_mistrust': 1,  # Always address trust first
+        'power_struggles': 2,      # Address authority resistance early
+        'unhappiness_culture': 3,  # Permission work before other changes
+        'compartmentalized_authenticity': 4,  # Safety before authenticity
+        'self_sacrifice': 5,       # Boundaries after safety established
+        'doing_vs_being': 6,       # Worth work after basic safety
+        'inherited_missions': 7,    # Family work after individual clarity
+        'separation_division': 8,   # Thinking patterns after emotional safety
+        'digital_despair': 9       # Digital patterns after core work
+    }
+
+    # Get active patterns with scores > 4
+    active_patterns = [(pattern, score) for pattern, score in pattern_scores.items()
+                      if isinstance(score, (int, float)) and score > 4]
+
+    # Sort by therapeutic sequence priority, then by score
+    sorted_patterns = sorted(active_patterns,
+                           key=lambda x: (sequencing_rules.get(x[0], 10), -x[1]))
+
+    sequence = []
+    for i, (pattern, score) in enumerate(sorted_patterns[:4]):  # Limit to top 4
+        session_focus = "Session 1" if i == 0 else "Session 2" if i == 1 else "Session 3" if i == 2 else "Follow-up"
+        sequence.append({
+            'pattern': pattern.replace('_', ' ').title(),
+            'score': round(score, 1),
+            'session_focus': session_focus,
+            'priority': 'PRIMARY' if i == 0 else 'SECONDARY' if i == 1 else 'TERTIARY'
+        })
+
+    return sequence
+
+def identify_success_optimization_factors(pattern_scores, responses=None):
+    """Identify specific factors that can optimize success probability"""
+    factors = []
+
+    # Pattern-specific optimizations
+    pattern_optimizations = {
+        'unhappiness_culture': "Gradual permission installation for positive states",
+        'power_struggles': "Collaborative language to reduce authority resistance",
+        'systematic_mistrust': "Transparent process to build therapeutic trust",
+        'separation_division': "Both/and language to expand thinking flexibility",
+        'doing_vs_being': "Inherent worth anchoring before productivity work",
+        'compartmentalized_authenticity': "Safe authenticity practice in low-risk contexts",
+        'self_sacrifice': "Self-care reframed as service to others",
+        'inherited_missions': "Honor family while claiming personal path",
+        'digital_despair': "Digital literacy integration in therapeutic language"
+    }
+
+    # Add pattern-specific factors
+    for pattern_name, score in pattern_scores.items():
+        if isinstance(score, (int, float)) and score > 5:
+            optimization = pattern_optimizations.get(pattern_name)
+            if optimization:
+                factors.append(optimization)
+
+    # Digital native optimizations
+    if responses:
+        digital_keywords = ['social media', 'online', 'digital', 'app']
+        is_digital_native = False
+        for response in responses.values():
+            if isinstance(response, str):
+                response_lower = extract_response_text(response).lower()
+                if any(keyword in response_lower for keyword in digital_keywords):
+                    is_digital_native = True
+                    break
+
+        if is_digital_native:
+            factors.extend([
+                "Digital literacy integration in therapeutic language",
+                "Shortened attention spans accommodated in session structure",
+                "Evidence-based approach to counter digital cynicism"
+            ])
+
+    # Default factors if none identified
+    if not factors:
+        factors.append("Standard protocol optimization with personalized approach")
+
+    return factors[:3]  # Limit to top 3 most relevant factors
 
 def calculate_success_probability(pattern_scores):
     """Calculate success probability based on pattern complexity"""
