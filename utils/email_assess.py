@@ -846,7 +846,3 @@ email_handler = ClinicalAssessmentEmailHandler()
 def send_assessment_email(contact_info, responses, profile):
     """Convenience function to send assessment email"""
     return email_handler.send_assessment_results(contact_info, responses, profile)
-
-
-
-
