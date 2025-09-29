@@ -10,7 +10,7 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 import json
 import re
-from utils.config import PatternDefinitions, EmailConfig
+from config import PatternDefinitions, EmailConfig
 
 class EmailHandler:
     """Complete email handler with advanced clinical assessment capabilities"""
