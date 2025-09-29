@@ -89,7 +89,7 @@ def update_quiz_answer(question_id, answer):
 
 def calculate_quiz_score():
     """Calculate quiz score based on 4-question answers"""
-    from utils.config import QuizConfig
+    from config import QuizConfig
     
     total_score = 0
     scoring = QuizConfig.SCORING
