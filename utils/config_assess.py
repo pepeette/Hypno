@@ -1,20 +1,27 @@
+
 """
-Assessment Configuration Module
-Contains all question sets, scoring rules, pattern definitions, and analytics
-Centralized data structure for clinical behavioral pattern assessment
+Clinical Behavioral Pattern Assessment - Enhanced Configuration & Analytics
+Version 3.5 - Complete Clinical Data Extraction
+
+Extracts:
+- Root pattern structures
+- Systemic factors maintaining problems
+- Identity conflicts blocking change
+- Hidden loyalties creating resistance
+- Complete trigger sequences
+- Intervention keywords and avoid language
 """
 
+from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime
-from typing import Dict, List, Any, Optional
 import re
+import math
 
-
-# ========================================================================================
-# PATTERN DEFINITIONS
-# ========================================================================================
-
+# ============================================================================
+# ENHANCED PATTERN DEFINITIONS WITH COMPLETE CLINICAL DATA
+# ============================================================================
 class PatternDefinitions:
-    """Core behavioral pattern definitions and clinical information"""
+    """9 fundamental behavioral patterns with complete clinical extraction data"""
     
     PATTERNS = {
         1: "Unhappiness culture",
@@ -31,1365 +38,1824 @@ class PatternDefinitions:
     PATTERN_DESCRIPTIONS = {
         1: {
             "name": "Unhappiness culture",
+            "root_structure": "Positive states = danger/loss/punishment",
             "core_belief": "Happiness leads to disappointment or makes me a target",
+            "systemic_factors": [
+                "Family depression patterns normalize suffering",
+                "Cultural suffering valorization ('life is hard')",
+                "Positive suppression rewarded in family system",
+                "Happiness triggers envy or attack from others"
+            ],
+            "identity_conflict": "Happy authentic self vs. Familiar suffering self that feels safe",
+            "hidden_loyalties": [
+                "Loyalty to unhappy parent/family member",
+                "Suffering = virtue/depth belief system",
+                "Protection from envy or being targeted",
+                "Belonging through shared misery"
+            ],
             "protective_function": "Protection from disappointment, envy, or loss",
-            "intervention_focus": "Permission installation for positive states with safety anchoring"
+            "intervention_focus": "Permission installation for positive states with safety anchoring",
+            "session_1_focus": "Happiness permission protocols and safety anchoring",
+            "session_2_focus": "Joy sustainability and positive emotion anchoring",
+            "intervention_keywords": ["permission", "safety", "deserve", "natural", "birthright"],
+            "avoid_language": ["just be happy", "think positive", "you're being negative"]
         },
         2: {
             "name": "Power struggles",
+            "root_structure": "Submission = death/annihilation of self",
             "core_belief": "I must fight to exist and maintain my identity",
+            "systemic_factors": [
+                "Authoritarian family dynamics modeling dominance",
+                "Competition-based relationship patterns",
+                "Win-lose paradigm as only option",
+                "Vulnerability punished in family system"
+            ],
+            "identity_conflict": "Collaborative empowered self vs. Fighter/survivor self",
+            "hidden_loyalties": [
+                "Loyalty to family fight patterns",
+                "Strength = resistance belief",
+                "Protection from being controlled/dominated",
+                "Identity tied to being 'the strong one'"
+            ],
             "protective_function": "Protection from domination or loss of self",
-            "intervention_focus": "Collaborative empowerment with maintained autonomy"
+            "intervention_focus": "Collaborative empowerment with maintained autonomy",
+            "session_1_focus": "Nervous system regulation and collaborative response installation",
+            "session_2_focus": "Conflict transformation and win-win response automation",
+            "intervention_keywords": ["curiosity", "collaboration", "both/and", "strength in listening"],
+            "avoid_language": ["just compromise", "stop being defensive", "you're too aggressive"]
         },
         3: {
             "name": "Systematic mistrust",
+            "root_structure": "Others = eventual betrayal/harm",
             "core_belief": "Trust leads to being hurt, used, or abandoned",
-            "protective_function": "Protection from betrayal and emotional injury",
-            "intervention_focus": "Gradual trust building with transparent safety protocols"
+            "systemic_factors": [
+                "Early betrayal experiences by caregivers",
+                "Inconsistent caregiving creating unpredictability",
+                "Trust violation patterns across relationships",
+                "Manipulation modeling in family system"
+            ],
+            "identity_conflict": "Trusting open self vs. Protected vigilant self",
+            "hidden_loyalties": [
+                "Loyalty to hurt younger parts of self",
+                "Vigilance = safety belief",
+                "Protection from re-injury",
+                "Identity as 'smart enough not to trust'"
+            ],
+            "protective_function": "Hypervigilance and threat detection to prevent harm",
+            "intervention_focus": "Gradual trust building with transparent safety protocols",
+            "session_1_focus": "Trust calibration and authentic connection programming",
+            "session_2_focus": "Healthy skepticism calibration and openness programming",
+            "intervention_keywords": ["discernment", "wisdom", "safe people", "gradual"],
+            "avoid_language": ["just trust people", "you're too paranoid", "not everyone is bad"]
         },
         4: {
             "name": "Separation and division",
+            "root_structure": "Gray areas = chaos/uncertainty/danger",
             "core_belief": "Things must be clearly defined or everything falls apart",
-            "protective_function": "Protection from chaos and uncertainty",
-            "intervention_focus": "Both/and integration with safety in uncertainty"
+            "systemic_factors": [
+                "Rigid family rules requiring clear categories",
+                "Religious absolutism or black/white morality",
+                "Chaotic early environment needing simplification",
+                "All-or-nothing modeling by caregivers"
+            ],
+            "identity_conflict": "Flexible nuanced self vs. Clear defined safe self",
+            "hidden_loyalties": [
+                "Loyalty to family certainty patterns",
+                "Order = safety belief system",
+                "Protection from confusion/overwhelm",
+                "Identity as 'person with clear values'"
+            ],
+            "protective_function": "Self-protection via binary thinking to reduce complexity",
+            "intervention_focus": "Both/and integration with safety in uncertainty",
+            "session_1_focus": "Binary thinking dissolution and creative possibility expansion",
+            "session_2_focus": "Creative problem-solving and nuanced thinking installation",
+            "intervention_keywords": ["both/and", "complexity", "nuance", "integration"],
+            "avoid_language": ["it's not black and white", "stop being so rigid"]
         },
         5: {
             "name": "Doing versus being",
-            "core_belief": "I am only valuable when producing or achieving",
-            "protective_function": "Protection from worthlessness and rejection",
-            "intervention_focus": "Inherent worth installation with productivity reframing"
+            "root_structure": "Worth = productivity/achievement only",
+            "core_belief": "I am only valuable when I'm producing/achieving",
+            "systemic_factors": [
+                "Achievement-focused family with conditional love",
+                "Work/school performance as identity",
+                "Productivity culture reinforcement",
+                "Rest/play punished or seen as lazy"
+            ],
+            "identity_conflict": "Being-centered self vs. Achieving self that earns worth",
+            "hidden_loyalties": [
+                "Loyalty to family achievement patterns",
+                "Worth = doing belief system",
+                "Protection from worthlessness",
+                "Identity as 'successful/productive person'"
+            ],
+            "protective_function": "Avoids vulnerability through busyness or achievement",
+            "intervention_focus": "Intrinsic worth installation with productivity reframing",
+            "session_1_focus": "Worth anchoring independent of achievement",
+            "session_2_focus": "Intrinsic worth recognition and balanced achievement",
+            "intervention_keywords": ["inherent worth", "being", "enough", "rest"],
+            "avoid_language": ["just relax", "stop working so much", "you don't need to prove yourself"]
         },
         6: {
             "name": "Compartmentalized authenticity",
-            "core_belief": "I must be different selves to be accepted",
-            "protective_function": "Protection from rejection and abandonment",
-            "intervention_focus": "Authentic self integration with safety across contexts"
+            "root_structure": "Real self = rejection/abandonment",
+            "core_belief": "I must hide parts of myself to be accepted",
+            "systemic_factors": [
+                "Conditional family acceptance based on performance",
+                "Social role expectations with punishment for deviation",
+                "Authenticity punished in family system",
+                "Different contexts requiring different personas"
+            ],
+            "identity_conflict": "Authentic integrated self vs. Acceptable safe selves",
+            "hidden_loyalties": [
+                "Loyalty to family role expectations",
+                "Adaptation = survival belief",
+                "Protection from rejection",
+                "Identity as 'shapeshifter/chameleon'"
+            ],
+            "protective_function": "Avoid rejection by managing different personas",
+            "intervention_focus": "Authentic self integration with safety across contexts",
+            "session_1_focus": "Authentic self integration and consistency programming",
+            "session_2_focus": "Integrated identity and consistent self-expression",
+            "intervention_keywords": ["authentic", "integrated", "whole", "genuine"],
+            "avoid_language": ["just be yourself", "stop being fake", "pick one identity"]
         },
         7: {
             "name": "Self sacrifice and care avoidance",
-            "core_belief": "I am only good/loveable when serving others",
-            "protective_function": "Protection from selfishness guilt and rejection",
-            "intervention_focus": "Self-care as service reframing with boundary installation"
+            "root_structure": "My needs = selfish/wrong/dangerous",
+            "core_belief": "Caring for myself will harm others or make me unworthy",
+            "systemic_factors": [
+                "Caretaker family roles with reward for self-sacrifice",
+                "Self-sacrifice modeling by parent",
+                "Need-shaming in family system",
+                "Love = self-denial belief pattern"
+            ],
+            "identity_conflict": "Self-caring self vs. Service/giving self that earns love",
+            "hidden_loyalties": [
+                "Loyalty to family service patterns",
+                "Sacrifice = love belief system",
+                "Protection from selfishness shame",
+                "Identity as 'the helpful/caring one'"
+            ],
+            "protective_function": "Maintains belonging and worth through service",
+            "intervention_focus": "Self-care as service reframing with boundary installation",
+            "session_1_focus": "Boundary establishment and self-care permission",
+            "session_2_focus": "Reciprocal relationship patterns and energy management",
+            "intervention_keywords": ["boundaries", "reciprocal", "energy", "sustainable"],
+            "avoid_language": ["just say no", "stop being a doormat", "be selfish for once"]
         },
         8: {
             "name": "Inherited missions",
+            "root_structure": "My path = betrayal of family/ancestors",
             "core_belief": "I must fulfill family dreams/expectations to be loyal",
-            "protective_function": "Protection from guilt, betrayal, and family disconnection",
-            "intervention_focus": "Honor family while claiming personal path integration"
+            "systemic_factors": [
+                "Family sacrifice stories creating debt",
+                "Generational expectations carried forward",
+                "Dream inheritance from parents/ancestors",
+                "Guilt about family sacrifices"
+            ],
+            "identity_conflict": "Personal desire self vs. Family loyal self",
+            "hidden_loyalties": [
+                "Loyalty to ancestral sacrifice",
+                "Family dream continuation as duty",
+                "Protection from guilt/betrayal",
+                "Identity as 'family legacy carrier'"
+            ],
+            "protective_function": "Maintains family belonging and honors sacrifices",
+            "intervention_focus": "Honor family while claiming personal path integration",
+            "session_1_focus": "Personal values clarification and family harmony balance",
+            "session_2_focus": "Authentic life direction and confident decision-making",
+            "intervention_keywords": ["honor", "autonomy", "both/and", "gratitude"],
+            "avoid_language": ["forget your family", "it's your life", "they're holding you back"]
         },
         9: {
             "name": "Context dependent weakness",
-            "core_belief": "I lose myself in specific situations/with certain people",
-            "protective_function": "Protection from confrontation and responsibility",
-            "intervention_focus": "Universal strength anchoring with context-independent resources"
+            "root_structure": "Certain contexts = powerlessness/helplessness",
+            "core_belief": "I cannot be strong or authentic in all circumstances",
+            "systemic_factors": [
+                "Trauma context associations creating triggers",
+                "Power dynamic patterns in family",
+                "Learned helplessness in specific situations",
+                "Boundary violation in certain contexts"
+            ],
+            "identity_conflict": "Strong capable self vs. Overwhelmed powerless self",
+            "hidden_loyalties": [
+                "Loyalty to trauma bond patterns",
+                "Powerlessness = safety in some contexts",
+                "Protection from responsibility/expectation",
+                "Identity fragmentation across contexts"
+            ],
+            "protective_function": "Protects self from overextension in triggering contexts",
+            "intervention_focus": "Universal strength anchoring with context-independent resources",
+            "session_1_focus": "Context-independent boundary installation",
+            "session_2_focus": "Consistent boundary maintenance across all contexts",
+            "intervention_keywords": ["consistent", "capable", "anchored", "universal strength"],
+            "avoid_language": ["just stand up for yourself", "why can't you be strong there too"]
         }
     }
 
 
-# ========================================================================================
-# QUESTION SETS
-# ========================================================================================
+# ============================================================================
+# COMPREHENSIVE QUESTION BANK - REDESIGNED FOR CLINICAL VALIDITY
+# 81 Questions: 5-7 per pattern + screening + validation
+# ============================================================================
 
-class QuestionSets:
-    """All assessment questions organized by phase"""
+COMPREHENSIVE_QUESTIONS = [
+    # -------------------------------------------------------------------------
+    # DEMOGRAPHICS & SCREENING (Questions 1-5)
+    # -------------------------------------------------------------------------
+    {
+        "id": 1,
+        "text": "What is your age range?",
+        "type": "single_choice",
+        "options": ["Under 18", "18-25", "26-35", "36-45", "46-55", "56+"],
+        "pattern": None,
+        "digital_native_scoring": [3, 5, 4, 3, 2, 1],
+        "phase": "screening"
+    },
+    {
+        "id": 2,
+        "text": "What is your gender?",
+        "type": "single_choice",
+        "options": ["Male", "Female", "Non-binary/Other", "Prefer not to say"],
+        "pattern": None,
+        "phase": "demographics"
+    },
+    {
+        "id": 3,
+        "text": "On average, how many hours per day do you spend on digital devices (excluding required work)?",
+        "type": "slider",
+        "min": 0,
+        "max": 16,
+        "default": 4,
+        "pattern": None,
+        "digital_despair_component": "screen_time",
+        "phase": "digital_screening"
+    },
+    {
+        "id": 4,
+        "text": "What percentage of your digital time is spent on social media?",
+        "type": "slider",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "pattern": None,
+        "digital_despair_component": "social_media_usage",
+        "phase": "digital_screening"
+    },
+    {
+        "id": 5,
+        "text": "How would you rate your overall stress level in the past month?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": None,
+        "phase": "context"
+    },
     
-    # --------------------------------------------------------------------------------
-    # Phase 0: Age screening (determines digital native status)
-    # --------------------------------------------------------------------------------
-    AGE_SCREENING = {
-        0: {
-            "text": "What is your age range?",
-            "type": "single_choice",
-            "options": [
-                "Under 18",
-                "18-22",
-                "23-27",
-                "28-32",
-                "33-37",
-                "38-42",
-                "43-50",
-                "Over 50"
-            ],
-            "digital_native_scoring": [3, 5, 4, 3, 2, 1, 0, 0],
-            "phase": "age_screening",
-            "determines_flow": True
-        }
+    # -------------------------------------------------------------------------
+    # PATTERN 1: UNHAPPINESS CULTURE (Questions 6-12) - 7 questions
+    # -------------------------------------------------------------------------
+    {
+        "id": 6,
+        "text": "When something genuinely good happens to you, your first automatic thought is:",
+        "type": "single_choice",
+        "options": [
+            "I feel genuinely happy and want to celebrate",
+            "I enjoy it but wonder how long it will last",
+            "This won't last or something bad will balance it out",
+            "I feel uncomfortable, like I don't deserve it",
+            "I immediately look for what's wrong or what will go wrong"
+        ],
+        "pattern": 1,
+        "weights": [0, 3, 7, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 7,
+        "text": "How often do you downplay your accomplishments or good news when sharing with others?",
+        "type": "single_choice",
+        "options": ["Never", "Rarely", "Sometimes", "Often", "Almost always"],
+        "pattern": 1,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 8,
+        "text": "When you're feeling happy, you experience:",
+        "type": "single_choice",
+        "options": [
+            "Pure enjoyment without worry",
+            "Happiness mixed with mild anxiety",
+            "A sense that I need to 'prepare for the worst'",
+            "Guilt or feeling I should be more serious",
+            "The need to hide or suppress it"
+        ],
+        "pattern": 1,
+        "weights": [0, 4, 7, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 9,
+        "text": "Growing up, expressing joy or excitement was:",
+        "type": "single_choice",
+        "options": [
+            "Encouraged and celebrated",
+            "Tolerated but not really acknowledged",
+            "Met with warnings about 'getting hopes up'",
+            "Seen as naive or immature",
+            "Actively discouraged or punished"
+        ],
+        "pattern": 1,
+        "weights": [0, 3, 7, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 10,
+        "text": "Complete this thought: 'If I allow myself to be truly happy...'",
+        "type": "single_choice",
+        "options": [
+            "Good things will continue",
+            "I might get disappointed later",
+            "Something bad will definitely happen",
+            "People will judge me or bring me down",
+            "I'll lose my edge or motivation"
+        ],
+        "pattern": 1,
+        "weights": [0, 5, 9, 8, 7],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 11,
+        "text": "When others around you are celebrating success, you typically:",
+        "type": "single_choice",
+        "options": [
+            "Join in their joy genuinely",
+            "Feel happy for them but uncomfortable",
+            "Wonder why good things don't happen to me",
+            "Feel suspicious or look for downsides",
+            "Feel resentful or withdraw"
+        ],
+        "pattern": 1,
+        "weights": [0, 3, 6, 8, 9],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 12,
+        "text": "On a scale of 1-10, how comfortable are you maintaining a positive mood for an entire day?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": 1,
+        "reverse_score": True,
+        "phase": "core_patterns"
+    },
+    
+    # -------------------------------------------------------------------------
+    # PATTERN 2: POWER STRUGGLES (Questions 13-19) - 7 questions
+    # -------------------------------------------------------------------------
+    {
+        "id": 13,
+        "text": "When someone disagrees with you, your immediate physical response is:",
+        "type": "single_choice",
+        "options": [
+            "I stay relaxed and curious",
+            "Mild tension but manageable",
+            "My body tenses up, ready to defend",
+            "Adrenaline rush, heart races",
+            "Intense physical activation, fight-or-flight"
+        ],
+        "pattern": 2,
+        "weights": [0, 3, 7, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 14,
+        "text": "In disagreements, how often do you find yourself needing to 'win' or prove your point?",
+        "type": "single_choice",
+        "options": ["Never", "Rarely", "Sometimes", "Often", "Almost always"],
+        "pattern": 2,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 15,
+        "text": "Someone challenges your decision in front of others. You feel:",
+        "type": "single_choice",
+        "options": [
+            "Open to hearing their perspective",
+            "Slightly defensive but willing to discuss",
+            "Threatened and need to reassert authority",
+            "Angry and want to shut them down",
+            "Attacked and must fight back immediately"
+        ],
+        "pattern": 2,
+        "weights": [0, 3, 7, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 16,
+        "text": "Growing up, conflicts in your family typically ended with:",
+        "type": "single_choice",
+        "options": [
+            "Calm resolution and mutual understanding",
+            "Someone compromising to keep peace",
+            "The loudest/strongest person winning",
+            "Anger, tears, or silent treatment",
+            "Threats, intimidation, or physical conflict"
+        ],
+        "pattern": 2,
+        "weights": [0, 3, 7, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 17,
+        "text": "When you lose an argument or are proven wrong, you:",
+        "type": "single_choice",
+        "options": [
+            "Acknowledge it and learn from it",
+            "Accept it but feel uncomfortable",
+            "Feel diminished or humiliated",
+            "Internally plan how to 'win' next time",
+            "Feel rage or a sense of defeat"
+        ],
+        "pattern": 2,
+        "weights": [0, 2, 6, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 18,
+        "text": "How often do small disagreements escalate into major conflicts for you?",
+        "type": "single_choice",
+        "options": ["Never", "Rarely", "Sometimes", "Often", "Almost always"],
+        "pattern": 2,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 19,
+        "text": "In relationships, how much do you need to feel 'in control' to feel safe?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": 2,
+        "phase": "core_patterns"
+    },
+    
+    # -------------------------------------------------------------------------
+    # PATTERN 3: SYSTEMATIC MISTRUST (Questions 20-26) - 7 questions
+    # -------------------------------------------------------------------------
+    {
+        "id": 20,
+        "text": "When meeting someone new, your default assumption about their intentions is:",
+        "type": "single_choice",
+        "options": [
+            "They're probably friendly and genuine",
+            "Neutral until I know them better",
+            "Cautious - they might have hidden motives",
+            "Suspicious - they probably want something",
+            "Highly guarded - they'll likely betray me"
+        ],
+        "pattern": 3,
+        "weights": [0, 2, 6, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 21,
+        "text": "Someone you just met is unexpectedly kind or helpful. You think:",
+        "type": "single_choice",
+        "options": [
+            "That's nice, they seem genuine",
+            "I appreciate it but wonder why",
+            "What do they want from me?",
+            "This is manipulation - what's their angle?",
+            "This is definitely a trap or scheme"
+        ],
+        "pattern": 3,
+        "weights": [0, 3, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 22,
+        "text": "How long does it typically take before you trust someone enough to be vulnerable with them?",
+        "type": "single_choice",
+        "options": [
+            "A few weeks to months",
+            "Several months to a year",
+            "1-2 years of consistent behavior",
+            "Many years, and even then not fully",
+            "I never fully trust anyone"
+        ],
+        "pattern": 3,
+        "weights": [0, 3, 6, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 23,
+        "text": "When people share personal information about themselves, you:",
+        "type": "single_choice",
+        "options": [
+            "Feel honored and reciprocate naturally",
+            "Listen but remain somewhat guarded",
+            "Wonder if they're testing me or setting a trap",
+            "Assume they're manipulating me into sharing",
+            "Become more suspicious of their motives"
+        ],
+        "pattern": 3,
+        "weights": [0, 3, 6, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 24,
+        "text": "In past relationships, how many times have you been significantly betrayed or let down?",
+        "type": "single_choice",
+        "options": [
+            "Never or once",
+            "2-3 times",
+            "4-5 times",
+            "6-10 times",
+            "Too many to count"
+        ],
+        "pattern": 3,
+        "weights": [0, 3, 6, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 25,
+        "text": "How often do you 'test' people to see if they're trustworthy?",
+        "type": "single_choice",
+        "options": ["Never", "Rarely", "Sometimes", "Often", "Almost always"],
+        "pattern": 3,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 26,
+        "text": "On a scale of 1-10, how much do you believe 'trust no one' is a wise life philosophy?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": 3,
+        "phase": "core_patterns"
+    },
+    
+    # -------------------------------------------------------------------------
+    # PATTERN 4: SEPARATION/DIVISION (Questions 27-32) - 6 questions
+    # -------------------------------------------------------------------------
+    {
+        "id": 27,
+        "text": "When facing a difficult decision, you typically:",
+        "type": "single_choice",
+        "options": [
+            "See multiple options and creative solutions",
+            "See a few main options with pros and cons",
+            "Feel stuck between two opposing choices",
+            "See only two extreme options (all or nothing)",
+            "Feel paralyzed by either/or thinking"
+        ],
+        "pattern": 4,
+        "weights": [0, 2, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 28,
+        "text": "How comfortable are you with ambiguity or 'gray areas' in life?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": 4,
+        "reverse_score": True,
+        "phase": "core_patterns"
+    },
+    {
+        "id": 29,
+        "text": "When evaluating people, you tend to see them as:",
+        "type": "single_choice",
+        "options": [
+            "Complex humans with strengths and flaws",
+            "Mostly good or mostly bad",
+            "Either completely good or completely bad",
+            "Good until proven bad, then irredeemable",
+            "Categories that are absolute and unchangeable"
+        ],
+        "pattern": 4,
+        "weights": [0, 3, 7, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 30,
+        "text": "Complete this: 'In life, you must choose between...'",
+        "type": "single_choice",
+        "options": [
+            "Nothing - you can integrate multiple values",
+            "Occasionally making hard choices",
+            "Security OR freedom (can't have both)",
+            "Success OR relationships (can't have both)",
+            "Everything is either/or - no middle ground"
+        ],
+        "pattern": 4,
+        "weights": [0, 2, 7, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 31,
+        "text": "How often do you find yourself thinking in 'all or nothing' terms?",
+        "type": "single_choice",
+        "options": ["Never", "Rarely", "Sometimes", "Often", "Almost always"],
+        "pattern": 4,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 32,
+        "text": "When someone changes their mind or shows complexity, you feel:",
+        "type": "single_choice",
+        "options": [
+            "That's normal human growth",
+            "Slightly confused but accepting",
+            "Uncomfortable with the inconsistency",
+            "Betrayed or that they're unreliable",
+            "They're a hypocrite - can't trust them"
+        ],
+        "pattern": 4,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    
+    # -------------------------------------------------------------------------
+    # PATTERN 5: DOING VS BEING (Questions 33-39) - 7 questions
+    # -------------------------------------------------------------------------
+    {
+        "id": 33,
+        "text": "Complete this: 'I feel valuable when I...'",
+        "type": "single_choice",
+        "options": [
+            "Simply exist as I am",
+            "Am doing something meaningful",
+            "Accomplish something important",
+            "Prove my worth through achievements",
+            "Am constantly productive/achieving"
+        ],
+        "pattern": 5,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 34,
+        "text": "When you have free time with nothing scheduled, you feel:",
+        "type": "single_choice",
+        "options": [
+            "Peaceful and content",
+            "Relaxed but slightly restless",
+            "Guilty like I should be doing something",
+            "Anxious and need to find something productive",
+            "Worthless or like I'm wasting my life"
+        ],
+        "pattern": 5,
+        "weights": [0, 3, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 35,
+        "text": "How many hours per week do you work (including work you bring home)?",
+        "type": "single_choice",
+        "options": [
+            "35-40 hours",
+            "41-50 hours",
+            "51-60 hours",
+            "61-70 hours",
+            "70+ hours or constantly"
+        ],
+        "pattern": 5,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 36,
+        "text": "When not being productive, how intense is your guilt or anxiety?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": 5,
+        "phase": "core_patterns"
+    },
+    {
+        "id": 37,
+        "text": "If all your achievements were taken away, you would feel:",
+        "type": "single_choice",
+        "options": [
+            "Still confident in who I am",
+            "Uncertain but still have worth",
+            "Lost without my accomplishments",
+            "Like I have no identity or value",
+            "Completely worthless"
+        ],
+        "pattern": 5,
+        "weights": [0, 2, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 38,
+        "text": "How often do you sacrifice sleep, health, or relationships for productivity?",
+        "type": "single_choice",
+        "options": ["Never", "Rarely", "Sometimes", "Often", "Almost always"],
+        "pattern": 5,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 39,
+        "text": "Growing up, love and approval were conditional on:",
+        "type": "single_choice",
+        "options": [
+            "Nothing - I was loved unconditionally",
+            "Being good/not causing trouble",
+            "Getting good grades/performing well",
+            "Achieving specific goals or standards",
+            "Constant exceptional achievement"
+        ],
+        "pattern": 5,
+        "weights": [0, 3, 6, 8, 10],
+        "phase": "core_patterns"
+    },
+    
+    # -------------------------------------------------------------------------
+    # PATTERN 6: COMPARTMENTALIZED AUTHENTICITY (Questions 40-45) - 6 questions
+    # -------------------------------------------------------------------------
+    {
+        "id": 40,
+        "text": "Your personality and behavior across different settings (work, family, friends):",
+        "type": "single_choice",
+        "options": [
+            "Stay very consistent - I'm the same person",
+            "Vary slightly based on context",
+            "Vary significantly - different personas",
+            "Completely different - like different people",
+            "So fragmented I don't know who I really am"
+        ],
+        "pattern": 6,
+        "weights": [0, 2, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 41,
+        "text": "How much of your 'real self' do you hide from most people?",
+        "type": "slider",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "pattern": 6,
+        "scale_to_10": True,
+        "phase": "core_patterns"
+    },
+    {
+        "id": 42,
+        "text": "When you imagine being completely authentic in all areas of life, you feel:",
+        "type": "single_choice",
+        "options": [
+            "That's how I already live",
+            "Hopeful and excited",
+            "Scared but curious",
+            "Terrified of rejection or consequences",
+            "Impossible - I'd lose everything"
+        ],
+        "pattern": 6,
+        "weights": [0, 1, 4, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 43,
+        "text": "How exhausting is it to maintain your different personas?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": 6,
+        "phase": "core_patterns"
+    },
+    {
+        "id": 44,
+        "text": "In how many areas of your life do you feel you can be completely yourself?",
+        "type": "single_choice",
+        "options": [
+            "All or most areas",
+            "About half of areas",
+            "A few specific safe spaces",
+            "One or two people only",
+            "Nowhere - not even alone"
+        ],
+        "pattern": 6,
+        "weights": [0, 3, 6, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 45,
+        "text": "Growing up, being your authentic self resulted in:",
+        "type": "single_choice",
+        "options": [
+            "Acceptance and love",
+            "Mostly acceptance with some criticism",
+            "Criticism, ridicule, or rejection",
+            "Punishment, shame, or abandonment",
+            "Severe consequences or danger"
+        ],
+        "pattern": 6,
+        "weights": [0, 2, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    
+    # -------------------------------------------------------------------------
+    # PATTERN 7: SELF-SACRIFICE (Questions 46-52) - 7 questions
+    # -------------------------------------------------------------------------
+    {
+        "id": 46,
+        "text": "When it comes to your needs versus others' needs:",
+        "type": "single_choice",
+        "options": [
+            "I naturally balance both",
+            "I usually prioritize mine but consider theirs",
+            "Others' needs usually come first",
+            "I almost always put others first",
+            "I completely ignore my own needs"
+        ],
+        "pattern": 7,
+        "weights": [0, 1, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 47,
+        "text": "How often do you say 'yes' when you really want to say 'no'?",
+        "type": "single_choice",
+        "options": ["Never", "Rarely", "Sometimes", "Often", "Almost always"],
+        "pattern": 7,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 48,
+        "text": "When you think about taking time for self-care, you feel:",
+        "type": "single_choice",
+        "options": [
+            "That's normal and necessary",
+            "Slightly guilty but know I should",
+            "Guilty - others need me more",
+            "Selfish and undeserving",
+            "It's impossible - I have no time for myself"
+        ],
+        "pattern": 7,
+        "weights": [0, 2, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 49,
+        "text": "How much energy do you have left for yourself after taking care of others?",
+        "type": "slider",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "pattern": 7,
+        "reverse_score": True,
+        "scale_to_10": True,
+        "phase": "core_patterns"
+    },
+    {
+        "id": 50,
+        "text": "In relationships, you tend to be the one who:",
+        "type": "single_choice",
+        "options": [
+            "Gives and receives in balance",
+            "Gives slightly more than you receive",
+            "Gives much more than you receive",
+            "Gives almost everything, receives little",
+            "Gives everything, receives nothing"
+        ],
+        "pattern": 7,
+        "weights": [0, 3, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 51,
+        "text": "Growing up, putting your own needs first was seen as:",
+        "type": "single_choice",
+        "options": [
+            "Healthy and encouraged",
+            "Acceptable when appropriate",
+            "Selfish but tolerated",
+            "Selfish and discouraged",
+            "Shameful, wrong, or punishable"
+        ],
+        "pattern": 7,
+        "weights": [0, 1, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 52,
+        "text": "How often do you feel resentful while helping others?",
+        "type": "single_choice",
+        "options": ["Never", "Rarely", "Sometimes", "Often", "Almost always"],
+        "pattern": 7,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    
+    # -------------------------------------------------------------------------
+    # PATTERN 8: INHERITED MISSIONS (Questions 53-58) - 6 questions
+    # -------------------------------------------------------------------------
+    {
+        "id": 53,
+        "text": "Your major life goals are primarily:",
+        "type": "single_choice",
+        "options": [
+            "Based on my own genuine desires",
+            "Mostly mine with some family influence",
+            "A mix of mine and family expectations",
+            "Primarily family expectations",
+            "Entirely family dreams, not mine"
+        ],
+        "pattern": 8,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 54,
+        "text": "When thinking about pursuing your own path separate from family expectations:",
+        "type": "single_choice",
+        "options": [
+            "I feel free and excited",
+            "I feel supportive curiosity from family",
+            "I feel some guilt but mostly okay",
+            "I feel guilty like I'm betraying them",
+            "I feel I would destroy family relationships"
+        ],
+        "pattern": 8,
+        "weights": [0, 1, 4, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 55,
+        "text": "How much do you feel you 'owe' your family for their sacrifices?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": 8,
+        "phase": "core_patterns"
+    },
+    {
+        "id": 56,
+        "text": "If you disappointed your family's expectations, you would feel:",
+        "type": "single_choice",
+        "options": [
+            "Sad but accepting of my choice",
+            "Uncomfortable but able to live with it",
+            "Deeply guilty and conflicted",
+            "Like I betrayed or destroyed them",
+            "Unbearable shame and unworthiness"
+        ],
+        "pattern": 8,
+        "weights": [0, 2, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 57,
+        "text": "Your current life path feels:",
+        "type": "single_choice",
+        "options": [
+            "Authentically mine",
+            "Mostly mine with some compromises",
+            "A duty or obligation",
+            "Like living someone else's dream",
+            "Like a script I have no choice but to follow"
+        ],
+        "pattern": 8,
+        "weights": [0, 2, 5, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 58,
+        "text": "How clearly can you identify what YOU actually want, separate from others' expectations?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": 8,
+        "reverse_score": True,
+        "phase": "core_patterns"
+    },
+    
+    # -------------------------------------------------------------------------
+    # PATTERN 9: CONTEXT-DEPENDENT WEAKNESS (Questions 59-64) - 6 questions
+    # -------------------------------------------------------------------------
+    {
+        "id": 59,
+        "text": "Your boundaries and limits:",
+        "type": "single_choice",
+        "options": [
+            "Stay consistent across all situations",
+            "Vary slightly based on context",
+            "Vary significantly - strong some places, weak others",
+            "Disappear completely in certain contexts",
+            "Don't exist in most contexts"
+        ],
+        "pattern": 9,
+        "weights": [0, 2, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 60,
+        "text": "With certain people or in certain situations, you become someone you don't respect. This happens:",
+        "type": "single_choice",
+        "options": ["Never", "Rarely", "Sometimes", "Often", "Almost always"],
+        "pattern": 9,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 61,
+        "text": "How many specific people or situations make you lose your normal sense of self?",
+        "type": "single_choice",
+        "options": [
+            "None",
+            "1-2 specific people/situations",
+            "3-5 people/situations",
+            "6-10 people/situations",
+            "Many - most contexts weaken me"
+        ],
+        "pattern": 9,
+        "weights": [0, 3, 6, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 62,
+        "text": "In certain contexts where you lose power, you:",
+        "type": "single_choice",
+        "options": [
+            "Can still maintain boundaries",
+            "Find it difficult but possible",
+            "Can't say no even when I want to",
+            "Completely lose all agency",
+            "Become a different person with no self"
+        ],
+        "pattern": 9,
+        "weights": [0, 3, 6, 9, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 63,
+        "text": "After being in a situation where you lost yourself, you feel:",
+        "type": "single_choice",
+        "options": [
+            "Fine - I maintained myself",
+            "Slightly disappointed but okay",
+            "Frustrated and ashamed",
+            "Deeply ashamed and angry at myself",
+            "Disgusted with myself and hopeless"
+        ],
+        "pattern": 9,
+        "weights": [0, 2, 5, 8, 10],
+        "phase": "core_patterns"
+    },
+    {
+        "id": 64,
+        "text": "How much does your confidence vary depending on context?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": 9,
+        "phase": "core_patterns"
+    },
+    
+    # -------------------------------------------------------------------------
+    # VALIDATION & CROSS-CHECK QUESTIONS (65-71)
+    # -------------------------------------------------------------------------
+    {
+        "id": 65,
+        "text": "Overall, how much does past emotional pain still control your current decisions?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": None,
+        "validation": True,
+        "phase": "validation"
+    },
+    {
+        "id": 66,
+        "text": "How much of your life energy goes into protecting yourself from being hurt again?",
+        "type": "slider",
+        "min": 0,
+        "max": 100,
+        "default": 50,
+        "pattern": None,
+        "validation": True,
+        "phase": "validation"
+    },
+    {
+        "id": 67,
+        "text": "If you could push a button and completely resolve one behavioral pattern, which would it be?",
+        "type": "text_completion",
+        "placeholder": "Describe the one pattern you most want to change...",
+        "min_chars": 20,
+        "pattern": None,
+        "validation": True,
+        "phase": "validation"
+    },
+    {
+        "id": 68,
+        "text": "What would your life look like if all these patterns were resolved?",
+        "type": "text_completion",
+        "placeholder": "Describe your life without these limitations...",
+        "min_chars": 30,
+        "pattern": None,
+        "validation": True,
+        "phase": "validation"
+    },
+    {
+        "id": 69,
+        "text": "On a scale of 1-10, how much do you believe change is truly possible for you?",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "default": 5,
+        "pattern": None,
+        "readiness_assessment": True,
+        "phase": "readiness"
+    },
+    {
+        "id": 70,
+        "text": "How ready are you to begin transformation work right now?",
+        "type": "single_choice",
+        "options": [
+            "Ready to start immediately",
+            "Ready within the next week",
+            "Ready within the next month",
+            "Still exploring options",
+            "Not ready yet - just gathering information"
+        ],
+        "pattern": None,
+        "readiness_assessment": True,
+        "weights": [10, 8, 6, 4, 2],
+        "phase": "readiness"
+    },
+    {
+        "id": 71,
+        "text": "What motivates you most to change right now?",
+        "type": "text_completion",
+        "placeholder": "Be specific about what's driving your desire for transformation...",
+        "min_chars": 20,
+        "pattern": None,
+        "readiness_assessment": True,
+        "phase": "readiness"
     }
-    
-    # --------------------------------------------------------------------------------
-    # Phase 1: Digital despair screening (for digital natives only)
-    # --------------------------------------------------------------------------------
-    DIGITAL_SCREENING = {
-        1: {
-            "text": "On average, how many hours per day do you spend on digital devices (excluding required work)?",
-            "type": "single_choice",
-            "options": [
-                "Less than 2 hours",
-                "2-4 hours",
-                "4-6 hours",
-                "6-8 hours",
-                "8-10 hours",
-                "Over 10 hours"
-            ],
-            "digital_despair_weights": [0, 1, 2, 3, 4, 5],
-            "phase": "digital_screening"
-        },
-        2: {
-            "text": "Where do you feel most like your authentic self?",
-            "type": "single_choice",
-            "options": [
-                "In offline, face-to-face interactions",
-                "In online communities and digital spaces",
-                "Both online and offline equally",
-                "Neither - I don't feel authentic anywhere",
-                "It varies completely depending on the situation"
-            ],
-            "pattern_triggers": {
-                1: [6],  # Options that trigger pattern 6
-                3: [3, 6]
-            },
-            "digital_despair_weights": [0, 3, 1, 4, 2],
-            "phase": "digital_screening"
-        },
-        3: {
-            "text": "When you imagine a successful life, you typically think:",
-            "type": "single_choice",
-            "options": [
-                "Meaningful relationships and personal fulfillment",
-                "Extraordinary wealth, fame, or achievement",
-                "Being significantly better than most people at something",
-                "Just being happy and content with normal life",
-                "Success feels impossible or meaningless to me"
-            ],
-            "pattern_triggers": {
-                1: [4],
-                4: [2, 4]
-            },
-            "digital_despair_weights": [0, 4, 3, 0, 4],
-            "phase": "digital_screening"
-        },
-        4: {
-            "text": "When expressing genuine emotions or enthusiasm:",
-            "type": "single_choice",
-            "options": [
-                "I express them naturally and directly",
-                "I tend to use humor or irony to deflect",
-                "I feel embarrassed or 'cringe' about sincerity",
-                "I mainly express emotions through memes or online references",
-                "I rarely express genuine emotions at all"
-            ],
-            "pattern_triggers": {
-                1: [2, 3, 4],
-                6: [1, 2, 3]
-            },
-            "digital_despair_weights": [0, 2, 3, 3, 4],
-            "phase": "digital_screening"
-        },
-        5: {
-            "text": "What primarily influences your daily emotional state?",
-            "type": "single_choice",
-            "options": [
-                "Interactions with family and friends in person",
-                "Social media feeds and online content",
-                "Work or school experiences",
-                "Internal thoughts and self-reflection",
-                "Online communities and digital relationships"
-            ],
-            "digital_despair_weights": [0, 3, 1, 0, 3],
-            "phase": "digital_screening"
-        },
-        6: {
-            "text": "When someone suggests things could get better or offers optimistic perspectives:",
-            "type": "single_choice",
-            "options": [
-                "I feel encouraged and want to believe them",
-                "I appreciate it but remain cautiously skeptical",
-                "I immediately think of reasons why they're wrong",
-                "I feel annoyed because they don't understand reality",
-                "I dismiss it as naive or manipulative"
-            ],
-            "pattern_triggers": {
-                3: [2, 3, 4]
-            },
-            "digital_despair_weights": [0, 1, 2, 3, 4],
-            "phase": "digital_screening"
-        },
-        7: {
-            "text": "Your attention span for non-digital activities (reading books, conversations, offline tasks):",
-            "type": "single_choice",
-            "options": [
-                "Same as always - can focus for hours when interested",
-                "Slightly shorter but manageable",
-                "Noticeably fragmented - need frequent stimulation",
-                "Very difficult - mind wanders constantly",
-                "Almost impossible without background digital stimulation"
-            ],
-            "digital_despair_weights": [0, 1, 2, 3, 4],
-            "phase": "digital_screening"
-        }
+]
+
+
+# ============================================================================
+# DIGITAL DESPAIR SYNDROME INTEGRATION
+# ============================================================================
+
+DIGITAL_DESPAIR_SUBSCALES = {
+    'reality_dissociation': {
+        'questions': [3, 4],
+        'threshold_severe': 12,
+        'interventions': ['Reality reconnection exercises', 'Offline identity integration'],
+        'description': 'Preference for digital over physical reality'
+    },
+    'algorithmic_conditioning': {
+        'questions': [3, 4],
+        'threshold_severe': 14,
+        'interventions': ['Algorithm literacy', 'Rage-bait detox protocols'],
+        'description': 'Behavioral conditioning through platform algorithms'
+    },
+    'attention_fragmentation': {
+        'questions': [3],
+        'threshold_severe': 10,
+        'interventions': ['Attention restoration therapy', 'Deep focus training'],
+        'description': 'Inability to sustain attention on non-digital tasks'
     }
+}
+
+def compute_digital_despair_score(responses: Dict[int, Any]) -> Dict[str, Any]:
+    """Calculate comprehensive digital despair syndrome scoring"""
     
-    # --------------------------------------------------------------------------------
-    # Phase 2: Core engagement questions (everyone)
-    # --------------------------------------------------------------------------------
-    ENGAGEMENT = {
-        8: {
-            "text": "What specific behavior or pattern would you most like to transform?",
-            "type": "text_completion",
-            "placeholder": "Describe the exact behavior, feeling, or situation you want to change...",
-            "min_chars": 10,
-            "patterns": "presenting_problem",
-            "phase": "engagement"
-        },
-        9: {
-            "text": "How long has this pattern been affecting your life?",
-            "type": "single_choice",
-            "options": [
-                "Less than 6 months",
-                "6 months to 2 years",
-                "2-5 years",
-                "5-10 years",
-                "Over 10 years or as long as I can remember"
-            ],
-            "chronicity_weights": [1, 2, 3, 4, 5],
-            "phase": "engagement"
-        },
-        10: {
-            "text": "If this issue completely resolved, what would be different about your daily life?",
-            "type": "text_completion",
-            "placeholder": "Describe what you'd be doing differently in 6 months - be as specific as possible...",
-            "min_chars": 10,
-            "keywords": {
-                "productivity": [5],
-                "relationships": [2, 3, 6, 7],
-                "peace": [1],
-                "authentic": [6],
-                "happy": [1],
-                "control": [2, 4],
-                "boundaries": [7, 9]
-            },
-            "phase": "engagement"
-        },
-        11: {
-            "text": "On a scale of 1-10, how much does this interfere with your daily life?",
-            "type": "slider",
-            "min": 1,
-            "max": 10,
-            "default": 5,
-            "patterns": "interference_level",
-            "phase": "engagement"
-        }
-    }
+    age_response = responses.get(1)
+    age_options = COMPREHENSIVE_QUESTIONS[0]['options']
+    digital_native_scores = COMPREHENSIVE_QUESTIONS[0]['digital_native_scoring']
     
-    # --------------------------------------------------------------------------------
-    # Phase 3: Behavioral chain mapping (everyone)
-    # --------------------------------------------------------------------------------
-    TRIGGER_MAPPING = {
-        12: {
-            "text": "Thinking of the most recent time, what was happening in the 30 seconds right before this pattern kicked in?",
-            "type": "text_completion",
-            "placeholder": "Be specific: Where were you? Who was present? What was being discussed or happening?",
-            "min_chars": 10,
-            "chain_mapping": "trigger",
-            "phase": "trigger_mapping"
-        },
-        13: {
-            "text": "When this pattern activates, the first physical sensation is usually:",
-            "type": "single_choice",
-            "options": [
-                "Chest tightness, racing heart, or breathing changes",
-                "Stomach drop, nausea, or digestive upset",
-                "Muscle tension, jaw clenching, or physical rigidity",
-                "Hot/cold flashes, sweating, or temperature changes",
-                "Numbness, disconnection, or feeling 'outside yourself'",
-                "Restlessness, fidgeting, or urge to move/escape",
-                "Fatigue, heaviness, or sudden energy drain"
-            ],
-            "pattern_triggers": {
-                0: [1, 3, 4],
-                1: [1, 3, 4],
-                2: [2, 5],
-                3: [2, 5],
-                4: [6, 9],
-                5: [2, 5],
-                6: [1, 7]
-            },
-            "chain_mapping": "physical_response",
-            "phase": "trigger_mapping"
-        },
-        14: {
-            "text": "What automatic thoughts appear when you feel that physical sensation?",
-            "type": "text_completion",
-            "placeholder": "The actual words that go through your mind - even if they seem harsh or unreasonable...",
-            "min_chars": 5,
-            "pattern_keywords": {
-                "not good enough": [1, 5],
-                "fight": [2],
-                "can't trust": [3],
-                "either or": [4],
-                "must do": [5],
-                "can't be real": [6],
-                "others need": [7],
-                "should": [8],
-                "can't handle": [9]
-            },
-            "chain_mapping": "automatic_thought",
-            "phase": "trigger_mapping"
-        },
-        15: {
-            "text": "After that thought, you typically feel:",
-            "type": "multi_select",
-            "max_selections": 3,
-            "options": [
-                "Anxious or worried",
-                "Angry or frustrated",
-                "Ashamed or embarrassed",
-                "Sad or defeated",
-                "Guilty or self-blaming",
-                "Overwhelmed or panicked",
-                "Numb or disconnected",
-                "Confused or uncertain"
-            ],
-            "chain_mapping": "emotional_response",
-            "phase": "trigger_mapping"
-        },
-        16: {
-            "text": "When you feel that emotion at that intensity, you typically:",
-            "type": "single_choice",
-            "options": [
-                "Withdraw, avoid, or postpone dealing with it",
-                "Become more active, busy, or productive",
-                "Seek reassurance or validation from others",
-                "Become argumentative or defensive",
-                "Try to control or fix the situation",
-                "Please others or put their needs first",
-                "Shut down emotionally or 'check out'",
-                "Analyze or overthink the situation"
-            ],
-            "pattern_mapping": {
-                0: [1, 4, 9],
-                1: [5],
-                2: [3, 7],
-                3: [2],
-                4: [2, 5],
-                5: [7],
-                6: [6, 9],
-                7: [4, 5]
-            },
-            "chain_mapping": "behavioral_response",
-            "phase": "trigger_mapping"
-        }
-    }
+    age_score = 0
+    if age_response in age_options:
+        age_index = age_options.index(age_response)
+        age_score = digital_native_scores[age_index]
     
-    # --------------------------------------------------------------------------------
-    # Phase 4: Pattern-specific deep dive questions
-    # --------------------------------------------------------------------------------
-    PATTERN_SPECIFIC = {
-        # Pattern 1: Unhappiness culture
-        "pattern_1": {
-            17: {
-                "text": "When something genuinely good happens to you, your first reaction is usually:",
-                "type": "single_choice",
-                "options": [
-                    "Pure enjoyment and celebration",
-                    "Immediately looking for the catch or downside",
-                    "Feeling guilty or undeserving of good things",
-                    "Minimizing its importance",
-                    "Anxiety about when it will end"
-                ],
-                "weights": [0, 3, 3, 2, 2],
-                "pattern": 1
-            },
-            18: {
-                "text": "Growing up, what messages did you receive about happiness in your family?",
-                "type": "text_completion",
-                "placeholder": "What was said explicitly or shown through behavior...",
-                "min_chars": 10,
-                "pattern": 1
-            }
-        },
-        
-        # Pattern 2: Power struggles
-        "pattern_2": {
-            19: {
-                "text": "When someone disagrees with you, your nervous system:",
-                "type": "single_choice",
-                "options": [
-                    "Stays curious about their perspective",
-                    "Immediately activates into combat mode",
-                    "Feels threatened or attacked",
-                    "Shuts down to avoid confrontation",
-                    "Searches for ways to prove them wrong"
-                ],
-                "weights": [0, 3, 2, 1, 3],
-                "pattern": 2
-            },
-            20: {
-                "text": "In your family growing up, disagreements typically:",
-                "type": "single_choice",
-                "options": [
-                    "Were handled through calm discussion",
-                    "Escalated into arguments or fights",
-                    "Were avoided at all costs",
-                    "Involved guilt, manipulation, or silent treatment",
-                    "Had clear winners and losers"
-                ],
-                "weights": [0, 3, 2, 3, 4],
-                "pattern": 2
-            }
-        },
-        
-        # Pattern 3: Systematic mistrust
-        "pattern_3": {
-            21: {
-                "text": "When meeting new people, you assume they:",
-                "type": "single_choice",
-                "options": [
-                    "Are generally well-intentioned",
-                    "Are judging or evaluating you",
-                    "Want something from you",
-                    "Will eventually disappoint you",
-                    "Are basically indifferent"
-                ],
-                "weights": [0, 2, 3, 3, 1],
-                "pattern": 3
-            },
-            22: {
-                "text": "When someone is unexpectedly kind to you, you:",
-                "type": "single_choice",
-                "options": [
-                    "Feel grateful and warmed",
-                    "Wonder what they want from you",
-                    "Feel suspicious of their motives",
-                    "Feel unworthy of their kindness",
-                    "Barely notice or dismiss it"
-                ],
-                "weights": [0, 3, 3, 2, 1],
-                "pattern": 3
-            }
-        },
-        
-        # Pattern 4: Separation and division
-        "pattern_4": {
-            23: {
-                "text": "When facing important decisions, you typically:",
-                "type": "single_choice",
-                "options": [
-                    "See multiple creative possibilities",
-                    "Feel trapped between two impossible choices",
-                    "Get paralyzed by perfectionist analysis",
-                    "Create artificial deadlines or urgency",
-                    "Defer to what others expect"
-                ],
-                "weights": [0, 3, 3, 2, 1],
-                "pattern": 4
-            },
-            24: {
-                "text": "Complete this: 'In life, I have to choose between security _____ freedom'",
-                "type": "single_choice",
-                "options": [
-                    "AND (I can have both)",
-                    "OR (I must choose one)",
-                    "This doesn't resonate with me",
-                    "Both seem impossible to achieve"
-                ],
-                "weights": [0, 3, 0, 2],
-                "pattern": 4
-            }
-        },
-        
-        # Pattern 5: Doing versus being
-        "pattern_5": {
-            25: {
-                "text": "You feel most valuable when you're:",
-                "type": "single_choice",
-                "options": [
-                    "Simply existing as yourself",
-                    "Accomplishing something important",
-                    "Being productive or busy",
-                    "Helping others achieve their goals",
-                    "Receiving recognition for your work"
-                ],
-                "weights": [0, 2, 3, 2, 2],
-                "pattern": 5
-            },
-            26: {
-                "text": "When efforts go unnoticed or unappreciated:",
-                "type": "single_choice",
-                "options": [
-                    "My worth isn't dependent on external recognition",
-                    "I feel invisible and unimportant",
-                    "I work even harder to get attention",
-                    "I question whether what I did mattered"
-                ],
-                "weights": [0, 2, 2, 2],
-                "pattern": 5
-            }
-        },
-        
-        # Pattern 6: Compartmentalized authenticity
-        "pattern_6": {
-            27: {
-                "text": "Your personality tends to:",
-                "type": "single_choice",
-                "options": [
-                    "Stay consistent across all situations",
-                    "Shift significantly based on who you're with",
-                    "Change between professional and personal settings",
-                    "Adapt to what others seem to want",
-                    "Feel fragmented or inconsistent"
-                ],
-                "weights": [0, 2, 2, 3, 4],
-                "pattern": 6
-            },
-            28: {
-                "text": "Different life areas where you feel capable versus powerless:",
-                "type": "single_choice",
-                "options": [
-                    "I feel consistently myself everywhere",
-                    "I'm like two completely different people",
-                    "Strong professionally but weak personally",
-                    "Confident socially but insecure privately"
-                ],
-                "weights": [0, 3, 2, 2],
-                "pattern": 6
-            }
-        },
-        
-        # Pattern 7: Self sacrifice and care avoidance
-        "pattern_7": {
-            29: {
-                "text": "When it comes to your own needs versus others' needs:",
-                "type": "single_choice",
-                "options": [
-                    "I naturally balance both",
-                    "Others' needs usually come first",
-                    "I feel guilty focusing on my own needs",
-                    "I often don't even know what I need",
-                    "Taking care of myself feels selfish"
-                ],
-                "weights": [0, 2, 3, 3, 4],
-                "pattern": 7
-            },
-            30: {
-                "text": "You consistently have energy and motivation for:",
-                "type": "single_choice",
-                "options": [
-                    "Both personal and external responsibilities",
-                    "Other people's goals but not my own",
-                    "Work projects but not personal care",
-                    "Helping others but not helping myself"
-                ],
-                "weights": [0, 2, 2, 3],
-                "pattern": 7
-            }
-        },
-        
-        # Pattern 8: Inherited missions
-        "pattern_8": {
-            31: {
-                "text": "Your major life goals are primarily:",
-                "type": "single_choice",
-                "options": [
-                    "Based on your own genuine desires",
-                    "Influenced by family expectations",
-                    "Meant to honor someone's sacrifices",
-                    "Designed to prove your worth",
-                    "A reaction against others' expectations"
-                ],
-                "weights": [0, 2, 3, 3, 2],
-                "pattern": 8
-            },
-            32: {
-                "text": "When thinking about what YOU actually want:",
-                "type": "single_choice",
-                "options": [
-                    "I can access it clearly and confidently",
-                    "I honestly don't know anymore",
-                    "I feel guilty for wanting something different",
-                    "I'd be betraying someone important"
-                ],
-                "weights": [0, 2, 2, 3],
-                "pattern": 8
-            }
-        },
-        
-        # Pattern 9: Context dependent weakness
-        "pattern_9": {
-            33: {
-                "text": "Your boundaries and limits:",
-                "type": "single_choice",
-                "options": [
-                    "Stay pretty consistent across situations",
-                    "Vary significantly based on who you're with",
-                    "Disappear completely in certain contexts",
-                    "Are stronger in some areas than others",
-                    "Feel almost non-existent sometimes"
-                ],
-                "weights": [0, 2, 3, 2, 4],
-                "pattern": 9
-            },
-            34: {
-                "text": "With certain people or situations, you tend to:",
-                "type": "single_choice",
-                "options": [
-                    "Stay true to my values and boundaries",
-                    "Become someone I don't respect",
-                    "Lose all my usual boundaries",
-                    "Can't say no even when I want to",
-                    "Completely lose sense of self"
-                ],
-                "weights": [0, 2, 3, 3, 4],
-                "pattern": 9
-            }
-        }
-    }
+    is_digital_native = age_score >= 3
     
-    # --------------------------------------------------------------------------------
-    # Phase 5: Integration and readiness
-    # --------------------------------------------------------------------------------
-    INTEGRATION = {
-        35: {
-            "text": "If you had to guess, this pattern might be trying to:",
-            "type": "single_choice",
-            "options": [
-                "Protect you from emotional pain",
-                "Keep you safe from rejection or judgment",
-                "Maintain some sense of control",
-                "Help you belong or fit in",
-                "Avoid disappointing important people",
-                "Ensure you're prepared for worst-case scenarios"
-            ],
-            "secondary_gain": True,
-            "phase": "integration"
-        },
-        36: {
-            "text": "What would need to be true for you to feel completely safe changing this pattern?",
-            "type": "text_completion",
-            "placeholder": "Think about what guarantees, support, or conditions you'd need...",
-            "min_chars": 10,
-            "safety_assessment": True,
-            "phase": "integration"
-        },
-        37: {
-            "text": "When learning or changing, you respond best to:",
-            "type": "single_choice",
-            "options": [
-                "Direct, clear guidance and instructions",
-                "Gentle, permissive suggestions",
-                "Stories, metaphors, and imagery",
-                "Logical explanations and understanding",
-                "Collaborative exploration and discovery"
-            ],
-            "hypnotic_preference": True,
-            "phase": "integration"
-        },
-        38: {
-            "text": "How urgently do you need to resolve your main concern?",
-            "type": "single_choice",
-            "options": [
-                "Extremely urgent - affecting daily life significantly",
-                "Very urgent - need change within few months",
-                "Moderately urgent - within 6 months",
-                "Somewhat urgent - exploring gradual options",
-                "Not urgent - just curious"
-            ],
-            "urgency_weights": [5, 4, 3, 2, 1],
-            "phase": "integration"
-        }
+    screen_time_hours = responses.get(3, 0)
+    social_media_percent = responses.get(4, 0)
+    
+    screen_time_score = min(screen_time_hours / 2, 10)
+    social_media_score = social_media_percent / 10
+    
+    subscale_scores = {}
+    for subscale_name, subscale_data in DIGITAL_DESPAIR_SUBSCALES.items():
+        score = 0
+        if 3 in subscale_data['questions']:
+            score += screen_time_score
+        if 4 in subscale_data['questions']:
+            score += social_media_score
+        subscale_scores[subscale_name] = score
+    
+    total_score = sum(subscale_scores.values())
+    max_possible = len(DIGITAL_DESPAIR_SUBSCALES) * 10
+    percentage = (total_score / max_possible) * 100
+    
+    if percentage >= 70:
+        severity = 'SEVERE'
+    elif percentage >= 50:
+        severity = 'MODERATE'
+    elif percentage >= 30:
+        severity = 'MILD'
+    else:
+        severity = 'MINIMAL'
+    
+    interventions = []
+    for subscale_name, score in subscale_scores.items():
+        threshold = DIGITAL_DESPAIR_SUBSCALES[subscale_name]['threshold_severe']
+        if score >= threshold:
+            interventions.extend(DIGITAL_DESPAIR_SUBSCALES[subscale_name]['interventions'])
+    
+    return {
+        'is_digital_native': is_digital_native,
+        'digital_despair_score': round(percentage, 1),
+        'severity_level': severity,
+        'subscale_scores': subscale_scores,
+        'recommended_interventions': list(set(interventions)),
+        'age_score': age_score,
+        'screen_time_hours': screen_time_hours,
+        'social_media_percentage': social_media_percent
     }
 
 
-# ========================================================================================
-# SCORING ENGINE
-# ========================================================================================
+# ============================================================================
+# PATTERN CONSTELLATION MATRIX
+# ============================================================================
 
-class ScoringEngine:
-    """Calculates pattern scores and intensity from responses"""
-    
-    def __init__(self):
-        self.patterns = PatternDefinitions.PATTERNS
-        
-    def calculate_pattern_scores(self, responses: Dict) -> Dict[int, float]:
-        """
-        Calculate intensity scores for all 9 patterns
-        Returns: {pattern_id: score} dictionary
-        """
-        pattern_scores = {i: 0.0 for i in range(1, 10)}
-        
-        # Process each response
-        for q_id, response_data in responses.items():
-            response = response_data.get('response', '')
-            question = self._get_question_by_id(q_id)
-            
-            if not question:
-                continue
-            
-            # Single choice questions with pattern mapping
-            if question.get('type') == 'single_choice':
-                self._score_single_choice(question, response, pattern_scores)
-            
-            # Text completion with keyword analysis
-            elif question.get('type') == 'text_completion':
-                self._score_text_completion(question, response, pattern_scores)
-            
-            # Multi-select questions
-            elif question.get('type') == 'multi_select':
-                self._score_multi_select(question, response, pattern_scores)
-        
-        # Normalize scores to 0-10 scale
-        return self._normalize_scores(pattern_scores)
-    
-    def _score_single_choice(self, question: Dict, response: str, pattern_scores: Dict):
-        """Score single choice questions"""
-        options = question.get('options', [])
-        
-        # Find option index
-        try:
-            option_index = options.index(response)
-        except ValueError:
-            return
-        
-        # Pattern mapping scoring
-        pattern_mapping = question.get('pattern_mapping', {})
-        if option_index in pattern_mapping:
-            for pattern_id in pattern_mapping[option_index]:
-                pattern_scores[pattern_id] += 2
-        
-        # Pattern triggers scoring
-        pattern_triggers = question.get('pattern_triggers', {})
-        if option_index in pattern_triggers:
-            for pattern_id in pattern_triggers[option_index]:
-                pattern_scores[pattern_id] += 2
-        
-        # Direct pattern with weights
-        if 'pattern' in question and 'weights' in question:
-            pattern_id = question['pattern']
-            weights = question['weights']
-            if option_index < len(weights):
-                pattern_scores[pattern_id] += weights[option_index]
-    
-    def _score_text_completion(self, question: Dict, response: str, pattern_scores: Dict):
-        """Score text completion questions with keyword analysis"""
-        if not response or len(response) < 3:
-            return
-        
-        response_lower = response.lower()
-        
-        # Keyword matching
-        keywords = question.get('keywords', {})
-        for keyword, pattern_ids in keywords.items():
-            if keyword in response_lower:
-                for pattern_id in pattern_ids:
-                    pattern_scores[pattern_id] += 1
-        
-        # Pattern keywords
-        pattern_keywords = question.get('pattern_keywords', {})
-        for keyword, pattern_ids in pattern_keywords.items():
-            if keyword in response_lower:
-                for pattern_id in pattern_ids:
-                    pattern_scores[pattern_id] += 2
-        
-        # Direct pattern assignment
-        if 'pattern' in question:
-            pattern_id = question['pattern']
-            # Award points for detailed responses
-            if len(response) > 50:
-                pattern_scores[pattern_id] += 1
-    
-    def _score_multi_select(self, question: Dict, response: str, pattern_scores: Dict):
-        """Score multi-select questions"""
-        # Response format: "option1, option2, option3"
-        selected = [opt.strip() for opt in response.split(',')]
-        
-        # Each selection adds base points to emotional complexity
-        for pattern_id in range(1, 10):
-            if len(selected) > 2:
-                pattern_scores[pattern_id] += 0.5
-    
-    def _normalize_scores(self, pattern_scores: Dict[int, float]) -> Dict[int, float]:
-        """Normalize scores to 0-10 scale"""
-        if not pattern_scores:
-            return pattern_scores
-        
-        max_score = max(pattern_scores.values())
-        if max_score == 0:
-            return pattern_scores
-        
-        # Normalize to 10-point scale
-        normalized = {}
-        for pattern_id, score in pattern_scores.items():
-            normalized[pattern_id] = min(10.0, (score / max_score) * 10)
-        
-        return normalized
-    
-    def _get_question_by_id(self, q_id: int) -> Optional[Dict]:
-        """Retrieve question by ID from all question sets"""
-        # Check all question sets
-        all_sets = [
-            QuestionSets.AGE_SCREENING,
-            QuestionSets.DIGITAL_SCREENING,
-            QuestionSets.ENGAGEMENT,
-            QuestionSets.TRIGGER_MAPPING,
-            QuestionSets.INTEGRATION
-        ]
-        
-        for question_set in all_sets:
-            if q_id in question_set:
-                return question_set[q_id]
-        
-        # Check pattern-specific questions
-        for pattern_questions in QuestionSets.PATTERN_SPECIFIC.values():
-            if q_id in pattern_questions:
-                return pattern_questions[q_id]
-        
-        return None
-    
-    def calculate_digital_despair_score(self, responses: Dict) -> float:
-        """Calculate digital despair syndrome score for digital natives"""
-        total_score = 0
-        question_count = 0
-        
-        # Check digital screening questions (1-7)
-        for q_id in range(1, 8):
-            if q_id in responses:
-                question = self._get_question_by_id(q_id)
-                if question and 'digital_despair_weights' in question:
-                    response = responses[q_id].get('response', '')
-                    options = question.get('options', [])
-                    
-                    try:
-                        option_index = options.index(response)
-                        weights = question['digital_despair_weights']
-                        if option_index < len(weights):
-                            total_score += weights[option_index]
-                            question_count += 1
-                    except (ValueError, IndexError):
-                        continue
-        
-        # Return normalized percentage score
-        if question_count == 0:
-            return 0.0
-        
-        max_possible = question_count * 5  # Max weight per question is 5
-        return (total_score / max_possible) * 100
-    
+PATTERN_REINFORCEMENT_MATRIX = {
+    (1, 2): 1.35, (1, 3): 1.5, (1, 4): 1.25, (1, 5): 1.1,
+    (2, 3): 1.15, (2, 4): 1.25, (2, 5): 1.3, (2, 6): 1.6, (2, 9): 1.2,
+    (3, 4): 1.3, (3, 5): 1.4, (3, 6): 1.8, (3, 7): 1.45, (3, 8): 1.4, (3, 9): 1.3,
+    (4, 5): 1.6, (4, 6): 1.3, (4, 7): 1.3,
+    (5, 6): 1.4, (5, 7): 1.1, (5, 8): 1.4, (5, 9): 1.2,
+    (6, 7): 1.3, (6, 8): 1.2, (6, 9): 1.15,
+    (7, 8): 1.5, (7, 9): 1.2,
+    (8, 9): 1.1
+}
 
-# ========================================================================================
-# ANALYTICS ENGINE
-# ========================================================================================
+def calculate_constellation_multiplier(pattern_scores: Dict[int, float]) -> float:
+    """Calculate amplification effect of co-occurring patterns"""
+    multiplier = 1.0
+    
+    for (p1, p2), amplification in PATTERN_REINFORCEMENT_MATRIX.items():
+        score1 = pattern_scores.get(p1, 0)
+        score2 = pattern_scores.get(p2, 0)
+        
+        if score1 >= 6 and score2 >= 6:
+            multiplier *= amplification
+    
+    return round(multiplier, 2)
+
+
+# ============================================================================
+# ANALYTICS ENGINE - REDESIGNED FOR CLINICAL VALIDITY
+# ============================================================================
 
 class AnalyticsEngine:
-    """Generates comprehensive clinical analytics from assessment data"""
+    """Comprehensive pattern analysis with clinical validity"""
     
     def __init__(self):
-        self.scoring_engine = ScoringEngine()
         self.patterns = PatternDefinitions.PATTERNS
         self.pattern_descriptions = PatternDefinitions.PATTERN_DESCRIPTIONS
     
-    def generate_complete_analysis(self, assessment_data: Dict) -> Dict:
-        """
-        Generate comprehensive clinical analysis
-        Returns complete analytics structure
-        """
-        responses = assessment_data.get('responses', {})
-        is_digital_native = assessment_data.get('is_digital_native', False)
+    
+    def _assess_session_3_need(self, pattern_count: int, complexity: str) -> str:
+        """Assess if session 3 likely needed"""
+        if pattern_count >= 5:
+            return "HIGHLY LIKELY - Multiple complex patterns requiring integration"
+        elif pattern_count >= 3:
+            return "MODERATE PROBABILITY - Monitor session 2 response"
+        elif 'high complexity' in complexity.lower():
+            return "POSSIBLE - Assess after session 2"
+        else:
+            return "UNLIKELY - Standard 2-session protocol sufficient"
         
-        # Calculate pattern scores
-        pattern_scores = self.scoring_engine.calculate_pattern_scores(responses)
+    
+    def _predict_resistance_points(
+        self,
+        pattern_info: Dict,
+        responses: Dict[int, Any]
+    ) -> List[str]:
+        """Predict specific resistance points"""
+        resistance_points = []
         
-        # Generate all analysis components
-        analysis = {
-            'pattern_analysis': self._analyze_patterns(pattern_scores),
-            'behavioral_chains': self._map_behavioral_chains(responses),
-            'digital_analysis': self._analyze_digital_trauma(responses, is_digital_native),
-            'hidden_dynamics': self._uncover_hidden_dynamics(responses, pattern_scores),
-            'readiness_profile': self._evaluate_readiness(responses),
-            'therapeutic_recommendations': self._generate_recommendations(pattern_scores, is_digital_native),
-            'session_planning': self._plan_sessions(pattern_scores, is_digital_native),
-            'clinical_insights': self._extract_clinical_insights(responses, pattern_scores)
+        # From hidden loyalties
+        hidden_loyalties = pattern_info.get('hidden_loyalties', [])
+        if hidden_loyalties:
+            resistance_points.append(f"Loyalty resistance: {hidden_loyalties[0]}")
+        
+        # From identity conflict
+        identity_conflict = pattern_info.get('identity_conflict', '')
+        if identity_conflict:
+            resistance_points.append(f"Identity threat: {identity_conflict}")
+        
+        # From protective function
+        protective = pattern_info.get('protective_function', '')
+        if protective:
+            resistance_points.append(f"Loss of protection: {protective}")
+        
+        return resistance_points[:3]  # Top 3 resistance points 
+
+    def score_patterns(self, responses: Dict[int, Any]) -> Dict[int, float]:
+        """
+        REDESIGNED: Score with proper statistical validity
+        Returns scores that actually differentiate patterns
+        """
+        pattern_raw_scores = {i: [] for i in range(1, 10)}  # Store all scores
+        
+        for question in COMPREHENSIVE_QUESTIONS:
+            qid = question['id']
+            pattern_id = question.get('pattern')
+            
+            if pattern_id is None or qid not in responses:
+                continue
+            
+            response = responses[qid]
+            score = self._calculate_question_score(question, response)
+            
+            pattern_raw_scores[pattern_id].append(score)
+        
+        # CRITICAL: Use 75th percentile instead of mean for better differentiation
+        pattern_scores = {}
+        for pattern_id, scores in pattern_raw_scores.items():
+            if not scores:
+                pattern_scores[pattern_id] = 0.0
+            elif len(scores) == 1:
+                pattern_scores[pattern_id] = scores[0]
+            else:
+                # Use weighted scoring: 70% max + 30% mean
+                # This makes significant patterns stand out
+                max_score = max(scores)
+                mean_score = sum(scores) / len(scores)
+                pattern_scores[pattern_id] = (max_score * 0.7) + (mean_score * 0.3)
+        
+        return pattern_scores
+    
+    
+    
+    def _calculate_question_score(self, question: Dict, response: Any) -> float:
+        """Calculate score with better clinical differentiation"""
+        qtype = question.get('type')
+        
+        if qtype == 'single_choice':
+            options = question.get('options', [])
+            weights = question.get('weights', [])
+            
+            if response in options:
+                index = options.index(response)
+                
+                if weights and index < len(weights):
+                    return float(weights[index])
+                
+                # Better default scaling for 5-option questions
+                if len(options) == 5:
+                    # Never, Rarely, Sometimes, Often, Always
+                    scale = [0, 3, 5, 8, 10]
+                    return scale[index] if index < len(scale) else 0
+                
+                return (index / (len(options) - 1)) * 10
+            return 0.0
+        
+        elif qtype == 'slider':
+            value = float(response) if response else 0
+            
+            if question.get('reverse_score', False):
+                max_val = question.get('max', 10)
+                value = max_val - value
+            
+            if question.get('scale_to_10', False):
+                max_val = question.get('max', 100)
+                value = (value / max_val) * 10
+            
+            return value
+        
+        elif qtype == 'text_completion':
+            text = str(response).strip()
+            if len(text) < 10:
+                return 0
+            
+            # Score based on length and intensity words
+            length_score = min(len(text) / 50, 5)
+            
+            intensity_words = ['always', 'never', 'can\'t', 'impossible', 'terrified', 
+                             'desperate', 'worthless', 'hopeless', 'trapped']
+            intensity_score = sum(1 for word in intensity_words if word in text.lower())
+            intensity_score = min(intensity_score * 2, 5)
+            
+            return min((length_score + intensity_score) / 2, 10)
+        
+        return 0.0
+    
+
+    def analyze_pattern_hierarchy(self, pattern_scores: Dict[int, float]) -> Dict[str, Any]:
+        """Analyze pattern hierarchy (preserved)"""
+        significant_patterns = {pid: score for pid, score in pattern_scores.items() if score >= 4.0}
+        
+        if not significant_patterns:
+            return {
+                'dominant_pattern': {},
+                'primary_patterns': [],
+                'secondary_patterns': [],
+                'all_scores': pattern_scores,
+                'pattern_count': 0,
+                'complexity_assessment': 'Healthy baseline - no significant patterns'
+            }
+        
+        sorted_patterns = sorted(significant_patterns.items(), key=lambda x: x[1], reverse=True)
+        dominant = sorted_patterns[0] if sorted_patterns else (None, 0)
+        primary = sorted_patterns[1:3] if len(sorted_patterns) > 1 else []
+        secondary = sorted_patterns[3:5] if len(sorted_patterns) > 3 else []
+        
+        def format_pattern(pid, score):
+            return {
+                'id': pid,
+                'name': self.patterns.get(pid, 'Unknown'),
+                'score': round(score, 1),
+                'severity': self._get_severity_level(score),
+                'description': self.pattern_descriptions.get(pid, {})
+            }
+        
+        return {
+            'dominant_pattern': format_pattern(dominant[0], dominant[1]) if dominant[0] else {},
+            'primary_patterns': [format_pattern(pid, score) for pid, score in primary],
+            'secondary_patterns': [format_pattern(pid, score) for pid, score in secondary],
+            'all_scores': {pid: round(score, 1) for pid, score in pattern_scores.items()},
+            'pattern_count': len(significant_patterns),
+            'complexity_assessment': self._assess_complexity(significant_patterns)
+        }
+    
+    def _get_severity_level(self, score: float) -> str:
+        if score >= 8.0: return "Severe"
+        elif score >= 6.0: return "Moderate-High"
+        elif score >= 4.0: return "Moderate"
+        else: return "Mild"
+    
+    def _assess_complexity(self, significant_patterns: Dict[int, float]) -> str:
+        count = len(significant_patterns)
+        severe_count = len([s for s in significant_patterns.values() if s >= 8.0])
+        
+        if severe_count >= 3:
+            return "High complexity - multiple severe patterns requiring phased intervention"
+        elif severe_count >= 2:
+            return "Moderate-high complexity - several significant patterns"
+        elif count >= 4:
+            return "Moderate complexity - multiple patterns to address"
+        elif count >= 2:
+            return "Standard complexity - focused dual-pattern intervention"
+        else:
+            return "Low complexity - single pattern focus optimal"
+    
+    def predict_resistance(self, responses: Dict[int, Any]) -> float:
+        resistance_scores = []
+        if 69 in responses:
+            belief_score = float(responses[69])
+            resistance_scores.append((10 - belief_score) / 10)
+        if 70 in responses:
+            response = responses[70]
+            options = ["Ready to start immediately", "Ready within the next week",
+                      "Ready within the next month", "Still exploring options",
+                      "Not ready yet - just gathering information"]
+            if response in options:
+                index = options.index(response)
+                resistance_scores.append(index / 4)
+        return round(sum(resistance_scores) / len(resistance_scores), 2) if resistance_scores else 0.3
+    
+    def calculate_success_probability(self, pattern_scores, constellation_multiplier, 
+                                     resistance_score, digital_analysis=None):
+        base_probability = 85
+        severe_patterns = len([s for s in pattern_scores.values() if s >= 8.0])
+        if severe_patterns >= 3: base_probability -= 10
+        elif severe_patterns >= 2: base_probability -= 5
+        if constellation_multiplier > 1.5: base_probability -= 5
+        elif constellation_multiplier > 1.3: base_probability -= 3
+        resistance_penalty = resistance_score * 15
+        base_probability -= resistance_penalty
+        if digital_analysis and digital_analysis.get('severity_level') in ['SEVERE', 'MODERATE']:
+            base_probability += 3
+        final_probability = max(70, min(95, base_probability))
+        if final_probability < 75:
+            recommended_sessions = 3
+            timeline = "3-4 weeks"
+        elif final_probability < 85:
+            recommended_sessions = 2.5
+            timeline = "2-3 weeks"
+        else:
+            recommended_sessions = 2
+            timeline = "2 weeks"
+        return {
+            'overall_success_rate': round(final_probability, 1),
+            'recommended_sessions': recommended_sessions,
+            'timeline_estimate': timeline
+        }
+    
+    def select_therapeutic_protocols(self, pattern_hierarchy, digital_analysis, success_prediction):
+        dominant_pattern = pattern_hierarchy.get('dominant_pattern', {})
+        pattern_id = dominant_pattern.get('id')
+        pattern_info = self.pattern_descriptions.get(pattern_id, {})
+        
+        protocols = {
+            'session_1': [
+                "Complete pattern mapping and behavioral chain analysis",
+                f"{pattern_info.get('session_1_focus', 'Pattern exploration')}",
+                "Initial rapport building",
+                "Light hypnotic work for change preparation"
+            ],
+            'session_2': [
+                f"{pattern_info.get('session_2_focus', 'Core transformation work')}",
+                "Deep hypnotic pattern interruption",
+                "Neural pathway installation for new responses",
+                "Future pacing and integration"
+            ]
         }
         
-        return analysis
-    
-    def _analyze_patterns(self, pattern_scores: Dict[int, float]) -> Dict:
-        """Analyze pattern intensity and rankings"""
-        # Sort patterns by score
-        sorted_patterns = sorted(
-            pattern_scores.items(),
-            key=lambda x: x[1],
-            reverse=True
+        if success_prediction.get('recommended_sessions', 2) >= 2.5:
+            protocols['session_3'] = [
+                "Pattern reinforcement and consolidation",
+                "Complex situation navigation",
+                "Long-term stability anchoring"
+            ]
+        
+        return protocols
+
+
+    def extract_trigger_chain(self, responses: Dict[int, Any]) -> Dict[str, Any]:
+        """
+        Extract complete trigger → response sequence
+        Maps exact intervention points for hypnotherapy
+        """
+        chain = {
+            'environmental_trigger': responses.get(14, 'Not captured'),  # Q14: Trigger situation
+            'awareness_point': responses.get(15, 'Not captured'),        # Q15: First notice
+            'physical_response': responses.get(16, 'Not captured'),      # Q16: Physical sensation
+            'automatic_thought': responses.get(17, 'Not captured'),      # Q17: Automatic thought
+            'emotional_response': responses.get(18, 'Not captured'),     # Q18: Emotions
+            'behavioral_response': responses.get(19, 'Not captured'),    # Q19: Behavior
+            'immediate_consequence': responses.get(20, 'Not captured'),  # Q20: After response
+            'longer_term_impact': responses.get(21, 'Not captured')      # Q21: Hours later
+        }
+        
+        # Calculate sequence completeness
+        captured_elements = sum(1 for v in chain.values() if v != 'Not captured')
+        completeness = (captured_elements / len(chain)) * 100
+        
+        # Identify intervention windows
+        intervention_points = []
+        if chain['physical_response'] != 'Not captured':
+            intervention_points.append('Somatic awareness intervention (physical sensation recognition)')
+        if chain['automatic_thought'] != 'Not captured':
+            intervention_points.append('Cognitive interruption (thought pattern disruption)')
+        if chain['behavioral_response'] != 'Not captured':
+            intervention_points.append('Behavioral choice point (alternative response installation)')
+        
+        return {
+            'trigger_chain': chain,
+            'sequence_completeness': round(completeness, 1),
+            'intervention_windows': intervention_points,
+            'chain_analysis': f"Sequence {completeness:.0f}% complete - {'sufficient for intervention design' if completeness >= 60 else 'requires session 1 completion'}"
+        }
+     
+     
+    def generate_complete_analysis(self, assessment_data: Dict) -> Dict[str, Any]:
+        """Generate comprehensive assessment analysis with all clinical data"""
+        responses = assessment_data.get('responses', {})
+        
+        # Score patterns
+        pattern_scores = self.score_patterns(responses)
+        
+        # Analyze hierarchy
+        from utils.config_assess import calculate_constellation_multiplier
+        pattern_hierarchy = self.analyze_pattern_hierarchy(pattern_scores)
+        constellation_multiplier = calculate_constellation_multiplier(pattern_scores)
+        
+        # Digital analysis
+        from utils.config_assess import compute_digital_despair_score
+        digital_analysis = compute_digital_despair_score(responses)
+        is_digital_native = digital_analysis['is_digital_native']
+        
+        # Resistance and success
+        resistance_score = self.predict_resistance(responses)
+        success_prediction = self.calculate_success_probability(
+            pattern_scores, constellation_multiplier, resistance_score,
+            digital_analysis if is_digital_native else None
         )
         
-        # Identify dominant pattern
-        dominant = sorted_patterns[0] if sorted_patterns else (None, 0)
-        dominant_id, dominant_score = dominant
+        # Therapeutic protocols
+        therapeutic_protocols = self.select_therapeutic_protocols(
+            pattern_hierarchy,
+            digital_analysis if is_digital_native else None,
+            success_prediction
+        )
+
+        # ENHANCED: Extract trigger chain
+        trigger_chain_data = self.extract_trigger_chain(responses)
         
-        # Count clinically significant patterns (score >= 5)
-        significant_patterns = [p for p, s in pattern_scores.items() if s >= 5]
-        
-        # Determine complexity
-        complexity = self._assess_complexity(len(significant_patterns), dominant_score)
+        # ENHANCED: Extract clinical summary data
+        clinical_summary = self.extract_clinical_summary_data(
+            pattern_hierarchy, responses, digital_analysis
+        )
         
         return {
             'pattern_scores': pattern_scores,
-            'dominant_pattern': {
-                'id': dominant_id,
-                'name': self.patterns.get(dominant_id, 'Unknown'),
-                'score': dominant_score,
-                'description': self.pattern_descriptions.get(dominant_id, {})
+            'pattern_analysis': pattern_hierarchy,
+            'pattern_hierarchy': pattern_hierarchy,
+            'constellation_multiplier': constellation_multiplier,
+            'resistance_score': resistance_score,
+            'digital_analysis': digital_analysis,
+            'is_digital_native': is_digital_native,
+            'success_prediction': success_prediction,
+            'therapeutic_recommendations': {
+                'success_probability': success_prediction['overall_success_rate'],
+                'recommended_sessions': success_prediction['recommended_sessions'],
+                'timeline': success_prediction['timeline_estimate'],
+                'protocols': therapeutic_protocols
             },
-            'secondary_patterns': [
-                {
-                    'id': p_id,
-                    'name': self.patterns.get(p_id),
-                    'score': score
-                }
-                for p_id, score in sorted_patterns[1:4]
-                if score >= 5
-            ],
-            'pattern_count': len(significant_patterns),
-            'complexity_assessment': complexity,
-            'pattern_ranking': sorted_patterns
+            'therapeutic_protocols': therapeutic_protocols,
+            'trigger_chain_analysis': trigger_chain_data,
+            'clinical_summary': clinical_summary,
+            'timestamp': datetime.now().isoformat(),
+            'assessment_quality': {
+                'total_questions_answered': len(responses),
+                'completion_rate': (len(responses) / len(COMPREHENSIVE_QUESTIONS)) * 100,
+                'text_responses': len([r for r in responses.values() if isinstance(r, str) and len(str(r)) > 20])
+            }
         }
     
-    def _assess_complexity(self, pattern_count: int, dominant_score: float) -> str:
-        """Assess overall pattern complexity"""
-        if pattern_count >= 5:
-            return "highly complex - multiple interconnected patterns"
-        elif pattern_count >= 3:
-            return "complex - several significant patterns"
-        elif pattern_count == 2:
-            return "moderate - dual pattern interaction"
-        elif pattern_count == 1 and dominant_score >= 8:
-            return "focused - single intense pattern"
-        else:
-            return "simple - clear focal point"
-    
-    def _map_behavioral_chains(self, responses: Dict) -> Dict:
-        """Map complete behavioral sequences"""
-        chain = {
-            'trigger': self._extract_chain_element(responses, 'trigger'),
-            'physical_response': self._extract_chain_element(responses, 'physical_response'),
-            'automatic_thought': self._extract_chain_element(responses, 'automatic_thought'),
-            'emotional_response': self._extract_chain_element(responses, 'emotional_response'),
-            'behavioral_response': self._extract_chain_element(responses, 'behavioral_response')
-        }
+  
+    def extract_clinical_summary_data(
+        self,
+        pattern_hierarchy: Dict,
+        responses: Dict[int, Any],
+        digital_analysis: Optional[Dict] = None
+    ) -> Dict[str, Any]:
+        """
+        Extract all data needed for rapid clinical summary template
+        """
+        # Get dominant and primary patterns
+        dominant = pattern_hierarchy.get('dominant_pattern', {})
+        primary_patterns = pattern_hierarchy.get('primary_patterns', [])
         
-        # Calculate chain completeness
-        completeness = sum(1 for v in chain.values() if v) / len(chain) * 100
+        dominant_id = dominant.get('id')
+        dominant_info = self.pattern_descriptions.get(dominant_id, {})
+        
+        # Extract core limiting belief
+        core_belief = dominant_info.get('core_belief', 'Not identified')
+        
+        # Extract hidden benefits (protective function)
+        hidden_benefits = dominant_info.get('protective_function', 'Not identified')
+        
+        # Extract systemic resistance factors
+        systemic_factors = dominant_info.get('systemic_factors', [])
+        systemic_resistance = '; '.join(systemic_factors) if systemic_factors else 'Not identified'
+        
+        # Extract identity threat
+        identity_conflict = dominant_info.get('identity_conflict', 'Not identified')
+        
+        # Session focus areas
+        session_1_focus = dominant_info.get('session_1_focus', 'Pattern exploration')
+        session_2_focus = dominant_info.get('session_2_focus', 'Core transformation')
+        
+        # Predict session 3 need
+        pattern_count = pattern_hierarchy.get('pattern_count', 0)
+        complexity = pattern_hierarchy.get('complexity_assessment', '')
+        session_3_need = self._assess_session_3_need(pattern_count, complexity)
+        
+        # Change readiness
+        readiness = self._calculate_readiness_score(responses)
+        
+        # Resistance prediction
+        resistance_points = self._predict_resistance_points(dominant_info, responses)
+        
+        # Intervention keywords and avoid language
+        intervention_keywords = ', '.join(dominant_info.get('intervention_keywords', []))
+        avoid_language = ', '.join(dominant_info.get('avoid_language', []))
         
         return {
-            'chain_sequence': chain,
-            'completeness_percentage': completeness,
-            'intervention_points': self._identify_intervention_points(chain)
+            'core_limiting_belief': core_belief,
+            'hidden_benefits': hidden_benefits,
+            'systemic_resistance': systemic_resistance,
+            'identity_threat': identity_conflict,
+            'session_1_focus': session_1_focus,
+            'session_2_target': session_2_focus,
+            'potential_session_3_need': session_3_need,
+            'change_readiness_score': readiness,
+            'predicted_resistance_points': resistance_points,
+            'intervention_keywords': intervention_keywords,
+            'avoid_language': avoid_language
         }
     
-    def _extract_chain_element(self, responses: Dict, element_type: str) -> Optional[str]:
-        """Extract specific chain element from responses"""
-        for response_data in responses.values():
-            question_data = response_data.get('question_data', {})
-            if question_data.get('chain_mapping') == element_type:
-                return response_data.get('response', '')
-        return None
-    
-    def _identify_intervention_points(self, chain: Dict) -> List[str]:
-        """Identify key intervention windows in behavioral chain"""
-        points = []
+    def _calculate_readiness_score(self, responses: Dict[int, Any]) -> str:
+        """Calculate change readiness from responses"""
+        # Question 69: Belief in change
+        belief_score = responses.get(69, 5)
         
-        if chain.get('physical_response'):
-            points.append("Physical awareness - early somatic intervention")
-        
-        if chain.get('automatic_thought'):
-            points.append("Thought pattern interruption - cognitive reframe")
-        
-        if chain.get('behavioral_response'):
-            points.append("Behavioral choice point - alternative response installation")
-        
-        return points
-    
-    def _analyze_digital_trauma(self, responses: Dict, is_digital_native: bool) -> Optional[Dict]:
-        """Analyze digital despair syndrome if applicable"""
-        if not is_digital_native:
-            return None
-        
-        digital_score = self.scoring_engine.calculate_digital_despair_score(responses)
-        
-        # Determine severity
-        if digital_score >= 70:
-            severity = "SEVERE"
-        elif digital_score >= 50:
-            severity = "MODERATE"
-        elif digital_score >= 30:
-            severity = "MILD"
-        else:
-            severity = "MINIMAL"
-        
-        return {
-            'digital_despair_score': digital_score,
-            'severity_level': severity,
-            'requires_adaptation': severity in ['SEVERE', 'MODERATE'],
-            'specialized_protocol': self._get_digital_protocol(severity),
-            'attention_modifications': self._get_attention_modifications(severity)
+        # Question 70: Readiness timing
+        readiness_response = responses.get(70, '')
+        readiness_map = {
+            "Ready to start immediately": 10,
+            "Ready within the next week": 8,
+            "Ready within the next month": 6,
+            "Still exploring options": 4,
+            "Not ready yet - just gathering information": 2
         }
-    
-    def _get_digital_protocol(self, severity: str) -> str:
-        """Get specialized protocol for digital natives"""
-        protocols = {
-            'SEVERE': "Full digital-native protocol with attention optimization, anti-authority language, ironic armor dissolution",
-            'MODERATE': "Enhanced digital-aware therapy with modified session length and authority resistance awareness",
-            'MILD': "Standard approach with digital considerations integrated",
-            'MINIMAL': "Traditional approach optimal"
-        }
-        return protocols.get(severity, "Standard approach")
-    
-    def _get_attention_modifications(self, severity: str) -> List[str]:
-        """Get attention span modifications needed"""
-        modifications = {
-            'SEVERE': [
-                "15-30 minute focused segments",
-                "Movement breaks between phases",
-                "High-intensity engagement techniques"
-            ],
-            'MODERATE': [
-                "45-60 minute sessions with breaks",
-                "Varied engagement methods"
-            ],
-            'MILD': [
-                "Standard 90-minute sessions",
-                "Minor pacing adjustments"
-            ],
-            'MINIMAL': []
-        }
-        return modifications.get(severity, [])
-    
-    def _uncover_hidden_dynamics(self, responses: Dict, pattern_scores: Dict) -> Dict:
-        """Uncover secondary gains and hidden beliefs"""
-        # Extract secondary gain response (question 35)
-        secondary_gain = responses.get(35, {}).get('response', 'Not captured')
+        timing_score = readiness_map.get(readiness_response, 5)
         
-        # Extract safety needs (question 36)
-        safety_needs = responses.get(36, {}).get('response', 'Not captured')
+        # Calculate average
+        avg_score = (belief_score + timing_score) / 2
         
-        # Analyze dominant pattern's protective function
-        dominant_id = max(pattern_scores, key=pattern_scores.get)
-        protective_function = self.pattern_descriptions.get(dominant_id, {}).get('protective_function', 'Unknown')
-        
-        return {
-            'secondary_gain': secondary_gain,
-            'protective_function': protective_function,
-            'safety_requirements': safety_needs,
-            'resistance_prediction': self._predict_resistance(pattern_scores)
-        }
-    
-    def _predict_resistance(self, pattern_scores: Dict) -> str:
-        """Predict likely resistance patterns"""
-        high_scores = [p for p, s in pattern_scores.items() if s >= 7]
-        
-        resistances = []
-        if 1 in high_scores:
-            resistances.append("May resist positive suggestions as temporary")
-        if 3 in high_scores:
-            resistances.append("May be skeptical of therapist intentions")
-        if 8 in high_scores:
-            resistances.append("Change may feel like betraying family")
-        
-        return "; ".join(resistances) if resistances else "Standard therapeutic resistance expected"
-    
-    def _evaluate_readiness(self, responses: Dict) -> Dict:
-        """Evaluate change readiness and motivation"""
-        # Extract urgency (question 38)
-        urgency_response = responses.get(38, {}).get('response', '')
-        
-        urgency_levels = {
-            "Extremely urgent": 10,
-            "Very urgent": 8,
-            "Moderately urgent": 6,
-            "Somewhat urgent": 4,
-            "Not urgent": 2
-        }
-        
-        readiness_score = urgency_levels.get(urgency_response, 5)
-        
-        # Extract hypnotic preference (question 37)
-        hypnotic_pref = responses.get(37, {}).get('response', 'Collaborative exploration')
-        
-        return {
-            'urgency_level': readiness_score,
-            'motivation': self._categorize_motivation(readiness_score),
-            'hypnotic_preference': hypnotic_pref,
-            'readiness_stage': self._determine_readiness_stage(readiness_score)
-        }
-    
-    def _categorize_motivation(self, score: int) -> str:
-        """Categorize motivation level"""
-        if score >= 8:
-            return "High - immediate action readiness"
-        elif score >= 6:
-            return "Moderate - exploring solutions actively"
-        else:
-            return "Low - early contemplation stage"
-    
-    def _determine_readiness_stage(self, score: int) -> str:
-        """Determine stage of change readiness"""
-        if score >= 8:
-            return "Action - ready for immediate intervention"
-        elif score >= 6:
-            return "Preparation - planning for change"
-        elif score >= 4:
-            return "Contemplation - considering change"
-        else:
-            return "Precontemplation - exploring possibilities"
-    
-    def _generate_recommendations(self, pattern_scores: Dict, is_digital_native: bool) -> Dict:
-        """Generate therapeutic recommendations"""
-        dominant_id = max(pattern_scores, key=pattern_scores.get)
-        dominant_pattern = self.pattern_descriptions.get(dominant_id, {})
-        
-        # Count significant patterns
-        significant_count = sum(1 for s in pattern_scores.values() if s >= 5)
-        
-        # Expected session count
-        if significant_count >= 4:
-            sessions = "2-3 sessions"
-            timeline = "3-4 weeks"
-        else:
-            sessions = "2 sessions"
-            timeline = "2-3 weeks"
-        
-        return {
-            'primary_approach': dominant_pattern.get('intervention_focus', 'Personalized hypnotherapy'),
-            'session_count': sessions,
-            'timeline_estimate': timeline,
-            'success_probability': self._calculate_success_probability(pattern_scores, is_digital_native),
-            'key_interventions': self._list_key_interventions(dominant_id)
-        }
-    
-    def _calculate_success_probability(self, pattern_scores: Dict, is_digital_native: bool) -> int:
-        """Calculate success probability percentage"""
-        base_rate = 85
-        
-        # Adjust for complexity
-        significant_count = sum(1 for s in pattern_scores.values() if s >= 5)
-        if significant_count >= 5:
-            base_rate -= 5
-        elif significant_count >= 3:
-            base_rate -= 2
-        
-        # Digital native bonus (specialized protocol)
-        if is_digital_native:
-            base_rate += 3
-        
-        return max(70, min(95, base_rate))
-    
-    def _list_key_interventions(self, dominant_pattern_id: int) -> List[str]:
-        """List key therapeutic interventions for pattern"""
-        interventions = {
-            1: ["Permission installation for positive states", "Safety anchoring with joy", "Expectation reframing"],
-            2: ["Collaborative empowerment", "Nervous system regulation", "Win-win response installation"],
-            3: ["Gradual trust building", "Transparent safety protocols", "Healthy skepticism calibration"],
-            4: ["Both/and integration", "Nuanced thinking installation", "Creative solution generation"],
-            5: ["Inherent worth anchoring", "Productivity reframing", "Being permission protocols"],
-            6: ["Authentic self integration", "Consistent identity anchoring", "Cross-context confidence"],
-            7: ["Self-care permission", "Boundary installation", "Reciprocal relationship patterns"],
-            8: ["Personal path claiming", "Family honor integration", "Autonomous decision-making"],
-            9: ["Universal strength anchoring", "Context-independent resources", "Consistent boundary maintenance"]
-        }
-        return interventions.get(dominant_pattern_id, ["Personalized protocol development"])
-    
-    def _plan_sessions(self, pattern_scores: Dict, is_digital_native: bool) -> Dict:
-        """Plan session structure and content"""
-        dominant_id = max(pattern_scores, key=pattern_scores.get)
-        dominant_name = self.patterns.get(dominant_id)
-        significant_count = sum(1 for s in pattern_scores.values() if s >= 5)
-        
-        # Session 1 planning
-        session_1 = f"Deep pattern mapping of {dominant_name}, behavioral chain analysis, therapeutic alliance building"
-        if is_digital_native:
-            session_1 += ", digital-native rapport establishment"
-        
-        # Session 2 planning
-        session_2 = f"Core {dominant_name} pattern transformation through deep hypnotherapy, neural pathway rewiring"
-        
-        # Session 3 planning (if needed)
-        session_3_needed = significant_count >= 4
-        session_3 = "Integration reinforcement and pattern consolidation" if session_3_needed else "Unlikely to be needed"
-        
-        return {
-            'session_1': {
-                'duration': '90 minutes',
-                'focus': session_1,
-                'objectives': [
-                    'Complete pattern validation',
-                    'Map behavioral chains',
-                    'Build therapeutic alliance',
-                    'Initial hypnotic preparation'
-                ]
-            },
-            'session_2': {
-                'duration': '90 minutes',
-                'focus': session_2,
-                'objectives': [
-                    'Deep hypnotic intervention',
-                    'Pattern interruption and rewiring',
-                    'New response installation',
-                    'Integration and future pacing'
-                ]
-            },
-            'session_3': {
-                'duration': '60 minutes',
-                'needed': session_3_needed,
-                'focus': session_3,
-                'note': 'Complimentary if needed based on session 2 results'
-            },
-            'total_timeline': '2-4 weeks',
-            'between_sessions': 'Pattern awareness exercises and integration practice'
-        }
-    
-    def _extract_clinical_insights(self, responses: Dict, pattern_scores: Dict) -> Dict:
-        """Extract key clinical insights for therapist"""
-        # Extract presenting problem
-        presenting_problem = responses.get(8, {}).get('response', 'Not specified')
-        
-        # Extract chronicity
-        chronicity = responses.get(9, {}).get('response', 'Unknown')
-        
-        # Extract interference level
-        interference = responses.get(11, {}).get('response', 5)
-        
-        # Extract desired outcome
-        desired_outcome = responses.get(10, {}).get('response', 'Not specified')
-        
-        return {
-            'presenting_problem': presenting_problem,
-            'chronicity': chronicity,
-            'interference_level': interference,
-            'desired_outcome': desired_outcome,
-            'dominant_pattern_focus': self._get_pattern_focus(pattern_scores),
-            'clinical_priority': self._determine_clinical_priority(interference, pattern_scores)
-        }
-    
-    def _get_pattern_focus(self, pattern_scores: Dict) -> str:
-        """Get clinical focus for dominant pattern"""
-        dominant_id = max(pattern_scores, key=pattern_scores.get)
-        return self.pattern_descriptions.get(dominant_id, {}).get('intervention_focus', 'Personalized approach')
-    
-    def _determine_clinical_priority(self, interference: int, pattern_scores: Dict) -> str:
-        """Determine clinical priority level"""
-        if interference >= 8 or max(pattern_scores.values()) >= 9:
-            return "High priority - significant functional impact"
-        elif interference >= 6 or max(pattern_scores.values()) >= 7:
-            return "Moderate priority - notable interference"
-        else:
-            return "Standard priority - manageable impact"
+        return f"{avg_score:.1f}/10"
 
 
-# ========================================================================================
-# ADAPTIVE QUESTION ROUTER
-# ========================================================================================
+
+# ============================================================================
+# QUESTION ROUTER
+# ============================================================================
 
 class QuestionRouter:
-    """Routes questions adaptively based on responses"""
+    """Intelligent question routing"""
     
     def __init__(self):
-        self.question_sets = QuestionSets
+        self.core_questions = [q for q in COMPREHENSIVE_QUESTIONS if not q.get('validation')]
+        self.validation_questions = [q for q in COMPREHENSIVE_QUESTIONS if q.get('validation')]
     
-    def get_next_question(self, current_responses: Dict, is_digital_native: bool) -> Optional[Dict]:
-        """
-        Determine next question based on current responses
-        Returns: question dict with ID, or None if complete
-        """
-        answered_ids = set(current_responses.keys())
+    def get_next_question(self, responses: Dict[int, Any], is_digital_native: bool) -> Optional[Dict]:
+        """Get next question"""
         
-        # Phase 0: Age screening (always first)
-        if 0 not in answered_ids:
-            return self._format_question(0, self.question_sets.AGE_SCREENING[0])
+        # Core questions first
+        for question in self.core_questions:
+            if question['id'] not in responses:
+                return question
         
-        # Phase 1: Digital screening (only for digital natives)
-        if is_digital_native:
-            for q_id in range(1, 8):
-                if q_id not in answered_ids:
-                    return self._format_question(q_id, self.question_sets.DIGITAL_SCREENING[q_id])
-        
-        # Phase 2: Core engagement questions
-        for q_id in range(8, 12):
-            if q_id not in answered_ids:
-                return self._format_question(q_id, self.question_sets.ENGAGEMENT[q_id])
-        
-        # Phase 3: Trigger mapping
-        for q_id in range(12, 17):
-            if q_id not in answered_ids:
-                return self._format_question(q_id, self.question_sets.TRIGGER_MAPPING[q_id])
-        
-        # Phase 4: Pattern-specific questions (adaptive based on detected patterns)
-        pattern_questions = self._get_pattern_specific_questions(current_responses, answered_ids)
-        if pattern_questions:
-            return pattern_questions
-        
-        # Phase 5: Integration questions
-        for q_id in range(35, 39):
-            if q_id not in answered_ids:
-                return self._format_question(q_id, self.question_sets.INTEGRATION[q_id])
-        
-        # Assessment complete
-        return None
-    
-    def _format_question(self, q_id: int, question_data: Dict) -> Dict:
-        """Format question with ID for rendering"""
-        return {
-            'id': q_id,
-            **question_data
-        }
-    
-    def _get_pattern_specific_questions(self, responses: Dict, answered_ids: set) -> Optional[Dict]:
-        """Get pattern-specific questions based on detected patterns"""
-        # Quick pattern detection from responses so far
-        scoring_engine = ScoringEngine()
-        pattern_scores = scoring_engine.calculate_pattern_scores(responses)
-        
-        # Get top 3 patterns
-        top_patterns = sorted(pattern_scores.items(), key=lambda x: x[1], reverse=True)[:3]
-        
-        # Check pattern-specific questions for top patterns
-        for pattern_id, score in top_patterns:
-            if score >= 3:  # Threshold for pattern-specific questions
-                pattern_key = f"pattern_{pattern_id}"
-                if pattern_key in self.question_sets.PATTERN_SPECIFIC:
-                    pattern_questions = self.question_sets.PATTERN_SPECIFIC[pattern_key]
-                    for q_id, question in pattern_questions.items():
-                        if q_id not in answered_ids:
-                            return self._format_question(q_id, question)
+        # Then validation
+        for question in self.validation_questions:
+            if question['id'] not in responses:
+                return question
         
         return None
     
-    def estimate_total_questions(self, current_responses: Dict, is_digital_native: bool) -> int:
-        """Estimate total number of questions for progress tracking"""
-        base = 1  # Age screening
-        
-        if is_digital_native:
-            base += 7  # Digital screening
-        
-        base += 4  # Engagement
-        base += 5  # Trigger mapping
-        base += 4  # Integration
-        
-        # Pattern-specific (estimate 2 per detected pattern)
-        scoring_engine = ScoringEngine()
-        pattern_scores = scoring_engine.calculate_pattern_scores(current_responses)
-        significant_patterns = sum(1 for s in pattern_scores.values() if s >= 3)
-        base += significant_patterns * 2
-        
-        return base
+    def estimate_total_questions(self, responses: Dict[int, Any], is_digital_native: bool) -> int:
+        """Estimate total questions"""
+        return len(COMPREHENSIVE_QUESTIONS)
 
 
-# ========================================================================================
-# EXPORT CLASSES
-# ========================================================================================
+# ============================================================================
+# CONFIGURATION CLASS
+# ============================================================================
+
+class AssessmentConfig:
+    """Centralized configuration access"""
+    
+    pattern_definitions = PatternDefinitions
+    comprehensive_questions = COMPREHENSIVE_QUESTIONS
+    digital_despair_subscales = DIGITAL_DESPAIR_SUBSCALES
+    pattern_reinforcement_matrix = PATTERN_REINFORCEMENT_MATRIX
+    
+    @staticmethod
+    def get_analytics_engine():
+        return AnalyticsEngine()
+    
+    @staticmethod
+    def get_question_router():
+        return QuestionRouter()
+    
+    @staticmethod
+    def compute_digital_despair(responses):
+        return compute_digital_despair_score(responses)
+    
+    @staticmethod
+    def calculate_constellation(pattern_scores):
+        return calculate_constellation_multiplier(pattern_scores)
+
 
 __all__ = [
     'PatternDefinitions',
-    'QuestionSets',
-    'ScoringEngine',
+    'COMPREHENSIVE_QUESTIONS',
     'AnalyticsEngine',
-    'QuestionRouter'
+    'QuestionRouter',
+    'AssessmentConfig',
+    'compute_digital_despair_score',
+    'calculate_constellation_multiplier'
 ]
