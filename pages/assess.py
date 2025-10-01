@@ -3138,28 +3138,34 @@
 
 
 """
-Simple Assessment Page - Clean Version
-Basic assessment functionality without complex navigation
+Behavioral Pattern Assessment Page
+Uses reference UX/UI with utils.config_assess.py backend
 """
 
 import streamlit as st
-import sys
-import os
-import datetime
+from datetime import datetime
+from typing import Dict, Optional
+import re
 
-# Add the utils directory to the path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
-
+# Import configuration
 try:
-    from utils.config import EnhancedAssessmentConfig
+    from utils.config_assess import (
+        PatternDefinitions,
+        QuestionSets,
+        ScoringEngine,
+        AnalyticsEngine,
+        QuestionRouter
+    )
+    CONFIG_LOADED = True
 except ImportError as e:
-    st.error(f"Import error: {e}")
-    st.stop()
+    st.error(f"Configuration module not found: {str(e)}")
+    CONFIG_LOADED = False
 
-# Initialize components
-enhanced_assessment = EnhancedAssessmentConfig()
 
-# Page configuration
+# ========================================================================================
+# PAGE CONFIGURATION
+# ========================================================================================
+
 st.set_page_config(
     page_title="Behavioral Assessment",
     page_icon="🎯",
@@ -3167,7 +3173,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Enhanced CSS styling based on reference design
+
+# ========================================================================================
+# STYLING (FROM REFERENCE)
+# ========================================================================================
+
 st.markdown("""
     <style>
     /* Global styling */
@@ -3247,20 +3257,6 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
     }
 
-    .question-container-styled:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-    }
-
-    .question-card-container:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 24px rgba(39, 53, 72, 0.12) !important;
-    }
-
-    .question-header-container:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-    }
-
     .custom-question-text {
         color: #273548 !important;
         font-size: 1.1rem !important;
@@ -3268,30 +3264,6 @@ st.markdown("""
         margin: 0 !important;
         font-weight: 500 !important;
         padding: 0 !important;
-        text-shadow: none;
-    }
-
-    .question-card {
-        background: #FFFFFF;
-        border-radius: 12px;
-        padding: 1.5rem 2rem;
-        box-shadow: 0 4px 20px rgba(39, 53, 72, 0.08);
-        border: 1px solid #CBD5E1;
-        margin-bottom: 1rem;
-        transition: all 0.3s ease;
-    }
-
-    .question-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 24px rgba(39, 53, 72, 0.12);
-    }
-
-    .question-subtitle {
-        color: #64748B;
-        font-size: 1rem;
-        margin-top: 0.75rem;
-        font-style: italic;
-        opacity: 0.8;
     }
 
     /* Enhanced radio button styling */
@@ -3309,7 +3281,6 @@ st.markdown("""
         box-shadow: 0 4px 16px rgba(76, 161, 163, 0.1);
         border-color: #4CA1A3;
         transform: translateY(-1px);
-        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
     }
 
     .stRadio > div > label > div {
@@ -3335,7 +3306,6 @@ st.markdown("""
         font-size: 1rem;
         transition: all 0.2s ease;
         border: none;
-        text-transform: none;
     }
 
     .stButton > button[kind="primary"] {
@@ -3371,6 +3341,7 @@ st.markdown("""
         padding: 0.75rem;
         font-size: 1rem;
         transition: all 0.2s ease;
+        font-size: 16px !important;
     }
 
     .stTextInput > div > div > input:focus,
@@ -3388,11 +3359,6 @@ st.markdown("""
         margin-top: 2rem;
         box-shadow: 0 4px 20px rgba(39, 53, 72, 0.08);
         border: 1px solid #CBD5E1;
-        transition: all 0.3s ease;
-    }
-
-    .nav-container:hover {
-        box-shadow: 0 6px 24px rgba(39, 53, 72, 0.12);
     }
 
     /* Results styling */
@@ -3422,31 +3388,11 @@ st.markdown("""
         box-shadow: 0 6px 24px rgba(39, 53, 72, 0.12);
     }
 
-    /* Character count styling */
+    /* Character count */
     .char-count {
         font-size: 0.875rem;
         margin-top: 0.5rem;
         font-weight: 500;
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .main .block-container {
-            padding: 1rem;
-            max-width: 100%;
-        }
-
-        .question-header {
-            padding: 1.5rem;
-        }
-
-        .question-text {
-            font-size: 1.1rem;
-        }
-
-        .assessment-title {
-            font-size: 1.5rem;
-        }
     }
 
     /* Animations */
@@ -3455,26 +3401,76 @@ st.markdown("""
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .question-header {
-        animation: fadeIn 0.5s ease-out;
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .main .block-container {
+            padding: 1rem;
+            max-width: 100%;
+        }
+        .assessment-title {
+            font-size: 1.5rem;
+        }
     }
+
+    /* Hide Streamlit branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
 
+
+# ========================================================================================
+# SESSION STATE
+# ========================================================================================
+
 def initialize_session_state():
     """Initialize session state variables"""
-    if 'current_question' not in st.session_state:
+    # Force fresh start if not already started
+    if 'assessment_started' not in st.session_state:
+        # Clear everything
+        for key in list(st.session_state.keys()):
+            del st.session_state[key]
+        
+        st.session_state.assessment_started = True
         st.session_state.current_question = 0
-    if 'responses' not in st.session_state:
         st.session_state.responses = {}
-    if 'current_stage' not in st.session_state:
-        st.session_state.current_stage = None
+        st.session_state.is_digital_native = False
+        st.session_state.digital_native_determined = False
+        st.session_state.contact_provided = False
+        st.session_state.assessment_completed = False
 
-def render_question_card(question_data):
-    """Render individual question with gradient header only"""
-    question_text = question_data['text']
 
-    # Just the inner gradient header container
+# ========================================================================================
+# CALLBACK FUNCTIONS (FROM REFERENCE)
+# ========================================================================================
+
+def save_response_callback(question_id, question_text, phase):
+    """Callback function to save response immediately when input changes"""
+    def callback():
+        widget_key = f"question_{question_id}_input"
+        if widget_key in st.session_state:
+            response_value = st.session_state[widget_key]
+            
+            # Convert list to comma-separated string for multiselect
+            if isinstance(response_value, list):
+                response_value = ", ".join(response_value) if response_value else ""
+            
+            st.session_state.responses[question_id] = {
+                'response': response_value,
+                'question_text': question_text,
+                'phase': phase,
+                'timestamp': datetime.now().isoformat()
+            }
+    return callback
+
+
+# ========================================================================================
+# RENDERING FUNCTIONS
+# ========================================================================================
+
+def render_question_card(question_text):
+    """Render question card with exact reference styling"""
     st.markdown(f"""
         <div style="
             background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%);
@@ -3497,55 +3493,132 @@ def render_question_card(question_data):
         </div>
     """, unsafe_allow_html=True)
 
-def render_options(options, question_id):
-    """Render answer options with support for text input"""
-    # Check for previous response
+
+def render_options(question_id, question_data, question_text, phase):
+    """Render answer options based on question type"""
+    q_type = question_data.get('type', 'single_choice')
+    options = question_data.get('options', [])
+    
+    # Get previous response
     previous_response = None
     if question_id in st.session_state.responses:
         previous_response = st.session_state.responses[question_id].get('response')
-
-    # Set default index
-    default_index = 0
-    if previous_response and previous_response in options:
-        try:
-            default_index = options.index(previous_response)
-        except ValueError:
-            default_index = 0
-
-    response = st.radio(
-        label="Select your response:",
-        options=options,
-        key=f"question_{question_id}_radio",
-        index=default_index,
-        label_visibility="collapsed"
-    )
-
-    # Check if this is a "write your own" option
-    if response and any(keyword in response.lower() for keyword in ['write', 'describe', 'explain', 'other']):
-        st.markdown("**Please Provide More Details:**")
-        custom_response = st.text_area(
-            "Your response:",
-            key=f"custom_input_{question_id}",
-            placeholder="Please share your thoughts in detail...",
+    
+    # Create callback
+    callback = save_response_callback(question_id, question_text, phase)
+    
+    # Render based on type
+    if q_type == 'single_choice':
+        default_index = 0
+        if previous_response and previous_response in options:
+            try:
+                default_index = options.index(previous_response)
+            except ValueError:
+                default_index = 0
+        
+        response = st.radio(
+            label="Select your response:",
+            options=options,
+            key=f"question_{question_id}_input",
+            index=default_index,
+            label_visibility="collapsed",
+            on_change=callback
+        )
+        return response
+    
+    elif q_type == 'text_completion':
+        placeholder = question_data.get('placeholder', 'Your response...')
+        min_chars = question_data.get('min_chars', 10)
+        
+        response = st.text_area(
+            label="Please describe in detail:",
+            value=previous_response or "",
+            key=f"question_{question_id}_input",
+            label_visibility="collapsed",
+            placeholder=placeholder,
             height=120,
-            help="Take your time to provide a thoughtful response"
+            on_change=callback
+        )
+        
+        # Character count
+        char_count = len(response.strip())
+        chars_needed = max(0, min_chars - char_count)
+        
+        if chars_needed > 0:
+            st.markdown(f'<div class="char-count">✍️ Please add at least {chars_needed} more characters</div>', 
+                       unsafe_allow_html=True)
+        else:
+            st.markdown(f'<div class="char-count">✓ {char_count} characters</div>', 
+                       unsafe_allow_html=True)
+        
+        return response
+    
+    elif q_type == 'slider':
+        min_val = question_data.get('min', 1)
+        max_val = question_data.get('max', 10)
+        default_val = question_data.get('default', 5)
+        
+        if previous_response:
+            try:
+                default_val = int(previous_response)
+            except:
+                pass
+        
+        value = st.slider(
+            label="Select value:",
+            min_value=min_val,
+            max_value=max_val,
+            value=default_val,
+            key=f"question_{question_id}_input",
+            label_visibility="collapsed",
+            on_change=callback
+        )
+        
+        st.markdown(f"""
+        <div style="text-align: center; color: #4CA1A3; font-size: 1.5rem; font-weight: 600; margin: 1rem 0;">
+            {value} / {max_val}
+        </div>
+        """, unsafe_allow_html=True)
+        
+        return value
+    
+    elif q_type == 'multi_select':
+        max_selections = question_data.get('max_selections', len(options))
+        
+        default_selections = []
+        if previous_response:
+            default_selections = [s.strip() for s in previous_response.split(',')]
+        
+        selected = st.multiselect(
+            label="Select all that apply:",
+            options=options,
+            default=default_selections,
+            key=f"question_{question_id}_input",
+            max_selections=max_selections,
+            label_visibility="collapsed",
+            on_change=callback
+        )
+        
+        if selected:
+            st.caption(f"✓ {len(selected)} selected (max {max_selections})")
+        else:
+            st.caption(f"Select up to {max_selections} options")
+        
+        return ", ".join(selected) if selected else ""
+    
+    else:
+        # Default to radio
+        return st.radio(
+            label="Select:",
+            options=options,
+            key=f"question_{question_id}_input",
+            label_visibility="collapsed",
+            on_change=callback
         )
 
-        # Enhanced character count with visual feedback
-        char_count = len(custom_response.strip())
-        if char_count > 0:
-            color = "#22c55e" if char_count >= 10 else "#f59e0b"
-            icon = "✓" if char_count >= 10 else "📝"
-            st.markdown(f"<div class='char-count' style='color: {color};'>{icon} {char_count} characters</div>", unsafe_allow_html=True)
-
-        # Return custom response if provided, otherwise the selected option
-        if custom_response.strip():
-            return custom_response.strip()
-
-    return response
 
 def render_contact_form():
-    """Render enhanced contact information form"""
+    """Render contact form (from reference)"""
     st.markdown("""
         <div class="results-header">
             <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Unlock your personalized therapeutic recommendations</p>
@@ -3560,375 +3633,293 @@ def render_contact_form():
         </div>
     """, unsafe_allow_html=True)
 
-    with st.form("contact_form"):
-        col1, col2 = st.columns(2)
-        with col1:
-            first_name = st.text_input("First name*", key="contact_first_name")
-            email = st.text_input("Email address*", key="contact_email")
-        with col2:
-            last_name = st.text_input("Last name*", key="contact_last_name")
-            phone = st.text_input("Phone number", key="contact_phone")
+    col1, col2 = st.columns(2)
+    with col1:
+        first_name = st.text_input("First name*", key="contact_first_name")
+        email = st.text_input("Email address*", key="contact_email")
+    with col2:
+        last_name = st.text_input("Last name*", key="contact_last_name")
+        phone = st.text_input("Phone number", key="contact_phone")
 
-        urgency = st.selectbox(
-            "How urgent is your need for support?*",
-            ["Standard - within a week", "High priority - within 2-3 days", "Very urgent - within 24 hours", "Extremely urgent - same day if possible"]
-        )
+    urgency = st.selectbox(
+        "How urgent is your need for support?*",
+        ["Select urgency...", "Standard - within a week", "High priority - within 2-3 days", 
+         "Very urgent - within 24 hours", "Extremely urgent - same day if possible"],
+        key="contact_urgency"
+    )
 
-        additional_info = st.text_area(
-            "Additional information or specific concerns:",
-            placeholder="Any additional details that might help us better understand your situation..."
-        )
+    additional_info = st.text_area(
+        "Additional information or specific concerns:",
+        key="contact_additional",
+        placeholder="Any additional details that might help us...",
+        height=100
+    )
 
-        submitted = st.form_submit_button("Get my complete analysis", type="primary")
-
-        if submitted:
-            if first_name and last_name and email:
-                # Save contact info
-                st.session_state.contact_info = {
-                    'first_name': first_name,
-                    'last_name': last_name,
-                    'email': email,
-                    'phone': phone,
-                    'urgency': urgency,
-                    'additional_info': additional_info,
-                    'submission_time': datetime.datetime.now().isoformat()
-                }
-                st.session_state.contact_provided = True
-                st.rerun()
-            else:
-                st.error("Please fill in all required fields (marked with *)")
-
-def create_basic_profile_from_scores(clinical_scores, responses):
-    """Create a basic profile from clinical scores"""
-    # Get the highest scoring patterns
-    sorted_patterns = sorted(clinical_scores.items(), key=lambda x: x[1], reverse=True)
-
-    return {
-        'enhanced_pattern_scores': clinical_scores,
-        'pattern_hierarchy': {
-            'dominant_pattern': {
-                'name': sorted_patterns[0][0] if sorted_patterns else 'general_wellness',
-                'score': sorted_patterns[0][1] if sorted_patterns else 3.0,
-                'id': 1
-            },
-            'primary_pattern': {
-                'name': sorted_patterns[1][0] if len(sorted_patterns) > 1 else 'lifestyle_balance',
-                'score': sorted_patterns[1][1] if len(sorted_patterns) > 1 else 2.5,
-                'id': 2
-            }
-        },
-        'session_planning': {
-            'recommended_sessions': 2 + (1 if len(responses) > 50 else 0),
-            'session_1_focus': 'Assessment and rapport building',
-            'session_2_target': 'Core pattern transformation'
-        },
-        'behavioral_analysis': {
-            'core_limiting_beliefs': [f'Patterns identified from {len(responses)} responses'],
-            'hidden_benefits': ['Benefits maintaining current patterns'],
-            'systemic_resistance': ['Natural resistance to change']
-        },
-        'success_prediction': {'probability': min(85, 60 + len(responses))},
-        'change_readiness_score': min(10, 5 + len(responses) // 10)
-    }
-
-def create_fallback_profile_from_responses(responses):
-    """Create a fallback profile directly from responses"""
-    num_responses = len(responses)
-
-    # Analyze response patterns for basic insights
-    response_values = list(responses.values())
-
-    # Simple pattern detection based on response content
-    stress_indicators = sum(1 for r in response_values if any(word in str(r.get('response', '')).lower()
-                           for word in ['stress', 'anxious', 'worry', 'difficult']))
-
-    motivation_indicators = sum(1 for r in response_values if any(word in str(r.get('response', '')).lower()
-                               for word in ['want', 'need', 'hope', 'change', 'better']))
-
-    return {
-        'enhanced_pattern_scores': {
-            'stress_management': min(5.0, stress_indicators * 0.5 + 2.0),
-            'motivation_patterns': min(5.0, motivation_indicators * 0.4 + 2.0),
-            'general_wellness': 3.0
-        },
-        'pattern_hierarchy': {
-            'dominant_pattern': {
-                'name': 'stress_management' if stress_indicators > motivation_indicators else 'motivation_patterns',
-                'score': max(stress_indicators * 0.5 + 2.0, motivation_indicators * 0.4 + 2.0),
-                'id': 1
-            },
-            'primary_pattern': {
-                'name': 'general_wellness',
-                'score': 3.0,
-                'id': 2
-            }
-        },
-        'session_planning': {
-            'recommended_sessions': 2 if num_responses < 30 else 3,
-            'session_1_focus': 'Understanding your patterns and goals',
-            'session_2_target': 'Developing personalized strategies',
-            'session_3_potential': 'Integration and follow-up' if num_responses >= 30 else None
-        },
-        'behavioral_analysis': {
-            'core_limiting_beliefs': [
-                'Patterns identified through comprehensive assessment',
-                f'Assessment completion: {num_responses} detailed responses'
-            ],
-            'hidden_benefits': ['Current patterns provide some stability'],
-            'systemic_resistance': ['Natural adjustment period for new patterns']
-        },
-        'success_prediction': {'probability': min(90, 65 + num_responses)},
-        'change_readiness_score': min(10, 6 + num_responses // 8),
-        'assessment_quality': 'high' if num_responses > 40 else 'standard'
-    }
-
-def show_comprehensive_results(enhanced_assessment, responses):
-    """Show comprehensive results with enhanced pattern recognition and analysis"""
-
-    # Generate comprehensive profile with robust error handling
-    profile = None
-
-    # Try multiple profile generation methods
-    try:
-        # First attempt: Full enhanced profile
-        profile = enhanced_assessment.generate_enhanced_profile(responses)
-        if not isinstance(profile, dict):
-            profile = None
-    except:
-        profile = None
-
-    # Second attempt: Basic clinical scores
-    if profile is None:
-        try:
-            clinical_scores = enhanced_assessment.user_friendly_assessment.calculate_clinical_scores(responses)
-            if isinstance(clinical_scores, dict):
-                profile = create_basic_profile_from_scores(clinical_scores, responses)
-        except:
-            profile = None
-
-    # Final fallback: Generate profile from responses directly
-    if profile is None:
-        profile = create_fallback_profile_from_responses(responses)
-
-    # Ensure profile is valid
-    if not isinstance(profile, dict):
-        profile = create_fallback_profile_from_responses(responses)
-
-    # Send email to therapist
-    try:
-        from utils.email_assess import send_assessment_email
-        contact_info = st.session_state.get('contact_info', {})
-        email_sent = send_assessment_email(contact_info, responses, profile)
-        if email_sent:
-            st.success("✅ Assessment results sent to clinical team")
+    if st.button("Get my complete analysis", type="primary", use_container_width=True):
+        # Validate
+        errors = []
+        if not first_name.strip():
+            errors.append("First name is required")
+        if not last_name.strip():
+            errors.append("Last name is required")
+        if not email.strip():
+            errors.append("Email is required")
+        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+            errors.append("Valid email required")
+        if urgency == "Select urgency...":
+            errors.append("Please select urgency level")
+        
+        if errors:
+            for error in errors:
+                st.error(f"❌ {error}")
         else:
-            st.info("📧 Clinical team will be notified of your assessment")
-    except Exception as e:
-        st.info("📧 Clinical team will be notified of your assessment")
-        print(f"Email sending failed: {e}")
+            # Save contact info
+            st.session_state.contact_info = {
+                'first_name': first_name,
+                'last_name': last_name,
+                'full_name': f"{first_name} {last_name}".strip(),
+                'email': email,
+                'phone': phone,
+                'urgency': urgency,
+                'additional_info': additional_info,
+                'timestamp': datetime.now().isoformat()
+            }
+            st.session_state.contact_provided = True
+            st.rerun()
 
-    # Enhanced Results Display
+
+def render_results():
+    """Render results page"""
+    # Initialize analytics
+    analytics = AnalyticsEngine()
+    
+    # Prepare assessment data
+    assessment_data = {
+        'responses': st.session_state.responses,
+        'is_digital_native': st.session_state.get('is_digital_native', False)
+    }
+    
+    # Generate analysis
+    try:
+        analysis = analytics.generate_complete_analysis(assessment_data)
+    except Exception as e:
+        st.error(f"Error generating analysis: {str(e)}")
+        analysis = {}
+    
+    # Get contact info
+    contact_info = st.session_state.get('contact_info', {})
+    client_name = contact_info.get('full_name', 'Valued Client')
+    
+    # Results header
     st.markdown("""
         <div class="results-header">
-            <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Personalized insights and recommendations</p>
+            <h1 style="margin: 0; color: white; font-size: 2rem; font-weight: 600;">YOUR ASSESSMENT RESULTS</h1>
+            <p style="margin: 0.5rem 0 0 0; opacity: 0.9; font-size: 1.1rem; color: white;">
+                Based on comprehensive behavioral analysis
+            </p>
         </div>
     """, unsafe_allow_html=True)
-
-    st.markdown("**🎉 YOUR COMPREHENSIVE ASSESSMENT RESULTS**")
-
-    # Contact info summary
-    if 'contact_info' in st.session_state:
-        contact = st.session_state.contact_info
-        st.markdown(f"""
-            <div class="insight-card">
-                <h4 style="margin: 0 0 0.5rem 0; color: #4CA1A3;">Assessment for: {contact['first_name']} {contact['last_name']}</h4>
-                <p style="margin: 0; color: #64748B; font-size: 0.9rem;">Completed on {datetime.datetime.now().strftime('%B %d, %Y')}</p>
-            </div>
-        """, unsafe_allow_html=True)
-
-    # Pattern hierarchy
-    pattern_hierarchy = profile.get('pattern_hierarchy', {})
-    dominant_pattern = pattern_hierarchy.get('dominant_pattern', {})
-
-    st.markdown("**Your dominant pattern**")
-
-    st.markdown("""
-        <div class="insight-card">
-            <div style="background: linear-gradient(135deg, #4CA1A3 0%, #22c55e 100%); color: white; padding: 1rem; border-radius: 8px;">
-                <h4 style="margin: 0; font-size: 1.2rem;">{}</h4>
-                <p style="margin: 0.25rem 0 0 0; opacity: 0.9;">Score: {:.1f}/5.0</p>
-            </div>
-        </div>
-    """.format(
-        dominant_pattern.get('name', 'General Pattern').replace('_', ' ').title(),
-        dominant_pattern.get('score', 0)
-    ), unsafe_allow_html=True)
-
-    # Session planning
-    session_planning = profile.get('session_planning', {})
-
-    st.markdown("**Recommended treatment plan**")
-
+    
+    # Summary
     st.markdown(f"""
-        <div class="insight-card">
-            <div style="display: grid; gap: 0.75rem;">
-                <div><strong>Recommended sessions:</strong> {session_planning.get('recommended_sessions', 2)}</div>
-                <div><strong>Session 1 focus:</strong> {session_planning.get('session_1_focus', 'Initial assessment')}</div>
-                <div><strong>Session 2 target:</strong> {session_planning.get('session_2_target', 'Core work')}</div>
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin: 1rem 0;">
+            <div style="margin: 0 0 1rem 0; color: #2d3436; font-size: 1.25rem; font-weight: 600;">
+                Assessment summary for {client_name}
             </div>
+            <p style="margin: 0; color: #636e72;">Completed on {datetime.now().strftime('%B %d, %Y')}</p>
         </div>
     """, unsafe_allow_html=True)
-
+    
+    # Extract pattern analysis
+    pattern_analysis = analysis.get('pattern_analysis', {})
+    dominant = pattern_analysis.get('dominant_pattern', {})
+    
+    # Display dominant pattern
+    st.markdown("**YOUR PRIMARY PATTERN**")
+    pattern_name = dominant.get('name', 'Pattern identified')
+    pattern_score = dominant.get('score', 0)
+    
+    st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
+                    color: white; padding: 1.5rem; border-radius: 12px; margin: 1rem 0;">
+            <div style="margin: 0; font-size: 1.25rem; font-weight: 600; color: white;">{pattern_name}</div>
+            <p style="margin: 0.5rem 0 0 0; opacity: 0.9; font-size: 1.1rem; color: white;">
+                Intensity Level: {pattern_score:.1f}/10
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
     # Success prediction
-    success_prob = profile.get('success_prediction', {}).get('probability', 75)
-
-    st.markdown("**Success prediction**")
-
+    recommendations = analysis.get('therapeutic_recommendations', {})
+    success_rate = recommendations.get('success_probability', 85)
+    
+    st.markdown("**YOUR SUCCESS PROBABILITY**")
     st.markdown(f"""
-        <div class="insight-card">
-            <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; text-align: center;">
-                <div style="font-size: 2rem; font-weight: bold; color: #4CA1A3; margin-bottom: 0.5rem;">{success_prob}%</div>
-                <div style="color: #64748B;">Predicted success rate</div>
-            </div>
+        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
+                    color: white; padding: 1.5rem; border-radius: 12px; text-align: center; margin: 1rem 0;">
+            <div style="font-size: 3rem; font-weight: bold; margin-bottom: 0.5rem; color: white;">{success_rate}%</div>
+            <p style="margin: 0; opacity: 0.9; font-size: 1.1rem; color: white;">Predicted Success Rate</p>
         </div>
     """, unsafe_allow_html=True)
-    st.progress(success_prob / 100)
-
-    # Behavioral insights
-    behavioral = profile.get('behavioral_analysis', {})
-
-    if behavioral.get('core_limiting_beliefs'):
-        insights_html = ""
-        for belief in behavioral['core_limiting_beliefs'][:3]:
-            insights_html += f"<div style='margin-bottom: 0.5rem; padding: 0.5rem; background: #f8fafc; border-radius: 6px; border-left: 3px solid #4CA1A3;'>• {belief}</div>"
-
-        st.markdown("**Key patterns identified**")
-
-        st.markdown(f"""
-            <div class="insight-card">
-                {insights_html}
-            </div>
-        """, unsafe_allow_html=True)
-
+    
+    st.progress(success_rate / 100)
+    
     # Next steps
-    st.markdown("**Next steps**")
-
+    st.markdown("---")
+    st.markdown("**YOUR NEXT STEPS**")
     st.markdown("""
-        <div class="insight-card">
-            <div style="background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%); padding: 1rem; border-radius: 8px; border-left: 4px solid #3b82f6;">
-                <p style="margin: 0; color: #1e293b;">A detailed report will be sent to your email address; our clinical team will contact you within the timeframe you specified to discuss your personalized treatment plan.</p>
+        <div style="background: linear-gradient(135deg, #E1F0F0 0%, #F3F6F8 100%);
+                    padding: 1.5rem; border-radius: 12px; border-left: 4px solid #4CA1A3;">
+            <div style="display: grid; gap: 1rem;">
+                <div><strong>Step 1:</strong> Check your email for personalized insights</div>
+                <div><strong>Step 2:</strong> Our clinical team will contact you to discuss your patterns</div>
+                <div><strong>Step 3:</strong> Begin your transformation journey</div>
             </div>
         </div>
     """, unsafe_allow_html=True)
-
+    
     # Reset option
     st.markdown("---")
     if st.button("Take assessment again", type="secondary"):
         for key in list(st.session_state.keys()):
-            if key.startswith(('current_question', 'responses', 'current_stage', 'contact_')):
-                del st.session_state[key]
+            del st.session_state[key]
         st.rerun()
+
+
+# ========================================================================================
+# MAIN APPLICATION
+# ========================================================================================
 
 def main():
     """Main assessment function"""
+    
+    if not CONFIG_LOADED:
+        st.error("Configuration not loaded. Please check utils/config_assess.py")
+        return
+    
+    # Initialize
     initialize_session_state()
-
-    # Initialize assessment session state
-    if 'assessment_started' not in st.session_state:
-        st.session_state.assessment_started = True
-
-    # Get questions from user-friendly assessment
-    try:
-        user_friendly_questions = enhanced_assessment.user_friendly_assessment.questions
-        # Convert to simple format for our assess page
-        questions = []
-        for q in user_friendly_questions:
-            questions.append({
-                'text': q.question_text,
-                'options': q.options,
-                'stage': q.stage.value if hasattr(q.stage, 'value') else str(q.stage),
-                'type': q.question_type
-            })
-    except Exception as e:
-        st.error(f"Unable to load questions: {str(e)}")
-        st.error("Please refresh the page.")
+    
+    # Create router and get questions
+    router = QuestionRouter()
+    
+    # Check if contact provided
+    if st.session_state.get('contact_provided', False):
+        render_results()
         return
-
-    total_questions = len(questions)
-    current_question_number = st.session_state.current_question + 1
-
-    # Check if assessment is complete
-    if st.session_state.current_question >= total_questions:
-        # Check if contact form has been filled
-        if not st.session_state.get('contact_provided', False):
-            render_contact_form()
-            return
-
-        # Show comprehensive results
-        show_comprehensive_results(enhanced_assessment, st.session_state.responses)
-        return
-
+    
     # Get current question
-    current_q = questions[st.session_state.current_question]
-
-    # Enhanced Header
+    current_question = router.get_next_question(
+        st.session_state.responses,
+        st.session_state.is_digital_native
+    )
+    
+    # Check if assessment complete
+    if current_question is None:
+        st.session_state.assessment_completed = True
+        render_contact_form()
+        return
+    
+    # Calculate progress
+    answered = len(st.session_state.responses)
+    total = router.estimate_total_questions(
+        st.session_state.responses,
+        st.session_state.is_digital_native
+    )
+    progress = (answered / total * 100) if total > 0 else 0
+    
+    # Header
     st.markdown(f"""
         <div class="assessment-header">
+            <h1 class="assessment-title">Behavioral pattern assessment</h1>
             <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Discover your patterns and unlock your potential</p>
         </div>
     """, unsafe_allow_html=True)
-
+    
     st.markdown("**BEHAVIORAL ASSESSMENT**")
-
-    # Enhanced Progress
-    progress = (current_question_number / total_questions) * 100
+    
+    # Progress
     st.markdown(f"""
         <div class="progress-container">
-            <div class="progress-text">Question {current_question_number} of {total_questions} • {progress:.0f}% complete</div>
+            <div class="progress-text">Question {answered + 1} of {total} • {int(progress)}% complete</div>
         </div>
     """, unsafe_allow_html=True)
     st.progress(progress / 100)
-
+    
     # Question
-    render_question_card(current_q)
-
+    q_id = current_question['id']
+    q_text = current_question['text']
+    phase = current_question.get('phase', 'unknown')
+    
+    render_question_card(q_text)
+    
     # Options
-    response = render_options(current_q['options'], st.session_state.current_question)
-
-    # Enhanced Navigation
+    response = render_options(q_id, current_question, q_text, phase)
+    
+    # Handle digital native detection
+    if q_id == 0 and not st.session_state.digital_native_determined:
+        options = current_question['options']
+        scoring = current_question.get('digital_native_scoring', [])
+        if response in options:
+            try:
+                index = options.index(response)
+                score = scoring[index] if index < len(scoring) else 0
+                st.session_state.is_digital_native = score >= 3
+                st.session_state.digital_native_determined = True
+            except:
+                pass
+    
+    # Navigation
     st.markdown('<div class="nav-container">', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2])
-
+    
     with col1:
         if st.session_state.current_question > 0:
             if st.button("◀ Previous", type="secondary"):
+                if st.session_state.responses:
+                    last_key = max(st.session_state.responses.keys())
+                    del st.session_state.responses[last_key]
                 st.session_state.current_question -= 1
                 st.rerun()
-
+    
     with col2:
-        next_label = "Complete assessment ✓" if current_question_number == total_questions else "Next question ▶"
-
-        if st.button(next_label, type="primary"):
-            # Save response
-            st.session_state.responses[st.session_state.current_question] = {
-                'response': response,
-                'question_text': current_q['text'],
-                'phase': current_q.get('stage', 'unknown'),
-                'timestamp': datetime.datetime.now().isoformat()
-            }
-
-            # Move to next question
+        next_label = "Complete assessment ✓" if answered + 1 == total else "Next question ▶"
+        
+        # Check if can proceed
+        can_proceed = response is not None and response != ""
+        
+        # For text_completion, check minimum characters
+        if current_question.get('type') == 'text_completion':
+            min_chars = current_question.get('min_chars', 10)
+            can_proceed = len(str(response).strip()) >= min_chars
+        
+        if st.button(next_label, type="primary", disabled=not can_proceed):
+            # Save response if not already saved
+            if q_id not in st.session_state.responses or st.session_state.responses[q_id].get('response') != response:
+                st.session_state.responses[q_id] = {
+                    'response': response,
+                    'question_text': q_text,
+                    'phase': phase,
+                    'timestamp': datetime.now().isoformat()
+                }
+            
             st.session_state.current_question += 1
             st.rerun()
-
+    
     st.markdown('</div>', unsafe_allow_html=True)
 
+
+# ========================================================================================
+# ENTRY POINT
+# ========================================================================================
+
 def create_assess_page():
-    """Create assessment page class for app.py integration"""
+    """Factory function for app.py integration"""
     class AssessPage:
         def render(self):
             main()
     return AssessPage()
+
 
 if __name__ == "__main__":
     main()
