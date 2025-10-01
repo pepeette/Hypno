@@ -646,203 +646,849 @@
 
 
 
-
 """
 Enhanced Clinical Assessment Email Handler
-Complete email functionality for assessment results
+Sends comprehensive assessment with rapid clinical summary template
+Includes all trigger chain data and intervention protocols
 """
 import smtplib
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
+from typing import Dict, Any
+
+try:
+    from utils.config_assess import PatternDefinitions
+    PATTERNS = PatternDefinitions.PATTERNS
+    PATTERN_DESCRIPTIONS = PatternDefinitions.PATTERN_DESCRIPTIONS
+except ImportError:
+    PATTERNS = {i: f"Pattern {i}" for i in range(1, 10)}
+    PATTERN_DESCRIPTIONS = {}
+
 
 class ClinicalAssessmentEmailHandler:
-    """Clinical assessment email handler that sends emails"""
-
+    """Enhanced email handler with rapid clinical summary"""
+    
     def __init__(self):
-        # Get email configuration from secrets or use defaults
-        try:
-            import streamlit as st
-            email_config = st.secrets.get("email", {})
-            self.smtp_server = email_config.get("SMTP_SERVER", "smtp.gmail.com")
-            self.smtp_port = email_config.get("SMTP_PORT", 587)
-            self.sender_email = email_config.get("SENDER_EMAIL", "laetitiasheppard@gmail.com")
-            self.recipient_email = email_config.get("RECIPIENT_EMAIL", "laetitiasheppard@gmail.com")
-        except:
-            # Fallback to defaults
-            self.smtp_server = "smtp.gmail.com"
-            self.smtp_port = 587
-            self.sender_email = "laetitiasheppard@gmail.com"
-            self.recipient_email = "laetitiasheppard@gmail.com"
-
-        # Pattern name mappings
-        self.pattern_names = {
-            1: "Unhappiness Culture",
-            2: "Power Struggles",
-            3: "Systematic Mistrust",
-            4: "Separation/Division",
-            5: "Doing vs Being",
-            6: "Compartmentalized Authenticity",
-            7: "Self-Sacrifice/Care Avoidance",
-            8: "Inherited Missions",
-            9: "Context-Dependent Weakness"
-        }
-
-        # Get password
+        self.smtp_server = "smtp.gmail.com"
+        self.smtp_port = 587
+        self.sender_email = self._get_config("SENDER_EMAIL", "laetitiasheppard@gmail.com")
+        self.recipient_email = self._get_config("RECIPIENT_EMAIL", "laetitiasheppard@gmail.com")
         self.password = self._get_email_password()
-
-    def _get_email_password(self):
-        """Get email password from environment or secrets"""
+    
+    def _get_config(self, key: str, default: str) -> str:
         try:
             import streamlit as st
-            # Try Streamlit secrets with nested structure first
+            return st.secrets.get("email", {}).get(key, default)
+        except:
+            return os.getenv(key, default)
+    
+    def _get_email_password(self) -> str:
+        try:
+            import streamlit as st
             password = st.secrets.get("email", {}).get("GMAIL_APP_PASSWORD", "")
             if password and password.strip():
-                print("✅ Password loaded from Streamlit secrets [email] section")
-                return password
-
-            # Try direct access as fallback
-            password = st.secrets.get("GMAIL_APP_PASSWORD", "")
-            if password and password.strip():
-                print("✅ Password loaded from Streamlit secrets (direct)")
                 return password
         except Exception as e:
-            print(f"[DEBUG] Could not access Streamlit secrets: {e}")
-
-        # Try environment variable
+            print(f"Could not access Streamlit secrets: {e}")
+        
         password = os.getenv("GMAIL_APP_PASSWORD", "")
         if password and password.strip():
-            print("✅ Password loaded from environment")
             return password
-
-        print("❌ No password found in secrets or environment")
+        
+        print("ERROR: No email password configured")
         return ""
-
-    def send_assessment_results(self, contact_info, responses, profile):
-        """Send comprehensive assessment results to therapist"""
-
+    
+    def send_assessment_email(self, email_data: Dict[str, Any]) -> bool:
+        """Send comprehensive assessment email with rapid clinical summary"""
         if not self.password:
-            print("❌ Cannot send email: No password configured")
+            print("ERROR: Cannot send email - no password configured")
             return False
-
+        
         try:
-            # Create message
-            msg = MIMEMultipart()
+            contact = email_data.get('contact', {})
+            analysis = email_data.get('analysis', {})
+            responses = email_data.get('responses', {})
+            
+            msg = MIMEMultipart('alternative')
             msg['From'] = self.sender_email
             msg['To'] = self.recipient_email
-            msg['Subject'] = f"New Assessment: {contact_info.get('first_name', '')} {contact_info.get('last_name', '')}"
-
-            # Create email body
-            body = self._create_assessment_email_body(contact_info, responses, profile)
-            msg.attach(MIMEText(body, 'html'))
-
-            # Send email
+            msg['Subject'] = f"🎯 New Clinical Assessment: {contact.get('full_name', 'Unknown Client')}"
+            
+            html_body = self._create_comprehensive_email_body(contact, analysis, responses)
+            msg.attach(MIMEText(html_body, 'html'))
+            
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
                 server.starttls()
                 server.login(self.sender_email, self.password)
                 server.send_message(msg)
-
-            print("✅ Assessment email sent successfully")
+            
+            print("✅ SUCCESS: Assessment email sent")
             return True
-
+            
         except Exception as e:
-            print(f"❌ Failed to send email: {str(e)}")
+            print(f"❌ ERROR: Failed to send email: {str(e)}")
             return False
-
-    def _create_assessment_email_body(self, contact_info, responses, profile):
-        """Create HTML email body with assessment results"""
-
-        # Get key information
-        name = f"{contact_info.get('first_name', '')} {contact_info.get('last_name', '')}"
-        email = contact_info.get('email', '')
-        phone = contact_info.get('phone', 'Not provided')
-        urgency = contact_info.get('urgency', 'Standard')
-        additional_info = contact_info.get('additional_info', 'None provided')
-
-        # Get pattern information
-        pattern_hierarchy = profile.get('pattern_hierarchy', {})
+    
+    def _create_comprehensive_email_body(
+        self,
+        contact: Dict,
+        analysis: Dict,
+        responses: Dict
+    ) -> str:
+        """Create comprehensive HTML email with rapid clinical summary"""
+        
+        # Extract all analysis components
+        pattern_hierarchy = analysis.get('pattern_hierarchy', {})
+        clinical_summary = analysis.get('clinical_summary', {})
+        trigger_chain_analysis = analysis.get('trigger_chain_analysis', {})
+        success_prediction = analysis.get('success_prediction', {})
+        digital_analysis = analysis.get('digital_analysis', {})
+        
+        # Extract key data
         dominant_pattern = pattern_hierarchy.get('dominant_pattern', {})
-
-        # Get success prediction
-        success_prediction = profile.get('success_prediction', {}).get('probability', 'Not calculated')
-
-        # Count responses
-        total_responses = len(responses)
-
-        # Create HTML email
-        html_body = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
-                .header {{ background: linear-gradient(135deg, #4CA1A3 0%, #22c55e 100%); color: white; padding: 20px; border-radius: 10px; }}
-                .section {{ margin: 20px 0; padding: 15px; border-left: 4px solid #4CA1A3; background: #f8f9fa; }}
-                .urgent {{ border-left-color: #dc3545; background: #fff5f5; }}
-                .high-priority {{ border-left-color: #ffc107; background: #fffbf0; }}
-                .contact-info {{ background: #e3f2fd; padding: 15px; border-radius: 8px; }}
-                .pattern-info {{ background: #f3e5f5; padding: 15px; border-radius: 8px; }}
-                .response-summary {{ background: #e8f5e8; padding: 15px; border-radius: 8px; }}
-            </style>
-        </head>
-        <body>
-            <div class="header">
-                <h2>🎯 New Clinical Assessment Completed</h2>
-                <p>Assessment Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
+        primary_patterns = pattern_hierarchy.get('primary_patterns', [])
+        pattern_count = pattern_hierarchy.get('pattern_count', 0)
+        no_patterns = pattern_count == 0 or not dominant_pattern
+        
+        client_name = contact.get('full_name', 'Unknown Client')
+        client_email = contact.get('email', '')
+        urgency = contact.get('urgency', 'Not specified')
+        
+        # Build HTML email
+        html = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #273548;
+            background: #f8fafc;
+            margin: 0;
+            padding: 0;
+        }}
+        .container {{
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 0;
+        }}
+        .header {{
+            background: linear-gradient(135deg, #4CA1A3 0%, #22c55e 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }}
+        .header h1 {{
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }}
+        .header p {{
+            margin: 0.5rem 0 0 0;
+            opacity: 0.95;
+        }}
+        
+        /* RAPID CLINICAL SUMMARY - TOP PRIORITY */
+        .clinical-summary {{
+            background: #fff3cd;
+            border: 3px solid #eab308;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem;
+        }}
+        .clinical-summary h2 {{
+            color: #b45309;
+            margin: 0 0 1.5rem 0;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #eab308;
+            padding-bottom: 0.5rem;
+        }}
+        .summary-grid {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }}
+        .summary-item {{
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #4CA1A3;
+        }}
+        .summary-item strong {{
+            display: block;
+            color: #4CA1A3;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }}
+        .summary-item span {{
+            color: #273548;
+            font-size: 1rem;
+        }}
+        .summary-full {{
+            grid-column: 1 / -1;
+        }}
+        .resistance-list {{
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }}
+        .resistance-list ol {{
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }}
+        .resistance-list li {{
+            margin: 0.5rem 0;
+            color: #273548;
+        }}
+        
+        .section {{
+            padding: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }}
+        .section h2 {{
+            color: #273548;
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+        }}
+        .section h3 {{
+            color: #4CA1A3;
+            margin: 1.5rem 0 0.75rem 0;
+            font-size: 1.2rem;
+        }}
+        .info-grid {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }}
+        .info-item {{
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #cbd5e1;
+        }}
+        .info-item strong {{
+            display: block;
+            color: #556D7A;
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+        }}
+        .pattern-box {{
+            background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }}
+        .pattern-box h3 {{
+            margin: 0;
+            color: white;
+            font-size: 1.3rem;
+        }}
+        .pattern-box p {{
+            margin: 0.5rem 0 0 0;
+            opacity: 0.95;
+        }}
+        .trigger-chain {{
+            background: #e1f0f0;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }}
+        .trigger-step {{
+            background: white;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-left: 4px solid #4CA1A3;
+            border-radius: 6px;
+        }}
+        .trigger-step strong {{
+            color: #4CA1A3;
+            display: block;
+            margin-bottom: 0.25rem;
+        }}
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }}
+        th, td {{
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }}
+        th {{
+            background: #f8fafc;
+            font-weight: 600;
+            color: #273548;
+        }}
+        .urgency-alert {{
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }}
+        .urgency-alert h3 {{
+            color: #b91c1c;
+            margin: 0 0 0.5rem 0;
+        }}
+        .healthy-baseline {{
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 1rem 0;
+        }}
+        .healthy-baseline h3 {{
+            margin: 0;
+            color: white;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>Clinical behavioral pattern assessment</h1>
+            <p>Comprehensive 71-question analysis with rapid clinical summary</p>
+            <p>{datetime.now().strftime('%B %d, %Y at %I:%M %p')}</p>
+        </div>
+        
+        {self._generate_rapid_clinical_summary(
+            client_name, dominant_pattern, primary_patterns, 
+            clinical_summary, no_patterns
+        )}
+        
+        {self._generate_urgency_alert(urgency)}
+        
+        {self._generate_client_information(contact)}
+        
+        {self._generate_pattern_analysis(
+            dominant_pattern, pattern_hierarchy, no_patterns
+        )}
+        
+        {self._generate_trigger_chain_section(trigger_chain_analysis)}
+        
+        {self._generate_clinical_insights(clinical_summary, dominant_pattern)}
+        
+        {self._generate_success_prediction(success_prediction)}
+        
+        {self._generate_digital_analysis(digital_analysis)}
+        
+        {self._generate_response_transcript(responses)}
+    </div>
+</body>
+</html>
+        """
+        
+        return html
+    
+    def _generate_rapid_clinical_summary(
+        self,
+        client_name: str,
+        dominant_pattern: Dict,
+        primary_patterns: Dict,
+        clinical_summary: Dict,
+        no_patterns: bool
+    ) -> str:
+        """Generate rapid clinical summary template section"""
+        
+        if no_patterns:
+            return """
+                <div class="healthy-baseline" style="margin: 2rem;">
+                    <h3>✓ Healthy baseline - no clinical intervention needed</h3>
+                    <p style="margin: 0.5rem 0; opacity: 0.95;">
+                        No significant behavioral patterns detected. Consider performance optimization services.
+                    </p>
+                </div>
+            """
+        
+        # Extract data
+        dominant_name = dominant_pattern.get('name', 'Unknown').title()
+        dominant_score = dominant_pattern.get('score', 0)
+        
+        primary_1_name = "None"
+        primary_1_score = 0
+        primary_2_name = "None"
+        primary_2_score = 0
+        
+        if len(primary_patterns) > 0:
+            primary_1_name = primary_patterns[0].get('name', 'Unknown').title()
+            primary_1_score = primary_patterns[0].get('score', 0)
+        
+        if len(primary_patterns) > 1:
+            primary_2_name = primary_patterns[1].get('name', 'Unknown').title()
+            primary_2_score = primary_patterns[1].get('score', 0)
+        
+        # Clinical summary data
+        core_belief = clinical_summary.get('core_limiting_belief', 'Not identified')
+        hidden_benefits = clinical_summary.get('hidden_benefits', 'Not identified')
+        systemic_resistance = clinical_summary.get('systemic_resistance', 'Not identified')
+        identity_threat = clinical_summary.get('identity_threat', 'Not identified')
+        session_1_focus = clinical_summary.get('session_1_focus', 'Pattern exploration')
+        session_2_target = clinical_summary.get('session_2_target', 'Core transformation')
+        session_3_need = clinical_summary.get('potential_session_3_need', 'Unknown')
+        readiness = clinical_summary.get('change_readiness_score', '0/10')
+        intervention_keywords = clinical_summary.get('intervention_keywords', 'Not specified')
+        avoid_language = clinical_summary.get('avoid_language', 'Not specified')
+        
+        resistance_points = clinical_summary.get('predicted_resistance_points', [])
+        resistance_html = "".join([f"<li>{point}</li>" for point in resistance_points])
+        
+        return f"""
+            <div class="clinical-summary">
+                <h2>⚡ RAPID CLINICAL SUMMARY TEMPLATE</h2>
+                
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <strong>Client</strong>
+                        <span>{client_name}</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Date</strong>
+                        <span>{datetime.now().strftime('%Y-%m-%d')}</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Dominant Pattern</strong>
+                        <span>{dominant_name} (Score: {dominant_score:.1f}/10)</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Primary Pattern</strong>
+                        <span>{primary_1_name} (Score: {primary_1_score:.1f}/10)</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Secondary Pattern</strong>
+                        <span>{primary_2_name} (Score: {primary_2_score:.1f}/10)</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Change Readiness</strong>
+                        <span>{readiness}</span>
+                    </div>
+                    
+                    <div class="summary-item summary-full">
+                        <strong>Core Limiting Belief</strong>
+                        <span>{core_belief}</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Hidden Benefits</strong>
+                        <span>{hidden_benefits}</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Identity Threat</strong>
+                        <span>{identity_threat}</span>
+                    </div>
+                    
+                    <div class="summary-item summary-full">
+                        <strong>Systemic Resistance</strong>
+                        <span>{systemic_resistance}</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Session 1 Focus</strong>
+                        <span>{session_1_focus}</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Session 2 Target</strong>
+                        <span>{session_2_target}</span>
+                    </div>
+                    
+                    <div class="summary-item summary-full">
+                        <strong>Potential Session 3 Need</strong>
+                        <span>{session_3_need}</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Intervention Keywords</strong>
+                        <span>{intervention_keywords}</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <strong>Avoid Language</strong>
+                        <span>{avoid_language}</span>
+                    </div>
+                </div>
+                
+                <div class="resistance-list">
+                    <strong style="color: #b45309; display: block; margin-bottom: 0.5rem;">
+                        Predicted Resistance Points:
+                    </strong>
+                    <ol>{resistance_html if resistance_html else '<li>Standard resistance patterns</li>'}</ol>
+                </div>
             </div>
-
-            <div class="contact-info">
-                <h3>📋 Client Information</h3>
-                <p><strong>Name:</strong> {name}</p>
-                <p><strong>Email:</strong> {email}</p>
-                <p><strong>Phone:</strong> {phone}</p>
-                <p><strong>Urgency Level:</strong> {urgency}</p>
-                {f'<p><strong>Additional Information:</strong> {additional_info}</p>' if additional_info != 'None provided' else ''}
-            </div>
-
-            <div class="pattern-info">
-                <h3>🧠 Assessment Results Summary</h3>
-                <p><strong>Total Questions Answered:</strong> {total_responses}</p>
-                <p><strong>Dominant Pattern:</strong> {dominant_pattern.get('name', 'Not identified').replace('_', ' ').title()}</p>
-                <p><strong>Pattern Score:</strong> {dominant_pattern.get('score', 'N/A')}/5.0</p>
-                <p><strong>Success Prediction:</strong> {success_prediction}%</p>
-            </div>
-
-            <div class="response-summary">
-                <h3>📝 Response Summary</h3>
-                <p><strong>Assessment Completion:</strong> {total_responses} questions answered</p>
-                <p><strong>Submission Time:</strong> {contact_info.get('submission_time', 'Not recorded')}</p>
-            </div>
-
+        """
+    
+    def _generate_urgency_alert(self, urgency: str) -> str:
+        """Generate urgency alert if needed"""
+        urgency_lower = urgency.lower()
+        
+        if 'extremely urgent' in urgency_lower or 'same day' in urgency_lower:
+            return """
+                <div class="urgency-alert" style="margin: 2rem;">
+                    <h3>🚨 PRIORITY: EXTREMELY URGENT</h3>
+                    <p><strong>Action Required:</strong> Contact client within 24 hours</p>
+                    <p>Client has indicated extreme urgency - prioritize scheduling immediately</p>
+                </div>
+            """
+        elif 'very urgent' in urgency_lower or '24 hours' in urgency_lower:
+            return """
+                <div class="urgency-alert" style="margin: 2rem; border-color: #eab308; background: #fef3c7;">
+                    <h3 style="color: #b45309;">⚠️ HIGH PRIORITY: VERY URGENT</h3>
+                    <p><strong>Action Required:</strong> Contact client within 24-48 hours</p>
+                </div>
+            """
+        
+        return ""
+    
+    def _generate_client_information(self, contact: Dict) -> str:
+        """Generate client information section"""
+        return f"""
             <div class="section">
-                <h3>🎯 Recommended Next Steps</h3>
-                <p>Based on the urgency level (<strong>{urgency}</strong>) and assessment results:</p>
-                <ul>
-                    <li>Contact client within the specified timeframe</li>
-                    <li>Review detailed assessment data in the system</li>
-                    <li>Prepare personalized treatment recommendations</li>
-                    <li>Schedule initial consultation session</li>
+                <h2>Client information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Name:</strong>
+                        <span>{contact.get('full_name', 'Unknown')}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Email:</strong>
+                        <span>{contact.get('email', '')}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Phone:</strong>
+                        <span>{contact.get('phone', 'Not provided')}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Urgency:</strong>
+                        <span>{contact.get('urgency', 'Not specified')}</span>
+                    </div>
+                </div>
+                <div class="info-item" style="margin-top: 1rem; grid-column: 1 / -1;">
+                    <strong>Primary Concern:</strong>
+                    <span>{contact.get('primary_concern', 'Not provided')}</span>
+                </div>
+                {self._format_additional_info(contact.get('additional_info', ''))}
+            </div>
+        """
+    
+    def _format_additional_info(self, additional_info: str) -> str:
+        """Format additional info if provided"""
+        if additional_info and additional_info != "None provided":
+            return f"""
+                <div class="info-item" style="margin-top: 1rem;">
+                    <strong>Additional Information:</strong>
+                    <span>{additional_info}</span>
+                </div>
+            """
+        return ""
+    
+    def _generate_pattern_analysis(
+        self,
+        dominant_pattern: Dict,
+        pattern_hierarchy: Dict,
+        no_patterns: bool
+    ) -> str:
+        """Generate pattern analysis section"""
+        
+        if no_patterns:
+            return ""
+        
+        pattern_name = dominant_pattern.get('name', 'Unknown').title()
+        pattern_score = dominant_pattern.get('score', 0)
+        pattern_severity = dominant_pattern.get('severity', 'Unknown')
+        pattern_desc = dominant_pattern.get('description', {})
+        
+        root_structure = pattern_desc.get('root_structure', 'Not available')
+        systemic_factors = pattern_desc.get('systemic_factors', [])
+        identity_conflict = pattern_desc.get('identity_conflict', 'Not available')
+        hidden_loyalties = pattern_desc.get('hidden_loyalties', [])
+        
+        systemic_html = "".join([f"<li>{factor}</li>" for factor in systemic_factors])
+        loyalties_html = "".join([f"<li>{loyalty}</li>" for loyalty in hidden_loyalties])
+        
+        all_scores = pattern_hierarchy.get('all_scores', {})
+        pattern_table = self._generate_pattern_table(all_scores)
+        
+        return f"""
+            <div class="section">
+                <h2>Behavioral pattern analysis</h2>
+                
+                <div class="pattern-box">
+                    <h3>Dominant pattern: {pattern_name}</h3>
+                    <p style="font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0;">
+                        {pattern_score:.1f}/10 ({pattern_severity})
+                    </p>
+                </div>
+                
+                <h3>Root pattern structure</h3>
+                <div class="info-item">
+                    <strong>Core structural belief:</strong>
+                    <span>{root_structure}</span>
+                </div>
+                
+                <h3>Systemic factors maintaining pattern</h3>
+                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                    {systemic_html}
+                </ul>
+                
+                <h3>Identity conflict</h3>
+                <div class="info-item">
+                    <span>{identity_conflict}</span>
+                </div>
+                
+                <h3>Hidden loyalties creating resistance</h3>
+                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                    {loyalties_html}
+                </ul>
+                
+                <h3>Pattern constellation (all scores)</h3>
+                {pattern_table}
+            </div>
+        """
+    
+    def _generate_pattern_table(self, all_scores: Dict[int, float]) -> str:
+        """Generate pattern scores table"""
+        significant = {pid: score for pid, score in all_scores.items() if score >= 4.0}
+        
+        if not significant:
+            return '<p style="color: #22c55e; font-weight: 600;">No clinically significant patterns detected</p>'
+        
+        rows = []
+        for pid, score in sorted(significant.items(), key=lambda x: x[1], reverse=True):
+            pattern_name = PATTERNS.get(pid, f"Pattern {pid}").title()
+            severity = self._get_severity(score)
+            rows.append(f"""
+                <tr>
+                    <td>{pattern_name}</td>
+                    <td><strong>{score:.1f}/10</strong></td>
+                    <td>{severity}</td>
+                </tr>
+            """)
+        
+        return f"""
+            <table>
+                <tr>
+                    <th>Pattern</th>
+                    <th>Score</th>
+                    <th>Severity</th>
+                </tr>
+                {"".join(rows)}
+            </table>
+        """
+    
+    def _get_severity(self, score: float) -> str:
+        if score >= 8.0: return "Severe"
+        elif score >= 6.0: return "Moderate-High"
+        elif score >= 4.0: return "Moderate"
+        else: return "Mild"
+    
+    def _generate_trigger_chain_section(self, trigger_chain_analysis: Dict) -> str:
+        """Generate trigger chain sequence section"""
+        chain = trigger_chain_analysis.get('trigger_chain', {})
+        intervention_windows = trigger_chain_analysis.get('intervention_windows', [])
+        completeness = trigger_chain_analysis.get('sequence_completeness', 0)
+        
+        intervention_html = "".join([f"<li>{window}</li>" for window in intervention_windows])
+        
+        return f"""
+            <div class="section">
+                <h2>Complete trigger sequence mapping</h2>
+                <p><strong>Sequence completeness:</strong> {completeness:.0f}%</p>
+                
+                <div class="trigger-chain">
+                    <div class="trigger-step">
+                        <strong>1. Environmental trigger:</strong>
+                        <span>{chain.get('environmental_trigger', 'Not captured')}</span>
+                    </div>
+                    
+                    <div class="trigger-step">
+                        <strong>2. First awareness point:</strong>
+                        <span>{chain.get('awareness_point', 'Not captured')}</span>
+                    </div>
+                    
+                    <div class="trigger-step">
+                        <strong>3. Physical response:</strong>
+                        <span>{chain.get('physical_response', 'Not captured')}</span>
+                    </div>
+                    
+                    <div class="trigger-step">
+                        <strong>4. Automatic thought:</strong>
+                        <span>{chain.get('automatic_thought', 'Not captured')}</span>
+                    </div>
+                    
+                    <div class="trigger-step">
+                        <strong>5. Emotional response:</strong>
+                        <span>{chain.get('emotional_response', 'Not captured')}</span>
+                    </div>
+                    
+                    <div class="trigger-step">
+                        <strong>6. Behavioral response:</strong>
+                        <span>{chain.get('behavioral_response', 'Not captured')}</span>
+                    </div>
+                    
+                    <div class="trigger-step">
+                        <strong>7. Immediate consequence:</strong>
+                        <span>{chain.get('immediate_consequence', 'Not captured')}</span>
+                    </div>
+                    
+                    <div class="trigger-step">
+                        <strong>8. Longer-term impact:</strong>
+                        <span>{chain.get('longer_term_impact', 'Not captured')}</span>
+                    </div>
+                </div>
+                
+                <h3>Intervention windows identified</h3>
+                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                    {intervention_html if intervention_html else '<li>Complete sequence in session 1</li>'}
                 </ul>
             </div>
-
+        """
+    
+    def _generate_clinical_insights(self, clinical_summary: Dict, dominant_pattern: Dict) -> str:
+        """Generate clinical insights section"""
+        pattern_desc = dominant_pattern.get('description', {})
+        
+        return f"""
             <div class="section">
-                <h3>📊 Quick Assessment Overview</h3>
-                <p>This client has completed a comprehensive behavioral assessment. The system has identified specific patterns and provided treatment recommendations. Please access the full assessment dashboard for detailed analysis.</p>
+                <h2>Clinical intervention protocols</h2>
+                
+                <h3>Protective function</h3>
+                <div class="info-item">
+                    <span>{pattern_desc.get('protective_function', 'Not identified')}</span>
+                </div>
+                
+                <h3>Intervention focus</h3>
+                <div class="info-item">
+                    <span>{pattern_desc.get('intervention_focus', 'Not identified')}</span>
+                </div>
+                
+                <h3>Language protocols</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Intervention Keywords:</strong>
+                        <span>{clinical_summary.get('intervention_keywords', 'Not specified')}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Avoid Language:</strong>
+                        <span>{clinical_summary.get('avoid_language', 'Not specified')}</span>
+                    </div>
+                </div>
             </div>
-
-            <p style="margin-top: 30px; padding: 15px; background: #f0f0f0; border-radius: 8px; font-size: 0.9em; color: #666;">
-                <strong>Note:</strong> This email contains summary information only. Full assessment data and detailed recommendations are available in the clinical dashboard.
-            </p>
-        </body>
-        </html>
+        """
+    
+    def _generate_success_prediction(self, success_prediction: Dict) -> str:
+        """Generate success prediction section"""
+        success_rate = success_prediction.get('overall_success_rate', 85)
+        recommended_sessions = success_prediction.get('recommended_sessions', 2)
+        timeline = success_prediction.get('timeline_estimate', '2 weeks')
+        
+        return f"""
+            <div class="section">
+                <h2>Success prediction</h2>
+                
+                <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #4CA1A3 0%, #22c55e 100%); 
+                            color: white; border-radius: 12px; margin: 1rem 0;">
+                    <div style="font-size: 3rem; font-weight: bold;">{success_rate}%</div>
+                    <p style="margin: 0.5rem 0; opacity: 0.95;">Predicted success rate</p>
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Recommended Sessions:</strong>
+                        <span>{recommended_sessions} sessions</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Timeline Estimate:</strong>
+                        <span>{timeline}</span>
+                    </div>
+                </div>
+            </div>
+        """
+    
+    def _generate_digital_analysis(self, digital_analysis: Dict) -> str:
+        """Generate digital analysis section if applicable"""
+        if not digital_analysis or not digital_analysis.get('is_digital_native'):
+            return ""
+        
+        severity = digital_analysis.get('severity_level', 'MINIMAL')
+        score = digital_analysis.get('digital_despair_score', 0)
+        interventions = digital_analysis.get('recommended_interventions', [])
+        
+        if severity in ['MINIMAL', 'MILD']:
+            return ""
+        
+        interventions_html = "".join([f"<li>{intervention}</li>" for intervention in interventions])
+        
+        return f"""
+            <div class="section">
+                <h2>Digital conditioning analysis</h2>
+                
+                <div class="info-item" style="background: #fef3c7; border-left-color: #eab308;">
+                    <strong>Digital Despair Score:</strong>
+                    <span>{score:.1f}% ({severity})</span>
+                </div>
+                
+                <h3>Specialized adaptations required</h3>
+                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                    {interventions_html}
+                </ul>
+            </div>
+        """
+    
+    def _generate_response_transcript(self, responses: Dict[int, Any]) -> str:
+        """Generate complete response transcript"""
+        from utils.config_assess import COMPREHENSIVE_QUESTIONS
+        
+        items = []
+        for q_id in sorted(responses.keys()):
+            q_text = "Question not found"
+            for q in COMPREHENSIVE_QUESTIONS:
+                if q['id'] == q_id:
+                    q_text = q['text']
+                    break
+            
+            response = responses[q_id]
+            if isinstance(response, (list, tuple)):
+                response_text = ", ".join(str(r) for r in response)
+            else:
+                response_text = str(response)
+            
+            items.append(f"""
+                <div style="background: #f8fafc; padding: 1rem; margin: 0.5rem 0; border-left: 4px solid #cbd5e1; border-radius: 6px;">
+                    <strong style="color: #4CA1A3;">Q{q_id}:</strong> {q_text}<br>
+                    <strong>Response:</strong> {response_text}
+                </div>
+            """)
+        
+        return f"""
+            <div class="section">
+                <h2>Complete response transcript</h2>
+                <p><strong>Total questions answered:</strong> {len(responses)}</p>
+                {"".join(items)}
+            </div>
         """
 
-        return html_body
 
-# Create global instance
-email_handler = ClinicalAssessmentEmailHandler()
+# Global instance
+_email_handler = ClinicalAssessmentEmailHandler()
 
-def send_assessment_email(contact_info, responses, profile):
-    """Convenience function to send assessment email"""
-    return email_handler.send_assessment_results(contact_info, responses, profile)
+def send_assessment_email(email_data: Dict[str, Any]) -> bool:
+    """Send assessment email"""
+    return _email_handler.send_assessment_email(email_data)
