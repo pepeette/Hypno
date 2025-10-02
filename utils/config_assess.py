@@ -1383,6 +1383,7 @@ class AnalyticsEngine:
     def score_patterns(self, responses: Dict[int, Any]) -> Dict[int, float]:
         """
         REDESIGNED: Score with proper statistical validity
+        FIXED: Skip "Not applicable" responses
         Returns scores that actually differentiate patterns
         """
         pattern_raw_scores = {i: [] for i in range(1, 10)}  # Store all scores
@@ -1395,9 +1396,16 @@ class AnalyticsEngine:
                 continue
             
             response = responses[qid]
+            
+            # FIXED: Skip "Not applicable" responses
+            if response == "Not applicable" or response is None or response == "":
+                continue
+            
             score = self._calculate_question_score(question, response)
             
-            pattern_raw_scores[pattern_id].append(score)
+            # Only add non-zero scores
+            if score > 0:
+                pattern_raw_scores[pattern_id].append(score)
         
         # CRITICAL: Use 75th percentile instead of mean for better differentiation
         pattern_scores = {}
@@ -1415,10 +1423,13 @@ class AnalyticsEngine:
         
         return pattern_scores
     
-    
-    
     def _calculate_question_score(self, question: Dict, response: Any) -> float:
-        """Calculate score with better clinical differentiation"""
+        """Calculate score with better clinical differentiation - FIXED to handle skipped questions"""
+        
+        # FIXED: Handle skipped questions
+        if response == "Not applicable" or response is None or response == "":
+            return 0.0
+        
         qtype = question.get('type')
         
         if qtype == 'single_choice':
@@ -1441,7 +1452,11 @@ class AnalyticsEngine:
             return 0.0
         
         elif qtype == 'slider':
-            value = float(response) if response else 0
+            # FIXED: Validate response can be converted to float
+            try:
+                value = float(response)
+            except (ValueError, TypeError):
+                return 0.0
             
             if question.get('reverse_score', False):
                 max_val = question.get('max', 10)
@@ -1454,6 +1469,10 @@ class AnalyticsEngine:
             return value
         
         elif qtype == 'text_completion':
+            # FIXED: Handle empty or skipped text responses
+            if not response or response == "Not applicable":
+                return 0.0
+            
             text = str(response).strip()
             if len(text) < 10:
                 return 0
@@ -1462,7 +1481,7 @@ class AnalyticsEngine:
             length_score = min(len(text) / 50, 5)
             
             intensity_words = ['always', 'never', 'can\'t', 'impossible', 'terrified', 
-                             'desperate', 'worthless', 'hopeless', 'trapped']
+                            'desperate', 'worthless', 'hopeless', 'trapped']
             intensity_score = sum(1 for word in intensity_words if word in text.lower())
             intensity_score = min(intensity_score * 2, 5)
             
