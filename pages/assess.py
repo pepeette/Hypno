@@ -3491,6 +3491,8 @@ class ClinicalBehavioralAssessment:
             <span><strong>{int(progress * 100)}%</strong></span>
         </div>
         """, unsafe_allow_html=True)
+
+        st.markdown("  ")
         
         # # Question text
         # st.markdown(f"### {question['text']}")
