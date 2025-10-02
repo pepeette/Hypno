@@ -4038,14 +4038,17 @@ class ClinicalBehavioralAssessment:
         st.markdown("## Your complete transformation blueprint")
         
         # Section 1: Complete Pattern Analysis
+        st.markdown("## Your complete transformation blueprint")
         st.markdown("### 1. Complete pattern analysis")
         
         if BLUEPRINT_AVAILABLE:
             blueprint = create_behavioral_blueprint()
+            
+            # FIXED: Use correct keys that blueprint expects
             blueprint_data = {
-                'analysis': results,
-                'responses': st.session_state.assessment_responses,
-                'contact': st.session_state.get('contact_info', {})
+                'master_analytics': results,  # ✅ Correct key
+                'assessment_responses': st.session_state.assessment_responses,  # ✅ Correct key
+                'contact_info': st.session_state.get('contact_info', {})  # ✅ Correct key
             }
             blueprint.render_complete_blueprint(blueprint_data)
         else:
@@ -4068,12 +4071,10 @@ class ClinicalBehavioralAssessment:
     
     def _render_premium_fallback(self):
         """Fallback premium content if blueprint unavailable"""
-        
         results = st.session_state.assessment_results
         pattern_analysis = results.get('pattern_analysis', {})
         clinical_summary = results.get('clinical_summary', {})
         trigger_chain = results.get('trigger_chain_analysis', {})
-        
         # Dominant Pattern Details
         dominant = pattern_analysis.get('dominant_pattern', {})
         if dominant:
