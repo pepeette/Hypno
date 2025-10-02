@@ -3465,7 +3465,7 @@ class ClinicalBehavioralAssessment:
         # </div>
         # """, unsafe_allow_html=True)
         st.markdown("**BEHAVIORAL ASSESSMENT**")
-        
+        st.markdown("  ")
         # st.info("This assessment identifies your specific behavioral patterns "
         #         "to create a personalized hypnotherapy protocol that targets your exact needs.")
     
