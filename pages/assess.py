@@ -3466,8 +3466,8 @@ class ClinicalBehavioralAssessment:
         # """, unsafe_allow_html=True)
         st.markdown("**BEHAVIORAL ASSESSMENT**")
         
-        st.info("This assessment identifies your specific behavioral patterns "
-                "to create a personalized hypnotherapy protocol that targets your exact needs.")
+        # st.info("This assessment identifies your specific behavioral patterns "
+        #         "to create a personalized hypnotherapy protocol that targets your exact needs.")
     
     def _render_assessment(self):
         """Render assessment questions"""
