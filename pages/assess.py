@@ -3138,841 +3138,1073 @@
 
 
 """
-Enhanced Behavioral Pattern Assessment Page
-Integrates with enhanced config_assess.py for complete clinical data extraction
-Preserves original UI/UX while ensuring full trigger chain capture
+Enhanced Clinical Behavioral Pattern Assessment
+Mobile-optimized with clean design, comprehensive analytics integration
 """
 
 import streamlit as st
 from datetime import datetime
-from typing import Dict, Optional, Any
 import re
+from typing import Dict, Any, Optional
 
-# Import enhanced configuration
+# ============================================================================
+# COMPONENT IMPORTS
+# ============================================================================
 try:
     from utils.config_assess import (
-        AssessmentConfig,
+        AssessmentConfig, 
         AnalyticsEngine,
         QuestionRouter,
-        PatternDefinitions,
         COMPREHENSIVE_QUESTIONS
     )
-    CONFIG_LOADED = True
-except ImportError as e:
-    st.error(f"Configuration module not found: {str(e)}")
-    CONFIG_LOADED = False
+    CONFIG_AVAILABLE = True
+except ImportError:
+    CONFIG_AVAILABLE = False
+    print("WARNING: config_assess not available")
 
-# Import enhanced email functionality
 try:
     from utils.email_assess import send_assessment_email
     EMAIL_AVAILABLE = True
 except ImportError:
     EMAIL_AVAILABLE = False
-    print("Email module not available - using fallback")
+    print("WARNING: email_assess not available")
+
+try:
+    from components.blueprint import create_behavioral_blueprint
+    BLUEPRINT_AVAILABLE = True
+except ImportError:
+    BLUEPRINT_AVAILABLE = False
+
+try:
+    from components.paywall import create_clinical_paywall
+    PAYWALL_AVAILABLE = True
+except ImportError:
+    PAYWALL_AVAILABLE = False
 
 
 # ============================================================================
-# PAGE CONFIGURATION (Preserved from original)
+# DESIGN SYSTEM
 # ============================================================================
-
-st.set_page_config(
-    page_title="Behavioral assessment",
-    page_icon="🎯",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
-
-
-# ============================================================================
-# STYLING (Preserved exactly from original)
-# ============================================================================
-
-st.markdown("""
+def apply_clinical_design_system():
+    """Apply professional clinical design system"""
+    st.markdown("""
     <style>
-    /* [All original styles preserved exactly] */
-    .main .block-container {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 1.5rem;
-        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-        min-height: 100vh;
-        padding-bottom: 120px !important;
-    }
-    .assessment-header {
-        background: linear-gradient(135deg, #4CA1A3 0%, #22c55e 100%);
-        padding: 2rem;
-        border-radius: 20px;
-        margin-bottom: 2rem;
-        color: white;
-        text-align: center;
-        box-shadow: 0 10px 40px rgba(76, 161, 163, 0.3);
-    }
-    .assessment-title {
-        font-size: 2rem;
-        font-weight: 700;
-        margin: 0;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .progress-container {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 16px;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        border: 1px solid rgba(76, 161, 163, 0.1);
-    }
-    .custom-question-container {
-        background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%) !important;
-        padding: 1.5rem !important;
-        border-radius: 12px !important;
-        border-left: 4px solid #4CA1A3 !important;
-        border: 1px solid #CBD5E1 !important;
-        margin: 1rem 0 1.5rem 0 !important;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
-        transition: all 0.3s ease;
-    }
-    .custom-question-text {
-        color: #273548 !important;
-        font-size: 1.1rem !important;
-        line-height: 1.5 !important;
-        margin: 0 !important;
-        font-weight: 500 !important;
-    }
-    .stRadio > div {
-        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-        padding: 1rem;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(39, 53, 72, 0.08);
-        margin-bottom: 1rem;
-        border: 1px solid #CBD5E1;
-        transition: all 0.3s ease;
-    }
-    .stButton > button {
-        width: 100%;
-        margin-bottom: 0.75rem;
-        padding: 0.75rem 2rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: all 0.2s ease;
-        border: none;
-    }
-    .stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #4CA1A3 0%, #22c55e 100%);
-        color: white;
-        box-shadow: 0 4px 16px rgba(76, 161, 163, 0.3);
-    }
-    .results-header {
-        background: linear-gradient(135deg, #4CA1A3 0%, #22c55e 100%);
-        padding: 2rem;
-        border-radius: 20px;
-        color: white;
-        text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 40px rgba(76, 161, 163, 0.3);
-    }
-    .insight-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-        padding: 1.5rem 2rem;
-        border-radius: 12px;
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 20px rgba(39, 53, 72, 0.08);
-        border: 1px solid #CBD5E1;
-        border-left: 4px solid #4CA1A3;
-        transition: all 0.3s ease;
-    }
-    .char-count {
-        font-size: 0.875rem;
-        margin-top: 0.5rem;
-        font-weight: 500;
-    }
-    @media (max-width: 768px) {
-        .main .block-container {
-            padding: 1rem;
-            max-width: 100%;
+        /* Core Design System */
+        :root {
+            --background: #F3F6F8;
+            --card-bg: #FFFFFF;
+            --primary-text: #273548;
+            --secondary-text: #556D7A;
+            --accent: #4CA1A3;
+            --accent-hover: #3B7A7A;
+            --border: #CBD5E1;
+            --success: #22c55e;
+            --warning: #eab308;
+            --error: #ef4444;
         }
-        .assessment-title {
-            font-size: 1.5rem;
-        }
-    }
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    </style>
-""", unsafe_allow_html=True)
-
-
-# ============================================================================
-# SESSION STATE INITIALIZATION
-# ============================================================================
-
-def initialize_session_state():
-    """Initialize all session state variables"""
-    if 'assessment_started' not in st.session_state:
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
         
-        st.session_state.assessment_started = True
-        st.session_state.current_question = 0
-        st.session_state.responses = {}
-        st.session_state.is_digital_native = False
-        st.session_state.digital_native_determined = False
-        st.session_state.contact_provided = False
-        st.session_state.assessment_completed = False
-        st.session_state.email_sent = False
-
-
-# ============================================================================
-# RENDERING FUNCTIONS (Preserved from original with enhancements)
-# ============================================================================
-
-def render_question_card(question_text: str):
-    """Render question card with preserved styling"""
-    st.markdown(f"""
-        <div class="custom-question-container">
-            <div class="custom-question-text">{question_text}</div>
-        </div>
+        /* Container Optimization */
+        .main .block-container {
+            padding: 0.75rem 1rem !important;
+            max-width: 100% !important;
+        }
+        
+        @media (min-width: 768px) {
+            .main .block-container {
+                max-width: 600px !important;
+                margin: 0 auto;
+                padding: 1.5rem !important;
+            }
+        }
+        
+        /* Typography System */
+        h1 { 
+            font-size: 2.2rem !important; 
+            color: var(--primary-text) !important;
+            font-weight: 700 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        h2 { 
+            font-size: 1.8rem !important; 
+            color: var(--primary-text) !important;
+            font-weight: 600 !important;
+            margin: 1.5rem 0 0.75rem 0 !important;
+        }
+        
+        h3, .stMarkdown strong {
+            font-size: 1rem !important;
+            color: var(--primary-text);
+            font-weight: 600 !important;
+        }
+        
+        p, .stMarkdown p {
+            font-size: 1rem !important;
+            color: var(--primary-text) !important;
+            line-height: 1.6 !important;
+        }
+        
+        /* Button System */
+        .stButton > button {
+            width: 100% !important;
+            margin-bottom: 0.25rem !important;
+            padding: 0.6rem 1rem !important;
+            text-align: left !important;
+            background-color: var(--card-bg) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 6px !important;
+            color: var(--primary-text) !important;
+            font-size: 0.95rem !important;
+            transition: all 0.2s ease !important;
+            line-height: 1.3 !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+        }
+        
+        .stButton > button:hover {
+            background-color: #F8FAFC !important;
+            border-color: var(--accent) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 2px 4px rgba(76,161,163,0.1) !important;
+        }
+        
+        .stButton > button:active {
+            background-color: #E1F0F0 !important;
+            transform: translateY(0) !important;
+        }
+        
+        /* Primary Button Style */
+        .stButton > button[kind="primary"] {
+            background-color: var(--accent) !important;
+            color: white !important;
+            border-color: var(--accent) !important;
+            text-align: center !important;
+            font-weight: 600 !important;
+        }
+        
+        .stButton > button[kind="primary"]:hover {
+            background-color: var(--accent-hover) !important;
+            border-color: var(--accent-hover) !important;
+        }
+        
+        /* Progress System */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--secondary-text);
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        /* Input System */
+        .stTextArea textarea, .stTextInput input {
+            border: 1px solid var(--border) !important;
+            border-radius: 6px !important;
+            padding: 0.75rem !important;
+            font-size: 0.95rem !important;
+            background: var(--card-bg) !important;
+            color: var(--primary-text) !important;
+        }
+        
+        .stTextArea textarea:focus, .stTextInput input:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 1px var(--accent) !important;
+        }
+        
+        /* Slider System */
+        .stSlider > div > div > div {
+            background-color: var(--accent) !important;
+        }
+               
+        /* Hide Streamlit Branding */
+        header[data-testid="stHeader"] {
+            display: none !important;
+        }
+        
+        .stDeployButton {
+            display: none !important;
+        }
+        
+        footer {
+            display: none !important;
+        }
+        
+        /* Mobile Optimization */
+        @media (max-width: 767px) {
+            .main .block-container {
+                padding: 1rem !important;
+            }
+            
+            h1 { font-size: 1.8rem !important; }
+            h2 { font-size: 1.5rem !important; }
+            
+            .stButton > button {
+                margin-bottom: 0.2rem !important;
+                padding: 0.5rem 0.75rem !important;
+            }
+            [data-testid="column"] {
+                min-width: 30% !important;
+                flex-shrink: 0 !important;
+            }
+        }
+    </style>
     """, unsafe_allow_html=True)
 
 
-def render_options(question_id: int, question_data: Dict, question_text: str, phase: str) -> Any:
-    """Render answer options based on question type"""
-    q_type = question_data.get('type', 'single_choice')
-    options = question_data.get('options', [])
+# ============================================================================
+# ASSESSMENT CLASS
+# ============================================================================
+class ClinicalBehavioralAssessment:
+    """Professional clinical assessment with complete integration"""
     
-    previous_response = None
-    if question_id in st.session_state.responses:
-        previous_response = st.session_state.responses[question_id]
-    
-    widget_key = f"question_{question_id}_input"
-    
-    if q_type == 'single_choice':
-        default_index = 0
-        if previous_response and previous_response in options:
-            try:
-                default_index = options.index(previous_response)
-            except ValueError:
-                default_index = 0
+    def __init__(self):
+        self._init_session_state()
         
-        response = st.radio(
-            label="Select your response:",
-            options=options,
-            key=widget_key,
-            index=default_index,
-            label_visibility="collapsed"
-        )
-        return response
-    
-    elif q_type == 'text_completion':
-        placeholder = question_data.get('placeholder', 'Your response...')
-        min_chars = question_data.get('min_chars', 10)
-        
-        response = st.text_area(
-            label="Please describe in detail:",
-            value=previous_response if previous_response else "",
-            key=widget_key,
-            label_visibility="collapsed",
-            placeholder=placeholder,
-            height=120
-        )
-        
-        char_count = len(response.strip())
-        chars_needed = max(0, min_chars - char_count)
-        
-        if chars_needed > 0:
-            st.markdown(
-                f'<div class="char-count" style="color: #eab308;">✏️ Please add at least {chars_needed} more characters</div>',
-                unsafe_allow_html=True
-            )
+        if CONFIG_AVAILABLE:
+            self.config = AssessmentConfig()
+            self.analytics = self.config.get_analytics_engine()
+            self.router = self.config.get_question_router()
+            self.questions = COMPREHENSIVE_QUESTIONS
         else:
-            st.markdown(
-                f'<div class="char-count" style="color: #22c55e;">✓ {char_count} characters</div>',
-                unsafe_allow_html=True
-            )
-        
-        return response
+            self.analytics = None
+            self.router = None
+            self.questions = []
     
-    elif q_type == 'slider':
-        min_val = question_data.get('min', 1)
-        max_val = question_data.get('max', 10)
-        default_val = question_data.get('default', 5)
+    def _init_session_state(self):
+        """Initialize session state"""
+        defaults = {
+            'assessment_responses': {},
+            'current_question_index': 0,
+            'assessment_completed': False,
+            'contact_provided': False,
+            'assessment_results': {},
+            'is_digital_native': False,
+            'show_blueprint': False,
+            'premium_access': False
+        }
         
-        if previous_response is not None:
-            try:
-                default_val = int(previous_response)
-            except:
-                pass
+        for key, value in defaults.items():
+            if key not in st.session_state:
+                st.session_state[key] = value
+    
+    def render(self):
+        """Main render method - FIXED with comprehensive error handling"""
+        try:
+            apply_clinical_design_system()
+            
+            if not CONFIG_AVAILABLE:
+                st.error("Assessment configuration not available. Please check utils/config_assess.py")
+                return
+            
+            self._render_header()
+            
+            # FIXED: Better state validation
+            if not st.session_state.contact_provided:
+                if not st.session_state.assessment_completed:
+                    self._render_assessment()
+                else:
+                    # FIXED: Add validation before rendering contact form
+                    if not hasattr(st.session_state, 'assessment_responses') or not st.session_state.assessment_responses:
+                        st.error("Assessment data not found. Please restart the assessment.")
+                        if st.button("Restart assessment"):
+                            for key in ['assessment_responses', 'current_question_index', 'assessment_completed', 
+                                    'contact_provided', 'assessment_results']:
+                                if key in st.session_state:
+                                    del st.session_state[key]
+                            st.rerun()
+                    else:
+                        self._render_contact_form()
+            else:
+                self._render_results()
         
-        value = st.slider(
-            label="Select value:",
-            min_value=min_val,
-            max_value=max_val,
-            value=default_val,
-            key=widget_key,
-            label_visibility="collapsed"
-        )
+        except Exception as e:
+            st.error("An error occurred in the assessment.")
+            
+            # Show user-friendly error
+            st.error(f"Error details: {str(e)}")
+            
+            # Debug information in expander
+            import traceback
+            with st.expander("🔧 Debug information (for support)"):
+                st.code(traceback.format_exc())
+                st.write("**Session state:**")
+                st.json({
+                    'assessment_completed': st.session_state.get('assessment_completed', False),
+                    'contact_provided': st.session_state.get('contact_provided', False),
+                    'responses_count': len(st.session_state.get('assessment_responses', {})),
+                    'current_index': st.session_state.get('current_question_index', 0)
+                })
+            
+            # Offer restart option
+            if st.button("Restart assessment", type="primary"):
+                for key in list(st.session_state.keys()):
+                    if key.startswith('assessment') or key in ['contact_provided', 'current_question_index']:
+                        del st.session_state[key]
+                st.rerun()
+    
+    def _render_header(self):
+        """Render clean header"""
+        # st.markdown("""
+        # <div style="text-align: center; margin-bottom: 1.5rem;">
+        #     <h1>Behavioral pattern assessment</h1>
+
+        # </div>
+        # """, unsafe_allow_html=True)
+        st.markdown("**BEHAVIORAL ASSESSMENT**")
         
+        st.info("This assessment identifies your specific behavioral patterns "
+                "to create a personalized hypnotherapy protocol that targets your exact needs.")
+    
+    def _render_assessment(self):
+        """Render assessment questions"""
+        current_index = st.session_state.current_question_index
+        
+        if current_index >= len(self.questions):
+            self._complete_assessment()
+            return
+        
+        question = self.questions[current_index]
+        total_questions = len(self.questions)
+        
+        # Progress bar
+        progress = current_index / total_questions if total_questions > 0 else 0
         st.markdown(f"""
-        <div style="text-align: center; color: #4CA1A3; font-size: 1.5rem; font-weight: 600; margin: 1rem 0;">
-            {value} / {max_val}
+        <div class="progress-container">
+            <span><strong>Q {current_index + 1}/{total_questions}</strong></span>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {progress * 100}%"></div>
+            </div>
+            <span><strong>{int(progress * 100)}%</strong></span>
         </div>
         """, unsafe_allow_html=True)
         
-        return value
-    
-    elif q_type == 'multi_select':
-        max_selections = question_data.get('max_selections', len(options))
-        
-        default_selections = []
-        if previous_response:
-            if isinstance(previous_response, str):
-                default_selections = [s.strip() for s in previous_response.split(',') if s.strip()]
-            elif isinstance(previous_response, list):
-                default_selections = previous_response
-        
-        selected = st.multiselect(
-            label="Select all that apply:",
-            options=options,
-            default=default_selections,
-            key=widget_key,
-            max_selections=max_selections,
-            label_visibility="collapsed"
-        )
-        
-        if selected:
-            st.caption(f"✓ {len(selected)} selected (max {max_selections})")
-        else:
-            st.caption(f"Select up to {max_selections} options")
-        
-        return ", ".join(selected) if selected else ""
-    
-    else:
-        return st.text_input(
-            label="Your response:",
-            value=previous_response if previous_response else "",
-            key=widget_key,
-            label_visibility="collapsed"
-        )
-
-
-def render_contact_form():
-    """Render contact form to collect user information"""
-    
-    st.markdown("""
-        <div class="contact-form-header">
-            <h2 style="margin: 0 0 0.5rem 0; color: #273548;">Assessment complete</h2>
-            <p style="margin: 0; color: #556D7A;">
-                To receive your personalized behavioral pattern analysis and therapeutic recommendations, 
-                please provide your contact information below.
-            </p>
+        # # Question text
+        # st.markdown(f"### {question['text']}")
+        # Question text with gradient info box
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #E1F0F0 0%, #F8FAFC 100%); 
+                    padding: 1rem; border-radius: 8px; border-left: 4px solid #4CA1A3; 
+                    margin-bottom: 1.5rem;">
+            <h3 style="color: #000 !important; margin: 0 0 0.5rem 0; font-size: 1.2rem;">
+                {question['text']}
+            </h3>
         </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+        
+        # Render question type
+        self._render_question_type(question)
+        
+        # Navigation
+        self._render_navigation(current_index)
     
-    st.markdown("**Unlock your personalized analysis**")
-    
-    with st.form("contact_form"):
-        col1, col2 = st.columns(2)
+    def _render_question_type(self, question: Dict):
+        """Render different question types with previous answer memory"""
+        qtype = question['type']
+        qid = question['id']
+        question_text = question['text']
         
-        with col1:
-            first_name = st.text_input("First name*", key="contact_first_name")
-            email = st.text_input("Email address*", key="contact_email")
+        # Check if question was previously answered
+        previous_answer = st.session_state.assessment_responses.get(qid)
         
-        with col2:
-            last_name = st.text_input("Last name*", key="contact_last_name")
-            phone = st.text_input("Phone number (optional)", key="contact_phone")
+        if qtype == 'single_choice':
+            options = question['options']
+            for i, option in enumerate(options):
+                # Highlight previous answer if exists
+                button_type = "primary" if previous_answer == option else "secondary"
+                if st.button(option, key=f"q_{qid}_opt_{i}", use_container_width=True, type=button_type):
+                    self._save_response(qid, option)
+                    self._advance_question()
+                    st.rerun()
         
-        urgency = st.selectbox(
-            "How urgent is your need for support?*",
-            [
-                "Select urgency...",
-                "Standard - within a week",
-                "High priority - within 2-3 days",
-                "Very urgent - within 24 hours",
-                "Extremely urgent - same day if possible"
-            ],
-            key="contact_urgency"
-        )
-        
-        primary_concern = st.text_area(
-            "Primary concern or goal for therapy*",
-            key="contact_concern",
-            placeholder="What would you most like to address or transform?",
-            height=100
-        )
-        
-        additional_info = st.text_area(
-            "Additional information (optional)",
-            key="contact_additional",
-            placeholder="Any other details that might help us understand your situation...",
-            height=80
-        )
-        
-        submitted = st.form_submit_button(
-            "Get my complete analysis",
-            type="primary",
-            use_container_width=True
-        )
-        
-        if submitted:
-            errors = validate_contact_form(
-                first_name, last_name, email, urgency, primary_concern
+        elif qtype == 'slider':
+            min_val = question.get('min', 0)
+            max_val = question.get('max', 10)
+            default = question.get('default', 5)
+            
+            # Use previous answer if available
+            initial_value = previous_answer if previous_answer is not None else default
+            
+            value = st.slider(
+                question_text,
+                min_value=min_val,
+                max_value=max_val,
+                value=int(initial_value),  # Ensure it's an integer
+                key=f"slider_{qid}",
+                label_visibility="collapsed"
             )
             
-            if errors:
-                for error in errors:
-                    st.error(f"❌ {error}")
-            else:
-                st.session_state.contact_info = {
-                    'first_name': first_name,
-                    'last_name': last_name,
-                    'full_name': f"{first_name} {last_name}".strip(),
-                    'email': email,
-                    'phone': phone or "Not provided",
-                    'urgency': urgency,
-                    'primary_concern': primary_concern,
-                    'additional_info': additional_info or "None provided",
-                    'timestamp': datetime.now().isoformat()
-                }
-                
-                email_success = send_assessment_notification()
-                
-                if email_success:
-                    st.success("✅ Contact information saved and assessment sent!")
-                else:
-                    st.warning("⚠️ Contact saved, but email notification failed. You will still receive your results.")
-                
-                st.session_state.contact_provided = True
+            if st.button("Continue", key=f"continue_{qid}", type="primary", use_container_width=True):
+                self._save_response(qid, value)
+                self._advance_question()
                 st.rerun()
-
-
-def validate_contact_form(
-    first_name: str,
-    last_name: str,
-    email: str,
-    urgency: str,
-    primary_concern: str
-) -> list:
-    """Validate contact form inputs"""
-    errors = []
+        
+        elif qtype == 'text_completion':
+            placeholder = question.get('placeholder', 'Your response...')
+            min_chars = question.get('min_chars', 3)
+            
+            # Use previous answer if available
+            initial_text = previous_answer if previous_answer else ""
+            
+            response = st.text_area(
+                question_text,
+                value=initial_text,  # Pre-fill with previous answer
+                placeholder=placeholder,
+                key=f"text_{qid}",
+                height=100,
+                label_visibility="collapsed"
+            )
+            
+            if response.strip() and len(response.strip()) >= min_chars:
+                if st.button("Continue", key=f"continue_{qid}", type="primary", use_container_width=True):
+                    self._save_response(qid, response.strip())
+                    self._advance_question()
+                    st.rerun()
+            elif response.strip():
+                st.caption(f"Please provide at least {min_chars} characters")
     
-    if not first_name.strip():
-        errors.append("First name is required")
+    def _render_navigation(self, current_index: int):
+        """Render navigation buttons"""
+        # Get current question from index to access question['id']
+        question = self.questions[current_index]
+        
+        col1, col2, col3 = st.columns([1, 2, 1])
+        
+        with col1:
+            if current_index > 0:
+                if st.button("← Back", key="nav_back", use_container_width=True):
+                    self._go_back()
+                    st.rerun()
+        
+        with col2:
+            # Count only non-skipped responses
+            answered = sum(1 for resp in st.session_state.assessment_responses.values() 
+                        if resp != "Not applicable")
+            st.markdown(f"""
+            <div style="text-align: center; padding: 0.5rem; color: #556D7A; font-size: 0.85rem;">
+                <strong>{answered}</strong> answered
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            if st.button("Skip", key="nav_skip", use_container_width=True):
+                self._save_response(question['id'], "Not applicable")
+                self._advance_question()
+                st.rerun()
     
-    if not last_name.strip():
-        errors.append("Last name is required")
+    def _save_response(self, qid: int, response: Any):
+        """Save response"""
+        st.session_state.assessment_responses[qid] = response
     
-    if not email.strip():
-        errors.append("Email address is required")
-    elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
-        errors.append("Please enter a valid email address")
+    def _advance_question(self):
+        """Advance to next question"""
+        st.session_state.current_question_index += 1
     
-    if urgency == "Select urgency...":
-        errors.append("Please select urgency level")
-    
-    if not primary_concern.strip():
-        errors.append("Primary concern is required")
-    elif len(primary_concern.strip()) < 10:
-        errors.append("Please provide more detail about your primary concern (at least 10 characters)")
-    
-    return errors
-
-
-def send_assessment_notification() -> bool:
-    """Send enhanced assessment results to therapist via email"""
-    if not EMAIL_AVAILABLE:
-        print("Email module not available - skipping email")
-        return False
-    
-    try:
-        # Generate complete analysis with enhanced data
-        analytics = AnalyticsEngine()
+    def _go_back(self):
+        """Go back to previous question - preserves previous answers"""
+        if st.session_state.current_question_index > 0:
+            st.session_state.current_question_index -= 1
+            # Answer is preserved in session_state for when user returns
+        
+    def _complete_assessment(self):
+        """Complete assessment and generate analysis - FIXED with validation"""
+        
+        # FIXED: Validate we have responses
+        if not st.session_state.assessment_responses:
+            st.error("No responses found. Please complete at least one question.")
+            return
+        
+        st.session_state.assessment_completed = True
+        
+        # Generate complete analysis with error handling
         assessment_data = {
-            'responses': st.session_state.responses,
-            'is_digital_native': st.session_state.is_digital_native
-        }
-        
-        # This now includes trigger_chain_analysis and clinical_summary
-        analysis = analytics.generate_complete_analysis(assessment_data)
-        
-        # Store analysis for results display
-        st.session_state.analysis_results = analysis
-        
-        # Prepare email data
-        contact_info = st.session_state.contact_info
-        
-        email_data = {
-            'contact': contact_info,
-            'analysis': analysis,  # Contains all enhanced data
-            'responses': st.session_state.responses,
+            'responses': st.session_state.assessment_responses,
             'timestamp': datetime.now().isoformat()
         }
         
-        # Send email with rapid clinical summary
-        success = send_assessment_email(email_data)
-        st.session_state.email_sent = success
+        try:
+            if self.analytics:
+                analysis = self.analytics.generate_complete_analysis(assessment_data)
+                st.session_state.assessment_results = analysis
+                st.session_state.is_digital_native = analysis.get('is_digital_native', False)
+            else:
+                # Fallback if analytics not available
+                st.session_state.assessment_results = {
+                    'pattern_scores': {},
+                    'pattern_analysis': {},
+                    'success_prediction': {'overall_success_rate': 85},
+                    'digital_analysis': {},
+                    'is_digital_native': False
+                }
+                st.session_state.is_digital_native = False
+        except Exception as e:
+            # Log error but continue to contact form with fallback data
+            print(f"Analytics generation error: {str(e)}")
+            import traceback
+            print(traceback.format_exc())
+            
+            st.session_state.assessment_results = {
+                'error': str(e),
+                'pattern_scores': {},
+                'pattern_analysis': {
+                    'pattern_count': 0,
+                    'dominant_pattern': {},
+                    'primary_patterns': [],
+                    'complexity_assessment': 'Analysis pending'
+                },
+                'success_prediction': {
+                    'overall_success_rate': 85,
+                    'timeline_estimate': '2-3 weeks',
+                    'recommended_sessions': 2
+                },
+                'digital_analysis': {},
+                'is_digital_native': False
+            }
+            st.session_state.is_digital_native = False
         
-        return success
-        
-    except Exception as e:
-        print(f"Error sending assessment email: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        return False
-
-
-def render_results():
-    """Render enhanced results page with complete clinical insights"""
+        st.rerun()
     
-    # Generate analysis if not already done
-    if 'analysis_results' not in st.session_state:
-        analytics = AnalyticsEngine()
-        assessment_data = {
-            'responses': st.session_state.responses,
-            'is_digital_native': st.session_state.is_digital_native
+    def _render_contact_form(self):
+        """Render contact form"""
+        st.markdown("### Assessment complete")
+        st.write("Provide your details to receive your behavioral pattern analysis.")
+        
+        with st.form("contact_form"):
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                full_name = st.text_input("Full name*", placeholder="Your full name")
+            
+            with col2:
+                email = st.text_input("Email*", placeholder="your@email.com")
+            
+            phone = st.text_input("Phone (optional)", placeholder="+66 xxx xxx xxx")
+            
+            urgency = st.selectbox(
+                "How urgent is your concern?*",
+                ["Select urgency...", "Extremely urgent - same day", "Very urgent - within 24-48 hours",
+                 "Moderately urgent - within a week", "Not urgent - just exploring"]
+            )
+            
+            primary_concern = st.text_area(
+                "Primary concern*",
+                placeholder="What brought you to this assessment?",
+                height=100
+            )
+            
+            additional_info = st.text_area(
+                "Additional information (optional)",
+                placeholder="Any other relevant details...",
+                height=80
+            )
+            
+            submitted = st.form_submit_button("Get my analysis", type="primary", use_container_width=True)
+            
+            if submitted:
+                errors = self._validate_contact_form(full_name, email, urgency, primary_concern)
+                
+                if not errors:
+                    self._save_contact_and_send_email(
+                        full_name, email, phone, urgency, primary_concern, additional_info
+                    )
+                    st.session_state.contact_provided = True
+                    st.rerun()
+                else:
+                    for error in errors:
+                        st.error(f"❌ {error}")
+    
+    def _validate_contact_form(self, name: str, email: str, urgency: str, concern: str) -> list:
+        """Validate contact form"""
+        errors = []
+        
+        if not name.strip():
+            errors.append("Name is required")
+        
+        if not email.strip():
+            errors.append("Email is required")
+        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+            errors.append("Valid email required")
+        
+        if urgency == "Select urgency...":
+            errors.append("Please select urgency level")
+        
+        if not concern.strip():
+            errors.append("Primary concern required")
+        
+        return errors
+    
+    def _save_contact_and_send_email(self, name: str, email: str, phone: str, 
+                                     urgency: str, concern: str, additional: str):
+        """Save contact info and send email"""
+        contact_info = {
+            'full_name': name,
+            'email': email,
+            'phone': phone or 'Not provided',
+            'urgency': urgency,
+            'primary_concern': concern,
+            'additional_info': additional or 'None provided',
+            'timestamp': datetime.now().isoformat()
         }
         
-        try:
-            st.session_state.analysis_results = analytics.generate_complete_analysis(assessment_data)
-        except Exception as e:
-            st.error(f"Error generating analysis: {str(e)}")
-            st.session_state.analysis_results = {}
-    
-    analysis = st.session_state.analysis_results
-    contact_info = st.session_state.get('contact_info', {})
-    client_name = contact_info.get('full_name', 'Valued client')
-    
-    # Results header
-    st.markdown("""
-        <div class="results-header">
-            <h1 style="margin: 0; font-size: 2rem; font-weight: 600;">Your assessment results</h1>
-            <p style="margin: 0.5rem 0 0 0; opacity: 0.9; font-size: 1.1rem;">
-                Comprehensive behavioral pattern analysis
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # Client summary
-    st.markdown(f"""
-        <div class="insight-card">
-            <h3 style="margin: 0 0 0.5rem 0; color: #273548;">Assessment summary for {client_name}</h3>
-            <p style="margin: 0; color: #556D7A;">
-                Completed on {datetime.now().strftime('%B %d, %Y at %I:%M %p')}
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # Pattern analysis
-    pattern_hierarchy = analysis.get('pattern_hierarchy', {})
-    dominant_pattern = pattern_hierarchy.get('dominant_pattern', {})
-    pattern_count = pattern_hierarchy.get('pattern_count', 0)
-    
-    if pattern_count == 0 or not dominant_pattern:
-        # Healthy baseline message
-        st.markdown("""
-            <div style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-                        color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 1rem 0;">
-                <h3 style="margin: 0; color: white;">✓ Healthy baseline functioning</h3>
-                <p style="margin: 0.5rem 0 0 0; opacity: 0.95;">
-                    No clinically significant behavioral patterns detected. You demonstrate strong psychological health.
-                    Consider our performance optimization and personal development services.
-                </p>
-            </div>
-        """, unsafe_allow_html=True)
-    else:
-        # Show dominant pattern
-        st.markdown("**Your primary pattern**")
+        st.session_state.contact_info = contact_info
         
-        pattern_name = dominant_pattern.get('name', 'Pattern identified')
-        pattern_score = dominant_pattern.get('score', 0)
-        pattern_desc = dominant_pattern.get('description', {})
-        
-        st.markdown(f"""
-            <div style="background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
-                        color: white; padding: 1.5rem; border-radius: 12px; margin: 1rem 0;">
-                <h3 style="margin: 0; font-size: 1.4rem; font-weight: 600; color: white;">{pattern_name}</h3>
-                <p style="margin: 0.5rem 0; opacity: 0.95; font-size: 1.1rem;">
-                    Intensity level: {pattern_score}/10
-                </p>
-                <p style="margin: 0.5rem 0 0 0; opacity: 0.9; font-size: 0.95rem;">
-                    {pattern_desc.get('core_belief', '')}
-                </p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        # Show trigger chain if captured
-        trigger_chain_analysis = analysis.get('trigger_chain_analysis', {})
-        if trigger_chain_analysis and trigger_chain_analysis.get('sequence_completeness', 0) >= 60:
-            st.markdown("**Your behavioral sequence**")
-            st.info("Your complete trigger → response sequence has been captured and sent to our therapist for precise intervention design.")
-        
-        # Secondary patterns
-        primary_patterns = pattern_hierarchy.get('primary_patterns', [])
-        if primary_patterns:
-            st.markdown("**Additional significant patterns**")
+        # Send email if available
+        if EMAIL_AVAILABLE:
+            email_data = {
+                'contact': contact_info,
+                'analysis': st.session_state.assessment_results,
+                'responses': st.session_state.assessment_responses
+            }
             
-            for pattern in primary_patterns[:2]:
-                st.markdown(f"""
-                    <div class="insight-card">
-                        <strong style="color: #4CA1A3;">{pattern.get('name', 'Pattern')}</strong>
-                        <span style="color: #556D7A; margin-left: 0.5rem;">
-                            Score: {pattern.get('score', 0)}/10
-                        </span>
-                    </div>
-                """, unsafe_allow_html=True)
+            success = send_assessment_email(email_data)
+            if success:
+                st.success("✅ Assessment sent to clinical team")
+            else:
+                st.warning("⚠️ Assessment completed but email notification failed")
     
-    # Success prediction
-    success_pred = analysis.get('success_prediction', {})
-    success_rate = success_pred.get('overall_success_rate', 85)
-    timeline = success_pred.get('timeline_estimate', '2-3 weeks')
-    
-    st.markdown("**Your transformation success probability**")
-    
-    st.markdown(f"""
-        <div style="background: linear-gradient(135deg, #4CA1A3 0%, #3B7A7A 100%);
-                    color: white; padding: 2rem; border-radius: 12px; text-align: center; margin: 1rem 0;">
-            <div style="font-size: 3.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-                {success_rate}%
-            </div>
-            <p style="margin: 0; opacity: 0.95; font-size: 1.2rem;">
-                Predicted success rate
-            </p>
-            <p style="margin: 0.5rem 0 0 0; opacity: 0.9; font-size: 1rem;">
-                Estimated timeline: {timeline}
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    st.progress(success_rate / 100)
-    
-    # Therapeutic recommendations
-    recommendations = analysis.get('therapeutic_recommendations', {})
-    recommended_sessions = recommendations.get('recommended_sessions', 2)
-    
-    st.markdown("**Your personalized approach**")
-    st.markdown(f"""
-        <div class="insight-card">
-            <p style="margin: 0 0 0.5rem 0; color: #273548;">
-                <strong>Recommended sessions:</strong> {recommended_sessions} sessions
-            </p>
-            <p style="margin: 0; color: #556D7A;">
-                Based on your pattern complexity and transformation readiness
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # Digital analysis if applicable
-    digital_analysis = analysis.get('digital_analysis', {})
-    if digital_analysis and digital_analysis.get('is_digital_native'):
-        severity = digital_analysis.get('severity_level', 'MINIMAL')
-        score = digital_analysis.get('digital_despair_score', 0)
+    def _render_results(self):
+        """Render results page with strategic free preview and premium content"""
         
-        if severity in ['SEVERE', 'MODERATE']:
-            st.markdown("**Digital conditioning adaptation**")
-            st.markdown(f"""
-                <div class="insight-card" style="border-left-color: #eab308;">
-                    <p style="margin: 0 0 0.5rem 0; color: #273548;">
-                        <strong>Digital despair score:</strong> {score:.1f}% ({severity})
-                    </p>
-                    <p style="margin: 0; color: #556D7A;">
-                        Specialized protocol activated for digital-native psychology
-                    </p>
-                </div>
-            """, unsafe_allow_html=True)
-    
-    # Next steps
-    st.markdown("---")
-    st.markdown("**What happens next**")
-    
-    st.markdown("""
-        <div style="background: linear-gradient(135deg, #E1F0F0 0%, #F3F6F8 100%);
-                    padding: 1.5rem; border-radius: 12px; border-left: 4px solid #4CA1A3;">
-            <div style="display: grid; gap: 1rem;">
-                <div>
-                    <strong style="color: #4CA1A3;">Step 1: clinical review</strong>
-                    <p style="margin: 0.25rem 0 0 0; color: #556D7A;">
-                        Our licensed therapist reviews your comprehensive assessment (24-48 hours)
-                    </p>
-                </div>
-                <div>
-                    <strong style="color: #4CA1A3;">Step 2: personal contact</strong>
-                    <p style="margin: 0.25rem 0 0 0; color: #556D7A;">
-                        We reach out via your preferred method to discuss your results (48-72 hours)
-                    </p>
-                </div>
-                <div>
-                    <strong style="color: #4CA1A3;">Step 3: begin transformation</strong>
-                    <p style="margin: 0.25rem 0 0 0; color: #556D7A;">
-                        Schedule your personalized hypnotherapy sessions
-                    </p>
-                </div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # Value comparison
-    st.markdown("---")
-    st.markdown("**Investment comparison**")
-    
-    col1, col2, col3 = st.columns([4, 1, 4])
-    
-    with col1:
-        st.markdown("""
-            **Traditional therapy approach**  
-            18+ months of talk therapy  
-            ฿15,000 - ฿25,000+ total cost  
-            3-6 months to initial results
-        """)
-    
-    with col2:
-        st.markdown("<div style='text-align: center; font-size: 1.5rem; color: #4CA1A3;'>vs</div>", 
-                   unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown("""
-            **Rapid transformation hypnotherapy**  
-            2-3 specialized sessions  
-            ฿3,000 - ฿4,000 total investment  
-            48-72 hours to initial shifts
-        """)
-    
-    # Reset option
-    st.markdown("---")
-    if st.button("Take assessment again", type="secondary"):
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
-        st.rerun()
-
-
-# ============================================================================
-# MAIN APPLICATION
-# ============================================================================
-
-def main():
-    """Main assessment application"""
-    
-    if not CONFIG_LOADED:
-        st.error("Configuration module not loaded. Please check utils/config_assess.py")
-        return
-    
-    initialize_session_state()
-    
-    if st.session_state.get('contact_provided', False):
-        render_results()
-        return
-    
-    router = QuestionRouter()
-    
-    current_question = router.get_next_question(
-        st.session_state.responses,
-        st.session_state.is_digital_native
-    )
-    
-    if current_question is None:
-        st.session_state.assessment_completed = True
-        render_contact_form()
-        return
-    
-    answered = len(st.session_state.responses)
-    total = router.estimate_total_questions(
-        st.session_state.responses,
-        st.session_state.is_digital_native
-    )
-    progress = (answered / total * 100) if total > 0 else 0
-    
-    # Render header
-    st.markdown("""
-        <div class="assessment-header">
-            <h1 class="assessment-title">Behavioral pattern assessment</h1>
-            <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">
-                Discover your patterns and unlock your transformation potential
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # Progress indicator
-    st.markdown(f"""
-        <div class="progress-container">
-            <div class="progress-text">
-                Question {answered + 1} of {total} • {int(progress)}% complete
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    st.progress(progress / 100)
-    
-    # Render current question
-    q_id = current_question['id']
-    q_text = current_question['text']
-    phase = current_question.get('phase', 'core')
-    
-    render_question_card(q_text)
-    
-    # Render options and get response
-    response = render_options(q_id, current_question, q_text, phase)
-    
-    # Handle digital native detection
-    if q_id == 1 and not st.session_state.digital_native_determined:
-        options = current_question.get('options', [])
-        scoring = current_question.get('digital_native_scoring', [])
+        # Get results data
+        results = st.session_state.assessment_results
+        pattern_analysis = results.get('pattern_analysis', {})
+        success_prediction = results.get('success_prediction', {})
+        digital_analysis = results.get('digital_analysis', {})
         
-        if response in options:
-            try:
-                index = options.index(response)
-                score = scoring[index] if index < len(scoring) else 0
-                st.session_state.is_digital_native = (score >= 3)
-                st.session_state.digital_native_determined = True
-            except:
-                pass
-    
-    # Navigation section
-    st.markdown('<div class="nav-container">', unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns([1, 2, 1])
-    
-    with col1:
-        if answered > 0:
-            if st.button("◄ Back", type="secondary"):
-                if st.session_state.responses:
-                    last_key = max(st.session_state.responses.keys())
-                    del st.session_state.responses[last_key]
-                st.session_state.current_question -= 1
-                st.rerun()
-    
-    with col2:
+        dominant = pattern_analysis.get('dominant_pattern', {})
+        primary_patterns = pattern_analysis.get('primary_patterns', [])
+        pattern_count = pattern_analysis.get('pattern_count', 0)
+        
+        # Calculate completion rate
+        total_questions = len(self.questions)
+        answered = sum(1 for resp in st.session_state.assessment_responses.values() 
+                    if resp != "Not applicable")
+        completion_rate = (answered / total_questions) * 100 if total_questions > 0 else 0
+        
+        # ====================================================================
+        # FREE PREVIEW SECTION
+        # ====================================================================
+        
+        # Hero Section
         st.markdown(f"""
-            <div style="text-align: center; padding: 0.5rem; color: #556D7A;">
-                <strong>{answered}</strong> answered
-            </div>
+        <div style="background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%); 
+                    padding: 2rem; border-radius: 12px; border-left: 4px solid #4CA1A3; margin-bottom: 2rem;">
+            <h2 style="color: #273548; margin: 0 0 1rem 0;">Assessment complete - {answered} questions analyzed</h2>
+            <p style="color: #556D7A; margin: 0; font-size: 1rem;">
+                Your comprehensive behavioral analysis has been sent to our clinical team
+            </p>
+        </div>
         """, unsafe_allow_html=True)
+        
+        # FIXED: Check completion rate
+        if completion_rate < 85:
+            st.warning(f"""
+            **Assessment completion: {completion_rate:.0f}%**
+            
+            You've answered {answered} out of {total_questions} questions. For accurate pattern analysis, 
+            we recommend completing at least 85% of the assessment.
+            """)
+            
+            st.markdown("""
+            ### Primary pattern: not applicable
+            
+            **Insufficient data for automated analysis**
+            
+            With the current completion rate, our automated pattern analysis cannot provide 
+            reliable results. However, your responses have been sent to our clinical team.
+            
+            **What happens next:**
+            
+            Our licensed therapist will personally review your responses and contact you within 
+            24-48 hours to discuss:
+            - A personalized assessment approach
+            - Your specific concerns and goals
+            - The most appropriate intervention strategy for your situation
+            
+            For faster service, you may also email us directly at [contact email] with any 
+            additional context about your situation.
+            """)
+            
+            # Success Metrics Display (Modified)
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                st.metric("Questions answered", answered)
+            
+            with col2:
+                st.metric("Completion rate", f"{completion_rate:.0f}%")
+            
+            with col3:
+                st.metric("Status", "Manual review")
+            
+        else:
+            # ORIGINAL: Full pattern analysis display
+            # Primary Pattern Overview (Surface Level Only)
+            if dominant:
+                pattern_name = dominant.get('name', 'Unknown')
+                pattern_score = dominant.get('score', 0)
+                pattern_severity = dominant.get('severity', 'Unknown')
+                
+                st.markdown(f"""
+                ### Primary pattern identified: {pattern_name}
+                
+                **Intensity:** {pattern_score:.1f}/10 - {pattern_severity.lower()} impact on daily life  
+                **Success probability:** {success_prediction.get('overall_success_rate', 85)}% with specialized intervention
+                
+                Your assessment reveals {pattern_count} interconnected behavioral patterns that developed as 
+                protective mechanisms but now limit your life satisfaction.
+                """)
+            
+            # Success Metrics Display
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                st.metric("Questions analyzed", answered)
+            
+            with col2:
+                success_rate = success_prediction.get('overall_success_rate', 85)
+                st.metric("Success probability", f"{success_rate}%")
+            
+            with col3:
+                timeline = success_prediction.get('timeline_estimate', '2 weeks')
+                st.metric("Timeline estimate", timeline)
+            
+            # Additional Patterns Teaser (Names + Scores Only)
+            if primary_patterns:
+                st.markdown("### Additional patterns detected")
+                for pattern in primary_patterns[:2]:  # Show top 2 only
+                    st.markdown(f"- {pattern.get('name', 'Unknown')} ({pattern.get('score', 0):.1f}/10)")
+            
+            # What This Means (General Impact Only)
+            st.markdown("""
+            ### What this means
+            
+            These patterns are consuming significant mental and emotional energy. Your success probability 
+            indicates high likelihood of rapid transformation with proper clinical intervention.
+            """)
+            
+            # Digital Analysis Preview (if applicable)
+            if st.session_state.is_digital_native and digital_analysis:
+                severity = digital_analysis.get('severity_level', 'MINIMAL')
+                if severity in ['SEVERE', 'MODERATE']:
+                    score = digital_analysis.get('digital_despair_score', 0)
+                    st.markdown(f"""
+                    **Digital conditioning detected:** {score:.0f}% ({severity.lower()})  
+                    Specialized digital-native protocol recommended
+                    """)
+            
+            st.markdown("---")
+            
+            # ====================================================================
+            # PAYWALL SECTION (only if completion >= 85%)
+            # ====================================================================
+            
+            st.markdown("### Unlock your complete transformation blueprint")
+            
+            # What They're Seeing vs What's Available
+            st.markdown("""
+            **What you're seeing above:** Surface-level pattern identification
+            
+            **What's in your full analysis:**
+            - Complete 8-step behavioral chain with your exact trigger sequence
+            - Personalized intervention points with specific techniques
+            - Session-by-session transformation roadmap
+            - Hypnotic language protocols customized to your patterns
+            - 5-year cost analysis of unchanged patterns
+            - Digital conditioning protocols (if applicable)
+            - Downloadable 15-20 page clinical report
+            """)
+            
+            # Value Comparison
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.markdown("""
+                **Traditional therapy approach:**
+                - 18+ months of talk therapy
+                - 15,000-25,000 total cost
+                - 3-6 months to initial results
+                """)
+            
+            with col2:
+                st.markdown("""
+                **Your complete blueprint:**
+                - 3,200 (one-time payment)
+                - 150+ analyzed data points
+                - 15-20 page detailed report
+                - Lifetime access to materials
+                """)
+            
+            # Paywall Integration
+            if PAYWALL_AVAILABLE:
+                with st.expander("**Access complete analysis**", expanded=False):
+                    self._render_paywall_or_premium_content()
+            else:
+                st.info("Complete analysis will be provided during your consultation session")
+        
+        # ====================================================================
+        # NEXT STEPS (Always Visible)
+        # ====================================================================
+        
+        self._render_next_steps()
     
-    with col3:
-        next_label = "Complete ✓" if answered + 1 == total else "Next ►"
+    def _render_paywall_or_premium_content(self):
+        """Render paywall or premium content if unlocked"""
         
-        can_proceed = response is not None and response != ""
+        paywall = create_clinical_paywall()
         
-        if current_question.get('type') == 'text_completion':
-            min_chars = current_question.get('min_chars', 10)
-            can_proceed = len(str(response).strip()) >= min_chars
-        
-        if st.button(next_label, type="primary", disabled=not can_proceed):
-            st.session_state.responses[q_id] = response
-            st.session_state.current_question += 1
-            st.rerun()
+        if paywall.check_payment_status() or st.session_state.premium_access:
+            # User has paid - show premium content
+            st.success("Premium analysis unlocked")
+            self._render_premium_content()
+        else:
+            # Show paywall
+            st.markdown("""
+            ### Unlock detailed analysis
+            
+            **Your premium blueprint includes:**
+            
+            **1. Complete pattern analysis (3-4 pages)**
+            - All 9 patterns with detailed origins
+            - Family system analysis
+            - Pattern interconnection mapping
+            - Root belief structures
+            - Hidden loyalties and secondary gains
+            
+            **2. Complete behavioral chain (2 pages)**
+            - Your exact 8-step trigger sequence
+            - Your specific physical sensations
+            - Your automatic thoughts (your actual words)
+            - Emotional cascade mapping
+            - 4-6 intervention windows identified
+            
+            **3. Transformation roadmap (3 pages)**
+            - Session-by-session breakdown for YOUR patterns
+            - Week-by-week neuroplasticity timeline
+            - Success indicators to track
+            - Optimization strategies
+            
+            **4. Intervention protocols (2 pages)**
+            - Exact therapeutic language for your patterns
+            - Hypnotic keywords to use
+            - Language to avoid
+            - Self-regulation techniques
+            
+            **5. Cost analysis (2 pages)**
+            - Weekly/annual pattern costs
+            - 5-year projection if unchanged
+            - ROI calculation for intervention
+            - Compound cost visualization
+            
+            **6. Digital conditioning plan (if applicable)**
+            - Component-by-component intervention
+            - Reality integration protocols
+            - Attention restoration timeline
+            
+            **7. Downloadable resources**
+            - Complete 15-20 page PDF report
+            - Progress tracking worksheets
+            - Pattern interruption checklist
+            - Success indicators checklist
+            """)
+            
+            # Paywall interface
+            blueprint_data = {
+                'analysis': st.session_state.assessment_results,
+                'responses': st.session_state.assessment_responses,
+                'contact': st.session_state.get('contact_info', {})
+            }
+            
+            paywall.render_paywall_interface(blueprint_data)
     
-    st.markdown('</div>', unsafe_allow_html=True)
+    def _render_premium_content(self):
+        """Render full premium content after payment"""
+        
+        results = st.session_state.assessment_results
+        
+        st.markdown("## Your complete transformation blueprint")
+        
+        # Section 1: Complete Pattern Analysis
+        st.markdown("### 1. Complete pattern analysis")
+        
+        if BLUEPRINT_AVAILABLE:
+            blueprint = create_behavioral_blueprint()
+            blueprint_data = {
+                'analysis': results,
+                'responses': st.session_state.assessment_responses,
+                'contact': st.session_state.get('contact_info', {})
+            }
+            blueprint.render_complete_blueprint(blueprint_data)
+        else:
+            self._render_premium_fallback()
+        
+        # Section 2: Downloadable PDF
+        st.markdown("### Download your report")
+        
+        st.markdown("""
+        **Your complete clinical report includes:**
+        - All pattern analysis with detailed origins
+        - Complete trigger chain mapping
+        - Session-by-session transformation roadmap
+        - Intervention protocols and language guides
+        - Cost analysis and ROI calculations
+        - Progress tracking worksheets
+        
+        PDF generation will be available in your client portal after consultation scheduling.
+        """)
+    
+    def _render_premium_fallback(self):
+        """Fallback premium content if blueprint unavailable"""
+        
+        results = st.session_state.assessment_results
+        pattern_analysis = results.get('pattern_analysis', {})
+        clinical_summary = results.get('clinical_summary', {})
+        trigger_chain = results.get('trigger_chain_analysis', {})
+        
+        # Dominant Pattern Details
+        dominant = pattern_analysis.get('dominant_pattern', {})
+        if dominant:
+            pattern_desc = dominant.get('description', {})
+            
+            st.markdown(f"""
+            **Pattern: {dominant.get('name', 'Unknown')}**
+            
+            **Root structure:** {pattern_desc.get('root_structure', 'Not available')}
+            
+            **Core belief:** {pattern_desc.get('core_belief', 'Not available')}
+            
+            **Protective function:** {pattern_desc.get('protective_function', 'Not available')}
+            
+            **Intervention focus:** {pattern_desc.get('intervention_focus', 'Not available')}
+            """)
+        
+        # Clinical Summary
+        st.markdown("### Clinical intervention summary")
+        
+        st.markdown(f"""
+        **Session 1 focus:** {clinical_summary.get('session_1_focus', 'Pattern exploration')}
+        
+        **Session 2 target:** {clinical_summary.get('session_2_target', 'Core transformation')}
+        
+        **Change readiness:** {clinical_summary.get('change_readiness_score', '0/10')}
+        
+        **Intervention keywords:** {clinical_summary.get('intervention_keywords', 'Not specified')}
+        
+        **Avoid language:** {clinical_summary.get('avoid_language', 'Not specified')}
+        """)
+        
+        # Trigger Chain Preview
+        chain = trigger_chain.get('trigger_chain', {})
+        if chain:
+            st.markdown("### Your behavioral sequence")
+            
+            sequence_items = [
+                ("Environmental trigger", chain.get('environmental_trigger')),
+                ("Physical response", chain.get('physical_response')),
+                ("Automatic thought", chain.get('automatic_thought')),
+                ("Emotional response", chain.get('emotional_response')),
+                ("Behavioral response", chain.get('behavioral_response'))
+            ]
+            
+            for label, value in sequence_items:
+                if value and value != 'Not captured':
+                    st.markdown(f"**{label}:** {value}")
+    
+    def _render_next_steps(self):
+        """Render next steps section"""
+        
+        st.markdown("---")
+        st.markdown("### Your next steps")
+        
+        contact_info = st.session_state.get('contact_info', {})
+        urgency = contact_info.get('urgency', '').lower()
+        
+        # Priority status
+        if 'extremely urgent' in urgency or 'same day' in urgency:
+            st.warning("**Priority status:** We'll contact you within 24 hours")
+        elif 'very urgent' in urgency or '24' in urgency:
+            st.info("**High priority:** We'll contact you within 24-48 hours")
+        
+        # Timeline
+        st.markdown("""
+        **What happens next:**
+        
+        1. **Clinical review** (24-48 hours): Licensed therapist analyzes your comprehensive assessment
+        2. **Personal contact** (48-72 hours): We reach out via your preferred method
+        3. **Custom protocol** (within 72 hours): Personalized hypnotherapy approach designed for your specific patterns
+        4. **Transformation sessions:** Begin your 2-3 session protocol
+        """)
+        
+        # Session structure reminder
+        success_prediction = st.session_state.assessment_results.get('success_prediction', {})
+        recommended_sessions = success_prediction.get('recommended_sessions', 2)
+        
+        st.markdown(f"""
+        **Your recommended protocol:**
+        - **Sessions:** {recommended_sessions} sessions (90 minutes each)
+        - **Timeline:** {success_prediction.get('timeline_estimate', '2-3 weeks')}
+        - **Success probability:** {success_prediction.get('overall_success_rate', 85)}%
+        """)
+        
+        # CTAs
+        st.markdown("### Ready to begin transformation?")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.link_button(
+                "Schedule consultation",
+                "https://calendar.app.google/dHJTqwnffkGBnrpd6",
+                use_container_width=True,
+                type="primary"
+            )
+        
+        with col2:
+            st.link_button(
+                "Learn about method",
+                "https://hypnotherapy.streamlit.app/",
+                use_container_width=True
+            )
+        
+        # Value reminder
+        st.markdown("""
+        ---
+        **Investment comparison:**
+        
+        Traditional therapy: 18+ months, 15,000-25,000  
+        Specialized hypnotherapy: 2-3 sessions, 3,000-4,000
+        
+        Time to initial results: 48-72 hours vs 3-6 months
+        """)
 
 
 # ============================================================================
-# ENTRY POINT
+# PAGE CLASS
 # ============================================================================
+class AssessPage:
+    """Assessment page wrapper"""
+    
+    def __init__(self):
+        self.assessment = ClinicalBehavioralAssessment()
+    
+    def render(self):
+        """Render the page"""
+        self.assessment.render()
+
 
 def create_assess_page():
-    """Factory function for multi-page app integration"""
-    class AssessPage:
-        def render(self):
-            main()
+    """Factory function"""
     return AssessPage()
-
-
-if __name__ == "__main__":
-    main()
