@@ -3698,11 +3698,12 @@ class ClinicalBehavioralAssessment:
             urgency = st.selectbox(
                 "How urgent is your concern?*",
                 ["Select urgency...", "Extremely urgent - same day", "Very urgent - within 24-48 hours",
-                 "Moderately urgent - within a week", "Not urgent - just exploring"]
+                 "Moderately urgent - within a week", "Not urgent - just exploring"],
+                index=1
             )
             
             primary_concern = st.text_area(
-                "Primary concern*",
+                "Primary concern (min 3 characters)",
                 placeholder="What brought you to this assessment?",
                 height=100
             )
@@ -3731,21 +3732,18 @@ class ClinicalBehavioralAssessment:
     def _validate_contact_form(self, name: str, email: str, urgency: str, concern: str) -> list:
         """Validate contact form"""
         errors = []
-        
+
         if not name.strip():
             errors.append("Name is required")
-        
+
         if not email.strip():
             errors.append("Email is required")
         elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
             errors.append("Valid email required")
-        
-        if urgency == "Select urgency...":
-            errors.append("Please select urgency level")
-        
-        if not concern.strip():
-            errors.append("Primary concern required")
-        
+
+        if concern.strip() and len(concern.strip()) < 3:
+            errors.append("Primary concern must be at least 3 characters if provided")
+
         return errors
     
     def _save_contact_and_send_email(self, name: str, email: str, phone: str, 
@@ -3802,14 +3800,31 @@ class ClinicalBehavioralAssessment:
         
         # Hero Section
         st.markdown(f"""
-        <div style="background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%); 
+        <div style="background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%);
                     padding: 2rem; border-radius: 12px; border-left: 4px solid #4CA1A3; margin-bottom: 2rem;">
-            <h2 style="color: #273548; margin: 0 0 1rem 0;">Assessment complete - {answered} questions analyzed</h2>
-            <p style="color: #556D7A; margin: 0; font-size: 1rem;">
-                Your comprehensive behavioral analysis has been sent to our clinical team
-            </p>
+            <h2 style="color: #273548; margin: 0;">Assessment complete - {answered} questions analyzed</h2>
         </div>
         """, unsafe_allow_html=True)
+
+        # Success Metrics Display (positioned right after hero section)
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("Questions answered", answered)
+
+        with col2:
+            if completion_rate >= 85:
+                success_rate = success_prediction.get('overall_success_rate', 85)
+                st.metric("Success probability", f"{success_rate}%")
+            else:
+                st.metric("Completion rate", f"{completion_rate:.0f}%")
+
+        with col3:
+            if completion_rate >= 85:
+                timeline = success_prediction.get('timeline_estimate', '2 weeks')
+                st.metric("Timeline estimate", timeline)
+            else:
+                st.metric("Status", "Manual review")
         
         # FIXED: Check completion rate
         if completion_rate < 85:
@@ -3836,22 +3851,10 @@ class ClinicalBehavioralAssessment:
             - Your specific concerns and goals
             - The most appropriate intervention strategy for your situation
             
-            For faster service, you may also email us directly at [contact email] with any 
+            For faster service, you may also email us directly at [contact email] with any
             additional context about your situation.
             """)
-            
-            # Success Metrics Display (Modified)
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.metric("Questions answered", answered)
-            
-            with col2:
-                st.metric("Completion rate", f"{completion_rate:.0f}%")
-            
-            with col3:
-                st.metric("Status", "Manual review")
-            
+
         else:
             # ORIGINAL: Full pattern analysis display
             # Primary Pattern Overview (Surface Level Only)
@@ -3859,36 +3862,28 @@ class ClinicalBehavioralAssessment:
                 pattern_name = dominant.get('name', 'Unknown')
                 pattern_score = dominant.get('score', 0)
                 pattern_severity = dominant.get('severity', 'Unknown')
-                
-                st.markdown(f"""
+
+                # Build markdown with additional patterns inline
+                pattern_text = f"""
                 ### Primary pattern identified: {pattern_name}
-                
-                **Intensity:** {pattern_score:.1f}/10 - {pattern_severity.lower()} impact on daily life  
+
+                **Intensity:** {pattern_score:.1f}/10 - {pattern_severity.lower()} impact on daily life
                 **Success probability:** {success_prediction.get('overall_success_rate', 85)}% with specialized intervention
-                
-                Your assessment reveals {pattern_count} interconnected behavioral patterns that developed as 
+                """
+
+                # Add additional patterns right after success probability
+                if primary_patterns:
+                    pattern_text += "\n**Additional patterns detected:**\n"
+                    for pattern in primary_patterns[:2]:  # Show top 2 only
+                        pattern_text += f"- {pattern.get('name', 'Unknown')} ({pattern.get('score', 0):.1f}/10)\n"
+                    pattern_text += "\n"
+
+                pattern_text += f"""
+                Your assessment reveals {pattern_count} interconnected behavioral patterns that developed as
                 protective mechanisms but now limit your life satisfaction.
-                """)
-            
-            # Success Metrics Display
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.metric("Questions analyzed", answered)
-            
-            with col2:
-                success_rate = success_prediction.get('overall_success_rate', 85)
-                st.metric("Success probability", f"{success_rate}%")
-            
-            with col3:
-                timeline = success_prediction.get('timeline_estimate', '2 weeks')
-                st.metric("Timeline estimate", timeline)
-            
-            # Additional Patterns Teaser (Names + Scores Only)
-            if primary_patterns:
-                st.markdown("### Additional patterns detected")
-                for pattern in primary_patterns[:2]:  # Show top 2 only
-                    st.markdown(f"- {pattern.get('name', 'Unknown')} ({pattern.get('score', 0):.1f}/10)")
+                """
+
+                st.markdown(pattern_text)
             
             # What This Means (General Impact Only)
             st.markdown("""
