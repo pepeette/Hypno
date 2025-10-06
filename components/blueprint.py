@@ -1264,11 +1264,31 @@ class BehavioralBlueprint:
                     </div>
                 </div>
                 
-                <!-- Footer -->
-                <div style="margin-top: 50px; text-align: center; color: #556D7A; font-size: 0.9em;">
+            <!-- Footer with Disclaimer -->
+            <div style="margin-top: 50px; padding-top: 30px; border-top: 2px solid #CBD5E1;">
+                <div style="text-align: center; color: #556D7A; font-size: 0.9em;">
                     <p>© {datetime.now().year} Bangkok Transformation Hypnotherapy</p>
                     <p>This document is confidential and prepared exclusively for {name}</p>
                 </div>
+                
+                <div style="margin-top: 30px; padding: 20px; background: #FEF3C7; border-left: 4px solid #F59E0B; border-radius: 6px;">
+                    <p style="margin: 0 0 10px 0; font-weight: bold; color: #92400E;">IMPORTANT DISCLAIMER</p>
+                    <p style="margin: 0; font-size: 0.85em; color: #78350F; line-height: 1.6;">
+                        This assessment is a proprietary framework for hypnotherapy treatment planning. 
+                        It is not clinically validated and should not be used for self-diagnosis or as 
+                        a replacement for professional mental health care.
+                    </p>
+                    <p style="margin: 10px 0 0 0; font-size: 0.85em; color: #78350F; line-height: 1.6;">
+                        Consult with qualified mental health professionals for diagnostic assessment 
+                        and evidence-based treatment recommendations.
+                    </p>
+                </div>
+                
+                <div style="margin-top: 20px; text-align: center; color: #94A3B8; font-size: 0.75em;">
+                    <p>For questions or concerns, contact: [your email/phone]</p>
+                    <p>Thailand Mental Health Hotline: 1323 (24/7) | Emergency: 1669</p>
+                </div>
+            </div>
             </body>
             </html>
             """
