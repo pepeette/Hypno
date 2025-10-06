@@ -3394,7 +3394,8 @@ class ClinicalBehavioralAssessment:
             'assessment_results': {},
             'is_digital_native': False,
             'show_blueprint': False,
-            'premium_access': False
+            'premium_access': False,
+            'disclaimer_accepted': False 
         }
         
         for key, value in defaults.items():
@@ -3455,7 +3456,146 @@ class ClinicalBehavioralAssessment:
                     if key.startswith('assessment') or key in ['contact_provided', 'current_question_index']:
                         del st.session_state[key]
                 st.rerun()
-    
+        
+    def _render_disclaimer_page(self):
+        """Render disclaimer and acceptance page before assessment starts"""
+        
+        # Hero section
+        st.markdown("""
+        <div style="text-align: center; padding: 2rem 0 1rem 0;">
+            <h1 style="color: #273548; margin-bottom: 0.5rem;">Behavioral Pattern Assessment</h1>
+            <p style="color: #556D7A; font-size: 1.1rem;">Before you begin, please review this important information</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        # Critical disclaimer box
+        st.warning("""
+        ⚠️ **Important information about this assessment**
+        
+        This is a **proprietary framework** developed for hypnotherapy session planning. 
+        It is **NOT a clinical diagnostic tool** and has not been validated through peer-reviewed research.
+        
+        **This assessment:**
+        - Does not diagnose mental health conditions
+        - Is not a substitute for professional psychiatric or psychological care
+        - Should be used alongside, not instead of, evidence-based treatment
+        """)
+        
+        # What this is for
+        st.markdown("### What this assessment is designed for")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            <div style="background: #E1F0F0; padding: 1.5rem; border-radius: 8px; 
+                        border-left: 4px solid #22c55e; height: 100%;">
+                <h4 style="color: #22c55e; margin-top: 0;">✓ This is appropriate for:</h4>
+                <ul style="color: #273548; line-height: 1.8;">
+                    <li>Exploring behavioral patterns you'd like to change</li>
+                    <li>Planning focused hypnotherapy intervention</li>
+                    <li>Complementing existing therapy</li>
+                    <li>Personal insight and self-awareness</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown("""
+            <div style="background: #FEF3C7; padding: 1.5rem; border-radius: 8px; 
+                        border-left: 4px solid #F59E0B; height: 100%;">
+                <h4 style="color: #F59E0B; margin-top: 0;">✗ This is NOT appropriate for:</h4>
+                <ul style="color: #273548; line-height: 1.8;">
+                    <li>Diagnosing mental health conditions</li>
+                    <li>Replacing professional psychiatric care</li>
+                    <li>Crisis intervention or severe mental illness</li>
+                    <li>Medical or clinical decision-making</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        # Crisis resources
+        st.error("""
+        🆘 **If you're experiencing a mental health crisis:**
+        
+        - **Thailand Mental Health Hotline:** 1323 (24/7)
+        - **Samaritans of Thailand:** 02-713-6793 (24/7)  
+        - **Emergency Services:** 1669
+        
+        Please seek immediate professional help if you're experiencing thoughts of self-harm, 
+        severe depression, or psychological crisis.
+        """)
+        
+        st.markdown("---")
+        
+        # Assessment details
+        st.markdown("### What to expect")
+        
+        st.info("""
+        **Assessment details:**
+        - Approximately 70-75 questions
+        - Takes 15-20 minutes to complete
+        - You can go back and change answers
+        - Your responses are confidential
+        - Results are for treatment planning purposes only
+        
+        **After completion:**
+        - Receive behavioral pattern analysis
+        - Get personalized intervention suggestions
+        - Licensed therapist will review your assessment
+        - Schedule consultation to discuss results
+        """)
+        
+        st.markdown("---")
+        
+        # Acceptance section
+        st.markdown("### Your acknowledgment")
+        
+        accept1 = st.checkbox(
+            "I understand this is a proprietary assessment framework, not a clinical diagnostic tool",
+            key="accept_proprietary"
+        )
+        
+        accept2 = st.checkbox(
+            "I understand this assessment does not replace professional mental health care",
+            key="accept_not_replacement"
+        )
+        
+        accept3 = st.checkbox(
+            "I am not currently experiencing a mental health crisis requiring immediate intervention",
+            key="accept_not_crisis"
+        )
+        
+        st.markdown("  ")
+        
+        # Continue button - only enabled if all accepted
+        all_accepted = accept1 and accept2 and accept3
+        
+        if all_accepted:
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                if st.button("Begin assessment", type="primary", use_container_width=True):
+                    st.session_state.disclaimer_accepted = True
+                    st.rerun()
+        else:
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                st.button("Begin assessment", type="primary", use_container_width=True, disabled=True)
+            st.caption("Please check all boxes above to continue")
+        
+        st.markdown("  ")
+        st.markdown("  ")
+        
+        # Footer
+        st.caption("""
+        **Privacy notice:** Your responses are confidential and used only for treatment planning. 
+        We do not sell or share your personal information. [Privacy Policy Link]
+        """)
+
     def _render_header(self):
         """Render clean header"""
         # st.markdown("""
@@ -3464,12 +3604,18 @@ class ClinicalBehavioralAssessment:
 
         # </div>
         # """, unsafe_allow_html=True)
-        st.markdown("**BEHAVIORAL ASSESSMENT**")
+        st.markdown("**BEHAVIORAL ASSESSMENT**")        
         st.markdown("  ")
+
         # st.info("This assessment identifies your specific behavioral patterns "
         #         "to create a personalized hypnotherapy protocol that targets your exact needs.")
     
     def _render_assessment(self):
+        # Check if disclaimer accepted
+        if not st.session_state.get('disclaimer_accepted', False):
+            self._render_disclaimer_page()
+            return
+        
         """Render assessment questions"""
         current_index = st.session_state.current_question_index
         
@@ -3714,6 +3860,11 @@ class ClinicalBehavioralAssessment:
                 height=80
             )
             
+            st.caption("""
+            **Privacy:** Your responses are confidential and used only for treatment planning. 
+            We do not sell or share your data.
+            """)
+            
             submitted = st.form_submit_button("Get my analysis", type="primary", use_container_width=True)
             
             if submitted:
@@ -3918,7 +4069,7 @@ class ClinicalBehavioralAssessment:
                     self._render_paywall_or_premium_content()
             else:
                 st.info("Complete analysis will be provided during your consultation session")
-        
+            
         # ====================================================================
         # NEXT STEPS (Always Visible)
         # ====================================================================
@@ -3964,10 +4115,6 @@ class ClinicalBehavioralAssessment:
         results = st.session_state.assessment_results
         
         st.markdown("## Your complete transformation blueprint")
-        
-        # Section 1: Complete Pattern Analysis
-        st.markdown("## Your complete transformation blueprint")
-        st.markdown("### 1. Complete pattern analysis")
         
         if BLUEPRINT_AVAILABLE:
             blueprint = create_behavioral_blueprint()
@@ -4080,6 +4227,14 @@ class ClinicalBehavioralAssessment:
         - Licensed therapist will review your assessment and contact you to schedule
         """)
 
+        st.markdown("""
+    **About these results:** This analysis is based on a proprietary behavioral pattern 
+    framework designed to guide hypnotherapy treatment planning. It reflects patterns 
+    commonly observed in clinical practice but is not a validated psychological assessment.
+
+    Success rates and timelines are estimates based on clinical experience, not controlled 
+    research studies. Individual outcomes vary significantly.
+    """)
         # CTAs
         st.markdown("### Ready to begin transformation?")
         
