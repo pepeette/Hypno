@@ -105,8 +105,8 @@ class BehavioralBlueprint:
             # 2. Quick reference card
             self._render_quick_reference_card(master_analytics)
             
-            # 3. Executive summary
-            self._render_executive_summary(master_analytics)
+            # # 3. Executive summary
+            # self._render_executive_summary(master_analytics)
             
             # 4. Personal mantras
             self._render_personal_mantras(master_analytics)
@@ -126,8 +126,8 @@ class BehavioralBlueprint:
             # 9. Success tracking
             self._render_success_tracking(master_analytics)
             
-            # 10. Investment analysis
-            self._render_investment_analysis(master_analytics)
+            # # 10. Investment analysis
+            # self._render_investment_analysis(master_analytics)
             
             # 11. Downloadable resources
             self._render_downloadable_resources(master_analytics)
@@ -161,8 +161,24 @@ class BehavioralBlueprint:
                 print(f"Download generation error: {str(e)}")
         
         with col3:
-            st.button("Download PDF", disabled=True, use_container_width=True)
-            st.caption("*(Coming soon)*")
+        # PDF download - NOW WORKING
+            try:
+                pdf_bytes = self._generate_pdf_report(assessment_data)
+                if pdf_bytes:
+                    st.download_button(
+                        label="Download PDF",
+                        data=pdf_bytes,
+                        file_name=f"transformation_blueprint_{datetime.now().strftime('%Y%m%d')}.pdf",
+                        mime="application/pdf",
+                        use_container_width=True,
+                        type="primary"
+                    )
+                else:
+                    st.button("Download PDF", disabled=True, use_container_width=True)
+                    st.caption("*(Generation failed)*")
+            except Exception as e:
+                st.button("Download PDF", disabled=True, use_container_width=True)
+                st.caption("*(Install xhtml2pdf)*")
         
         st.markdown("---")
     
@@ -1008,6 +1024,268 @@ class BehavioralBlueprint:
             - Increased life satisfaction
             - Sustained positive changes
             """)
+
+    def _generate_pdf_report(self, assessment_data: Dict) -> bytes:
+        """Generate PDF report from blueprint content"""
+        try:
+            from xhtml2pdf import pisa
+            from io import BytesIO
+            
+            master_analytics = assessment_data.get('master_analytics', {})
+            contact = assessment_data.get('contact_info', {})
+            name = contact.get('full_name', 'Valued Client')
+            
+            pattern_analysis = master_analytics.get('pattern_analysis', {})
+            dominant = pattern_analysis.get('dominant_pattern', {})
+            success_prediction = master_analytics.get('success_prediction', {})
+            primary_patterns = pattern_analysis.get('primary_patterns', [])
+            
+            # Create HTML content
+            html_content = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <style>
+                    @page {{
+                        size: A4;
+                        margin: 2cm;
+                    }}
+                    body {{
+                        font-family: Arial, sans-serif;
+                        line-height: 1.6;
+                        color: #273548;
+                    }}
+                    h1 {{
+                        color: #4CA1A3;
+                        border-bottom: 3px solid #4CA1A3;
+                        padding-bottom: 10px;
+                    }}
+                    h2 {{
+                        color: #4CA1A3;
+                        margin-top: 30px;
+                    }}
+                    .cover {{
+                        text-align: center;
+                        margin-top: 100px;
+                        page-break-after: always;
+                    }}
+                    .metric {{
+                        background: #F3F6F8;
+                        padding: 15px;
+                        border-radius: 8px;
+                        margin: 10px 0;
+                        border-left: 4px solid #4CA1A3;
+                    }}
+                    .mantra {{
+                        background: linear-gradient(135deg, #4CA1A3 0%, #22c55e 100%);
+                        color: white;
+                        padding: 20px;
+                        border-radius: 12px;
+                        margin: 15px 0;
+                        text-align: center;
+                        font-weight: bold;
+                    }}
+                    .technique {{
+                        background: #E1F0F0;
+                        padding: 15px;
+                        border-radius: 8px;
+                        margin: 10px 0;
+                        border-left: 3px solid #22c55e;
+                    }}
+                    .page-break {{
+                        page-break-before: always;
+                    }}
+                </style>
+            </head>
+            <body>
+                <!-- Cover Page -->
+                <div class="cover">
+                    <h1>Complete Transformation Blueprint</h1>
+                    <p><strong>Prepared exclusively for:</strong> {name}</p>
+                    <p><strong>Date:</strong> {datetime.now().strftime('%B %d, %Y')}</p>
+                    <p><strong>Document ID:</strong> BTF-{datetime.now().strftime('%Y%m%d')}-{hash(name) % 10000:04d}</p>
+                    <p style="margin-top: 50px; font-style: italic;">
+                        This personalized clinical analysis contains your unique behavioral patterns,<br>
+                        transformation roadmap, and actionable techniques for lasting change.
+                    </p>
+                </div>
+                
+                <!-- Quick Reference Card -->
+                <div class="page-break">
+                    <h1>Quick Reference Card</h1>
+                    <p><em>Print this page and keep it visible</em></p>
+                    
+                    <div class="metric">
+                        <h2>Your Primary Pattern</h2>
+                        <p><strong>{dominant.get('name', 'Unknown')}</strong></p>
+                        <p>Intensity: {dominant.get('score', 0):.1f}/10</p>
+                    </div>
+                    
+                    <div class="metric">
+                        <h2>When You Notice It Starting:</h2>
+                        <ol>
+                            <li><strong>PAUSE</strong> - Take 3 deep breaths</li>
+                            <li><strong>NAME</strong> - "This is my {dominant.get('name', 'pattern')} pattern"</li>
+                            <li><strong>CHOOSE</strong> - "I can respond differently"</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="mantra">
+                        <h2 style="color: white; margin: 0;">Your Intervention Phrase</h2>
+                        <p style="font-size: 1.2em; margin: 10px 0;">
+                            "{self._get_intervention_phrase(dominant.get('id'))}"
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Personal Mantras -->
+                <div class="page-break">
+                    <h1>Your Personal Transformation Mantras</h1>
+                    <p><em>Read these daily - designed specifically for YOUR patterns</em></p>
+            """
+            
+            # Add mantras
+            if dominant:
+                html_content += f"""
+                    <div class="mantra">
+                        1. {self._get_pattern_mantra(dominant.get('id'))}
+                    </div>
+                """
+            
+            for i, pattern in enumerate(primary_patterns[:2], 2):
+                html_content += f"""
+                    <div class="mantra">
+                        {i}. {self._get_pattern_mantra(pattern.get('id'))}
+                    </div>
+                """
+            
+            html_content += """
+                </div>
+                
+                <!-- Executive Summary -->
+                <div class="page-break">
+                    <h1>Executive Summary</h1>
+            """
+            
+            # Add metrics
+            html_content += f"""
+                    <div class="metric">
+                        <strong>Patterns Identified:</strong> {pattern_analysis.get('pattern_count', 0)}<br>
+                        <strong>Success Probability:</strong> {success_prediction.get('overall_success_rate', 85)}%<br>
+                        <strong>Timeline:</strong> {success_prediction.get('timeline_estimate', '2-3 weeks')}<br>
+                        <strong>Recommended Sessions:</strong> {success_prediction.get('recommended_sessions', 2)}
+                    </div>
+                    
+                    <h2>Primary Pattern Analysis</h2>
+                    <div class="metric">
+                        <h3 style="color: #4CA1A3;">{dominant.get('name', 'Unknown Pattern')}</h3>
+                        <p><strong>Intensity:</strong> {dominant.get('score', 0):.1f}/10</p>
+            """
+            
+            pattern_desc = dominant.get('description', {})
+            if pattern_desc:
+                html_content += f"""
+                        <p><strong>Core belief:</strong> {pattern_desc.get('core_belief', 'Pattern analysis in progress')}</p>
+                        <p><strong>Impact:</strong> {pattern_desc.get('impact', 'This pattern affects your daily functioning')}</p>
+                """
+            
+            html_content += """
+                    </div>
+                </div>
+                
+                <!-- Immediate Techniques -->
+                <div class="page-break">
+                    <h1>Immediate Action Techniques</h1>
+                    <p><em>Start using these today - before your first session</em></p>
+                    
+                    <div class="technique">
+                        <h2>The 5-4-3-2-1 Grounding Method</h2>
+                        <p>When you notice your pattern starting:</p>
+                        <ul>
+                            <li>Name 5 things you SEE</li>
+                            <li>Name 4 things you FEEL</li>
+                            <li>Name 3 things you HEAR</li>
+                            <li>Name 2 things you SMELL</li>
+                            <li>Name 1 thing you TASTE</li>
+                        </ul>
+                        <p><em>This interrupts automatic patterns and returns you to the present moment</em></p>
+                    </div>
+                    
+                    <div class="technique">
+                        <h2>The PAUSE Protocol</h2>
+                        <ul>
+                            <li><strong>P</strong> - Pause what you're doing</li>
+                            <li><strong>A</strong> - Acknowledge the pattern</li>
+                            <li><strong>U</strong> - Understand it's protecting you</li>
+                            <li><strong>S</strong> - Select a new response</li>
+                            <li><strong>E</strong> - Execute with compassion</li>
+                        </ul>
+                        <p><em>Practice this 2-3 times daily, even when calm</em></p>
+                    </div>
+            """
+            
+            # Add pattern-specific technique
+            html_content += f"""
+                    <div class="technique">
+                        <h2>Your Pattern-Specific Technique</h2>
+                        {self._get_pattern_specific_technique(dominant.get('id')).replace('<strong>', '<strong style="color: #4CA1A3;">').replace('<br>', '<br/>')}
+                    </div>
+                </div>
+                
+                <!-- Session Roadmap -->
+                <div class="page-break">
+                    <h1>Your Transformation Timeline</h1>
+                    
+                    <div class="metric">
+                        <h2>Session 1: Pattern Mapping & Rapport Building</h2>
+                        <p><strong>Duration:</strong> 90 minutes</p>
+                        <p><strong>What to expect:</strong></p>
+                        <ul>
+                            <li>Complete behavioral chain mapping</li>
+                            <li>Subconscious pattern identification</li>
+                            <li>Initial positive programming</li>
+                            <li>Therapeutic alliance establishment</li>
+                            <li>You'll leave with clarity about your patterns</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="metric">
+                        <h2>Session 2: Neural Rewiring & Integration</h2>
+                        <p><strong>Duration:</strong> 90 minutes</p>
+                        <p><strong>What to expect:</strong></p>
+                        <ul>
+                            <li>Deep hypnotic state for subconscious access</li>
+                            <li>Pattern interruption at neural level</li>
+                            <li>New response pathway installation</li>
+                            <li>Behavioral anchoring and testing</li>
+                            <li>You'll notice shifts within 48-72 hours</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div style="margin-top: 50px; text-align: center; color: #556D7A; font-size: 0.9em;">
+                    <p>© {datetime.now().year} Bangkok Transformation Hypnotherapy</p>
+                    <p>This document is confidential and prepared exclusively for {name}</p>
+                </div>
+            </body>
+            </html>
+            """
+            
+            # Convert HTML to PDF
+            pdf_buffer = BytesIO()
+            pisa_status = pisa.CreatePDF(html_content, dest=pdf_buffer)
+            
+            if pisa_status.err:
+                raise Exception("PDF generation failed")
+            
+            pdf_buffer.seek(0)
+            return pdf_buffer.getvalue()
+            
+        except Exception as e:
+            print(f"PDF generation error: {str(e)}")
+            return None
 
     def _render_downloadable_resources(self, master_analytics: Dict):
         """Downloadable worksheets and tools"""
