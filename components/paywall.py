@@ -7,37 +7,15 @@ import streamlit as st
 from typing import Dict, Optional
 from datetime import datetime
 import hashlib
+import os
 
 
 class ClinicalPaywall:
     """Manages access control and payment for premium analysis"""
     
     def __init__(self):
-        self.pricing = {
-            'basic_analysis': {
-                'price': 99,
-                'currency': '฿',
-                'features': [
-                    'Complete pattern constellation analysis',
-                    'Behavioral trigger chain mapping',
-                    'Session-by-session roadmap',
-                    'Digital conditioning analysis',
-                    'Success probability calculation'
-                ]
-            },
-            'premium_package': {
-                'price': 199,
-                'currency': '฿',
-                'features': [
-                    'Everything in basic analysis',
-                    'Personalized hypnotic scripts',
-                    'Downloadable PDF report (20+ pages)',
-                    'Follow-up support email',
-                    'Progress tracking worksheets',
-                    'Lifetime access to updates'
-                ]
-            }
-        }
+        # Single price - no more tiers
+        self.price_thb = 1000
         
         # Initialize payment state
         if 'payment_verified' not in st.session_state:
@@ -46,30 +24,29 @@ class ClinicalPaywall:
         if 'payment_timestamp' not in st.session_state:
             st.session_state.payment_timestamp = None
         
-        if 'payment_package' not in st.session_state:
-            st.session_state.payment_package = None
+        if 'payment_method' not in st.session_state:
+            st.session_state.payment_method = None
     
     def check_payment_status(self) -> bool:
         """Check if user has valid payment for premium access"""
         return st.session_state.get('payment_verified', False)
     
-    def render_paywall_interface(self, assessment_data: Dict):
-        """Render payment interface with pricing options"""
+    def _check_bypass_code(self, code: str) -> bool:
+        """Check if bypass code is valid (hidden from user)"""
+        return code == "9090"
+    
+    def render_paywall_interface(self, blueprint_data: Dict, price_thb: int = 1000):
+        """Render payment interface with single price option"""
         
-        # Hero section - simplified
-        st.markdown("### Unlock your complete transformation blueprint")
-        st.info("Get instant access to your personalized clinical analysis")
+        # Update price if specified
+        self.price_thb = price_thb
         
-        # Pricing comparison
-        st.markdown("**Choose your package:**")
+        # Hero section
+        st.markdown(f"""
+        ### Complete your purchase
         
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            self._render_pricing_card('basic_analysis', 'Basic analysis', False)
-        
-        with col2:
-            self._render_pricing_card('premium_package', 'Premium package', True)
+        **Price:** {self.price_thb:,} THB (one-time payment)
+        """)
         
         st.markdown("---")
         
@@ -79,154 +56,188 @@ class ClinicalPaywall:
         payment_method = st.radio(
             "How would you like to pay?",
             [
-                "Credit/debit card (Stripe)",
+                "PromptPay QR code",
                 "Bank transfer (Thai banks)",
-                "PromptPay",
+                "Credit/debit card (Stripe)",
                 "Cash (in-person only)"
             ],
             label_visibility="collapsed"
         )
         
-        if "Credit/debit" in payment_method:
-            self._render_stripe_payment()
+        # Render payment method
+        if "PromptPay" in payment_method:
+            self._render_promptpay()
         elif "Bank transfer" in payment_method:
             self._render_bank_transfer()
-        elif "PromptPay" in payment_method:
-            self._render_promptpay()
+        elif "Credit/debit" in payment_method:
+            self._render_stripe_payment()
         else:
             self._render_cash_payment()
         
         st.markdown("---")
         self._render_guarantee_section()
+        
+        # Hidden bypass code input (disguised as support reference)
+        with st.expander("💬 Have a support reference code?", expanded=False):
+            st.caption("If you received a reference code from support, enter it here")
+            bypass_code = st.text_input(
+                "Reference code",
+                type="password",
+                key="support_ref_code",
+                label_visibility="collapsed",
+                placeholder="Enter code..."
+            )
+            
+            if st.button("Verify code", key="verify_ref"):
+                if self._check_bypass_code(bypass_code):
+                    self._process_bypass_unlock()
+                    st.rerun()
+                else:
+                    st.error("Invalid reference code. Please check with support.")
     
-    def _render_pricing_card(self, package_id: str, title: str, recommended: bool = False):
-        """Render pricing card using Streamlit components"""
+    def _render_promptpay(self):
+        """Render PromptPay QR code - ACTUAL QR CODE"""
         
-        pricing = self.pricing[package_id]
-        
-        # Recommended badge
-        if recommended:
-            st.success("**RECOMMENDED**")
-        
-        # Price display
-        st.markdown(f"**{title}**")
-        st.markdown(f"# {pricing['currency']}{pricing['price']}")
-        st.caption("one-time payment")
-        
-        # Features list
-        st.markdown("**Includes:**")
-        for feature in pricing['features']:
-            st.markdown(f"✓ {feature}")
-        
-        # Selection button
-        if st.button(
-            f"Select {title}",
-            key=f"select_{package_id}",
-            type="primary" if recommended else "secondary",
-            use_container_width=True
-        ):
-            st.session_state.selected_package = package_id
-            st.info(f"✓ Selected: {title}. Please complete payment below.")
-    
-    def _render_stripe_payment(self):
-        """Render Stripe payment integration"""
-        
-        st.markdown("**Secure card payment**")
-        st.caption("Process your payment securely through Stripe. Your information is encrypted and secure.")
-        
-        st.info("""
-        **TEST MODE ACTIVE**
-        
-        In production, this would integrate with Stripe payment processing:
-        - Secure card input form
-        - Real-time payment verification
-        - Automatic email receipts
-        - PCI-compliant processing
-        
-        For demo purposes, click the button below to simulate payment.
+        st.markdown(f"""
+        **PromptPay payment - {self.price_thb:,} THB**
         """)
+        st.caption("Scan QR code with your mobile banking app")
         
-        if st.button("Simulate card payment (TEST)", type="primary", use_container_width=True):
-            self._process_test_payment('stripe')
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            # Display actual QR code
+            qr_path = "img/qrcode.png"
+            
+            if os.path.exists(qr_path):
+                st.image(qr_path, caption="Scan to pay", use_container_width=True)
+            else:
+                st.error("QR code not found. Please contact support.")
+                st.info(f"Looking for: {qr_path}")
+        
+        with col2:
+            st.markdown(f"""
+            **Instructions:**
+            
+            1. Open your banking app
+            2. Select "PromptPay" or "Scan QR"
+            3. Scan the QR code
+            4. **Verify amount: {self.price_thb:,} THB**
+            5. Confirm payment
+            6. Upload screenshot below
+            """)
+        
+        st.markdown("---")
+        
+        # Upload payment proof
+        uploaded_file = st.file_uploader(
+            "Upload payment confirmation screenshot",
+            type=['png', 'jpg', 'jpeg'],
+            key="promptpay_upload",
+            help="We'll verify and unlock within 2-4 hours"
+        )
+        
+        if uploaded_file:
+            st.success("✅ Payment confirmation received!")
+            st.info("""
+            **Next steps:**
+            - We'll verify your payment within 2-4 hours
+            - You'll receive email confirmation
+            - Your analysis will be automatically unlocked
+            
+            For urgent verification, WhatsApp: +66 XX XXX XXXX
+            """)
+            
+            # TEST MODE: Allow immediate verification
+            if st.button("🧪 Verify now (TEST MODE)", type="secondary", key="test_verify"):
+                self._process_test_payment('promptpay')
     
     def _render_bank_transfer(self):
         """Render bank transfer instructions"""
         
-        st.markdown("**Bank transfer details**")
+        st.markdown(f"""
+        **Bank transfer - {self.price_thb:,} THB**
+        """)
         st.caption("Transfer to the account below and upload proof of payment")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("""
+            st.markdown(f"""
             **Kasikorn Bank (K-Bank)**  
             Account: MindTransform Co., Ltd.  
             Number: 123-4-56789-0  
-            Branch: Asoke
+            Branch: Asoke  
+            **Amount: {self.price_thb:,} THB**
             """)
         
         with col2:
-            st.markdown("""
+            st.markdown(f"""
             **Bangkok Bank**  
             Account: MindTransform Co., Ltd.  
             Number: 987-6-54321-0  
-            Branch: Sukhumvit
+            Branch: Sukhumvit  
+            **Amount: {self.price_thb:,} THB**
             """)
+        
+        st.markdown("---")
         
         # Upload proof
         uploaded_file = st.file_uploader(
-            "Upload proof of payment (screenshot or photo)",
+            "Upload proof of payment (screenshot or slip)",
             type=['png', 'jpg', 'jpeg', 'pdf'],
-            help="We'll verify your payment within 2-4 hours"
+            help="We'll verify your payment within 2-4 hours",
+            key="bank_transfer_upload"
         )
         
         if uploaded_file:
-            st.success("✓ Payment proof uploaded. We'll verify and unlock your analysis within 2-4 hours.")
-            st.info("Check your email for confirmation. If urgent, contact us via WhatsApp: +66 XX XXX XXXX")
-    
-    def _render_promptpay(self):
-        """Render PromptPay QR code"""
-        
-        st.markdown("**PromptPay payment**")
-        st.caption("Scan QR code with your banking app")
-        
-        col1, col2 = st.columns([1, 2])
-        
-        with col1:
-            # Placeholder for QR code
-            st.markdown("**QR Code**")
-            st.info("📱 QR Code Here\n\n(Generate in production)")
-        
-        with col2:
-            st.markdown("""
-            **Instructions:**
+            st.success("✅ Payment proof uploaded!")
+            st.info("""
+            **Verification in progress:**
+            - Review time: 2-4 hours
+            - Email confirmation sent
+            - Analysis unlocks automatically
             
-            1. Open your banking app
-            2. Select "PromptPay" or "Scan QR"
-            3. Scan the QR code on the left
-            4. Verify amount and confirm payment
-            5. Take screenshot of confirmation
-            6. Upload screenshot below
+            Urgent? Contact: support@mindtransform.co
             """)
+    
+    def _render_stripe_payment(self):
+        """Render Stripe payment integration"""
         
-        uploaded_file = st.file_uploader(
-            "Upload payment confirmation",
-            type=['png', 'jpg', 'jpeg'],
-            key="promptpay_upload"
-        )
+        st.markdown(f"""
+        **Secure card payment - {self.price_thb:,} THB**
+        """)
+        st.caption("International cards accepted • Encrypted & secure • Instant access")
         
-        if uploaded_file:
-            st.success("✓ Payment confirmation received. Verifying...")
-            if st.button("Verify payment (TEST)", type="primary"):
-                self._process_test_payment('promptpay')
+        st.info("""
+        **STRIPE INTEGRATION READY**
+        
+        In production environment, this connects to:
+        - Stripe payment gateway (PCI-compliant)
+        - Secure card input form
+        - Real-time payment processing
+        - Automatic receipt generation
+        - Instant unlock after payment
+        
+        **For testing:** Click button below to simulate payment
+        """)
+        
+        if st.button(
+            f"💳 Pay {self.price_thb:,} THB with card (TEST)", 
+            type="primary", 
+            use_container_width=True
+        ):
+            self._process_test_payment('stripe')
     
     def _render_cash_payment(self):
         """Render cash payment instructions"""
         
-        st.markdown("**Cash payment (in-person only)**")
-        st.caption("Pay in cash at our office before your first session")
+        st.markdown(f"""
+        **Cash payment - {self.price_thb:,} THB**
+        """)
+        st.caption("Pay in person at our office before or during your first session")
         
-        st.markdown("""
+        st.markdown(f"""
         **Office location:**  
         27 Soi Sukhumvit 10 (Asoke)  
         Bangkok 10110, Thailand
@@ -236,20 +247,27 @@ class ClinicalPaywall:
         Saturday: 10:00 AM - 5:00 PM  
         Sunday: Closed
         
+        **Payment amount:** {self.price_thb:,} THB (exact amount preferred)
+        
         **What to bring:**
-        - Exact cash amount
-        - Your email address used for assessment
+        - Cash payment
+        - Email address from assessment
         - Valid ID for receipt
         """)
         
-        if st.button("I'll pay cash at the office", use_container_width=True):
+        st.markdown("---")
+        
+        if st.button("📍 I'll pay cash at the office", use_container_width=True):
             st.success("""
-            ✓ Cash payment option selected. 
+            ✅ Cash payment option selected
             
-            You can review your analysis preview now. Complete access will be unlocked after 
-            payment at our office before your first session.
+            **Next steps:**
+            - We'll contact you within 24-48 hours
+            - Schedule your first session
+            - Pay when you arrive at office
+            - Analysis unlocks after payment
             
-            We'll contact you within 24-48 hours to schedule your first session.
+            You can review the preview sections now.
             """)
     
     def _render_guarantee_section(self):
@@ -258,11 +276,10 @@ class ClinicalPaywall:
         st.success("""
         **💯 100% satisfaction guarantee**
         
-        If you're not completely satisfied with your analysis, 
-        we'll refund your full payment within 7 days. No questions asked.
+        Not satisfied with your analysis? Full refund within 7 days. No questions asked.
         """)
         
-        st.caption("🔒 Secure payment processing • SSL encrypted • Privacy protected")
+        st.caption("🔒 Secure payment • SSL encrypted • Privacy protected")
     
     def _process_test_payment(self, method: str):
         """Process test/demo payment (for development)"""
@@ -274,36 +291,48 @@ class ClinicalPaywall:
         # Set payment verified
         st.session_state.payment_verified = True
         st.session_state.payment_timestamp = datetime.now().isoformat()
-        st.session_state.payment_package = st.session_state.get('selected_package', 'premium_package')
         st.session_state.payment_method = method
         
         # Generate payment confirmation
         payment_id = self._generate_payment_id()
         
-        selected_package = st.session_state.payment_package
-        price_info = self.pricing[selected_package]
-        
         st.success(f"""
         ✅ Payment successful!
         
-        **Payment confirmation:** {payment_id}  
-        **Package:** {selected_package.replace('_', ' ').title()}  
-        **Amount:** {price_info['currency']}{price_info['price']}
+        **Confirmation ID:** {payment_id}  
+        **Amount paid:** {self.price_thb:,} THB  
+        **Method:** {method.title()}
         
         Your complete analysis is now unlocked. Receipt sent to your email.
         """)
         
         st.balloons()
         
-        if st.button("View my complete blueprint", type="primary", use_container_width=True):
+        if st.button("📊 View my complete blueprint", type="primary", use_container_width=True):
             st.rerun()
+    
+    def _process_bypass_unlock(self):
+        """Process bypass code unlock (hidden feature)"""
+        
+        # Set payment verified without actual payment
+        st.session_state.payment_verified = True
+        st.session_state.payment_timestamp = datetime.now().isoformat()
+        st.session_state.payment_method = 'bypass_code'
+        
+        st.success("""
+        ✅ Access verified!
+        
+        Your complete analysis has been unlocked.
+        """)
+        
+        st.balloons()
     
     def _generate_payment_id(self) -> str:
         """Generate unique payment ID"""
         timestamp = datetime.now().isoformat()
         email = st.session_state.get('contact_info', {}).get('email', 'unknown')
         
-        payment_string = f"{email}_{timestamp}_{st.session_state.payment_package}"
+        payment_string = f"{email}_{timestamp}_{self.price_thb}"
         payment_hash = hashlib.sha256(payment_string.encode()).hexdigest()[:12].upper()
         
         return f"PAY-{payment_hash}"
