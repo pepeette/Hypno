@@ -3904,50 +3904,17 @@ class ClinicalBehavioralAssessment:
                     """)
             
             st.markdown("---")
-            
-            # ====================================================================
-            # PAYWALL SECTION (only if completion >= 85%)
-            # ====================================================================
-            
-            st.markdown("### Unlock your complete transformation blueprint")
-            
-            # What They're Seeing vs What's Available
+
+            # Single concise CTA
             st.markdown("""
-            **What you're seeing above:** Surface-level pattern identification
-            
-            **What's in your full analysis:**
-            - Complete 8-step behavioral chain with your exact trigger sequence
-            - Personalized intervention points with specific techniques
-            - Session-by-session transformation roadmap
-            - Hypnotic language protocols customized to your patterns
-            - 5-year cost analysis of unchanged patterns
-            - Digital conditioning protocols (if applicable)
-            - Downloadable 15-20 page clinical report
+            ### 📋 Want your complete analysis?
+
+            Your surface-level results are shown above. Unlock your detailed 15-20 page transformation blueprint below.
             """)
-            
-            # Value Comparison
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                st.markdown("""
-                **Traditional therapy approach:**
-                - 18+ months of talk therapy
-                - 15,000-25,000 total cost
-                - 3-6 months to initial results
-                """)
-            
-            with col2:
-                st.markdown("""
-                **Your complete blueprint:**
-                - 3,200 (one-time payment)
-                - 150+ analyzed data points
-                - 15-20 page detailed report
-                - Lifetime access to materials
-                """)
             
             # Paywall Integration
             if PAYWALL_AVAILABLE:
-                with st.expander("**Access complete analysis**", expanded=False):
+                with st.expander("**🔓 Unlock complete analysis - 1,000 THB**", expanded=False):
                     self._render_paywall_or_premium_content()
             else:
                 st.info("Complete analysis will be provided during your consultation session")
@@ -3970,62 +3937,26 @@ class ClinicalBehavioralAssessment:
         else:
             # Show paywall
             st.markdown("""
-            ### Unlock detailed analysis
+            ### Your complete transformation blueprint
             
-            **Your premium blueprint includes:**
+            **Included in your 1,000 THB purchase:**
             
-            **1. Complete pattern analysis (3-4 pages)**
-            - All 9 patterns with detailed origins
-            - Family system analysis
-            - Pattern interconnection mapping
-            - Root belief structures
-            - Hidden loyalties and secondary gains
-            
-            **2. Complete behavioral chain (2 pages)**
-            - Your exact 8-step trigger sequence
-            - Your specific physical sensations
-            - Your automatic thoughts (your actual words)
-            - Emotional cascade mapping
-            - 4-6 intervention windows identified
-            
-            **3. Transformation roadmap (3 pages)**
-            - Session-by-session breakdown for YOUR patterns
-            - Week-by-week neuroplasticity timeline
-            - Success indicators to track
-            - Optimization strategies
-            
-            **4. Intervention protocols (2 pages)**
-            - Exact therapeutic language for your patterns
-            - Hypnotic keywords to use
-            - Language to avoid
-            - Self-regulation techniques
-            
-            **5. Cost analysis (2 pages)**
-            - Weekly/annual pattern costs
-            - 5-year projection if unchanged
-            - ROI calculation for intervention
-            - Compound cost visualization
-            
-            **6. Digital conditioning plan (if applicable)**
-            - Component-by-component intervention
-            - Reality integration protocols
-            - Attention restoration timeline
-            
-            **7. Downloadable resources**
-            - Complete 15-20 page PDF report
-            - Progress tracking worksheets
-            - Pattern interruption checklist
-            - Success indicators checklist
+            ✅ **Complete pattern analysis** - All 9 patterns with origins and interconnections  
+            ✅ **Behavioral chain mapping** - Your exact 8-step trigger sequence with intervention points  
+            ✅ **Transformation roadmap** - Session-by-session breakdown customized to your patterns  
+            ✅ **Intervention protocols** - Exact therapeutic language and hypnotic keywords  
+            ✅ **Cost analysis** - 5-year projection if unchanged with ROI calculation  
+            ✅ **Downloadable PDF report** - Complete 15-20 page clinical document  
             """)
             
-            # Paywall interface
+            # Paywall interface with single price
             blueprint_data = {
                 'analysis': st.session_state.assessment_results,
                 'responses': st.session_state.assessment_responses,
                 'contact': st.session_state.get('contact_info', {})
             }
             
-            paywall.render_paywall_interface(blueprint_data)
+            paywall.render_paywall_interface(blueprint_data, price_thb=1000)
     
     def _render_premium_content(self):
         """Render full premium content after payment"""
@@ -4123,40 +4054,32 @@ class ClinicalBehavioralAssessment:
     
     def _render_next_steps(self):
         """Render next steps section"""
-        
-        st.markdown("---")
+
         st.markdown("### Your next steps")
         
         contact_info = st.session_state.get('contact_info', {})
         urgency = contact_info.get('urgency', '').lower()
-        
-        # Priority status
-        if 'extremely urgent' in urgency or 'same day' in urgency:
-            st.warning("**Priority status:** We'll contact you within 24 hours")
-        elif 'very urgent' in urgency or '24' in urgency:
-            st.info("**High priority:** We'll contact you within 24-48 hours")
-        
-        # Timeline
-        st.markdown("""
-        **What happens next:**
-        
-        1. **Clinical review** (24-48 hours): Licensed therapist analyzes your comprehensive assessment
-        2. **Personal contact** (48-72 hours): We reach out via your preferred method
-        3. **Custom protocol** (within 72 hours): Personalized hypnotherapy approach designed for your specific patterns
-        4. **Transformation sessions:** Begin your 2-3 session protocol
-        """)
-        
-        # Session structure reminder
         success_prediction = st.session_state.assessment_results.get('success_prediction', {})
         recommended_sessions = success_prediction.get('recommended_sessions', 2)
         
-        st.markdown(f"""
-        **Your recommended protocol:**
-        - **Sessions:** {recommended_sessions} sessions (90 minutes each)
-        - **Timeline:** {success_prediction.get('timeline_estimate', '2-3 weeks')}
-        - **Success probability:** {success_prediction.get('overall_success_rate', 85)}%
-        """)
+        # Single consolidated timeline based on urgency
+        if 'extremely urgent' in urgency or 'same day' in urgency:
+            timeline_text = "**Priority case:** We'll contact you within 24 hours"
+        elif 'very urgent' in urgency or '24' in urgency:
+            timeline_text = "**High priority:** Contact within 24-48 hours"
+        else:
+            timeline_text = "**Standard review:** Contact within 48-72 hours"
         
+        st.info(timeline_text)
+        
+        # Consolidated protocol information
+        st.markdown(f"""
+        **Your protocol:**
+        - {recommended_sessions} sessions (90 min each) over {success_prediction.get('timeline_estimate', '2-3 weeks')}
+        - Success probability: {success_prediction.get('overall_success_rate', 85)}%
+        - Licensed therapist will review your assessment and contact you to schedule
+        """)
+
         # CTAs
         st.markdown("### Ready to begin transformation?")
         
@@ -4165,7 +4088,7 @@ class ClinicalBehavioralAssessment:
         with col1:
             st.link_button(
                 "Schedule consultation",
-                "https://calendar.app.google/dHJTqwnffkGBnrpd6",
+                "https://calendly.com/laetitiasheppard/discovery",
                 use_container_width=True,
                 type="primary"
             )
