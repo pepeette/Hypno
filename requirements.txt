@@ -4,6 +4,8 @@ pandas>=1.5.0,<3.0.0
 boto3>=1.26.0
 reportlab>=3.6.0
 plotly>=5.0.0
+weasyprint
+xhtml2pdf
 
 
 # Optional: For Google Cloud Storage (uncomment if using)
