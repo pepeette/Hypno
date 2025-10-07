@@ -3993,17 +3993,7 @@ class ClinicalBehavioralAssessment:
             
             With the current completion rate, our automated pattern analysis cannot provide 
             reliable results. However, your responses have been sent to our clinical team.
-            
-            **What happens next:**
-            
-            Our licensed therapist will personally review your responses and contact you within 
-            24-48 hours to discuss:
-            - A personalized assessment approach
-            - Your specific concerns and goals
-            - The most appropriate intervention strategy for your situation
-            
-            For faster service, you may also email us directly at [contact email] with any
-            additional context about your situation.
+
             """)
 
         else:
