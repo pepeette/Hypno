@@ -3458,20 +3458,10 @@ class ClinicalBehavioralAssessment:
                 st.rerun()
         
     def _render_disclaimer_page(self):
-        """Render disclaimer and acceptance page before assessment starts"""
-        
-        # Hero section
-        st.markdown("""
-        <div style="text-align: center; padding: 0.2rem 0 0.2rem 0;">
-            <p style="color: #556D7A; font-size: 1.1rem;">Before you begin, please review this important information</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("---")
-        
+        """Render disclaimer and acceptance page before assessment starts"""        
         # Critical disclaimer box
         st.warning("""
-        ⚠️ **Important information about this assessment**
+        ⚠️ **Before you begin, please review this important information**
         
         This is a **proprietary framework** developed for hypnotherapy session planning. 
         
