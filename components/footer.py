@@ -133,13 +133,13 @@ class QuickContact:
         col1, col2 = st.columns(2)
         
         with col1:
-            if st.button("📞 Free Call", use_container_width=True, type="primary", key="quick_call"):
+            if st.button("📞 Free Call", width='stretch', type="primary", key="quick_call"):
                 # Scroll to booking form
                 st.markdown('<script>document.querySelector("#discovery").scrollIntoView();</script>', 
                           unsafe_allow_html=True)
         
         with col2:
-            if st.button("⚡ Book Sessions", use_container_width=True, key="quick_book"):
+            if st.button("⚡ Book Sessions", width='stretch', key="quick_book"):
                 st.markdown(f'<meta http-equiv="refresh" content="0; url={self.package_url}">', 
                           unsafe_allow_html=True)
 
