@@ -1632,8 +1632,8 @@ class ClinicalBehavioralAssessment:
         
         st.info("""
         **Assessment details:**
-        - Approximately 70-75 questions
-        - Takes 15-20 minutes to complete
+        - Approximately 90-100 questions
+        - Takes 20-30 minutes to complete
         - You can go back and change answers
         - Your responses are confidential
         - Results are for treatment planning purposes only
