@@ -3915,12 +3915,47 @@ class ClinicalBehavioralAssessment:
     def _render_results(self):
         """Render results page with strategic free preview and premium content"""
         
+        # ✅ NEW: Check if user wants to view full blueprint
+        if st.session_state.get('show_full_blueprint', False):
+            self._render_full_blueprint_page()
+            return
+    
         # Get results data
         results = st.session_state.assessment_results
         pattern_analysis = results.get('pattern_analysis', {})
         success_prediction = results.get('success_prediction', {})
         digital_analysis = results.get('digital_analysis', {})
+
+
+        # ✅ NEW: Check payment status
+        payment_verified = st.session_state.get('payment_verified', False)
         
+        # ====================================================================
+        # ✅ NEW: PREMIUM ACCESS BANNER (if paid)
+        # ====================================================================
+        if payment_verified:
+            st.markdown("""
+            <div style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+                        padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; color: white; text-align: center;">
+                <h3 style="color: white; margin: 0 0 0.5rem 0;">✅ Premium analysis unlocked</h3>
+                <p style="margin: 0; font-size: 1.1rem;">Your complete 15-20 page transformation blueprint is ready</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Prominent CTA button
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                if st.button(
+                    "📊 View your complete blueprint",
+                    type="primary",
+                    use_container_width=True,
+                    key="view_blueprint_main"
+                ):
+                    st.session_state.show_full_blueprint = True
+                    st.rerun()
+            
+
+
         dominant = pattern_analysis.get('dominant_pattern', {})
         primary_patterns = pattern_analysis.get('primary_patterns', [])
         pattern_count = pattern_analysis.get('pattern_count', 0)
@@ -4020,91 +4055,169 @@ class ClinicalBehavioralAssessment:
                     Specialized digital-native protocol recommended
                     """)
 
-            # Single concise CTA
+        # ====================================================================
+        # PAYWALL SECTION - Improved UX
+        # ====================================================================
+
+        if not payment_verified:
             st.markdown("""
-            Your surface-level results are shown above. Unlock your detailed 15-20 page transformation blueprint below.
+            ### 🔓 Unlock your complete transformation blueprint
+            
+            Your surface-level results are shown above. Get the full 15-20 page clinical analysis 
+            with detailed intervention protocols, behavioral chain mapping, and session-by-session roadmap.
             """)
             
             # Paywall Integration
             if PAYWALL_AVAILABLE:
-                with st.expander("**🔓 Unlock complete analysis - 1,000 THB**", expanded=False):
-                    self._render_paywall_or_premium_content()
+                # NOT in an expander - direct display
+                self._render_paywall_section()
             else:
                 st.info("Complete analysis will be provided during your consultation session")
-            
+                
         # ====================================================================
         # NEXT STEPS (Always Visible)
         # ====================================================================
         
         self._render_next_steps()
-    
-    def _render_paywall_or_premium_content(self):
-        """Render paywall or premium content if unlocked"""
+        
+    def _render_paywall_section(self):
+        """Render paywall section directly (not in expander)"""
         
         paywall = create_clinical_paywall()
         
-        if paywall.check_payment_status() or st.session_state.premium_access:
-            # User has paid - show premium content
-            st.success("Premium analysis unlocked")
-            self._render_premium_content()
-        else:
-            # Show paywall
+        # Show what's included
+        st.markdown("""
+        **Included in your 1,000 THB purchase:**
+        
+        ✅ **Complete pattern analysis** - All 9 patterns with origins and interconnections  
+        ✅ **Behavioral chain mapping** - Your exact 8-step trigger sequence with intervention points  
+        ✅ **Transformation roadmap** - Session-by-session breakdown customized to your patterns  
+        ✅ **Intervention protocols** - Exact therapeutic language and hypnotic keywords  
+        ✅ **Cost analysis** - 5-year projection if unchanged with ROI calculation  
+        ✅ **Downloadable PDF report** - Complete 15-20 page clinical document  
+        """)
+        
+        blueprint_data = {
+            'analysis': st.session_state.assessment_results,
+            'responses': st.session_state.assessment_responses,
+            'contact': st.session_state.get('contact_info', {})
+        }
+        
+        paywall.render_paywall_interface(blueprint_data, price_thb=1000)
+
+    def _render_full_blueprint_page(self):
+        """Render full blueprint as dedicated page"""
+        
+        # Header with back button
+        col1, col2, col3 = st.columns([1, 4, 1])
+        
+        with col1:
+            if st.button("← Back to results", use_container_width=True):
+                st.session_state.show_full_blueprint = False
+                st.rerun()
+        
+        with col2:
             st.markdown("""
-            ### Your complete transformation blueprint
-            
-            **Included in your 1,000 THB purchase:**
-            
-            ✅ **Complete pattern analysis** - All 9 patterns with origins and interconnections  
-            ✅ **Behavioral chain mapping** - Your exact 8-step trigger sequence with intervention points  
-            ✅ **Transformation roadmap** - Session-by-session breakdown customized to your patterns  
-            ✅ **Intervention protocols** - Exact therapeutic language and hypnotic keywords  
-            ✅ **Cost analysis** - 5-year projection if unchanged with ROI calculation  
-            ✅ **Downloadable PDF report** - Complete 15-20 page clinical document  
-            """)
-            
-            # Paywall interface with single price
-            blueprint_data = {
-                'analysis': st.session_state.assessment_results,
-                'responses': st.session_state.assessment_responses,
-                'contact': st.session_state.get('contact_info', {})
-            }
-            
-            paywall.render_paywall_interface(blueprint_data, price_thb=1000)
+            <div style="text-align: center;">
+                <h2 style="margin: 0;">Your complete transformation blueprint</h2>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            # PDF download button (placeholder)
+            st.button("📥 Download PDF", use_container_width=True, disabled=True)
     
-    def _render_premium_content(self):
-        """Render full premium content after payment"""
         
-        results = st.session_state.assessment_results
+        # Premium badge
+        st.success("✅ Premium analysis unlocked")
         
-        st.markdown("## Your complete transformation blueprint")
-        
+        # Render full blueprint
         if BLUEPRINT_AVAILABLE:
             blueprint = create_behavioral_blueprint()
             
-            # FIXED: Use correct keys that blueprint expects
             blueprint_data = {
-                'master_analytics': results,  # ✅ Correct key
-                'assessment_responses': st.session_state.assessment_responses,  # ✅ Correct key
-                'contact_info': st.session_state.get('contact_info', {})  # ✅ Correct key
+                'master_analytics': st.session_state.assessment_results,
+                'assessment_responses': st.session_state.assessment_responses,
+                'contact_info': st.session_state.get('contact_info', {})
             }
+            
             blueprint.render_complete_blueprint(blueprint_data)
         else:
             self._render_premium_fallback()
         
-        # Section 2: Downloadable PDF
-        st.markdown("### Download your report")
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button("← Back to results summary", use_container_width=True, type="primary"):
+                st.session_state.show_full_blueprint = False
+                st.rerun()
+
+    # def _render_paywall_or_premium_content(self):
+    #     """Render paywall or premium content if unlocked"""
         
-        st.markdown("""
-        **Your complete clinical report includes:**
-        - All pattern analysis with detailed origins
-        - Complete trigger chain mapping
-        - Session-by-session transformation roadmap
-        - Intervention protocols and language guides
-        - Cost analysis and ROI calculations
-        - Progress tracking worksheets
+    #     paywall = create_clinical_paywall()
         
-        PDF generation will be available in your client portal after consultation scheduling.
-        """)
+    #     if paywall.check_payment_status() or st.session_state.premium_access:
+    #         # User has paid - show premium content
+    #         st.success("Premium analysis unlocked")
+    #         self._render_premium_content()
+    #     else:
+    #         # Show paywall
+    #         st.markdown("""
+    #         ### Your complete transformation blueprint
+            
+    #         **Included in your 1,000 THB purchase:**
+            
+    #         ✅ **Complete pattern analysis** - All 9 patterns with origins and interconnections  
+    #         ✅ **Behavioral chain mapping** - Your exact 8-step trigger sequence with intervention points  
+    #         ✅ **Transformation roadmap** - Session-by-session breakdown customized to your patterns  
+    #         ✅ **Intervention protocols** - Exact therapeutic language and hypnotic keywords  
+    #         ✅ **Cost analysis** - 5-year projection if unchanged with ROI calculation  
+    #         ✅ **Downloadable PDF report** - Complete 15-20 page clinical document  
+    #         """)
+            
+    #         # Paywall interface with single price
+    #         blueprint_data = {
+    #             'analysis': st.session_state.assessment_results,
+    #             'responses': st.session_state.assessment_responses,
+    #             'contact': st.session_state.get('contact_info', {})
+    #         }
+            
+    #         paywall.render_paywall_interface(blueprint_data, price_thb=1000)
+    
+    # def _render_premium_content(self):
+    #     """Render full premium content after payment"""
+        
+    #     results = st.session_state.assessment_results
+        
+    #     st.markdown("## Your complete transformation blueprint")
+        
+    #     if BLUEPRINT_AVAILABLE:
+    #         blueprint = create_behavioral_blueprint()
+            
+    #         # FIXED: Use correct keys that blueprint expects
+    #         blueprint_data = {
+    #             'master_analytics': results,  # ✅ Correct key
+    #             'assessment_responses': st.session_state.assessment_responses,  # ✅ Correct key
+    #             'contact_info': st.session_state.get('contact_info', {})  # ✅ Correct key
+    #         }
+    #         blueprint.render_complete_blueprint(blueprint_data)
+    #     else:
+    #         self._render_premium_fallback()
+        
+    #     # Section 2: Downloadable PDF
+    #     st.markdown("### Download your report")
+        
+    #     st.markdown("""
+    #     **Your complete clinical report includes:**
+    #     - All pattern analysis with detailed origins
+    #     - Complete trigger chain mapping
+    #     - Session-by-session transformation roadmap
+    #     - Intervention protocols and language guides
+    #     - Cost analysis and ROI calculations
+    #     - Progress tracking worksheets
+        
+    #     PDF generation will be available in your client portal after consultation scheduling.
+    #     """)
     
     def _render_premium_fallback(self):
         """Fallback premium content if blueprint unavailable"""
