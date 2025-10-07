@@ -3462,8 +3462,7 @@ class ClinicalBehavioralAssessment:
         
         # Hero section
         st.markdown("""
-        <div style="text-align: center; padding: 2rem 0 1rem 0;">
-            <h1 style="color: #273548; margin-bottom: 0.5rem;">Behavioral Pattern Assessment</h1>
+        <div style="text-align: center; padding: 0.2rem 0 0.2rem 0;">
             <p style="color: #556D7A; font-size: 1.1rem;">Before you begin, please review this important information</p>
         </div>
         """, unsafe_allow_html=True)
@@ -3475,7 +3474,6 @@ class ClinicalBehavioralAssessment:
         ⚠️ **Important information about this assessment**
         
         This is a **proprietary framework** developed for hypnotherapy session planning. 
-        It is **NOT a clinical diagnostic tool** and has not been validated through peer-reviewed research.
         
         **This assessment:**
         - Does not diagnose mental health conditions
@@ -3492,7 +3490,7 @@ class ClinicalBehavioralAssessment:
             st.markdown("""
             <div style="background: #E1F0F0; padding: 1.5rem; border-radius: 8px; 
                         border-left: 4px solid #22c55e; height: 100%;">
-                <h4 style="color: #22c55e; margin-top: 0;">✓ This is appropriate for:</h4>
+                <h6 style="color: #22c55e; margin-top: 0;">✓ This is appropriate for:</h4>
                 <ul style="color: #273548; line-height: 1.8;">
                     <li>Exploring behavioral patterns you'd like to change</li>
                     <li>Planning focused hypnotherapy intervention</li>
@@ -3506,7 +3504,7 @@ class ClinicalBehavioralAssessment:
             st.markdown("""
             <div style="background: #FEF3C7; padding: 1.5rem; border-radius: 8px; 
                         border-left: 4px solid #F59E0B; height: 100%;">
-                <h4 style="color: #F59E0B; margin-top: 0;">✗ This is NOT appropriate for:</h4>
+                <h6 style="color: #F59E0B; margin-top: 0;">✗ This is NOT appropriate for:</h4>
                 <ul style="color: #273548; line-height: 1.8;">
                     <li>Diagnosing mental health conditions</li>
                     <li>Replacing professional psychiatric care</li>
@@ -3515,8 +3513,7 @@ class ClinicalBehavioralAssessment:
                 </ul>
             </div>
             """, unsafe_allow_html=True)
-        
-        st.markdown("---")
+
         
         # Crisis resources
         st.error("""
@@ -3529,8 +3526,7 @@ class ClinicalBehavioralAssessment:
         Please seek immediate professional help if you're experiencing thoughts of self-harm, 
         severe depression, or psychological crisis.
         """)
-        
-        st.markdown("---")
+
         
         # Assessment details
         st.markdown("### What to expect")
@@ -3549,8 +3545,7 @@ class ClinicalBehavioralAssessment:
         - Licensed therapist will review your assessment
         - Schedule consultation to discuss results
         """)
-        
-        st.markdown("---")
+
         
         # Acceptance section
         st.markdown("### Your acknowledgment")
