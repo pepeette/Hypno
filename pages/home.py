@@ -118,18 +118,18 @@
 #             if 1 not in st.session_state.quiz_answers:
 #                 col1, col2 = st.columns(2)
 #                 with col1:
-#                     if st.button("🚭 Quit smoking\nBreak nicotine addiction permanently", key="q1_smoking", use_container_width=True, type="secondary"):
+#                     if st.button("🚭 Quit smoking\nBreak nicotine addiction permanently", key="q1_smoking", width='stretch', type="secondary"):
 #                         self._answer_question(1, "Quit smoking")
-#                     if st.button("😰 Reduce anxiety\nStop panic attacks and overthinking", key="q1_anxiety", use_container_width=True, type="secondary"):
+#                     if st.button("😰 Reduce anxiety\nStop panic attacks and overthinking", key="q1_anxiety", width='stretch', type="secondary"):
 #                         self._answer_question(1, "Reduce anxiety")
-#                     if st.button("🍷 Control drinking\nHealthy relationship with alcohol", key="q1_drinking", use_container_width=True, type="secondary"):
+#                     if st.button("🍷 Control drinking\nHealthy relationship with alcohol", key="q1_drinking", width='stretch', type="secondary"):
 #                         self._answer_question(1, "Control drinking")
 #                 with col2:
-#                     if st.button("😴 Improve sleep\nEnd insomnia and sleep anxiety", key="q1_sleep", use_container_width=True, type="secondary"):
+#                     if st.button("😴 Improve sleep\nEnd insomnia and sleep anxiety", key="q1_sleep", width='stretch', type="secondary"):
 #                         self._answer_question(1, "Improve sleep")
-#                     if st.button("🍕 Stop overeating\nBreak emotional eating patterns", key="q1_eating", use_container_width=True, type="secondary"):
+#                     if st.button("🍕 Stop overeating\nBreak emotional eating patterns", key="q1_eating", width='stretch', type="secondary"):
 #                         self._answer_question(1, "Stop overeating")
-#                     if st.button("📱 Break bad habits\nEliminate destructive behaviors", key="q1_habits", use_container_width=True, type="secondary"):
+#                     if st.button("📱 Break bad habits\nEliminate destructive behaviors", key="q1_habits", width='stretch', type="secondary"):
 #                         self._answer_question(1, "Break bad habits")
 #             else:
 #                 st.success(f"✅ Selected: {st.session_state.quiz_answers[1]}")
@@ -139,11 +139,11 @@
 #             q2_expanded = (current_step == 2) and (2 not in st.session_state.quiz_answers)
 #             with st.expander("Question 2: How long have you been dealing with this pattern?", expanded=q2_expanded):
 #                 if 2 not in st.session_state.quiz_answers:
-#                     if st.button("🆕 Less than 6 months - Recent development", key="q2_recent", use_container_width=True, type="secondary"):
+#                     if st.button("🆕 Less than 6 months - Recent development", key="q2_recent", width='stretch', type="secondary"):
 #                         self._answer_question(2, "Less than 6 months")
-#                     if st.button("📅 6 months to 2 years - Established pattern", key="q2_established", use_container_width=True, type="secondary"):
+#                     if st.button("📅 6 months to 2 years - Established pattern", key="q2_established", width='stretch', type="secondary"):
 #                         self._answer_question(2, "6 months to 2 years")
-#                     if st.button("⏳ More than 2 years - Deep-rooted habit", key="q2_deeprooted", use_container_width=True, type="secondary"):
+#                     if st.button("⏳ More than 2 years - Deep-rooted habit", key="q2_deeprooted", width='stretch', type="secondary"):
 #                         self._answer_question(2, "More than 2 years")
 #                 else:
 #                     st.success(f"✅ Selected: {st.session_state.quiz_answers[2]}")
@@ -155,14 +155,14 @@
 #                 if 3 not in st.session_state.quiz_answers:
 #                     col1, col2 = st.columns(2)
 #                     with col1:
-#                         if st.button("⚔️ Force and control\n'I must push through resistance'", key="q3_force", use_container_width=True, type="secondary"):
+#                         if st.button("⚔️ Force and control\n'I must push through resistance'", key="q3_force", width='stretch', type="secondary"):
 #                             self._answer_question(3, "Force and control")
-#                         if st.button("🔒 Mistrust and defensiveness\n'I can't let my guard down'", key="q3_mistrust", use_container_width=True, type="secondary"):
+#                         if st.button("🔒 Mistrust and defensiveness\n'I can't let my guard down'", key="q3_mistrust", width='stretch', type="secondary"):
 #                             self._answer_question(3, "Mistrust and defensiveness")
 #                     with col2:
-#                         if st.button("⚖️ All-or-nothing thinking\n'It's either perfect or failure'", key="q3_binary", use_container_width=True, type="secondary"):
+#                         if st.button("⚖️ All-or-nothing thinking\n'It's either perfect or failure'", key="q3_binary", width='stretch', type="secondary"):
 #                             self._answer_question(3, "All-or-nothing thinking")
-#                         if st.button("🏃 Doing addiction\n'My worth depends on productivity'", key="q3_doing", use_container_width=True, type="secondary"):
+#                         if st.button("🏃 Doing addiction\n'My worth depends on productivity'", key="q3_doing", width='stretch', type="secondary"):
 #                             self._answer_question(3, "Doing addiction")
 #                 else:
 #                     st.success(f"✅ Selected: {st.session_state.quiz_answers[3]}")
@@ -174,14 +174,14 @@
 #                 if 4 not in st.session_state.quiz_answers:
 #                     col1, col2 = st.columns(2)
 #                     with col1:
-#                         if st.button("🤔 Curious but cautious\nWant to understand the approach first", key="q4_curious", use_container_width=True, type="secondary"):
+#                         if st.button("🤔 Curious but cautious\nWant to understand the approach first", key="q4_curious", width='stretch', type="secondary"):
 #                             self._answer_question(4, "Curious but cautious")
-#                         if st.button("🎯 Ready to commit\nPrepared to do the inner work", key="q4_ready", use_container_width=True, type="secondary"):
+#                         if st.button("🎯 Ready to commit\nPrepared to do the inner work", key="q4_ready", width='stretch', type="secondary"):
 #                             self._answer_question(4, "Ready to commit")
 #                     with col2:
-#                         if st.button("🔥 Desperate for change\nThis pattern must end now", key="q4_desperate", use_container_width=True, type="secondary"):
+#                         if st.button("🔥 Desperate for change\nThis pattern must end now", key="q4_desperate", width='stretch', type="secondary"):
 #                             self._answer_question(4, "Desperate for change")
-#                         if st.button("🛡️ Prefer gradual approach\nWant to try other methods first", key="q4_gradual", use_container_width=True, type="secondary"):
+#                         if st.button("🛡️ Prefer gradual approach\nWant to try other methods first", key="q4_gradual", width='stretch', type="secondary"):
 #                             self._answer_question(4, "Prefer gradual approach")
 #                 else:
 #                     st.success(f"✅ Selected: {st.session_state.quiz_answers[4]}")
@@ -325,7 +325,7 @@
 #                 </a>
 #                 """, unsafe_allow_html=True)
 #         with col2:
-#             if st.button("🔄 Retake Assessment", use_container_width=True, type="secondary"):
+#             if st.button("🔄 Retake Assessment", width='stretch', type="secondary"):
 #                 self._reset_quiz()
     
 #     def _reset_quiz(self):
@@ -526,7 +526,7 @@ class EnhancedQuizSection:
                     container.button(
                         label,
                         key=f"q1_{i}",
-                        use_container_width=True,
+                        width='stretch',
                         type="secondary",
                         on_click=self._answer_question,
                         args=(1, value)
@@ -554,7 +554,7 @@ class EnhancedQuizSection:
                         container.button(
                             label,
                             key=f"q2_{i}",
-                            use_container_width=True,
+                            width='stretch',
                             type="secondary",
                             on_click=self._answer_question,
                             args=(2, value)
@@ -571,7 +571,7 @@ class EnhancedQuizSection:
                     col1.button(
                         "🤔 curious but cautious\nwant to learn more before committing",
                         key="q3_curious",
-                        use_container_width=True,
+                        width='stretch',
                         type="secondary",
                         on_click=self._answer_question,
                         args=(3, "curious but cautious"),
@@ -579,7 +579,7 @@ class EnhancedQuizSection:
                     col1.button(
                         "🎯 ready to commit\nprepared to do the inner work",
                         key="q3_ready",
-                        use_container_width=True,
+                        width='stretch',
                         type="secondary",
                         on_click=self._answer_question,
                         args=(3, "ready to commit"),
@@ -587,7 +587,7 @@ class EnhancedQuizSection:
                     col2.button(
                         "🔥 desperate for change\nthis must end now",
                         key="q3_desperate",
-                        use_container_width=True,
+                        width='stretch',
                         type="secondary",
                         on_click=self._answer_question,
                         args=(3, "desperate for change"),
@@ -595,7 +595,7 @@ class EnhancedQuizSection:
                     col2.button(
                         "🛡️ prefer gradual approach\nwant to try other methods first",
                         key="q3_gradual",
-                        use_container_width=True,
+                        width='stretch',
                         type="secondary",
                         on_click=self._answer_question,
                         args=(3, "prefer gradual approach"),
@@ -676,7 +676,7 @@ class EnhancedQuizSection:
                 unsafe_allow_html=True,
             )
         with col2:
-            if st.button("🔄 Retake assessment", use_container_width=True, type="secondary"):
+            if st.button("🔄 Retake assessment", width='stretch', type="secondary"):
                 self._reset_quiz()
 
     def _reset_quiz(self):
@@ -726,7 +726,7 @@ class MethodTeaserWithVideo:
             #        👉 Explore 2+1 Method page
             #     </a>
             # """, unsafe_allow_html=True)
-            if st.button("👉 Explore 2+1 Method", key="nav_to_method", type="primary", use_container_width=True):
+            if st.button("👉 Explore 2+1 Method", key="nav_to_method", type="primary", width='stretch'):
                 st.session_state["main_navigation"] = 1  # Index 1 = "Method"
                 st.rerun()
 
