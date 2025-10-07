@@ -303,14 +303,32 @@ class ClinicalPaywall:
         **Amount paid:** {self.price_thb:,} THB  
         **Method:** {method.title()}
         
-        Your complete analysis is now unlocked. Receipt sent to your email.
+        Your complete analysis is now unlocked.
         """)
         
         st.balloons()
         
-        if st.button("📊 View my complete blueprint", type="primary", use_container_width=True):
-            st.rerun()
-    
+        # Clear instructions
+        st.info("""
+        **Next steps:**
+        
+        1. Click the button below to view your complete blueprint
+        2. Or scroll to the top of this page - you'll see a green banner with access button
+        3. Your receipt has been sent to your email
+        """)
+        
+        # Prominent button to view blueprint
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button(
+                "📊 View my complete blueprint", 
+                type="primary", 
+                use_container_width=True,
+                key="view_blueprint_after_payment"
+            ):
+                st.session_state.show_full_blueprint = True
+                st.rerun()
+        
     def _process_bypass_unlock(self):
         """Process bypass code unlock (hidden feature)"""
         
@@ -326,6 +344,25 @@ class ClinicalPaywall:
         """)
         
         st.balloons()
+        
+        st.info("""
+        **Next steps:**
+        
+        1. Scroll to the top of this page
+        2. Click the green "View your complete blueprint" button
+        3. Or click the button below
+        """)
+        
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button(
+                "📊 View my complete blueprint", 
+                type="primary", 
+                use_container_width=True,
+                key="view_blueprint_after_bypass"
+            ):
+                st.session_state.show_full_blueprint = True
+            st.rerun()
     
     def _generate_payment_id(self) -> str:
         """Generate unique payment ID"""
