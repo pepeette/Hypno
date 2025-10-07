@@ -3458,7 +3458,8 @@ class ClinicalBehavioralAssessment:
                 st.rerun()
         
     def _render_disclaimer_page(self):
-        """Render disclaimer and acceptance page before assessment starts"""        
+        """Render disclaimer and acceptance page before assessment starts"""
+        
         # Critical disclaimer box
         st.warning("""
         ⚠️ **Before you begin, please review this important information**
@@ -3933,16 +3934,8 @@ class ClinicalBehavioralAssessment:
         # ====================================================================
         # FREE PREVIEW SECTION
         # ====================================================================
-        
-        # Hero Section
-        st.markdown(f"""
-        <div style="background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%);
-                    padding: 2rem; border-radius: 12px; border-left: 4px solid #4CA1A3; margin-bottom: 2rem;">
-            <h2 style="color: #273548; margin: 0;">Assessment complete - {answered} questions analyzed</h2>
-        </div>
-        """, unsafe_allow_html=True)
 
-        # Success Metrics Display (positioned right after hero section)
+        # Success Metrics Display
         col1, col2, col3 = st.columns(3)
 
         with col1:
@@ -3989,27 +3982,25 @@ class ClinicalBehavioralAssessment:
                 pattern_score = dominant.get('score', 0)
                 pattern_severity = dominant.get('severity', 'Unknown')
 
-                # Build markdown with additional patterns inline
-                pattern_text = f"""
-                ### Primary pattern identified: {pattern_name}
-
-                **Intensity:** {pattern_score:.1f}/10 - {pattern_severity.lower()} impact on daily life
-                **Success probability:** {success_prediction.get('overall_success_rate', 85)}% with specialized intervention
-                """
-
-                # Add additional patterns right after success probability
+                # Build additional patterns list HTML
+                additional_patterns_html = ""
                 if primary_patterns:
-                    pattern_text += "\n**Additional patterns detected:**\n"
+                    additional_patterns_html = "<p style='margin: 1rem 0 0.5rem 0;'><strong>Additional patterns detected:</strong></p><ul style='margin: 0.5rem 0; padding-left: 1.5rem;'>"
                     for pattern in primary_patterns[:2]:  # Show top 2 only
-                        pattern_text += f"- {pattern.get('name', 'Unknown')} ({pattern.get('score', 0):.1f}/10)\n"
-                    pattern_text += "\n"
+                        additional_patterns_html += f"<li>{pattern.get('name', 'Unknown')} ({pattern.get('score', 0):.1f}/10)</li>"
+                    additional_patterns_html += "</ul>"
 
-                pattern_text += f"""
-                Your assessment reveals {pattern_count} interconnected behavioral patterns that developed as
-                protective mechanisms but now limit your life satisfaction.
-                """
-
-                st.markdown(pattern_text)
+                # Build gradient box for primary pattern
+                st.markdown(f"""
+                <div style="background: linear-gradient(135deg, #F3F6F8 0%, #FFFFFF 100%);
+                            padding: 2rem; border-radius: 12px; border-left: 4px solid #4CA1A3; margin-bottom: 2rem;">
+                    <h3 style="color: #273548; margin: 0 0 1rem 0;">Primary pattern identified: {pattern_name}</h3>
+                    <p style="margin: 0.5rem 0;"><strong>Intensity:</strong> {pattern_score:.1f}/10 - {pattern_severity.lower()} impact on daily life</p>
+                    <p style="margin: 0.5rem 0;"><strong>Success probability:</strong> {success_prediction.get('overall_success_rate', 85)}% with specialized intervention</p>
+                    {additional_patterns_html}
+                    <p style="margin: 1rem 0 0 0;">Your assessment reveals {pattern_count} interconnected behavioral patterns that developed as protective mechanisms but now limit your life satisfaction.</p>
+                </div>
+                """, unsafe_allow_html=True)
             
             # What This Means (General Impact Only)
             st.markdown("""
@@ -4028,13 +4019,9 @@ class ClinicalBehavioralAssessment:
                     **Digital conditioning detected:** {score:.0f}% ({severity.lower()})  
                     Specialized digital-native protocol recommended
                     """)
-            
-            st.markdown("---")
 
             # Single concise CTA
             st.markdown("""
-            ### 📋 Want your complete analysis?
-
             Your surface-level results are shown above. Unlock your detailed 15-20 page transformation blueprint below.
             """)
             
@@ -4177,44 +4164,51 @@ class ClinicalBehavioralAssessment:
     def _render_next_steps(self):
         """Render next steps section"""
 
-        st.markdown("### Your next steps")
-        
         contact_info = st.session_state.get('contact_info', {})
         urgency = contact_info.get('urgency', '').lower()
         success_prediction = st.session_state.assessment_results.get('success_prediction', {})
         recommended_sessions = success_prediction.get('recommended_sessions', 2)
-        
+
         # Single consolidated timeline based on urgency
         if 'extremely urgent' in urgency or 'same day' in urgency:
-            timeline_text = "**Priority case:** We'll contact you within 24 hours"
+            timeline_text = "Priority case: We'll contact you within 24 hours"
+            border_color = "#ef4444"
         elif 'very urgent' in urgency or '24' in urgency:
-            timeline_text = "**High priority:** Contact within 24-48 hours"
+            timeline_text = "High priority: Contact within 24-48 hours"
+            border_color = "#eab308"
         else:
-            timeline_text = "**Standard review:** Contact within 48-72 hours"
-        
-        st.info(timeline_text)
-        
-        # Consolidated protocol information
+            timeline_text = "Standard review: Contact within 48-72 hours"
+            border_color = "#4CA1A3"
+
+        # Gradient box for next steps
         st.markdown(f"""
-        **Your protocol:**
-        - {recommended_sessions} sessions (90 min each) over {success_prediction.get('timeline_estimate', '2-3 weeks')}
-        - Success probability: {success_prediction.get('overall_success_rate', 85)}%
-        - Licensed therapist will review your assessment and contact you to schedule
-        """)
+        <div style="background: linear-gradient(135deg, #E1F0F0 0%, #F8FAFC 100%);
+                    padding: 2rem; border-radius: 12px; border-left: 4px solid {border_color}; margin-bottom: 2rem;">
+            <h3 style="color: #273548; margin: 0 0 1rem 0;">Your next steps</h3>
+            <p style="margin: 0.5rem 0; font-size: 1.1rem;"><strong>{timeline_text}</strong></p>
+            <p style="margin: 1rem 0 0.5rem 0;"><strong>Your protocol:</strong></p>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                <li>{recommended_sessions} sessions (90 min each) over {success_prediction.get('timeline_estimate', '2-3 weeks')}</li>
+                <li>Success probability: {success_prediction.get('overall_success_rate', 85)}%</li>
+                <li>Licensed therapist will review your assessment and contact you to schedule</li>
+            </ul>
+            <p style="margin: 1.5rem 0 0.5rem 0; font-size: 0.9rem; color: #556D7A;">
+                <strong>About these results:</strong> This analysis is based on a proprietary behavioral pattern
+                framework designed to guide hypnotherapy treatment planning. It reflects patterns
+                commonly observed in clinical practice but is not a validated psychological assessment.
+            </p>
+            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #556D7A;">
+                Success rates and timelines are estimates based on clinical experience, not controlled
+                research studies. Individual outcomes vary significantly.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
-        st.markdown("""
-    **About these results:** This analysis is based on a proprietary behavioral pattern 
-    framework designed to guide hypnotherapy treatment planning. It reflects patterns 
-    commonly observed in clinical practice but is not a validated psychological assessment.
-
-    Success rates and timelines are estimates based on clinical experience, not controlled 
-    research studies. Individual outcomes vary significantly.
-    """)
         # CTAs
         st.markdown("### Ready to begin transformation?")
-        
+
         col1, col2 = st.columns(2)
-        
+
         with col1:
             st.link_button(
                 "Schedule consultation",
@@ -4222,22 +4216,21 @@ class ClinicalBehavioralAssessment:
                 use_container_width=True,
                 type="primary"
             )
-        
+
         with col2:
             st.link_button(
                 "Learn about method",
                 "https://hypnotherapy.streamlit.app/",
                 use_container_width=True
             )
-        
+
         # Value reminder
         st.markdown("""
-        ---
         **Investment comparison:**
-        
-        Traditional therapy: 18+ months, 15,000-25,000  
+
+        Traditional therapy: 18+ months, 15,000-25,000
         Specialized hypnotherapy: 2-3 sessions, 3,000-4,000
-        
+
         Time to initial results: 48-72 hours vs 3-6 months
         """)
 
