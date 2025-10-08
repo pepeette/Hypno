@@ -110,7 +110,7 @@ class ClinicalPaywall:
             qr_path = "img/qrcode.png"
             
             if os.path.exists(qr_path):
-                st.image(qr_path, caption="Scan to pay", use_container_width=True)
+                st.image(qr_path, caption="Scan to pay", width='stretch')
             else:
                 st.error("QR code not found. Please contact support.")
                 st.info(f"Looking for: {qr_path}")
@@ -225,7 +225,7 @@ class ClinicalPaywall:
         if st.button(
             f"💳 Pay {self.price_thb:,} THB with card (TEST)", 
             type="primary", 
-            use_container_width=True
+            width='stretch'
         ):
             self._process_test_payment('stripe')
     
@@ -257,7 +257,7 @@ class ClinicalPaywall:
         
         st.markdown("---")
         
-        if st.button("📍 I'll pay cash at the office", use_container_width=True):
+        if st.button("📍 I'll pay cash at the office", width='stretch'):
             st.success("""
             ✅ Cash payment option selected
             
@@ -323,7 +323,7 @@ class ClinicalPaywall:
             if st.button(
                 "📊 View my complete blueprint", 
                 type="primary", 
-                use_container_width=True,
+                width='stretch',
                 key="view_blueprint_after_payment"
             ):
                 st.session_state.show_full_blueprint = True
@@ -358,7 +358,7 @@ class ClinicalPaywall:
             if st.button(
                 "📊 View my complete blueprint", 
                 type="primary", 
-                use_container_width=True,
+                width='stretch',
                 key="view_blueprint_after_bypass"
             ):
                 st.session_state.show_full_blueprint = True
