@@ -10,22 +10,23 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 import json
 import re
-from config import PatternDefinitions, EmailConfig
+# PatternDefinitions loaded dynamically in __init__ to avoid circular imports
 
 class EmailHandler:
     """Complete email handler with advanced clinical assessment capabilities"""
-    
+
     def __init__(self):
-        # Use config values from EmailConfig
-        self.smtp_server = EmailConfig.SMTP_SERVER
-        self.smtp_port = EmailConfig.SMTP_PORT
-        self.sender_email = EmailConfig.SENDER_EMAIL
-        self.recipient_email = EmailConfig.RECIPIENT_EMAIL
-        self.password = EmailConfig.MAIL_APP_PASSWORD
-        
-        # Clinical pattern analysis tables
-        self.pattern_structures = PatternDefinitions.PATTERN_DESCRIPTIONS
-        
+        # Get config from Streamlit secrets or environment variables
+        self.smtp_server = self._get_config('SMTP_SERVER', 'smtp.gmail.com')
+        self.smtp_port = int(self._get_config('SMTP_PORT', '587'))
+        self.sender_email = self._get_config('SENDER_EMAIL', '')
+        self.recipient_email = self._get_config('RECIPIENT_EMAIL', '')
+        self.password = self._get_config('GMAIL_APP_PASSWORD', '')
+
+        # Clinical pattern analysis tables (optional - used for assessment emails only)
+        # Booking form emails don't use this - set to empty for now
+        self.pattern_structures = {}
+
         # Intervention mapping tables
         self.hypnotic_language_map = {
             1: {
@@ -64,8 +65,24 @@ class EmailHandler:
             }
         }
 
+    def _get_config(self, key, default=''):
+        """Get configuration from Streamlit secrets or environment variables"""
+        # Try Streamlit secrets first
+        try:
+            import streamlit as st
+            if hasattr(st, 'secrets') and 'email' in st.secrets:
+                value = st.secrets.get('email', {}).get(key)
+                if value:
+                    return str(value).strip()
+        except:
+            pass
+
+        # Fallback to environment variable
+        value = os.getenv(key, default)
+        return str(value).strip() if value else default
+
     # ================== EXISTING BOOKING FUNCTIONS (UNCHANGED) ==================
-    
+
     def send_discovery_call_email(self, booking_data):
         """Send discovery call booking notification - MAINTAINS ORIGINAL FUNCTIONALITY"""
         try:
@@ -1660,8 +1677,8 @@ Comprehensive Behavioral Pattern Analysis Complete
         
         msg.attach(MIMEText(body, 'plain'))
         
-        # Log the attempt
-        print(f"Sending clinical assessment results for {name} ({email})")
+        # Production-safe logging (no PII)
+        print("Sending clinical assessment results")
         print(f"Assessment completion: {assessment_results.get('completion_rate', 0)*100:.0f}%")
         print(f"Patterns detected: {len(assessment_results.get('pattern_scores', {}))}")
         
