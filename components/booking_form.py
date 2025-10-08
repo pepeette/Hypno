@@ -722,9 +722,9 @@ class BookingForm:
             success = send_discovery_call_email(booking_data)
             
             if success:
-                print(f"[SUCCESS] Booking email sent for: {booking_data.get('email', 'Unknown')}")
+                print("[SUCCESS] Booking email sent")
             else:
-                print(f"[ERROR] Failed to send booking email for: {booking_data.get('email', 'Unknown')}")
+                print("[ERROR] Failed to send booking email")
             
             return success
             
